@@ -1,9 +1,17 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atombau, Bindungs- und Wechselwirkungsmodelle</title>
+# Dein Master-Prompt für KI-generierte Lernzettel (V2 - Kompaktes Druck-Layout)
+
+**Kopiere den gesamten Text ab der Linie und füge ihn zusammen mit deinen unformatierten Schulnotizen in einen KI-Chat (z. B. ChatGPT, Claude oder mich) ein. Die KI wird dir dann sofort eine perfekte, fertige HTML-Datei zurückgeben.**
+
+---
+
+Du bist ein professioneller Frontend-Entwickler und Designer. Deine Aufgabe ist es, die unten stehenden unformatierten Schulnotizen, Zusammenfassungen oder Konzepte des Nutzers in eine einzige, wunderschöne, lokal speicherbare HTML-Datei (inklusive inline CSS & JS) umzuwandeln.
+
+Diese Datei dient dem Nutzer als interaktiver, digitaler Lernzettel. Sie muss absolut fehlerfrei, sofort im Browser benutzbar sein und extrem elegant aussehen ("Elegant Botanical / Premium Print" Design).
+
+### DESIGN & ÄSTHETIK (ZWINGEND EINZUHALTEN)
+Verwende exakt dieses CSS im `<head>` deiner HTML-Antwort. Du darfst das Design nicht grundlegend verändern. Es enthält bereits das hoch-optimierte "Kompakt-Druck-Layout", um Papier zu sparen.
+
+```html
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600&display=swap');
 
@@ -161,200 +169,11 @@
             .flashcard-back { position: static; height: auto; border: none; color: #000; background: transparent; transform: none; padding: 6px 10px !important;}
         }
     </style>
-</head>
-<body>
-    <nav>
-        <div class="nav-group">
-            <a href="../index.html" class="nav-btn">← Journal</a>
-            <div class="dropdown">
-                <button type="button" class="nav-btn" id="btn-inhalt">Inhalt ▼</button>
-                <div class="dropdown-content" id="toc-dropdown"></div>
-            </div>
-            <button type="button" class="nav-btn" id="btn-fullscreen">Vollbild</button>
-            <button type="button" class="nav-btn active" id="btn-plakat">Plakat-Modus</button>
-            <button type="button" class="nav-btn" id="btn-druck">Druck-Modus (A4)</button>
-            <button type="button" class="nav-btn gold" id="btn-print">Drucken / PDF</button>
-        </div>
-    </nav>
+```
 
-    <div class="content-wrapper" id="content">
-        <!-- Seite 1: Atombau & Periodensystem -->
-        <div class="page">
-            <div class="card" id="thema-1">
-                <h1 id="sec-titel">Atombau, Bindungs- und Wechselwirkungsmodelle<br><small style="font-size: 0.6em; font-weight: normal;">Zusammenfassung</small></h1>
-                <p>Die makroskopischen Eigenschaften von Stoffen lassen sich nur durch den mikroskopischen Bau (Atome, Bindungen, zwischenmolekulare Kräfte) erklären.</p>
-
-                <h2 id="sec-1">1. Atombau & Periodensystem</h2>
-                
-                <h3 id="sec-1-1">Kern-Hülle-Modell</h3>
-                <ul>
-                    <li><span class="highlight">Atomkern:</span> Winzig, massereich, positiv geladen. Enthält Protonen (p<sup>+</sup>) und Neutronen (n).</li>
-                    <li><span class="highlight">Atomhülle:</span> Riesig, fast masselos, negativ geladen. Enthält Elektronen (e<sup>-</sup>).</li>
-                    <li><span class="highlight">Isotope:</span> Atome desselben Elements (gleiche Protonenanzahl/Ordnungszahl), aber mit unterschiedlicher Neutronenanzahl (unterschiedliche Massenzahl).</li>
-                </ul>
-
-                <h3 id="sec-1-2">Schalen- / Energiestufenmodell</h3>
-                <p>Elektronen bewegen sich auf bestimmten Energieniveaus.</p>
-                <ul>
-                    <li><span class="highlight">Besetzungsregel</span> (vereinfacht): 1. Schale: max. 2 e<sup>-</sup>, 2. Schale: max. 8 e<sup>-</sup>, 3. Schale: max. 8 e<sup>-</sup>.</li>
-                    <li><span class="highlight">Valenzelektronen:</span> Elektronen der äußersten Schale (bestimmen das chemische Verhalten!). Ablesbar an der Hauptgruppennummer im PSE.</li>
-                    <li><span class="highlight">Ionisierungsenergie:</span> Die Energie, die aufgewendet werden muss, um ein Elektron vollständig aus der Hülle eines Atoms zu entfernen. (Je näher am Kern, desto höher die Energie).</li>
-                </ul>
-            </div>
-            <div class="page-footer">
-                <span>Atombau & PSE</span>
-                <span>Olga Völzke</span>
-                <span>Seite 1</span>
-            </div>
-        </div>
-
-        <!-- Seite 2: Intramolekulare Bindungen -->
-        <div class="page">
-            <div class="card" id="thema-2">
-                <h2 id="sec-2">2. Intramolekulare Bindungen (Starke Bindungen)</h2>
-                <p>Atome reagieren, um einen energetisch stabilen Zustand zu erreichen: die <span class="highlight">Edelgaskonfiguration (Oktettregel)</span> mit einer voll besetzten Außenschale.</p>
-                
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Bindungsart</th>
-                                <th>Beteiligte Atome</th>
-                                <th>Prinzip & Modell</th>
-                                <th>Makroskopische Eigenschaften</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><span class="highlight">Ionenbindung (Salze)</span></td>
-                                <td>Metall + Nichtmetall</td>
-                                <td>Elektronenübergang: Metall gibt e<sup>-</sup> ab <span class="reaction-arrow"><span class="arrow-text"></span><span class="arrow-symbol">&rarr;</span></span> Kation (+). Nichtmetall nimmt e<sup>-</sup> auf <span class="reaction-arrow"><span class="arrow-text"></span><span class="arrow-symbol">&rarr;</span></span> Anion (-). Elektrostatische Anziehung bildet ein regelmäßiges Ionengitter.</td>
-                                <td>Spröde (Gitter verschiebt sich <span class="reaction-arrow"><span class="arrow-text"></span><span class="arrow-symbol">&rarr;</span></span> Abstoßung). Hoher Schmelzpunkt (hohe Gitterenergie). Leiten Strom nur als Schmelze oder Lösung (frei bewegliche Ionen).</td>
-                            </tr>
-                            <tr>
-                                <td><span class="highlight">Metallbindung</span></td>
-                                <td>Metall + Metall</td>
-                                <td>Elektronengasmodell: Positiv geladene Atomrümpfe ordnen sich im Gitter an, umgeben von frei beweglichen Valenzelektronen (Elektronengas).</td>
-                                <td>Duktil (verformbar), da Gitterebenen gleiten können, ohne zu brechen. Sehr gute elektrische & thermische Leitfähigkeit.</td>
-                            </tr>
-                            <tr>
-                                <td><span class="highlight">Elektronenpaarbindung (Kovalente B.)</span></td>
-                                <td>Nichtmetall + Nichtmetall</td>
-                                <td>Atome teilen sich Valenzelektronen in Form bindender Elektronenpaare (Lewis-Schreibweise), um das Oktett zu erreichen.</td>
-                                <td>Bilden Moleküle. Eigenschaften hängen extrem von den schwächeren zwischenmolekularen Kräften ab.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <h3 id="sec-2-1">Mehratomige Ionen (Muss man auswendig wissen!)</h3>
-                <div class="flashcards-container">
-                    <div class="flashcard">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Carbonat-Ion</span></div>
-                            <div class="flashcard-back"><span style="display:block;">CO<sub>3</sub><sup>2-</sup></span></div>
-                        </div>
-                    </div>
-                    <div class="flashcard">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Sulfat-Ion</span></div>
-                            <div class="flashcard-back"><span style="display:block;">SO<sub>4</sub><sup>2-</sup></span></div>
-                        </div>
-                    </div>
-                    <div class="flashcard">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Phosphat-Ion</span></div>
-                            <div class="flashcard-back"><span style="display:block;">PO<sub>4</sub><sup>3-</sup></span></div>
-                        </div>
-                    </div>
-                    <div class="flashcard">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Nitrat-Ion</span></div>
-                            <div class="flashcard-back"><span style="display:block;">NO<sub>3</sub><sup>-</sup></span></div>
-                        </div>
-                    </div>
-                    <div class="flashcard">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Ammonium-Ion</span></div>
-                            <div class="flashcard-back"><span style="display:block;">NH<sub>4</sub><sup>+</sup></span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="page-footer">
-                <span>Bindungen</span>
-                <span>Olga Völzke</span>
-                <span>Seite 2</span>
-            </div>
-        </div>
-
-        <!-- Seite 3: Molekülgeometrie & ZMW -->
-        <div class="page">
-            <div class="card" id="thema-3">
-                <h2 id="sec-3">3. Molekülgeometrie & Polarität</h2>
-                <p>Das <span class="highlight">EPA-Modell</span> (Elektronenpaar-Abstoßungs-Modell): Elektronenpaare (bindend und nichtbindend) stoßen sich ab und nehmen den maximal möglichen Abstand zueinander ein. Nichtbindende Paare beanspruchen mehr Raum!</p>
-                <ul>
-                    <li><span class="highlight">Linear:</span> z.B. CO<sub>2</sub> (180&deg;)</li>
-                    <li><span class="highlight">Gewinkelt:</span> z.B. H<sub>2</sub>O (&approx; 104,5&deg;)</li>
-                    <li><span class="highlight">Trigonal-planar:</span> z.B. Ethen (120&deg;)</li>
-                    <li><span class="highlight">Tetraedrisch:</span> z.B. CH<sub>4</sub> (&approx; 109,5&deg;)</li>
-                    <li><span class="highlight">Trigonal-pyramidal:</span> z.B. NH<sub>3</sub> (&approx; 107&deg;)</li>
-                </ul>
-
-                <p><span class="highlight">Elektronegativität (EN):</span> Maß für die Fähigkeit eines Atoms, Bindungselektronen anzuziehen.</p>
-                <p><span class="highlight">Polare Bindung:</span> Bei einer Differenz (&Delta;EN) zwischen ca. 0,4 und 1,7 zieht das elektronegativere Atom die Elektronen stärker an <span class="reaction-arrow"><span class="arrow-text"></span><span class="arrow-symbol">&rarr;</span></span> Entstehung von Partialladungen (&delta;+ und &delta;-).</p>
-                <p><span class="highlight">Der Dipol:</span> Ein Molekül ist ein permanenter Dipol, wenn es polare Bindungen besitzt UND die Schwerpunkte der positiven und negativen Partialladungen räumlich nicht zusammenfallen (Symmetrie checken!).</p>
-            </div>
-            
-            <div class="card" id="thema-4">
-                <h2 id="sec-4">4. Zwischenmolekulare Wechselwirkungen (ZMW)</h2>
-                <p>Wirken zwischen Molekülen (viel schwächer als intramolekulare Bindungen). Bestimmen Siedepunkt und Löslichkeit.</p>
-
-                <h3 id="sec-4-1">London-Kräfte (Van-der-Waals-Kräfte)</h3>
-                <ul>
-                    <li><span class="highlight">Ursache:</span> Spontane, asymmetrische Elektronenverteilung erzeugt kurzzeitige (temporäre) und induzierte Dipole.</li>
-                    <li><span class="highlight">Vorkommen:</span> Zwischen allen Teilchen (besonders wichtig bei unpolaren Stoffen wie Alkanen).</li>
-                    <li><span class="highlight">Stärke:</span> Schwächste ZMW, nimmt aber mit der Moleküloberfläche / Kettenlänge massiv zu!</li>
-                </ul>
-
-                <h3 id="sec-4-2">Dipol-Dipol-Wechselwirkungen</h3>
-                <ul>
-                    <li><span class="highlight">Ursache:</span> Elektrostatische Anziehung zwischen permanenten Dipolen.</li>
-                    <li><span class="highlight">Vorkommen:</span> Zwischen polaren Molekülen (z.B. HCl, Propanon).</li>
-                </ul>
-
-                <h3 id="sec-4-3">Wasserstoffbrückenbindungen (H-Brücken)</h3>
-                <ul>
-                    <li><span class="highlight">Ursache:</span> Extrem starke Form der Dipol-Dipol-WW.</li>
-                    <li><span class="highlight">Bedingung:</span> Ein H-Atom muss direkt kovalent an ein stark elektronegatives Atom (N, O oder F) gebunden sein und wechselwirkt mit einem freien Elektronenpaar eines N, O oder F eines Nachbarmoleküls.</li>
-                    <li><span class="highlight">Folge:</span> Höchste Siedepunkte. Erklärt die Anomalie des Wassers (Dichtemaximum bei 4&deg;C, da Eis durch H-Brücken eine weiträumige Gitterstruktur einnimmt).</li>
-                </ul>
-            </div>
-            <div class="page-footer">
-                <span>Geometrie & ZMW</span>
-                <span>Olga Völzke</span>
-                <span>Seite 3</span>
-            </div>
-        </div>
-
-        <!-- Seite 4: Hydratation -->
-        <div class="page">
-            <div class="card" id="thema-5">
-                <h2 id="sec-5">5. Hydratation (Der Lösungsvorgang von Salzen)</h2>
-                <p>Wenn sich ein Salz in Wasser löst, wird das Ionengitter zerstört. Die frei werdenden Ionen werden von polaren Wassermolekülen umhüllt (Hydrathülle).</p>
-                <ul>
-                    <li>Die negativen Sauerstoff-Pole (&delta;-) des Wassers lagern sich an die Kationen (+) an.</li>
-                    <li>Die positiven Wasserstoff-Pole (&delta;+) des Wassers lagern sich an die Anionen (-) an.</li>
-                </ul>
-            </div>
-            <div class="page-footer">
-                <span>Hydratation</span>
-                <span>Olga Völzke</span>
-                <span>Seite 4</span>
-            </div>
-        </div>
-    </div>
-
+### JAVASCRIPT (ZWINGEND EINZUHALTEN)
+Füge dieses Script exakt so vor dem `</body>` Tag ein. Es steuert die Layout-Modi, Dropdowns und Karteikarten.
+```html
     <script>
         const body = document.body;
         const btnPlakat = document.getElementById('btn-plakat');
@@ -410,5 +229,77 @@
             });
         });
     </script>
-</body>
-</html>
+```
+
+### STRUKTUR & AUFBAU (ZWINGEND EINZUHALTEN)
+Dein generiertes HTML MUSS folgende exakte Struktur im `<body>` haben.
+
+1. **Navigation (Fest):**
+```html
+    <nav>
+        <div class="nav-group">
+            <a href="../index.html" class="nav-btn">← Journal</a>
+            <div class="dropdown">
+                <button type="button" class="nav-btn" id="btn-inhalt">Inhalt ▼</button>
+                <div class="dropdown-content" id="toc-dropdown"></div>
+            </div>
+            <button type="button" class="nav-btn" id="btn-fullscreen">Vollbild</button>
+            <button type="button" class="nav-btn active" id="btn-plakat">Plakat-Modus</button>
+            <button type="button" class="nav-btn" id="btn-druck">Druck-Modus (A4)</button>
+            <button type="button" class="nav-btn gold" id="btn-print">Drucken / PDF</button>
+        </div>
+    </nav>
+```
+
+2. **Inhalts-Wrapper & A4-Seiten:**
+Du musst den gesamten Inhalt in `<div class="content-wrapper" id="content">` einbetten. 
+Innerhalb dieses Wrappers erstellst du einzelne A4-Seiten mit `<div class="page">`.
+In jede `.page` kommt exakt EINE `<div class="card">` für den eigentlichen Inhalt und ein `<div class="page-footer">`.
+
+**WICHTIGSTE PLATZ-REGEL FÜR A4-SEITEN:**
+Da das Layout nun extrem platzsparend (kompakt) optimiert ist, passen viele Informationen (große Tabellen, viel Text, Karteikarten) auf eine DIN-A4 Seite. Dennoch darfst du einen `.page`-Container niemals überladen! Wenn du vermutest, dass eine Seite an ihre Kapazitätsgrenze gerät, schließe den `</div>`-Tag der aktuellen Seite und öffne eine neue `<div class="page">`!
+
+Beispiel-Struktur einer Seite:
+```html
+        <div class="page">
+            <div class="card" id="thema-1">
+                <h1 id="sec-titel">Hauptthema<br><small style="font-size: 0.6em; font-weight: normal;">(Untertitel)</small></h1>
+                <h2 id="sec-1">1. Unterthema</h2>
+                <p>Text <span class="highlight">Wichtiges</span> Text.</p>
+                <!-- Weiterer Inhalt wie Tabellen oder Listen... -->
+            </div>
+            <div class="page-footer">
+                <span>[Kurzbezeichnung des Themas]</span>
+                <span>Olga V.</span>
+                <span>Seite [X]</span>
+            </div>
+        </div>
+```
+
+3. **Formatierung von Elementen:**
+- **IDs für Navigation:** Jedes `<h1>`, `<h2>` und `<h3>` MUSS eine eindeutige `id` (z.B. `id="sec-1"`) bekommen. Diese dienen dem Inhaltsverzeichnis!
+- **Tabellen:** Müssen immer von `<div class="table-wrapper">` umschlossen sein!
+- **Wichtige Vokabeln / Kernaussagen:** Hebe wichtige Wörter im Text immer mit `<span class="highlight">Wort</span>` hervor.
+- **Karteikarten (Flashcards):** Nutze Karteikarten für kurze Vokabeln, Definitionen oder Quiz-Fragen:
+```html
+<div class="flashcards-container">
+    <div class="flashcard">
+        <div class="flashcard-inner">
+            <div class="flashcard-front"><span style="display:block;">Vorderseite (Frage)</span></div>
+            <div class="flashcard-back"><p style="display:block;">Rückseite (Antwort)</p></div>
+        </div>
+    </div>
+</div>
+```
+- **Chemie / Mathe spezifisch:** Nutze `<sub>2</sub>` und `<sup>+</sup>` zwingend für Formeln (z.B. H<sub>2</sub>O). Vermeide Flexbox-Bugs in Flashcards, indem du `display:block` auf das innere Element (z.B. `<span>`) anwendest.
+- Reaktionspfeile mit Beschriftung:
+```html
+<span class="reaction-arrow"><span class="arrow-text">Oxidation</span><span class="arrow-symbol">&rarr;</span></span> 
+```
+
+### AUSGABE:
+Gib ausschließlich den fertigen HTML-Code (beginnend mit `<!DOCTYPE html>`) aus. Lass Erklärungen oder Markdown-Blöcke vor oder nach dem Code weg.
+
+HIER SIND DIE NOTIZEN FÜR DEN LERNZETTEL:
+
+[NOTIZEN HIER EINFÜGEN]

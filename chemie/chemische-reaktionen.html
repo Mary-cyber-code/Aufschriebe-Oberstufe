@@ -1,17 +1,9 @@
-# Dein Master-Prompt für KI-generierte Lernzettel (V2 - Kompaktes Druck-Layout)
-
-**Kopiere den gesamten Text ab der Linie und füge ihn zusammen mit deinen unformatierten Schulnotizen in einen KI-Chat (z. B. ChatGPT, Claude oder mich) ein. Die KI wird dir dann sofort eine perfekte, fertige HTML-Datei zurückgeben.**
-
----
-
-Du bist ein professioneller Frontend-Entwickler und Designer. Deine Aufgabe ist es, die unten stehenden unformatierten Schulnotizen, Zusammenfassungen oder Konzepte des Nutzers in eine einzige, wunderschöne, lokal speicherbare HTML-Datei (inklusive inline CSS & JS) umzuwandeln.
-
-Diese Datei dient dem Nutzer als interaktiver, digitaler Lernzettel. Sie muss absolut fehlerfrei, sofort im Browser benutzbar sein und extrem elegant aussehen ("Elegant Botanical / Premium Print" Design).
-
-### DESIGN & ÄSTHETIK (ZWINGEND EINZUHALTEN)
-Verwende exakt dieses CSS im `<head>` deiner HTML-Antwort. Du darfst das Design nicht grundlegend verändern. Es enthält bereits das hoch-optimierte "Kompakt-Druck-Layout", um Papier zu sparen.
-
-```html
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemische Reaktionen</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600&display=swap');
 
@@ -169,11 +161,222 @@ Verwende exakt dieses CSS im `<head>` deiner HTML-Antwort. Du darfst das Design 
             .flashcard-back { position: static; height: auto; border: none; color: #000; background: transparent; transform: none; padding: 6px 10px !important;}
         }
     </style>
-```
+</head>
+<body>
+    <nav>
+        <div class="nav-group">
+            <a href="../index.html" class="nav-btn">← Journal</a>
+            <div class="dropdown">
+                <button type="button" class="nav-btn" id="btn-inhalt">Inhalt ▼</button>
+                <div class="dropdown-content" id="toc-dropdown"></div>
+            </div>
+            <button type="button" class="nav-btn" id="btn-fullscreen">Vollbild</button>
+            <button type="button" class="nav-btn active" id="btn-plakat">Plakat-Modus</button>
+            <button type="button" class="nav-btn" id="btn-druck">Druck-Modus (A4)</button>
+            <button type="button" class="nav-btn gold" id="btn-print">Drucken / PDF</button>
+        </div>
+    </nav>
 
-### JAVASCRIPT (ZWINGEND EINZUHALTEN)
-Füge dieses Script exakt so vor dem `</body>` Tag ein. Es steuert die Layout-Modi, Dropdowns und Karteikarten.
-```html
+    <div class="content-wrapper" id="content">
+
+        <!-- SEITE 1: Einleitung & Energetik -->
+        <div class="page">
+            <div class="card" id="thema-0">
+                <h1 id="sec-titel">Chemische Reaktionen<br><small style="font-size: 0.6em; font-weight: normal;">(Qualitativ, Quantitativ, Energetisch)</small></h1>
+                <p>In der Kursstufe ist die Reaktionsgleichung nicht nur eine phänomenologische Zustandsbeschreibung, sondern die Basis für energetische Berechnungen und die Stöchiometrie (Physikalische Chemie).</p>
+            </div>
+            
+            <div class="card" id="thema-1">
+                <h2 id="sec-1">1. Energetik & Reaktionsverlauf</h2>
+                <p>Jede chemische Reaktion ist mit einem Energieumsatz verbunden (z. B. Wärme, Licht), da das Spalten von Bindungen Energie kostet und das Knüpfen neuer Bindungen Energie freisetzt.</p>
+                
+                <div class="flashcards-container">
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span style="display:block;">Exotherme Reaktion</span></div>
+                            <div class="flashcard-back">
+                                <p style="display:block;">Energie wird an die Umgebung abgegeben.<br><small>Reaktionsprodukte sind energieärmer als die Edukte.</small></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span style="display:block;">Endotherme Reaktion</span></div>
+                            <div class="flashcard-back">
+                                <p style="display:block;">Energie muss dauerhaft zugeführt werden.<br><small>Reaktionsprodukte sind energiereicher als die Edukte.</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <ul>
+                    <li><span class="highlight">Aktivierungsenergie (E<sub>A</sub>):</span> Die minimale Energie ("Zündenergie"), die benötigt wird, um eine Reaktion überhaupt in Gang zu bringen.</li>
+                    <li><span class="highlight">Katalysator:</span> Ein Stoff, der die Reaktion beschleunigt, indem er die Aktivierungsenergie herabsetzt. Er bietet einen alternativen Reaktionsweg an und liegt nach der Reaktion unverändert vor (wird nicht verbraucht!).</li>
+                </ul>
+            </div>
+            <div class="page-footer">
+                <span>Energetik</span>
+                <span>Olga V.</span>
+                <span>Seite 1</span>
+            </div>
+        </div>
+
+        <!-- SEITE 2: Qualitative Aspekte & Redox -->
+        <div class="page">
+            <div class="card" id="thema-2">
+                <h2 id="sec-2">2. Qualitative Aspekte & Donator-Akzeptor-Prinzip</h2>
+                <p>Viele Reaktionen basieren auf dem Übertragen von Teilchen zwischen einem "Geber" (Donator) und einem "Nehmer" (Akzeptor).</p>
+                
+                <h3 id="sec-2a">A) Redoxreaktionen (Elektronenübergang)</h3>
+                <p>Eine Redoxreaktion ist immer ein aneinandergekoppelter Elektronenübergang.</p>
+                
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Begriff</th>
+                                <th>Klassisch (Sauerstoff)</th>
+                                <th>Erweitert (Elektronen)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="highlight">Oxidation</span></td>
+                                <td>Aufnahme von Sauerstoff</td>
+                                <td>Elektronenabgabe (Stoff wirkt als Reduktionsmittel)</td>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight">Reduktion</span></td>
+                                <td>Abgabe von Sauerstoff</td>
+                                <td>Elektronenaufnahme (Stoff wirkt als Oxidationsmittel)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 id="sec-2a-oz">Die Oxidationszahlen (OZ)</h3>
+                <p>Eine fiktive Ladung (gekennzeichnet durch römische Ziffern), die hilft, Elektronenübergänge zu erkennen.</p>
+                <ul>
+                    <li><span class="highlight">Regel 1:</span> Reine Elemente haben immer die OZ <strong>&plusmn;0</strong> (z. B. Fe, O<sub>2</sub>).</li>
+                    <li><span class="highlight">Regel 2:</span> Bei einatomigen Ionen entspricht die OZ der Ionenladung (z. B. Na<sup>+</sup> <span class="arrow-simple">&rarr;</span> +I).</li>
+                    <li><span class="highlight">Regel 3:</span> Sauerstoff (O) in Verbindungen hat fast immer <strong>-II</strong>.</li>
+                    <li><span class="highlight">Regel 4:</span> Wasserstoff (H) in Verbindungen hat meist <strong>+I</strong> (wenn an Nichtmetalle gebunden).</li>
+                    <li><span class="highlight">Regel 5:</span> Die Summe aller OZ in einem neutralen Molekül ist exakt <strong>0</strong>. In einem mehratomigen Ion entspricht sie der Ionenladung.</li>
+                </ul>
+                <p style="text-align: center; font-weight: 500; margin-top: 1rem;">
+                    <span class="highlight">Oxidation</span> = Erhöhung der OZ &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; 
+                    <span class="highlight">Reduktion</span> = Verringerung der OZ
+                </p>
+            </div>
+            <div class="page-footer">
+                <span>Qualitative Aspekte & Redox</span>
+                <span>Olga V.</span>
+                <span>Seite 2</span>
+            </div>
+        </div>
+
+        <!-- SEITE 3: Säure-Base & Organik -->
+        <div class="page">
+            <div class="card" id="thema-2b">
+                <h3 id="sec-2b">B) Säure-Base-Reaktionen (Protonenübergang)</h3>
+                <ul>
+                    <li><span class="highlight">Säure:</span> Protonendonator (gibt H<sup>+</sup> ab).</li>
+                    <li><span class="highlight">Base:</span> Protonenakzeptor (nimmt H<sup>+</sup> auf).</li>
+                    <li><span class="highlight">Neutralisation:</span> Säure + Base <span class="arrow-simple">&rarr;</span> Salz + Wasser (z. B. HCl + NaOH <span class="arrow-simple">&rarr;</span> NaCl + H<sub>2</sub>O).</li>
+                </ul>
+
+                <h3 id="sec-2c">C) Organische Reaktionstypen</h3>
+                <ul>
+                    <li><span class="highlight">Substitution:</span> Austausch von Atomen oder Atomgruppen (typisch für reaktionsträge Alkane).</li>
+                    <li><span class="highlight">Addition:</span> Anlagerung von Atomen an eine C=C-Doppelbindung, welche dabei aufbricht (typisch für Alkene).</li>
+                    <li><span class="highlight">Kondensation:</span> Verknüpfung zweier Moleküle unter Abspaltung eines kleinen Moleküls (z. B. H<sub>2</sub>O). Wichtigstes Beispiel: Veresterung (Alkansäure + Alkanol <span class="arrow-simple">&rarr;</span> Ester + Wasser).</li>
+                </ul>
+            </div>
+            <div class="page-footer">
+                <span>Säure-Base & Organik</span>
+                <span>Olga V.</span>
+                <span>Seite 3</span>
+            </div>
+        </div>
+
+        <!-- SEITE 4: Quantitative Aspekte -->
+        <div class="page">
+            <div class="card" id="thema-3">
+                <h2 id="sec-3">3. Quantitative Aspekte: Stöchiometrie (Das chemische Rechnen)</h2>
+                <p>Das Fundament für fast alle Berechnungen im Leistungsfach!</p>
+
+                <h3 id="sec-3a">Reaktionsgleichungen ausgleichen:</h3>
+                <ul>
+                    <li><span class="highlight">Index</span> (kleine Zahl unten): Gibt an, wie viele Atome in einem Molekül gebunden sind (z. B. die "2" in H<sub>2</sub>O). <strong style="color: darkred;">Die Verhältnisformel darf nicht verändert werden!</strong></li>
+                    <li><span class="highlight">Koeffizient</span> (große Zahl vorne): Gibt die Anzahl der Moleküle/Teilchen an (z. B. die "2" in 2 H<sub>2</sub>O). Wird zum Ausgleichen der Atomanzahl angepasst!</li>
+                </ul>
+
+                <h3 id="sec-3b">Zentrale Größen und Formeln (Zwingend auswendig lernen!):</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Größe</th>
+                                <th>Formelzeichen & Einheit</th>
+                                <th>Wichtige Formel</th>
+                                <th>Erklärung</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="highlight">Stoffmenge</span></td>
+                                <td>n in [mol]</td>
+                                <td><strong>n = m / M</strong></td>
+                                <td>Die "Zähleinheit". 1 mol &approx; 6,022 &cdot; 10<sup>23</sup> Teilchen.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight">Molare Masse</span></td>
+                                <td>M in [g/mol]</td>
+                                <td><strong>M = m / n</strong></td>
+                                <td>Masse von exakt 1 Mol. Wird aus dem PSE berechnet.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight">Masse</span></td>
+                                <td>m in [g]</td>
+                                <td><strong>m = n &cdot; M</strong></td>
+                                <td>Das tatsächliche Gewicht der vorliegenden Stoffportion.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight">Molares Volumen</span></td>
+                                <td>V<sub>m</sub> in [L/mol]</td>
+                                <td><strong>n = V / V<sub>m</sub></strong></td>
+                                <td>Volumen von 1 Mol Gas. Bei 25&deg;C gilt für alle Gase: V<sub>m</sub> = 24,5 L/mol.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight">Konzentration</span></td>
+                                <td>c in [mol/L]</td>
+                                <td><strong>c = n / V<sub>Lsg</sub></strong></td>
+                                <td>Gibt an, wie viel Mol in einem Liter Lösung vorhanden sind (Molarität).</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card" id="thema-4">
+                <h3 id="sec-3c">Der 3-Schritte-Rechenweg (z. B. Massenberechnung)</h3>
+                <p>Wenn die Masse eines Produkts berechnet werden soll und die Masse des Edukts gegeben ist:</p>
+                <ol>
+                    <li><span class="highlight">Stoffmenge des Edukts berechnen:</span> Aus gegebener Masse m und molarer Masse M (aus dem PSE) <span class="reaction-arrow"><span class="arrow-text"></span><span class="arrow-symbol">&rarr;</span></span> n(Edukt) = m / M</li>
+                    <li><span class="highlight">Stoffmengenverhältnis beachten:</span> Über die Koeffizienten in der Reaktionsgleichung das Verhältnis bilden.<br><small><em>Beispiel: Bei 2 H<sub>2</sub> + O<sub>2</sub> &rarr; 2 H<sub>2</sub>O ist das Verhältnis von H<sub>2</sub> zu H<sub>2</sub>O genau 2:2, also 1:1 &Rightarrow; n(H<sub>2</sub>O) = n(H<sub>2</sub>)</em></small></li>
+                    <li><span class="highlight">Gesuchte Größe des Produkts berechnen:</span> Mit der ermittelten Stoffmenge und der passenden Formel die Endgröße berechnen, z. B. m(Produkt) = n &cdot; M.</li>
+                </ol>
+            </div>
+            
+            <div class="page-footer">
+                <span>Quantitative Aspekte</span>
+                <span>Olga V.</span>
+                <span>Seite 4</span>
+            </div>
+        </div>
+
+    </div>
+
     <script>
         const body = document.body;
         const btnPlakat = document.getElementById('btn-plakat');
@@ -229,77 +432,5 @@ Füge dieses Script exakt so vor dem `</body>` Tag ein. Es steuert die Layout-Mo
             });
         });
     </script>
-```
-
-### STRUKTUR & AUFBAU (ZWINGEND EINZUHALTEN)
-Dein generiertes HTML MUSS folgende exakte Struktur im `<body>` haben.
-
-1. **Navigation (Fest):**
-```html
-    <nav>
-        <div class="nav-group">
-            <a href="../index.html" class="nav-btn">← Journal</a>
-            <div class="dropdown">
-                <button type="button" class="nav-btn" id="btn-inhalt">Inhalt ▼</button>
-                <div class="dropdown-content" id="toc-dropdown"></div>
-            </div>
-            <button type="button" class="nav-btn" id="btn-fullscreen">Vollbild</button>
-            <button type="button" class="nav-btn active" id="btn-plakat">Plakat-Modus</button>
-            <button type="button" class="nav-btn" id="btn-druck">Druck-Modus (A4)</button>
-            <button type="button" class="nav-btn gold" id="btn-print">Drucken / PDF</button>
-        </div>
-    </nav>
-```
-
-2. **Inhalts-Wrapper & A4-Seiten:**
-Du musst den gesamten Inhalt in `<div class="content-wrapper" id="content">` einbetten. 
-Innerhalb dieses Wrappers erstellst du einzelne A4-Seiten mit `<div class="page">`.
-In jede `.page` kommt exakt EINE `<div class="card">` für den eigentlichen Inhalt und ein `<div class="page-footer">`.
-
-**WICHTIGSTE PLATZ-REGEL FÜR A4-SEITEN:**
-Da das Layout nun extrem platzsparend (kompakt) optimiert ist, passen viele Informationen (große Tabellen, viel Text, Karteikarten) auf eine DIN-A4 Seite. Dennoch darfst du einen `.page`-Container niemals überladen! Wenn du vermutest, dass eine Seite an ihre Kapazitätsgrenze gerät, schließe den `</div>`-Tag der aktuellen Seite und öffne eine neue `<div class="page">`!
-
-Beispiel-Struktur einer Seite:
-```html
-        <div class="page">
-            <div class="card" id="thema-1">
-                <h1 id="sec-titel">Hauptthema<br><small style="font-size: 0.6em; font-weight: normal;">(Untertitel)</small></h1>
-                <h2 id="sec-1">1. Unterthema</h2>
-                <p>Text <span class="highlight">Wichtiges</span> Text.</p>
-                <!-- Weiterer Inhalt wie Tabellen oder Listen... -->
-            </div>
-            <div class="page-footer">
-                <span>[Kurzbezeichnung des Themas]</span>
-                <span>Olga Völzke</span>
-                <span>Seite [X]</span>
-            </div>
-        </div>
-```
-
-3. **Formatierung von Elementen:**
-- **IDs für Navigation:** Jedes `<h1>`, `<h2>` und `<h3>` MUSS eine eindeutige `id` (z.B. `id="sec-1"`) bekommen. Diese dienen dem Inhaltsverzeichnis!
-- **Tabellen:** Müssen immer von `<div class="table-wrapper">` umschlossen sein!
-- **Wichtige Vokabeln / Kernaussagen:** Hebe wichtige Wörter im Text immer mit `<span class="highlight">Wort</span>` hervor.
-- **Karteikarten (Flashcards):** Nutze Karteikarten für kurze Vokabeln, Definitionen oder Quiz-Fragen:
-```html
-<div class="flashcards-container">
-    <div class="flashcard">
-        <div class="flashcard-inner">
-            <div class="flashcard-front"><span style="display:block;">Vorderseite (Frage)</span></div>
-            <div class="flashcard-back"><p style="display:block;">Rückseite (Antwort)</p></div>
-        </div>
-    </div>
-</div>
-```
-- **Chemie / Mathe spezifisch:** Nutze `<sub>2</sub>` und `<sup>+</sup>` zwingend für Formeln (z.B. H<sub>2</sub>O). Vermeide Flexbox-Bugs in Flashcards, indem du `display:block` auf das innere Element (z.B. `<span>`) anwendest.
-- Reaktionspfeile mit Beschriftung:
-```html
-<span class="reaction-arrow"><span class="arrow-text">Oxidation</span><span class="arrow-symbol">&rarr;</span></span> 
-```
-
-### AUSGABE:
-Gib ausschließlich den fertigen HTML-Code (beginnend mit `<!DOCTYPE html>`) aus. Lass Erklärungen oder Markdown-Blöcke vor oder nach dem Code weg.
-
-HIER SIND DIE NOTIZEN FÜR DEN LERNZETTEL:
-
-[NOTIZEN HIER EINFÜGEN]
+</body>
+</html>
