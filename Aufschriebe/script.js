@@ -1,0 +1,480 @@
+/* ============================================================
+   Bullet Journal Lern-Website – Hauptskript
+   Rendert Dashboard & Fach-Ansicht aus faecher-daten.js,
+   steuert View-Wechsel und Animationen.
+   Rein statisches Vanilla JS, kompatibel mit GitHub Pages.
+   ============================================================ */
+
+(function () {
+  'use strict';
+
+  /* ──────────────────────────────────────────────────────────
+     SVG-ICONS  (einfarbig, leicht handgezeichnet)
+     Jeder Key entspricht einem Fach-Schlüssel in subjectData.
+     ────────────────────────────────────────────────────────── */
+  const ICONS = {
+
+    /* Mathematik – Dreieck / Geometrie */
+    mathe:
+      '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M6 26L16 6l10 20H6z"/><path d="M11 19h10"/>' +
+      '</svg>',
+
+    /* Chemie – Erlenmeyerkolben */
+    chemie:
+      '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M12 5h8"/><path d="M13 5v7l-7 14h20l-7-14V5"/>' +
+      '</svg>',
+
+    /* Gemeinschaftskunde – Säulengebäude */
+    gk:
+      '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M6 26h20"/><path d="M9 26V14m7 12V14m7 12V14"/>' +
+        '<path d="M5 14h22"/><path d="M16 8L5 14h22z"/>' +
+      '</svg>',
+
+    /* Deutsch – Schreibfeder / Stift */
+    deutsch:
+      '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M22 5L9 25l-2 3 3-1L23 8z"/><path d="M19 8l4 3"/>' +
+      '</svg>',
+
+    /* Englisch – aufgeschlagenes Buch */
+    englisch:
+      '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M16 7c-2-2-6-3-11-2v19c5-1 9 0 11 2m0-19c2-2 6-3 11-2v19c-5-1-9 0-11 2V7z"/>' +
+      '</svg>',
+
+    /* Biologie – Blatt */
+    biologie:
+      '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M6 26Q6 6 26 6c0 12-8 20-20 20z"/>' +
+        '<path d="M6 26C12 20 20 12 26 6" opacity="0.4"/>' +
+      '</svg>',
+
+    /* Kunst – Pinsel */
+    kunst:
+      '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M24 4c-4 4-8 9-11 15"/>' +
+        '<path d="M13 19c-2 0-4 2-4 4s2 4 4 4 4-1 4-3-1-3-2-3"/>' +
+      '</svg>',
+
+    /* Sport – Blitz / Energie */
+    sport:
+      '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M19 4L9 16h7l-4 12 12-14h-7z"/>' +
+      '</svg>',
+
+    /* Religion – Sonne */
+    religion:
+      '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">' +
+        '<circle cx="16" cy="16" r="5"/>' +
+        '<path d="M16 5v4m0 14v4M5 16h4m14 0h4M8.5 8.5l3 3m9 9l3 3M23.5 8.5l-3 3m-9 9l-3 3"/>' +
+      '</svg>',
+
+    /* Geschichte – Sanduhr */
+    geschichte:
+      '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M10 4h12M10 28h12"/>' +
+        '<path d="M11 4c0 7 5 10 5 12s-5 5-5 12"/>' +
+        '<path d="M21 4c0 7-5 10-5 12s5 5 5 12"/>' +
+      '</svg>',
+
+    /* Geographie – Globus */
+    geographie:
+      '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">' +
+        '<circle cx="16" cy="16" r="11"/>' +
+        '<ellipse cx="16" cy="16" rx="5" ry="11"/>' +
+        '<path d="M5 16h22"/>' +
+      '</svg>',
+
+    /* Psychologie – Glühbirne */
+    psychologie:
+      '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M12 25h8M13 28h6"/>' +
+        '<path d="M12 25c-3-2-5-6-5-10a9 9 0 0118 0c0 4-2 8-5 10"/>' +
+      '</svg>'
+  };
+
+  /* Zurück-Pfeil */
+  var BACK_ARROW =
+    '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" ' +
+    'stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+    '<path d="M19 12H5"/><path d="M12 5l-7 7 7 7"/></svg>';
+
+
+  /* ──────────────────────────────────────────────────────────
+     DOM-Referenzen
+     ────────────────────────────────────────────────────────── */
+  var dashboardView = document.getElementById('dashboard-view');
+  var subjectView   = document.getElementById('subject-view');
+  var dashboardMain = document.getElementById('dashboard-main');
+
+
+  /* ──────────────────────────────────────────────────────────
+     Hilfsfunktionen
+     ────────────────────────────────────────────────────────── */
+
+  /** Deterministische kleine Rotation aus dem Fach-Key */
+  function getRotations(key) {
+    var hash = 0;
+    for (var i = 0; i < key.length; i++) hash += key.charCodeAt(i);
+    return {
+      card: ((hash * 7) % 30 - 15) / 10,    // -1.5° … +1.5°
+      tape: ((hash * 11) % 40 - 20) / 10     // -2.0° … +2.0°
+    };
+  }
+
+  /** CSS-Variable für den Akzentnamen */
+  function av(name) { return 'var(--' + name + ')'; }
+
+
+  /* ──────────────────────────────────────────────────────────
+     DASHBOARD RENDERN
+     ────────────────────────────────────────────────────────── */
+  function renderDashboard() {
+    dashboardMain.innerHTML = '';
+
+    SECTION_CONFIG.forEach(function (sec) {
+      /* Fächer dieser Sektion sammeln */
+      var entries = [];
+      Object.keys(subjectData).forEach(function (key) {
+        if (subjectData[key].section === sec.id) entries.push([key, subjectData[key]]);
+      });
+      if (entries.length === 0) return;
+
+      /* Sektion */
+      var sectionEl = document.createElement('section');
+      sectionEl.className = 'section reveal';
+      sectionEl.setAttribute('aria-labelledby', 'section-' + sec.id);
+
+      /* Header */
+      var headerEl = document.createElement('div');
+      headerEl.className = 'section-header';
+      headerEl.innerHTML =
+        '<h2 class="section-title" id="section-' + sec.id + '">' +
+          '<span class="section-dot section-dot--' + sec.id + '" aria-hidden="true"></span>' +
+          sec.title +
+        '</h2>' +
+        '<span class="section-line" aria-hidden="true"></span>';
+      sectionEl.appendChild(headerEl);
+
+      /* Grid */
+      var gridEl = document.createElement('div');
+      gridEl.className = 'subjects-grid';
+
+      entries.forEach(function (pair) {
+        var key  = pair[0];
+        var data = pair[1];
+        var rot  = getRotations(key);
+
+        var card = document.createElement('a');
+        card.href = '#' + key;
+        card.className = 'subject-card reveal';
+        card.id = 'card-' + key;
+        card.style.setProperty('--card-accent', av(data.accent));
+        card.style.setProperty('--card-rotate', rot.card + 'deg');
+        card.style.setProperty('--tape-rotate', rot.tape + 'deg');
+        card.setAttribute('aria-label', data.name + ' – ' + data.type);
+
+        card.innerHTML =
+          '<span class="card-icon" aria-hidden="true">' + (ICONS[key] || '') + '</span>' +
+          '<span class="card-title">' + data.name + '</span>' +
+          '<span class="card-badge">' + data.type + '</span>';
+
+        card.addEventListener('click', function (e) {
+          e.preventDefault();
+          navigateTo(key);
+        });
+
+        gridEl.appendChild(card);
+      });
+
+      sectionEl.appendChild(gridEl);
+      dashboardMain.appendChild(sectionEl);
+    });
+
+    initScrollReveal();
+  }
+
+
+  /* ──────────────────────────────────────────────────────────
+     FACH-ANSICHT RENDERN
+     ────────────────────────────────────────────────────────── */
+  function renderSubjectView(key) {
+    var data = subjectData[key];
+    if (!data) return;
+
+    var accent     = av(data.accent);
+    var hasContent = data.categories && data.categories.length > 0;
+    var catHTML    = '';
+
+    if (hasContent) {
+      catHTML = data.categories.map(function (cat) {
+        var topicsHTML = cat.topics.map(function (t) {
+          return (
+            '<li class="topic-item">' +
+              '<a href="' + t.link + '" class="topic-link" style="--topic-accent:' + accent + '">' +
+                t.title +
+              '</a>' +
+            '</li>'
+          );
+        }).join('');
+
+        return (
+          '<div class="category-block reveal">' +
+            '<h3 class="category-header" style="--category-accent:' + accent + '">' +
+              cat.name +
+            '</h3>' +
+            '<ul class="topic-list" style="--topic-accent:' + accent + '">' +
+              topicsHTML +
+            '</ul>' +
+          '</div>'
+        );
+      }).join('');
+    } else {
+      catHTML =
+        '<div class="empty-state reveal">' +
+          '<p class="empty-text">Hier ist noch Platz für neue Notizen …</p>' +
+          '<p class="empty-hint">Trage deine Themen in <code>faecher-daten.js</code> ein!</p>' +
+        '</div>';
+    }
+
+    subjectView.innerHTML =
+      '<nav class="subject-nav reveal">' +
+        '<button class="back-button" aria-label="Zurück zum Dashboard">' +
+          BACK_ARROW +
+          '<span>Zurück zum Journal</span>' +
+        '</button>' +
+      '</nav>' +
+
+      '<header class="subject-header reveal">' +
+        '<span class="subject-icon" style="color:' + accent + '" aria-hidden="true">' +
+          (ICONS[key] || '') +
+        '</span>' +
+        '<h1 class="subject-title">' + data.name + '</h1>' +
+        '<span class="subject-badge" style="--badge-accent:' + accent + '">' + data.type + '</span>' +
+      '</header>' +
+
+      '<div class="subject-content">' +
+        catHTML +
+      '</div>';
+
+    /* Zurück-Button Event */
+    var backBtn = subjectView.querySelector('.back-button');
+    if (backBtn) {
+      backBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        navigateTo(null);
+      });
+    }
+
+    initScrollReveal();
+  }
+
+
+  /* ──────────────────────────────────────────────────────────
+     VIEW-WECHSEL MIT ANIMATION
+     ────────────────────────────────────────────────────────── */
+  var isTransitioning = false;
+
+  function switchView(fromEl, toEl, onMiddle) {
+    if (isTransitioning) return;
+    isTransitioning = true;
+
+    /* Phase 1: Ausblenden */
+    fromEl.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+    fromEl.style.opacity    = '0';
+    fromEl.style.transform  = 'translateY(-18px)';
+
+    setTimeout(function () {
+      fromEl.style.display    = 'none';
+      fromEl.style.opacity    = '';
+      fromEl.style.transform  = '';
+      fromEl.style.transition = '';
+
+      /* Inhalt wechseln */
+      if (onMiddle) onMiddle();
+
+      /* Phase 2: Einblenden */
+      toEl.style.display   = 'block';
+      toEl.style.opacity   = '0';
+      toEl.style.transform = 'translateY(18px)';
+
+      window.scrollTo({ top: 0, behavior: 'instant' });
+
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          toEl.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+          toEl.style.opacity    = '1';
+          toEl.style.transform  = 'translateY(0)';
+
+          setTimeout(function () {
+            toEl.style.transition = '';
+            isTransitioning = false;
+          }, 420);
+        });
+      });
+    }, 320);
+  }
+
+
+  /* ──────────────────────────────────────────────────────────
+     NAVIGATION (Hash-basiert)
+     ────────────────────────────────────────────────────────── */
+  var currentSubject = null;
+
+  function navigateTo(key) {
+    if (isTransitioning) return;
+
+    if (key && subjectData[key]) {
+      if (currentSubject === key) return;
+      history.pushState({ subject: key }, '', '#' + key);
+      showSubject(key);
+    } else {
+      if (currentSubject === null) return;
+      history.pushState({ subject: null }, '', window.location.pathname + window.location.search);
+      showDashboard();
+    }
+  }
+
+  function showSubject(key) {
+    currentSubject = key;
+    document.title = subjectData[key].name + ' · Oberstufen-Aufschriebe';
+
+    if (dashboardView.style.display !== 'none') {
+      switchView(dashboardView, subjectView, function () { renderSubjectView(key); });
+    } else {
+      renderSubjectView(key);
+      subjectView.style.display = 'block';
+      subjectView.style.opacity = '1';
+      subjectView.style.transform = 'translateY(0)';
+    }
+  }
+
+  function showDashboard() {
+    currentSubject = null;
+    document.title = 'Oberstufen-Aufschriebe · Lernzettel für die Kursstufe';
+
+    if (subjectView.style.display === 'block') {
+      switchView(subjectView, dashboardView);
+    } else {
+      dashboardView.style.display = 'block';
+      dashboardView.style.opacity = '1';
+      dashboardView.style.transform = 'translateY(0)';
+    }
+  }
+
+  function handleRoute() {
+    var hash = window.location.hash.slice(1);
+    if (hash && subjectData[hash]) {
+      showSubject(hash);
+    } else {
+      showDashboard();
+    }
+  }
+
+
+  /* ──────────────────────────────────────────────────────────
+     SCROLL REVEAL  (IntersectionObserver)
+     ────────────────────────────────────────────────────────── */
+  function initScrollReveal() {
+    var elements = document.querySelectorAll('.reveal:not(.visible)');
+
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: '0px 0px -30px 0px' }
+      );
+      elements.forEach(function (el) { observer.observe(el); });
+    } else {
+      elements.forEach(function (el) { el.classList.add('visible'); });
+    }
+  }
+
+
+  /* ──────────────────────────────────────────────────────────
+     PARALLAX DOT-GRID
+     ────────────────────────────────────────────────────────── */
+  function initParallax() {
+    var ticking = false;
+    window.addEventListener('scroll', function () {
+      if (!ticking) {
+        window.requestAnimationFrame(function () {
+          document.body.style.backgroundPositionY = (12 + window.scrollY * 0.08) + 'px';
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  }
+
+
+  /* ──────────────────────────────────────────────────────────
+     FULLSCREEN TOGGLE
+     ────────────────────────────────────────────────────────── */
+  function initFullscreen() {
+    var btn = document.getElementById('fullscreen-toggle');
+    if (!btn) return;
+    
+    btn.addEventListener('click', function() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(function(err) {
+          console.warn('Vollbild konnte nicht aktiviert werden: ', err);
+        });
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    });
+    
+    document.addEventListener('fullscreenchange', function() {
+      if (document.fullscreenElement) {
+        // Zu "Minimieren"-Icon wechseln
+        btn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path></svg>';
+        btn.setAttribute('title', 'Vollbild beenden');
+        btn.setAttribute('aria-label', 'Vollbild beenden');
+      } else {
+        // Zu "Vollbild"-Icon wechseln
+        btn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>';
+        btn.setAttribute('title', 'Vollbild umschalten');
+        btn.setAttribute('aria-label', 'Vollbild umschalten');
+      }
+    });
+  }
+
+  /* ──────────────────────────────────────────────────────────
+     INITIALISIERUNG
+     ────────────────────────────────────────────────────────── */
+  function init() {
+    renderDashboard();
+    initParallax();
+    initFullscreen();
+
+    /* Direkt-Link via Hash (z. B. index.html#chemie) */
+    var hash = window.location.hash.slice(1);
+    if (hash && subjectData[hash]) {
+      dashboardView.style.display = 'none';
+      renderSubjectView(hash);
+      subjectView.style.display   = 'block';
+      subjectView.style.opacity   = '1';
+      subjectView.style.transform = 'translateY(0)';
+      currentSubject = hash;
+      document.title = subjectData[hash].name + ' · Oberstufen-Aufschriebe';
+    }
+
+    /* Browser vor-/zurück */
+    window.addEventListener('popstate', handleRoute);
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+
+})();
