@@ -614,6 +614,8 @@
     var generateBtn = document.getElementById('generate-anki-prompt');
     var successBox = document.getElementById('anki-success');
     var customText = document.getElementById('anki-custom');
+    var pasteArea = document.getElementById('anki-paste-area');
+    var downloadBtn = document.getElementById('download-anki-csv');
 
     if (!openBtn || !modal) return;
 
@@ -663,6 +665,7 @@
     openBtn.addEventListener('click', function() {
       modal.classList.add('show');
       successBox.style.display = 'none';
+      pasteArea.value = '';
       generateBtn.style.display = 'inline-flex';
       generateBtn.disabled = false;
       generateBtn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="M8 17.929H6c-1.105 0-2-.912-2-2.036V5.036C4 3.91 4.895 3 6 3h8c1.105 0 2 .911 2 2.036v1.866m-6 .17h8c1.105 0 2 .91 2 2.035v10.857C20 21.09 19.105 22 18 22h-8c-1.105 0-2-.911-2-2.036V9.107c0-1.124.895-2.036 2-2.036z"/></svg> Prompt generieren & kopieren';
@@ -742,6 +745,28 @@
           alert("Fehler beim Laden des Lernzettels: " + err.message);
           generateBtn.textContent = 'Fehler aufgetreten';
         });
+    });
+
+    // 5. CSV Datei generieren & herunterladen
+    downloadBtn.addEventListener('click', function() {
+      var content = pasteArea.value.trim();
+      if (!content) {
+        alert("Bitte füge zuerst den Text von Gemini ein!");
+        return;
+      }
+      
+      // UTF-8 BOM hinzufügen für korrekte Umlaute in Excel/Anki
+      var bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+      var blob = new Blob([bom, content], { type: 'text/csv;charset=utf-8;' });
+      var url = URL.createObjectURL(blob);
+      
+      var link = document.createElement('a');
+      link.href = url;
+      var safeName = topicSelect.options[topicSelect.selectedIndex].text.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+      link.download = safeName + '_karteikarten.csv';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     });
   }
 

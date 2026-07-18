@@ -231,10 +231,19 @@
         Prompt generieren & kopieren
       </button>
       
-      <div id="anki-success" class="quiz-success" style="display:none;">
-        <p>✅ Prompt erfolgreich kopiert!</p>
-        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 15px;">Füge den Text bei Google Gemini (oder ChatGPT) ein, kopiere die fertige Tabelle in einen Texteditor, speichere sie als "karten.csv" ab und importiere sie in Anki.</p>
-        <a href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Google Gemini öffnen</a>
+      <div id="anki-success" class="quiz-success" style="display:none; margin-top: 20px; text-align: left;">
+        <p style="color: var(--forest); font-weight: bold; margin-bottom: 10px;">✅ 1. Prompt kopiert!</p>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 15px;">Öffne Gemini und füge den Text ein. Kopiere danach einfach die Antwort von Gemini und füge sie hier unten ein:</p>
+        <a href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="margin-bottom: 20px;">Google Gemini öffnen</a>
+        
+        <hr style="border: 0; border-top: 1px solid rgba(0,0,0,0.1); margin: 20px 0;">
+        
+        <p style="color: var(--forest); font-weight: bold; margin-bottom: 10px;">📥 2. Zur Datei machen</p>
+        <textarea id="anki-paste-area" class="form-control" rows="4" placeholder="Füge hier die fertigen Karteikarten von Gemini ein..."></textarea>
+        <button id="download-anki-csv" class="btn btn-gold" style="margin-top: 10px; width: 100%;">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          Als .csv herunterladen
+        </button>
       </div>
     </div>
   </div>
