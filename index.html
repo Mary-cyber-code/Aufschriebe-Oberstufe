@@ -6,8 +6,8 @@
 
   <!-- SEO -->
   <title>Oberstufen-Aufschriebe · Lernzettel für die Kursstufe</title>
-  <meta name="description" content="Übersichtliche Lernzettel und Aufschriebe für die gymnasiale Oberstufe – Leistungskurse, Grundkurse und mehr. Erstellt von Olga Völzke.">
-  <meta name="author" content="Olga Völzke">
+  <meta name="description" content="Übersichtliche Lernzettel und Aufschriebe für die gymnasiale Oberstufe – Leistungskurse, Grundkurse und mehr. Erstellt von Olga V..">
+  <meta name="author" content="Olga V.">
 
   <!-- Favicon (SVG-Notizbuch) -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none' stroke='%233A5A3F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='6' y='3' width='20' height='26' rx='2'/><path d='M11 3v26'/><path d='M15 10h7M15 15h7M15 20h5'/></svg>">
@@ -79,6 +79,15 @@
       <main id="main">
         <!-- Dynamisch befüllt von script.js aus faecher-daten.js -->
         <div id="dashboard-main"></div>
+
+        <!-- Tool-Sektion -->
+        <section class="tools-section reveal" style="margin-top: 4rem; text-align: center;">
+          <h2 style="font-family: var(--font-heading); color: var(--forest); margin-bottom: 1.5rem; font-size: 2rem;">Lern-Tools</h2>
+          <button id="open-quiz-modal" class="btn btn-gold" style="max-width: 300px; margin: 0 auto; padding: 14px 28px; font-size: 1.15rem; gap: 10px;">
+            <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            KI-Quiz Generator
+          </button>
+        </section>
       </main>
 
     </div>
@@ -91,10 +100,52 @@
     <!-- ======================== FOOTER ======================== -->
     <footer class="site-footer">
       <span class="footer-line" aria-hidden="true"></span>
-      <p>Website erstellt von Olga Völzke</p>
+      <p>Website erstellt von Olga V.</p>
     </footer>
 
   </div><!-- /.page-container -->
+
+  <!-- ======================== QUIZ MODAL ======================== -->
+  <div id="quiz-modal" class="modal" aria-hidden="true">
+    <div class="modal-content">
+      <button id="close-quiz-modal" class="modal-close" aria-label="Schließen">&times;</button>
+      <h2 class="modal-title">KI-Quiz Generator</h2>
+      <p class="modal-desc">Wähle einen Lernzettel und erstelle automatisch einen perfekten Prompt für ChatGPT, um Übungsaufgaben auf Abitur-Niveau zu generieren.</p>
+
+      <div class="form-group">
+        <label for="quiz-topic">Lernzettel auswählen:</label>
+        <select id="quiz-topic" class="form-control">
+          <!-- Dynamisch durch JS befüllt -->
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Anforderungsbereich (AFB):</label>
+        <div class="radio-group">
+          <label class="radio-label"><input type="radio" name="quiz-afb" value="AFB I (Reproduktion)"> AFB I (Wiedergabe & Beschreibung)</label>
+          <label class="radio-label"><input type="radio" name="quiz-afb" value="AFB II (Reorganisation & Transfer)" checked> AFB II (Anwendung & Erklärung)</label>
+          <label class="radio-label"><input type="radio" name="quiz-afb" value="AFB III (Reflexion & Problemlösung)"> AFB III (Beurteilung & Diskussion)</label>
+          <label class="radio-label"><input type="radio" name="quiz-afb" value="Klausur-Mix (AFB I - III)"> Klausur-Mix (Alle Bereiche)</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="quiz-custom">Eigene Wünsche (Optional):</label>
+        <textarea id="quiz-custom" class="form-control" rows="3" placeholder="z.B. Erstelle ein Multiple-Choice-Quiz... oder: Frage mich ab wie in einer mündlichen Prüfung..."></textarea>
+      </div>
+
+      <button id="generate-quiz-prompt" class="btn btn-gold">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="M8 17.929H6c-1.105 0-2-.912-2-2.036V5.036C4 3.91 4.895 3 6 3h8c1.105 0 2 .911 2 2.036v1.866m-6 .17h8c1.105 0 2 .91 2 2.035v10.857C20 21.09 19.105 22 18 22h-8c-1.105 0-2-.911-2-2.036V9.107c0-1.124.895-2.036 2-2.036z"/></svg>
+        Prompt generieren & kopieren
+      </button>
+      
+      <div id="quiz-success" class="quiz-success" style="display:none;">
+        <p>✅ Prompt erfolgreich kopiert!</p>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 15px;">Öffne nun ChatGPT und füge den Text mit Strg+V ein.</p>
+        <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" class="btn btn-outline">ChatGPT öffnen</a>
+      </div>
+    </div>
+  </div>
 
   <!-- Gleiche Daten & Logik wie die Bullet-Journal-Variante -->
   <script src="faecher-daten.js"></script>

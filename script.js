@@ -452,12 +452,130 @@
   }
 
   /* ──────────────────────────────────────────────────────────
+     QUIZ GENERATOR MODAL
+     ────────────────────────────────────────────────────────── */
+  function initQuizGenerator() {
+    var openBtn = document.getElementById('open-quiz-modal');
+    var closeBtn = document.getElementById('close-quiz-modal');
+    var modal = document.getElementById('quiz-modal');
+    var selectBox = document.getElementById('quiz-topic');
+    var generateBtn = document.getElementById('generate-quiz-prompt');
+    var successBox = document.getElementById('quiz-success');
+    var customText = document.getElementById('quiz-custom');
+
+    if (!openBtn || !modal) return;
+
+    // 1. Dropdown befüllen
+    Object.keys(subjectData).forEach(function(key) {
+      var fach = subjectData[key];
+      if (fach.categories) {
+        var optgroup = document.createElement('optgroup');
+        optgroup.label = fach.name;
+        
+        var hasTopics = false;
+        fach.categories.forEach(function(cat) {
+          if (cat.topics) {
+            cat.topics.forEach(function(t) {
+              var opt = document.createElement('option');
+              opt.value = t.link;
+              opt.textContent = t.title;
+              optgroup.appendChild(opt);
+              hasTopics = true;
+            });
+          }
+        });
+        
+        if (hasTopics) {
+          selectBox.appendChild(optgroup);
+        }
+      }
+    });
+
+    // 2. Modal öffnen / schließen
+    openBtn.addEventListener('click', function() {
+      modal.classList.add('show');
+      successBox.style.display = 'none';
+      generateBtn.style.display = 'inline-flex';
+      generateBtn.disabled = false;
+      generateBtn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="M8 17.929H6c-1.105 0-2-.912-2-2.036V5.036C4 3.91 4.895 3 6 3h8c1.105 0 2 .911 2 2.036v1.866m-6 .17h8c1.105 0 2 .91 2 2.035v10.857C20 21.09 19.105 22 18 22h-8c-1.105 0-2-.911-2-2.036V9.107c0-1.124.895-2.036 2-2.036z"/></svg> Prompt generieren & kopieren';
+    });
+
+    closeBtn.addEventListener('click', function() {
+      modal.classList.remove('show');
+    });
+
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) modal.classList.remove('show');
+    });
+
+    // 3. Prompt generieren
+    generateBtn.addEventListener('click', function() {
+      var link = selectBox.value;
+      if (!link) {
+        alert("Bitte wähle zuerst einen Lernzettel aus!");
+        return;
+      }
+      
+      var afbElement = document.querySelector('input[name="quiz-afb"]:checked');
+      var afb = afbElement ? afbElement.value : "AFB II";
+      var topicName = selectBox.options[selectBox.selectedIndex].text;
+      var extra = customText.value.trim();
+
+      generateBtn.textContent = 'Lade Lernzettel...';
+      generateBtn.disabled = true;
+
+      fetch(link)
+        .then(function(res) {
+          if (!res.ok) throw new Error("Datei konnte nicht geladen werden.");
+          return res.text();
+        })
+        .then(function(html) {
+          // HTML parsen
+          var parser = new DOMParser();
+          var doc = parser.parseFromString(html, "text/html");
+          
+          // Reinen Text extrahieren (ohne Navigation etc., falls wir eine Page-Class haben)
+          var mainContent = doc.querySelector('.page') || doc.body;
+          var textContent = mainContent.innerText || mainContent.textContent;
+          
+          // Zu viele Leerzeilen bereinigen
+          textContent = textContent.replace(/[\r\n]{3,}/g, '\n\n').trim();
+
+          // Baue den Prompt
+          var prompt = "Du bist ein professioneller Gymnasiallehrer für das Abitur in Baden-Württemberg.\n\n";
+          prompt += "Bitte erstelle mir Übungsaufgaben (und erst darunter die Musterlösungen) zum Thema \"" + topicName + "\".\n";
+          prompt += "Der Fokus der Aufgaben soll auf folgendem Anforderungsbereich liegen: " + afb + ".\n\n";
+          
+          if (extra) {
+            prompt += "Zusätzliche Wünsche des Schülers:\n" + extra + "\n\n";
+          }
+          
+          prompt += "Verwende für die Aufgaben AUSSCHLIESSLICH die Fakten und Informationen aus meinem folgenden Lernzettel-Text. Erfinde nichts Neues dazu, sondern prüfe genau dieses Wissen ab:\n";
+          prompt += "----------------------------------------\n";
+          prompt += textContent + "\n";
+          prompt += "----------------------------------------\n";
+
+          return navigator.clipboard.writeText(prompt);
+        })
+        .then(function() {
+          successBox.style.display = 'block';
+          generateBtn.style.display = 'none';
+        })
+        .catch(function(err) {
+          alert("Fehler beim Laden des Lernzettels: " + err.message);
+          generateBtn.textContent = 'Fehler aufgetreten';
+        });
+    });
+  }
+
+  /* ──────────────────────────────────────────────────────────
      INITIALISIERUNG
      ────────────────────────────────────────────────────────── */
   function init() {
     renderDashboard();
     initParallax();
     initFullscreen();
+    initQuizGenerator();
 
     /* Direkt-Link via Hash (z. B. index.html#chemie) */
     var hash = window.location.hash.slice(1);

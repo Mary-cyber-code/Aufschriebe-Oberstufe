@@ -49,6 +49,9 @@
             color: var(--forest);
             font-weight: 600;
         }
+        .flashcard-back .highlight {
+            color: var(--gold);
+        }
 
         /* Korrekte Darstellung tiefer/höhergestellter Zahlen ohne Layout-Bugs */
         sub, sup {
@@ -251,9 +254,9 @@
         .flashcard {
             perspective: 1000px;
             width: 200px;
-            height: 120px;
+            height: 240px;
             cursor: pointer;
-            flex: 1 1 180px;
+            flex: 1 1 200px;
         }
         .flashcard-inner {
             position: relative;
@@ -390,6 +393,12 @@
             color: var(--text-secondary);
             font-family: 'Playfair Display', serif;
         }
+        @media (max-width: 768px) {
+            #btn-fullscreen { display: none !important; }
+            .nav-group { gap: 8px; flex-wrap: wrap; justify-content: center; }
+            .nav-btn { padding: 6px 10px; font-size: 0.8rem; }
+            nav { padding: 10px; }
+        }
 
         @media print {
             body {
@@ -414,12 +423,13 @@
             .page {
                 margin: 0;
                 box-shadow: none;
-                width: 210mm;
-                height: 297mm;
+                width: auto;
+                height: auto !important;
+                min-height: 297mm;
                 padding: 15mm !important;
                 display: flex;
                 flex-direction: column;
-                overflow: hidden;
+                overflow: visible !important;
                 break-after: page;
             }
             .card {
@@ -484,7 +494,7 @@
             </div>
             <div class="page-footer">
                 <span>Stoffeigenschaften & Teilchenmodell</span>
-                <span>Olga Völzke</span>
+                <span>Olga V.</span>
                 <span>Seite 1</span>
             </div>
         </div>
@@ -580,7 +590,7 @@
             </div>
             <div class="page-footer">
                 <span>Stoffgemische & Luft</span>
-                <span>Olga Völzke</span>
+                <span>Olga V.</span>
                 <span>Seite 2</span>
             </div>
         </div>
@@ -608,7 +618,7 @@
             </div>
             <div class="page-footer">
                 <span>Wässrige Lösungen & Nachweise</span>
-                <span>Olga Völzke</span>
+                <span>Olga V.</span>
                 <span>Seite 3</span>
             </div>
         </div>
@@ -651,7 +661,7 @@
             </div>
             <div class="page-footer">
                 <span>Organik: Homologe Reihe</span>
-                <span>Olga Völzke</span>
+                <span>Olga V.</span>
                 <span>Seite 4</span>
             </div>
         </div>
@@ -719,7 +729,7 @@
             </div>
             <div class="page-footer">
                 <span>Organik: Stoffklassen</span>
-                <span>Olga Völzke</span>
+                <span>Olga V.</span>
                 <span>Seite 5</span>
             </div>
         </div>
@@ -758,7 +768,7 @@
             </div>
             <div class="page-footer">
                 <span>Organik: Regeln & Oxidation</span>
-                <span>Olga Völzke</span>
+                <span>Olga V.</span>
                 <span>Seite 6</span>
             </div>
         </div>

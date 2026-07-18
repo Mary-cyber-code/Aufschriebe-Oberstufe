@@ -3,7 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Politisches System der BRD</title>
+    <title>Mathe: Stochastik</title>
+    <!-- MathJax für LaTeX-Formeln -->
+    <script>
+        MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+          }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600&display=swap');
 
@@ -171,6 +181,7 @@
     </style>
 </head>
 <body>
+
     <nav>
         <div class="nav-group">
             <a href="../index.html" class="nav-btn">← Journal</a>
@@ -186,162 +197,155 @@
     </nav>
 
     <div class="content-wrapper" id="content">
-        <!-- Seite 1 -->
+
+        <!-- SEITE 1 -->
         <div class="page">
             <div class="card" id="thema-1">
-                <h1 id="sec-titel">Politisches System der BRD<br><small style="font-size: 0.6em; font-weight: normal;">(Gemeinschaftskunde: Grundlagen)</small></h1>
+                <h1 id="sec-titel">Stochastik<br><small style="font-size: 0.6em; font-weight: normal;">(Daten, Zufall und Wahrscheinlichkeiten)</small></h1>
                 
-                <h2 id="sec-1">1. Staatsstrukturprinzipien & Verfassungsorgane</h2>
+                <h2 id="sec-1">1. Wahrscheinlichkeitsrechnung & Baumdiagramme</h2>
+                <p>Bei mehrstufigen Zufallsexperimenten (z. B. dreimaliges Ziehen aus einer Urne) sind Baumdiagramme dein wichtigstes Werkzeug.</p>
                 
-                <p><span class="highlight">Fundament:</span> Die 4 Staatsstrukturprinzipien (Art. 20 GG), geschützt durch die <span class="highlight">Ewigkeitsklausel</span> (Art. 79 Abs. 3 GG).</p>
+                <p><span class="highlight">Vorgehen bei Wahrscheinlichkeitsaufgaben:</span></p>
+                <ul>
+                    <li><span class="highlight">Experiment analysieren:</span> Ist es <em>"mit Zurücklegen"</em> (Wahrscheinlichkeiten bleiben an jedem Ast gleich) oder <em>"ohne Zurücklegen"</em> (Nenner und evtl. Zähler der Brüche werden kleiner)?</li>
+                    <li><span class="highlight">Baum zeichnen:</span> Wahrscheinlichkeiten kommen an die Äste, die Ergebnisse an die Knoten.</li>
+                </ul>
+
+                <h3 id="sec-1-1">Die Pfadregeln</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <tr>
+                            <th>Regel</th>
+                            <th>Anwendung</th>
+                            <th>Formel</th>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">1. Pfadregel</span><br>(Multiplikation)</td>
+                            <td>Um die Wahrscheinlichkeit eines <strong>einzelnen Ergebnisses</strong> (eines kompletten Pfades) zu berechnen. Wahrscheinlichkeiten <em>entlang</em> des Pfades werden multipliziert.</td>
+                            <td>$P(\text{Pfad}) = p_1 \cdot p_2 \cdot p_3 \dots$</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">2. Pfadregel</span><br>(Addition)</td>
+                            <td>Gehören zu einem <strong>Ereignis</strong> mehrere Pfade, werden die Wahrscheinlichkeiten dieser <em>einzelnen</em> Pfade addiert.</td>
+                            <td>$P(\text{Ereignis}) = P(\text{P}_1) + P(\text{P}_2) + \dots$</td>
+                        </tr>
+                    </table>
+                </div>
 
                 <div class="flashcards-container">
                     <div class="flashcard">
                         <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Demokratie</span></div>
-                            <div class="flashcard-back"><p style="display:block;">Volkssouveränität (Macht beim Volk), Wahlen.</p></div>
+                            <div class="flashcard-front"><span style="display:block;">Das Laplace-Experiment</span></div>
+                            <div class="flashcard-back">
+                                <span style="display:block; font-size: 0.85em;">
+                                    Ein Zufallsexperiment, bei dem <strong>alle</strong> möglichen Ergebnisse gleich wahrscheinlich sind (z. B. fairer Würfel, Münzwurf).<br><br>
+                                    $P(E) = \frac{\text{günstige Ergebnisse}}{\text{mögliche Ergebnisse}}$
+                                </span>
+                            </div>
                         </div>
                     </div>
                     <div class="flashcard">
                         <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Rechtsstaat</span></div>
-                            <div class="flashcard-back"><p style="display:block;">Gesetzesbindung allen Handelns, Gewaltenteilung, unabhängige Justiz.</p></div>
-                        </div>
-                    </div>
-                    <div class="flashcard">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Bundesstaat</span></div>
-                            <div class="flashcard-back"><p style="display:block;">16 Länder, Machtaufteilung Bund/Länder (Föderalismus).</p></div>
-                        </div>
-                    </div>
-                    <div class="flashcard">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Sozialstaat</span></div>
-                            <div class="flashcard-back"><p style="display:block;">Soziale Sicherheit & Gerechtigkeit.</p></div>
+                            <div class="flashcard-front"><span style="display:block;">Der Lebensretter:<br>Das Gegenereignis $\bar{E}$</span></div>
+                            <div class="flashcard-back">
+                                <span style="display:block; font-size: 0.85em;">
+                                    Wenn in einer Aufgabe <strong>"mindestens ein..."</strong> steht, ist der direkte Weg meist viel zu lang.<br><br>
+                                    Berechne das Gegenteil ("kein einziges...") und ziehe es von 1 ab:<br><br>
+                                    $P(E) = 1 - P(\bar{E})$
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <h3 id="sec-1-1">Horizontale Gewaltenteilung (Institutionen)</h3>
+                <h2 id="sec-2">2. Kombinatorik (Zählprinzipien)</h2>
+                <p>Die Kombinatorik hilft dir, die Anzahl aller Möglichkeiten zu berechnen, ohne ein riesiges Baumdiagramm zeichnen zu müssen. Das ist wichtig für den Nenner bei Laplace-Aufgaben.</p>
                 <ul>
-                    <li><span class="highlight">Legislative:</span> Bundestag (Volksvertretung) & Bundesrat (Ländervertretung).</li>
-                    <li><span class="highlight">Exekutive:</span> Bundesregierung (Kanzler + Minister = Leitung) & Bundespräsident (Staatsoberhaupt, Prüfung/Repräsentation).</li>
-                    <li><span class="highlight">Judikative:</span> Bundesverfassungsgericht (BVerfG) (Normenkontrolle, "Hüter der Verfassung").</li>
+                    <li><span class="highlight">Die Fakultät ($n!$):</span> Gibt an, auf wie viele verschiedene Arten man $n$ unterschiedliche Objekte in eine Reihe anordnen kann.<br>
+                    $n! = n \cdot (n-1) \cdot (n-2) \cdot \dots \cdot 1$<br>
+                    <em>Beispiel:</em> 5 Personen in einer Schlange: $5! = 5 \cdot 4 \cdot 3 \cdot 2 \cdot 1 = 120$ Möglichkeiten.</li>
+                    <li><span class="highlight">Allgemeines Zählprinzip:</span> Wenn ein Versuch aus mehreren Stufen besteht und es in der 1. Stufe $n_1$ Möglichkeiten gibt, in der 2. Stufe $n_2$ Möglichkeiten usw., dann ist die Gesamtzahl der Möglichkeiten:<br>
+                    $N = n_1 \cdot n_2 \cdot n_3 \dots$ (Das klassische "T-Shirt-Hosen"-Problem).</li>
                 </ul>
 
-                <h3 id="sec-1-2">Checks and Balances (Kontrolle)</h3>
-                <ul>
-                    <li><span class="highlight">Konstruktives Misstrauensvotum:</span> Kanzlersturz nur durch gleichzeitige Neuwahl eines Nachfolgers möglich.</li>
-                    <li><span class="highlight">Vertrauensfrage:</span> Kanzler fordert Bestätigung der Mehrheit im Bundestag.</li>
-                </ul>
             </div>
             <div class="page-footer">
-                <span>[Politisches System der BRD]</span>
+                <span>[Stochastik Grundlagen]</span>
                 <span>Olga V.</span>
                 <span>Seite 1</span>
             </div>
         </div>
 
-        <!-- Seite 2 -->
+        <!-- SEITE 2 -->
         <div class="page">
             <div class="card" id="thema-2">
-                <h2 id="sec-2">2. Gesetzgebungsprozess auf Bundesebene</h2>
                 
-                <ol>
-                    <li>
-                        <span class="highlight">Initiativrecht</span> (Art. 76 GG): Wer darf Entwürfe einbringen?
-                        <ul>
-                            <li>Bundesregierung (~80 % der Gesetze)</li>
-                            <li>Bundesrat (Länderinteressen)</li>
-                            <li>Mitte des Bundestages (min. 5 % der Abgeordneten / Fraktion)</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <span class="highlight">Bundestag (3 Lesungen):</span> Beratung und Abstimmung.
-                        <ul>
-                            <li><strong>1. Lesung:</strong> Grundsatzdebatte, Überweisung an Ausschüsse.</li>
-                            <li><strong>Ausschussarbeit:</strong> "Arbeitsparlament" – Fachexperten feilen an Details.</li>
-                            <li><strong>2. & 3. Lesung:</strong> Plenum-Debatte & Schlussabstimmung (meist einfache Mehrheit).</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <span class="highlight">Bundesrat:</span> Beteiligung der Länder.
-                        <ul>
-                            <li><strong>Zustimmungsgesetz</strong> (betrifft Länderfinanzen/-verwaltung): Absolutes Veto (ohne Zustimmung ist das Gesetz gescheitert).</li>
-                            <li><strong>Einspruchsgesetz</strong> (übrige Gesetze): Suspensives Veto (vom Bundestag überstimmbar).</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <span class="highlight">Vermittlungsausschuss:</span> Bei Konflikten zwischen BT und BR.
-                        <ul>
-                            <li>Gremium (16 BT- und 16 BR-Mitglieder) verhandelt einen politischen Kompromiss hinter verschlossenen Türen.</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <span class="highlight">Ausfertigung & Verkündung:</span> Der formale Abschluss.
-                        <ul>
-                            <li>Bundespräsident prüft formell/materiell und unterschreibt.</li>
-                            <li>Verkündung im Bundesgesetzblatt (Gesetz tritt in Kraft).</li>
-                        </ul>
-                    </li>
-                </ol>
+                <h2 id="sec-3">3. Beschreibende Statistik</h2>
+                <p>In der Kursstufe vergleichst du diese reinen Daten oft mit theoretischen Wahrscheinlichkeiten, um zu prüfen, ob ein Zufallsgerät manipuliert wurde (Hypothesentest).</p>
+
+                <h3 id="sec-3-1">Häufigkeiten</h3>
+                <ul>
+                    <li><span class="highlight">Absolute Häufigkeit:</span> Die reine Anzahl (z. B. "Die 6 wurde 15-mal gewürfelt").</li>
+                    <li><span class="highlight">Relative Häufigkeit ($h$):</span> Der Anteil an der Gesamtzahl der Versuche. Dies ist die empirische (gemessene) Wahrscheinlichkeit.<br>
+                    $h = \frac{\text{absolute Häufigkeit}}{\text{Gesamtanzahl der Versuche}}$</li>
+                </ul>
+
+                <h3 id="sec-3-2">Lagemaße (Kennzahlen einer Datenreihe)</h3>
+                <p><span class="highlight">Achtung:</span> Eine unsortierte Datenreihe muss immer <strong>zuerst der Größe nach geordnet</strong> werden!</p>
+                
+                <div class="table-wrapper">
+                    <table>
+                        <tr>
+                            <th>Lagemaß</th>
+                            <th>Beschreibung</th>
+                            <th>Vor-/Nachteil</th>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Mittelwert</span><br> (Durchschnitt $\bar{x}$)</td>
+                            <td>Alle Werte addieren und durch die Anzahl der Werte teilen.</td>
+                            <td><strong>Nachteil:</strong> Sehr anfällig für "Ausreißer" (extreme Werte).</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Median</span><br> (Zentralwert $Q_2$)</td>
+                            <td>Der Wert, der <strong>exakt in der Mitte</strong> der sortierten Datenreihe steht. (Bei einer geraden Anzahl an Werten: Durchschnitt der beiden mittleren).</td>
+                            <td><strong>Vorteil:</strong> Komplett unbeeindruckt von extremen Ausreißern.</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3 id="sec-3-3">Quartile (für Boxplots)</h3>
+                <p>Quartile teilen die sortierten Daten in <strong>vier gleich große Gruppen</strong>. Sie sind die Grundlage zum Zeichnen von Boxplots.</p>
+                
+                <div class="flashcards-container">
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span style="display:block;">Unteres Quartil<br>($Q_1$)</span></div>
+                            <div class="flashcard-back"><span style="display:block;"><strong>25 %</strong> der Daten sind kleiner oder gleich diesem Wert.</span></div>
+                        </div>
+                    </div>
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span style="display:block;">Median<br>($Q_2$)</span></div>
+                            <div class="flashcard-back"><span style="display:block;"><strong>50 %</strong> der Daten<br>(Die exakte Mitte).</span></div>
+                        </div>
+                    </div>
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span style="display:block;">Oberes Quartil<br>($Q_3$)</span></div>
+                            <div class="flashcard-back"><span style="display:block;"><strong>75 %</strong> der Daten sind kleiner oder gleich diesem Wert.</span></div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <div class="page-footer">
-                <span>[Politisches System der BRD]</span>
+                <span>[Stochastik Grundlagen]</span>
                 <span>Olga V.</span>
                 <span>Seite 2</span>
             </div>
         </div>
 
-        <!-- Seite 3 -->
-        <div class="page">
-            <div class="card" id="thema-3">
-                <h2 id="sec-3">3. Wahlen & Wahlsystem</h2>
-                
-                <p><span class="highlight">Wahlgrundsätze</span> (Art. 38 GG): Allgemein, unmittelbar (keine Wahlmänner), frei, gleich, geheim.</p>
-                
-                <h3 id="sec-3-1">System: Personalisierte Verhältniswahl</h3>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Merkmal</th>
-                                <th>Erststimme (Person)</th>
-                                <th>Zweitstimme (Partei)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Wahlziel</strong></td>
-                                <td>Direktkandidat im Wahlkreis (299 Wahlkreise)</td>
-                                <td>Landesliste einer Partei</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Regel</strong></td>
-                                <td>Relatives Mehrheitswahlrecht (Meiste Stimmen gewinnen)</td>
-                                <td>Verhältniswahlrecht (Prozente = Sitze)</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Funktion</strong></td>
-                                <td>Sichert regionale Vertretung jeder Region im Parlament</td>
-                                <td>Bestimmt die exakte Machtverteilung <span class="highlight">(Wichtigste Stimme!)</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <h3 id="sec-3-2">Zentrale Mechanismen & aktuelle Reform</h3>
-                <ul>
-                    <li><span class="highlight">5 %-Hürde:</span> Parteien brauchen min. 5 % der Zweitstimmen (oder 3 Direktmandate) für den Einzug (gegen Parteienzersplitterung).</li>
-                    <li><span class="highlight">Wahlrechtsreform (Zweitstimmendeckung):</span> Um den Bundestag auf 630 Sitze zu begrenzen, wurden Ausgleichsmandate gestrichen. Gewinnt eine Partei mehr Direktmandate, als ihr nach Zweitstimmen zustehen (Überhang), ziehen die schwächsten Wahlkreissieger nicht in den Bundestag ein.</li>
-                </ul>
-            </div>
-            <div class="page-footer">
-                <span>[Politisches System der BRD]</span>
-                <span>Olga V.</span>
-                <span>Seite 3</span>
-            </div>
-        </div>
     </div>
 
     <script>

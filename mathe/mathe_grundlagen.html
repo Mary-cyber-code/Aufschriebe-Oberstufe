@@ -3,7 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Politisches System der BRD</title>
+    <title>Mathe: Grundlagen</title>
+    <!-- MathJax für LaTeX-Formeln -->
+    <script>
+        MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+          }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600&display=swap');
 
@@ -171,6 +181,7 @@
     </style>
 </head>
 <body>
+
     <nav>
         <div class="nav-group">
             <a href="../index.html" class="nav-btn">← Journal</a>
@@ -186,162 +197,187 @@
     </nav>
 
     <div class="content-wrapper" id="content">
-        <!-- Seite 1 -->
+
+        <!-- SEITE 1 -->
         <div class="page">
             <div class="card" id="thema-1">
-                <h1 id="sec-titel">Politisches System der BRD<br><small style="font-size: 0.6em; font-weight: normal;">(Gemeinschaftskunde: Grundlagen)</small></h1>
+                <h1 id="sec-titel">Mathematik Grundlagen<br><small style="font-size: 0.6em; font-weight: normal;">(Bruchrechnung, Termumformungen & Potenzen)</small></h1>
                 
-                <h2 id="sec-1">1. Staatsstrukturprinzipien & Verfassungsorgane</h2>
-                
-                <p><span class="highlight">Fundament:</span> Die 4 Staatsstrukturprinzipien (Art. 20 GG), geschützt durch die <span class="highlight">Ewigkeitsklausel</span> (Art. 79 Abs. 3 GG).</p>
+                <h2 id="sec-1">1. Bruch- und Prozentrechnung</h2>
+                <p>In der Kursstufe rechnest du oft mit Parametern (Buchstaben) in Brüchen. Die Regeln bleiben exakt gleich wie bei Zahlen.</p>
+                <ul>
+                    <li><span class="highlight">Addieren / Subtrahieren:</span> Brüche zwingend auf den gleichen Nenner (Zahl/Term unten) bringen. Dann nur die Zähler (Zahl/Term oben) addieren/subtrahieren.</li>
+                    <li><span class="highlight">Multiplizieren:</span> Zähler mal Zähler, Nenner mal Nenner.</li>
+                    <li><span class="highlight">Dividieren:</span> Mit dem Kehrbruch multiplizieren.</li>
+                </ul>
 
+                <h3 id="sec-1-1">Prozentrechnung (Wachstumsfaktor)</h3>
+                <p>Wenn eine Größe um $p\%$ wächst oder fällt, rechnest du nicht mehr mit Dreisatz, sondern mit dem Wachstumsfaktor $q$. Das ist essenziell für <span class="highlight">Exponentialfunktionen!</span></p>
+                
                 <div class="flashcards-container">
                     <div class="flashcard">
                         <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Demokratie</span></div>
-                            <div class="flashcard-back"><p style="display:block;">Volkssouveränität (Macht beim Volk), Wahlen.</p></div>
+                            <div class="flashcard-front"><span style="display:block;">Wachstumsfaktor $q$<br>bei Zunahme</span></div>
+                            <div class="flashcard-back"><span style="display:block;">$q = 1 + \frac{p}{100}$</span></div>
                         </div>
                     </div>
                     <div class="flashcard">
                         <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Rechtsstaat</span></div>
-                            <div class="flashcard-back"><p style="display:block;">Gesetzesbindung allen Handelns, Gewaltenteilung, unabhängige Justiz.</p></div>
-                        </div>
-                    </div>
-                    <div class="flashcard">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Bundesstaat</span></div>
-                            <div class="flashcard-back"><p style="display:block;">16 Länder, Machtaufteilung Bund/Länder (Föderalismus).</p></div>
-                        </div>
-                    </div>
-                    <div class="flashcard">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Sozialstaat</span></div>
-                            <div class="flashcard-back"><p style="display:block;">Soziale Sicherheit & Gerechtigkeit.</p></div>
+                            <div class="flashcard-front"><span style="display:block;">Wachstumsfaktor $q$<br>bei Abnahme</span></div>
+                            <div class="flashcard-back"><span style="display:block;">$q = 1 - \frac{p}{100}$</span></div>
                         </div>
                     </div>
                 </div>
 
-                <h3 id="sec-1-1">Horizontale Gewaltenteilung (Institutionen)</h3>
+                <h2 id="sec-2">2. Termumformungen & Faktorisieren</h2>
+                <p>Das Zusammenfassen und Umformen von Funktionstermen ist die Basis jeder Kurvendiskussion.</p>
                 <ul>
-                    <li><span class="highlight">Legislative:</span> Bundestag (Volksvertretung) & Bundesrat (Ländervertretung).</li>
-                    <li><span class="highlight">Exekutive:</span> Bundesregierung (Kanzler + Minister = Leitung) & Bundespräsident (Staatsoberhaupt, Prüfung/Repräsentation).</li>
-                    <li><span class="highlight">Judikative:</span> Bundesverfassungsgericht (BVerfG) (Normenkontrolle, "Hüter der Verfassung").</li>
+                    <li><span class="highlight">Ausmultiplizieren:</span> Jeder Summand der ersten Klammer wird mit jedem der zweiten multipliziert. Vorzeichen beachten!</li>
+                    <li><span class="highlight">Faktorisieren (Ausklammern):</span> Der umgekehrte Weg. Einen gemeinsamen Faktor aus allen Summanden herausziehen.</li>
                 </ul>
+                <p><span class="highlight">Warum?</span> Weil man Terme in Faktoren zerlegen muss, um Nullstellen schnell ablesen zu können.</p>
+                <p>Beispiel: $4x^3 - 2x^2 = 2x^2 \cdot (2x - 1)$</p>
 
-                <h3 id="sec-1-2">Checks and Balances (Kontrolle)</h3>
-                <ul>
-                    <li><span class="highlight">Konstruktives Misstrauensvotum:</span> Kanzlersturz nur durch gleichzeitige Neuwahl eines Nachfolgers möglich.</li>
-                    <li><span class="highlight">Vertrauensfrage:</span> Kanzler fordert Bestätigung der Mehrheit im Bundestag.</li>
-                </ul>
+                <h3 id="sec-2-1">Die 3 Binomischen Formeln</h3>
+                <p>Müssen in beide Richtungen (Ausmultiplizieren $\leftrightarrow$ Faktorisieren) blind sitzen.</p>
+                <div class="table-wrapper">
+                    <table>
+                        <tr>
+                            <th>Bezeichnung</th>
+                            <th>Formel</th>
+                        </tr>
+                        <tr>
+                            <td>1. Binomische Formel</td>
+                            <td>$(a + b)^2 = a^2 + 2ab + b^2$</td>
+                        </tr>
+                        <tr>
+                            <td>2. Binomische Formel</td>
+                            <td>$(a - b)^2 = a^2 - 2ab + b^2$</td>
+                        </tr>
+                        <tr>
+                            <td>3. Binomische Formel</td>
+                            <td>$(a + b)(a - b) = a^2 - b^2$</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
             <div class="page-footer">
-                <span>[Politisches System der BRD]</span>
+                <span>[Mathematik Grundlagen]</span>
                 <span>Olga V.</span>
                 <span>Seite 1</span>
             </div>
         </div>
 
-        <!-- Seite 2 -->
+        <!-- SEITE 2 -->
         <div class="page">
             <div class="card" id="thema-2">
-                <h2 id="sec-2">2. Gesetzgebungsprozess auf Bundesebene</h2>
+                <h2 id="sec-3">3. Quadratische Gleichungen lösen</h2>
+                <p>Lineare Gleichungen (nur $x$) löst du durch einfaches Umstellen. Sobald ein $x^2$ auftaucht, nutzt du folgende Routineverfahren. Bringe die Gleichung dazu immer zuerst auf die Form <span class="highlight">$ax^2 + bx + c = 0$</span>.</p>
+
+                <h3 id="sec-3-1">Die Mitternachtsformel (abc-Formel)</h3>
+                <p>Der Standard in Baden-Württemberg. Funktioniert für jede quadratische Gleichung der Form $ax^2 + bx + c = 0$.</p>
+                <p style="text-align: center; font-size: 1.3rem; margin: 1.5rem 0;">$x_{1,2} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$</p>
+                <p><span class="highlight">Tipp zur Diskriminante ($D = b^2 - 4ac$):</span> Ist der Wert unter der Wurzel negativ, hat die Gleichung keine Lösung (bzw. der Graph keine Nullstellen).</p>
+
+                <h3 id="sec-3-2">Die pq-Formel (Alternative)</h3>
+                <p>Setzt voraus, dass vor dem $x^2$ eine $1$ steht (Form: $x^2 + px + q = 0$). Falls dort eine Zahl steht (der Koeffizient), musst du erst die gesamte Gleichung durch diese Zahl teilen.</p>
+                <p style="text-align: center; font-size: 1.3rem; margin: 1.5rem 0;">$x_{1,2} = -\frac{p}{2} \pm \sqrt{\left(\frac{p}{2}\right)^2 - q}$</p>
+
+                <h3 id="sec-3-3">Spezialfälle (Schneller als die Formel!)</h3>
+                <p>Nutze die Formel nicht blind, wenn Teile der Gleichung fehlen:</p>
+                <div class="flashcards-container">
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span style="display:block;">Kein konstantes Glied $c$<br>($ax^2 + bx = 0$)</span></div>
+                            <div class="flashcard-back">
+                                <span style="display:block; font-size: 0.95em;">
+                                    $x$ ausklammern!<br>
+                                    $x \cdot (ax + b) = 0$<br><br>
+                                    Satz vom Nullprodukt:<br>
+                                    $\rightarrow x_1 = 0$ oder $ax + b = 0$
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span style="display:block;">Kein $x$-Glied $b$<br>($ax^2 + c = 0$)</span></div>
+                            <div class="flashcard-back">
+                                <span style="display:block; font-size: 0.95em;">
+                                    Nach $x^2$ auflösen und die Wurzel ziehen.<br><br>
+                                    Achtung: Das $\pm$ nicht vergessen!<br>
+                                    $\rightarrow x_{1,2} = \pm \sqrt{\dots}$
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 id="sec-4">4. Potenzen und Wurzeln</h2>
+                <p>In der Kursstufe leitest du Funktionen ab. Dafür müssen alle Brüche und Wurzeln in Potenzen umgeschrieben werden.</p>
                 
-                <ol>
-                    <li>
-                        <span class="highlight">Initiativrecht</span> (Art. 76 GG): Wer darf Entwürfe einbringen?
-                        <ul>
-                            <li>Bundesregierung (~80 % der Gesetze)</li>
-                            <li>Bundesrat (Länderinteressen)</li>
-                            <li>Mitte des Bundestages (min. 5 % der Abgeordneten / Fraktion)</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <span class="highlight">Bundestag (3 Lesungen):</span> Beratung und Abstimmung.
-                        <ul>
-                            <li><strong>1. Lesung:</strong> Grundsatzdebatte, Überweisung an Ausschüsse.</li>
-                            <li><strong>Ausschussarbeit:</strong> "Arbeitsparlament" – Fachexperten feilen an Details.</li>
-                            <li><strong>2. & 3. Lesung:</strong> Plenum-Debatte & Schlussabstimmung (meist einfache Mehrheit).</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <span class="highlight">Bundesrat:</span> Beteiligung der Länder.
-                        <ul>
-                            <li><strong>Zustimmungsgesetz</strong> (betrifft Länderfinanzen/-verwaltung): Absolutes Veto (ohne Zustimmung ist das Gesetz gescheitert).</li>
-                            <li><strong>Einspruchsgesetz</strong> (übrige Gesetze): Suspensives Veto (vom Bundestag überstimmbar).</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <span class="highlight">Vermittlungsausschuss:</span> Bei Konflikten zwischen BT und BR.
-                        <ul>
-                            <li>Gremium (16 BT- und 16 BR-Mitglieder) verhandelt einen politischen Kompromiss hinter verschlossenen Türen.</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <span class="highlight">Ausfertigung & Verkündung:</span> Der formale Abschluss.
-                        <ul>
-                            <li>Bundespräsident prüft formell/materiell und unterschreibt.</li>
-                            <li>Verkündung im Bundesgesetzblatt (Gesetz tritt in Kraft).</li>
-                        </ul>
-                    </li>
-                </ol>
+                <h3 id="sec-4-1">Die Potenzgesetze</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <tr>
+                            <th>Bedingung</th>
+                            <th>Regel</th>
+                            <th>Formel</th>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Gleiche Basis</span> (Zahl unten)</td>
+                            <td>Multiplikation: Exponenten addieren<br>Division: Exponenten subtrahieren</td>
+                            <td>$a^m \cdot a^n = a^{m+n}$<br>$\frac{a^m}{a^n} = a^{m-n}$</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Gleicher Exponent</span> (Zahl oben)</td>
+                            <td>Basis zusammenfassen</td>
+                            <td>$a^n \cdot b^n = (a \cdot b)^n$</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Potenz von Potenz</span></td>
+                            <td>Exponenten multiplizieren</td>
+                            <td>$(a^m)^n = a^{m \cdot n}$</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3 id="sec-4-2">Brüche und Wurzeln umschreiben</h3>
+                <div class="flashcards-container">
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span style="display:block;">Negative Exponenten<br>(Brüche)</span></div>
+                            <div class="flashcard-back">
+                                <span style="display:block;">
+                                    Ein Minus im Exponenten dreht den Bruch um.<br><br>
+                                    $a^{-n} = \frac{1}{a^n}$<br><br>
+                                    Bsp: $\frac{3}{x^2} = 3 \cdot x^{-2}$
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span style="display:block;">Rationale Exponenten<br>(Wurzeln)</span></div>
+                            <div class="flashcard-back">
+                                <span style="display:block;">
+                                    Die Zahl auf der Wurzel steht im Exponenten im Nenner.<br><br>
+                                    $\sqrt[n]{a^m} = a^{\frac{m}{n}}$<br><br>
+                                    Bsp: $\sqrt{x} = x^{\frac{1}{2}}$
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <div class="page-footer">
-                <span>[Politisches System der BRD]</span>
+                <span>[Mathematik Grundlagen]</span>
                 <span>Olga V.</span>
                 <span>Seite 2</span>
             </div>
         </div>
 
-        <!-- Seite 3 -->
-        <div class="page">
-            <div class="card" id="thema-3">
-                <h2 id="sec-3">3. Wahlen & Wahlsystem</h2>
-                
-                <p><span class="highlight">Wahlgrundsätze</span> (Art. 38 GG): Allgemein, unmittelbar (keine Wahlmänner), frei, gleich, geheim.</p>
-                
-                <h3 id="sec-3-1">System: Personalisierte Verhältniswahl</h3>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Merkmal</th>
-                                <th>Erststimme (Person)</th>
-                                <th>Zweitstimme (Partei)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Wahlziel</strong></td>
-                                <td>Direktkandidat im Wahlkreis (299 Wahlkreise)</td>
-                                <td>Landesliste einer Partei</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Regel</strong></td>
-                                <td>Relatives Mehrheitswahlrecht (Meiste Stimmen gewinnen)</td>
-                                <td>Verhältniswahlrecht (Prozente = Sitze)</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Funktion</strong></td>
-                                <td>Sichert regionale Vertretung jeder Region im Parlament</td>
-                                <td>Bestimmt die exakte Machtverteilung <span class="highlight">(Wichtigste Stimme!)</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <h3 id="sec-3-2">Zentrale Mechanismen & aktuelle Reform</h3>
-                <ul>
-                    <li><span class="highlight">5 %-Hürde:</span> Parteien brauchen min. 5 % der Zweitstimmen (oder 3 Direktmandate) für den Einzug (gegen Parteienzersplitterung).</li>
-                    <li><span class="highlight">Wahlrechtsreform (Zweitstimmendeckung):</span> Um den Bundestag auf 630 Sitze zu begrenzen, wurden Ausgleichsmandate gestrichen. Gewinnt eine Partei mehr Direktmandate, als ihr nach Zweitstimmen zustehen (Überhang), ziehen die schwächsten Wahlkreissieger nicht in den Bundestag ein.</li>
-                </ul>
-            </div>
-            <div class="page-footer">
-                <span>[Politisches System der BRD]</span>
-                <span>Olga V.</span>
-                <span>Seite 3</span>
-            </div>
-        </div>
     </div>
 
     <script>

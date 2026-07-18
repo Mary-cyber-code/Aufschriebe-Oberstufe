@@ -40,7 +40,17 @@ const subjectData = {
     section: "lk",
     type: "LK",
     accent: "sky-blue",
-    categories: []
+    categories: [
+      {
+        name: "Grundlagen",
+        topics: [
+          { title: "Grundlagen", link: "mathe/mathe_grundlagen.html" },
+          { title: "Analysis & Funktionen", link: "mathe/analysis_grundlagen.html" },
+          { title: "Geometrie", link: "mathe/geometrie_grundlagen.html" },
+          { title: "Stochastik", link: "mathe/stochastik_grundlagen.html" }
+        ]
+      }
+    ]
   },
 
   chemie: {
@@ -70,7 +80,10 @@ const subjectData = {
         name: "Grundwissen",
         topics: [
           { title: "Politisches System der BRD", link: "gk/politisches-system-brd.html" },
-          { title: "Recht und Gesellschaft", link: "gk/recht-und-gesellschaft.html" }
+          { title: "Recht und Gesellschaft", link: "gk/recht-und-gesellschaft.html" },
+          { title: "Europäische Union & Internationale Beziehungen", link: "gk/eu-und-internationales.html" },
+          { title: "Die politische Urteilsbildung", link: "gk/politische-urteilsbildung.html" },
+          { title: "Wirtschaft (Grundlagen der Ökonomie)", link: "gk/wirtschaft-grundlagen.html" }
         ]
       }
     ]

@@ -3,7 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Politisches System der BRD</title>
+    <title>Mathe: Analysis & Funktionen</title>
+    <!-- MathJax für LaTeX-Formeln -->
+    <script>
+        MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+          }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600&display=swap');
 
@@ -171,6 +181,7 @@
     </style>
 </head>
 <body>
+
     <nav>
         <div class="nav-group">
             <a href="../index.html" class="nav-btn">← Journal</a>
@@ -186,162 +197,196 @@
     </nav>
 
     <div class="content-wrapper" id="content">
-        <!-- Seite 1 -->
+
+        <!-- SEITE 1 -->
         <div class="page">
             <div class="card" id="thema-1">
-                <h1 id="sec-titel">Politisches System der BRD<br><small style="font-size: 0.6em; font-weight: normal;">(Gemeinschaftskunde: Grundlagen)</small></h1>
+                <h1 id="sec-titel">Analysis & Funktionen<br><small style="font-size: 0.6em; font-weight: normal;">(Funktionaler Zusammenhang)</small></h1>
                 
-                <h2 id="sec-1">1. Staatsstrukturprinzipien & Verfassungsorgane</h2>
-                
-                <p><span class="highlight">Fundament:</span> Die 4 Staatsstrukturprinzipien (Art. 20 GG), geschützt durch die <span class="highlight">Ewigkeitsklausel</span> (Art. 79 Abs. 3 GG).</p>
+                <p>Das zentrale Konzept der Analysis ist die Untersuchung von Graphen. Du musst aus einer Funktionsgleichung $f(x)$ im Kopf ein ungefähres Bild des Graphen abrufen können.</p>
 
+                <h2 id="sec-1">1. Grundlegende Funktionsklassen</h2>
+                <p>Du musst die "Steckbriefe" dieser Funktionen blind kennen:</p>
+                <ul>
+                    <li><span class="highlight">Lineare Funktionen</span> ($f(x) = mx + c$): Geraden. $m$ ist die Steigung, $c$ der y-Achsenabschnitt.</li>
+                    <li><span class="highlight">Quadratische Funktionen</span> ($f(x) = ax^2 + bx + c$): Parabeln. Das Vorzeichen von $a$ bestimmt die Öffnung (+ ist oben, - ist unten). Die Scheitelpunktform $f(x) = a(x-d)^2 + e$ zeigt den höchsten/tiefsten Punkt $S(d|e)$ direkt an.</li>
+                    <li><span class="highlight">Exponentialfunktionen</span> ($f(x) = a \cdot q^x$ oder $f(x) = a \cdot e^{kx}$): Beschreiben prozentuales Wachstum/Zerfall. Der Graph nähert sich einer Seite immer der x-Achse an, schneidet sie aber nie.</li>
+                </ul>
+
+                <h3 id="sec-1-1">Potenzfunktionen ($f(x) = a \cdot x^n$)</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <tr>
+                            <th>Exponent $n$</th>
+                            <th>Eigenschaften & Form</th>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">gerade</span> (z. B. $x^2, x^4$)</td>
+                            <td>Parabelähnlich, U-förmig.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">ungerade</span> (z. B. $x^3, x^5$)</td>
+                            <td>S-förmig, gehen durch den Ursprung.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">negativ</span> (z. B. $x^{-1} = \frac{1}{x}$)</td>
+                            <td>Hyperbeln mit Definitionslücke bei $x=0$.</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h2 id="sec-2">2. Funktionseigenschaften (Vokabular)</h2>
+                <p>Diese Begriffe sind Standard für jede Kurvendiskussion:</p>
                 <div class="flashcards-container">
                     <div class="flashcard">
                         <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Demokratie</span></div>
-                            <div class="flashcard-back"><p style="display:block;">Volkssouveränität (Macht beim Volk), Wahlen.</p></div>
+                            <div class="flashcard-front"><span style="display:block;">Definitionsmenge $\mathbb{D}$<br>& Wertemenge $\mathbb{W}$</span></div>
+                            <div class="flashcard-back">
+                                <span style="display:block; font-size: 0.9em;">
+                                    $\mathbb{D}$: Welche $x$-Werte darf ich einsetzen?<br><br>
+                                    <span class="highlight">Verbotszonen:</span><br>
+                                    Nenner $\neq 0$<br>
+                                    Wurzel aus negativen Zahlen<br><br>
+                                    $\mathbb{W}$: Welche $y$-Werte kommen heraus?
+                                </span>
+                            </div>
                         </div>
                     </div>
                     <div class="flashcard">
                         <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Rechtsstaat</span></div>
-                            <div class="flashcard-back"><p style="display:block;">Gesetzesbindung allen Handelns, Gewaltenteilung, unabhängige Justiz.</p></div>
+                            <div class="flashcard-front"><span style="display:block;">Monotonie<br>& Asymptoten</span></div>
+                            <div class="flashcard-back">
+                                <span style="display:block; font-size: 0.9em;">
+                                    <span class="highlight">Monotonie:</span> Steigungsverhalten.<br>
+                                    Geht der Graph bergauf (steigend) oder bergab (fallend)?<br><br>
+                                    <span class="highlight">Asymptoten:</span> Hilfslinien (Geraden), denen sich der Graph im Unendlichen oder an Definitionslücken annähert.
+                                </span>
+                            </div>
                         </div>
                     </div>
                     <div class="flashcard">
                         <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Bundesstaat</span></div>
-                            <div class="flashcard-back"><p style="display:block;">16 Länder, Machtaufteilung Bund/Länder (Föderalismus).</p></div>
-                        </div>
-                    </div>
-                    <div class="flashcard">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Sozialstaat</span></div>
-                            <div class="flashcard-back"><p style="display:block;">Soziale Sicherheit & Gerechtigkeit.</p></div>
+                            <div class="flashcard-front"><span style="display:block;">Symmetrie</span></div>
+                            <div class="flashcard-back">
+                                <span style="display:block; font-size: 0.9em;">
+                                    <span class="highlight">Achsensymmetrie (y-Achse):</span><br>
+                                    $f(-x) = f(x)$<br>
+                                    (oft bei nur geraden Exponenten)<br><br>
+                                    <span class="highlight">Punktsymmetrie (Ursprung):</span><br>
+                                    $f(-x) = -f(x)$<br>
+                                    (oft bei nur ungeraden Exponenten)
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <h3 id="sec-1-1">Horizontale Gewaltenteilung (Institutionen)</h3>
-                <ul>
-                    <li><span class="highlight">Legislative:</span> Bundestag (Volksvertretung) & Bundesrat (Ländervertretung).</li>
-                    <li><span class="highlight">Exekutive:</span> Bundesregierung (Kanzler + Minister = Leitung) & Bundespräsident (Staatsoberhaupt, Prüfung/Repräsentation).</li>
-                    <li><span class="highlight">Judikative:</span> Bundesverfassungsgericht (BVerfG) (Normenkontrolle, "Hüter der Verfassung").</li>
-                </ul>
-
-                <h3 id="sec-1-2">Checks and Balances (Kontrolle)</h3>
-                <ul>
-                    <li><span class="highlight">Konstruktives Misstrauensvotum:</span> Kanzlersturz nur durch gleichzeitige Neuwahl eines Nachfolgers möglich.</li>
-                    <li><span class="highlight">Vertrauensfrage:</span> Kanzler fordert Bestätigung der Mehrheit im Bundestag.</li>
-                </ul>
             </div>
             <div class="page-footer">
-                <span>[Politisches System der BRD]</span>
+                <span>[Analysis & Funktionen]</span>
                 <span>Olga V.</span>
                 <span>Seite 1</span>
             </div>
         </div>
 
-        <!-- Seite 2 -->
+        <!-- SEITE 2 -->
         <div class="page">
             <div class="card" id="thema-2">
-                <h2 id="sec-2">2. Gesetzgebungsprozess auf Bundesebene</h2>
+                <h2 id="sec-3">3. Graphentransformation</h2>
+                <p>Wie verändert sich der Graph, wenn man Parameter zur Gleichung hinzufügt? Gegeben sei eine Ausgangsfunktion $f(x)$ (z. B. $f(x) = x^2$):</p>
                 
-                <ol>
-                    <li>
-                        <span class="highlight">Initiativrecht</span> (Art. 76 GG): Wer darf Entwürfe einbringen?
-                        <ul>
-                            <li>Bundesregierung (~80 % der Gesetze)</li>
-                            <li>Bundesrat (Länderinteressen)</li>
-                            <li>Mitte des Bundestages (min. 5 % der Abgeordneten / Fraktion)</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <span class="highlight">Bundestag (3 Lesungen):</span> Beratung und Abstimmung.
-                        <ul>
-                            <li><strong>1. Lesung:</strong> Grundsatzdebatte, Überweisung an Ausschüsse.</li>
-                            <li><strong>Ausschussarbeit:</strong> "Arbeitsparlament" – Fachexperten feilen an Details.</li>
-                            <li><strong>2. & 3. Lesung:</strong> Plenum-Debatte & Schlussabstimmung (meist einfache Mehrheit).</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <span class="highlight">Bundesrat:</span> Beteiligung der Länder.
-                        <ul>
-                            <li><strong>Zustimmungsgesetz</strong> (betrifft Länderfinanzen/-verwaltung): Absolutes Veto (ohne Zustimmung ist das Gesetz gescheitert).</li>
-                            <li><strong>Einspruchsgesetz</strong> (übrige Gesetze): Suspensives Veto (vom Bundestag überstimmbar).</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <span class="highlight">Vermittlungsausschuss:</span> Bei Konflikten zwischen BT und BR.
-                        <ul>
-                            <li>Gremium (16 BT- und 16 BR-Mitglieder) verhandelt einen politischen Kompromiss hinter verschlossenen Türen.</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <span class="highlight">Ausfertigung & Verkündung:</span> Der formale Abschluss.
-                        <ul>
-                            <li>Bundespräsident prüft formell/materiell und unterschreibt.</li>
-                            <li>Verkündung im Bundesgesetzblatt (Gesetz tritt in Kraft).</li>
-                        </ul>
-                    </li>
-                </ol>
+                <div class="table-wrapper">
+                    <table>
+                        <tr>
+                            <th>Transformation</th>
+                            <th>Regel / Formel</th>
+                            <th>Auswirkung</th>
+                        </tr>
+                        <tr>
+                            <td>Verschiebung <span class="highlight">y-Richtung</span></td>
+                            <td>$g(x) = f(x) \mathbf{+ c}$</td>
+                            <td>Verschiebung um $c$ nach oben/unten (wird am Ende addiert/subtrahiert).</td>
+                        </tr>
+                        <tr>
+                            <td>Verschiebung <span class="highlight">x-Richtung</span></td>
+                            <td>$g(x) = f(x \mathbf{- d})$</td>
+                            <td>Das $x$ wird ersetzt. <br>Achtung: Ein Minus verschiebt nach rechts, ein Plus nach links!</td>
+                        </tr>
+                        <tr>
+                            <td>Streckung/Stauchung <span class="highlight">y-Richtung</span></td>
+                            <td>$g(x) = \mathbf{a \cdot} f(x)$</td>
+                            <td>$a > 1$: steiler/gestreckt<br>$0 < a < 1$: flacher/gestaucht</td>
+                        </tr>
+                        <tr>
+                            <td>Spiegelung an <span class="highlight">x-Achse</span></td>
+                            <td>$\mathbf{-}f(x)$</td>
+                            <td>Graph kippt nach unten.</td>
+                        </tr>
+                        <tr>
+                            <td>Spiegelung an <span class="highlight">y-Achse</span></td>
+                            <td>$f(\mathbf{-}x)$</td>
+                            <td>Graph klappt von links nach rechts.</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h2 id="sec-4">4. Grundlagen der Ableitung (Propädeutik)</h2>
+                <p>Das ist die Brücke zur Differentialrechnung in der Kursstufe. Es geht um <span class="highlight">Änderungsraten (Steigungen)</span>.</p>
+
+                <h3 id="sec-4-1">Änderungsraten</h3>
+                <ul>
+                    <li><span class="highlight">Mittlere Änderungsrate (Differenzenquotient):</span> Berechnet die durchschnittliche Steigung zwischen zwei Punkten auf dem Graphen (Sekantensteigung). Entspricht der Formel aus Klasse 8:<br>
+                    $m = \frac{y_2 - y_1}{x_2 - x_1} = \frac{f(x_2) - f(x_1)}{x_2 - x_1}$</li>
+                    <li><span class="highlight">Lokale Änderungsrate (Ableitung):</span> Die Steigung in genau einem bestimmten Punkt des Graphen (Tangentensteigung). Wird mit $f'(x)$ bezeichnet.</li>
+                </ul>
+
+                <h3 id="sec-4-2">Besondere Punkte des Graphen</h3>
+                <div class="flashcards-container">
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span style="display:block;">Extremstellen<br>(Hoch- und Tiefpunkte)</span></div>
+                            <div class="flashcard-back">
+                                <span style="display:block; font-size: 0.9em;">
+                                    <span class="highlight">Visuell:</span> Graph hat einen "Gipfel" oder "Tal". Die Monotonie wechselt.<br><br>
+                                    <span class="highlight">Algebraisch:</span> An diesen Punkten ist der Graph waagerecht, die Steigung ist also null.<br>
+                                    $\rightarrow f'(x) = 0$
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span style="display:block;">Krümmungsverhalten</span></div>
+                            <div class="flashcard-back">
+                                <span style="display:block; font-size: 0.9em;">
+                                    Fährst du den Graphen von oben mit dem Fahrrad ab:<br><br>
+                                    <span class="highlight">Linkskrümmung:</span> Du lenkst nach links (U-Form).<br><br>
+                                    <span class="highlight">Rechtskrümmung:</span> Du lenkst nach rechts (Berg-Form).
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span style="display:block;">Wendepunkt</span></div>
+                            <div class="flashcard-back">
+                                <span style="display:block; font-size: 0.9em;">
+                                    Der Punkt, an dem du das Lenkrad gerade hältst, um die Krümmung zu wechseln.<br><br>
+                                    Hier ist die <span class="highlight">Steigung am extremsten</span>.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <div class="page-footer">
-                <span>[Politisches System der BRD]</span>
+                <span>[Analysis & Funktionen]</span>
                 <span>Olga V.</span>
                 <span>Seite 2</span>
             </div>
         </div>
 
-        <!-- Seite 3 -->
-        <div class="page">
-            <div class="card" id="thema-3">
-                <h2 id="sec-3">3. Wahlen & Wahlsystem</h2>
-                
-                <p><span class="highlight">Wahlgrundsätze</span> (Art. 38 GG): Allgemein, unmittelbar (keine Wahlmänner), frei, gleich, geheim.</p>
-                
-                <h3 id="sec-3-1">System: Personalisierte Verhältniswahl</h3>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Merkmal</th>
-                                <th>Erststimme (Person)</th>
-                                <th>Zweitstimme (Partei)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Wahlziel</strong></td>
-                                <td>Direktkandidat im Wahlkreis (299 Wahlkreise)</td>
-                                <td>Landesliste einer Partei</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Regel</strong></td>
-                                <td>Relatives Mehrheitswahlrecht (Meiste Stimmen gewinnen)</td>
-                                <td>Verhältniswahlrecht (Prozente = Sitze)</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Funktion</strong></td>
-                                <td>Sichert regionale Vertretung jeder Region im Parlament</td>
-                                <td>Bestimmt die exakte Machtverteilung <span class="highlight">(Wichtigste Stimme!)</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <h3 id="sec-3-2">Zentrale Mechanismen & aktuelle Reform</h3>
-                <ul>
-                    <li><span class="highlight">5 %-Hürde:</span> Parteien brauchen min. 5 % der Zweitstimmen (oder 3 Direktmandate) für den Einzug (gegen Parteienzersplitterung).</li>
-                    <li><span class="highlight">Wahlrechtsreform (Zweitstimmendeckung):</span> Um den Bundestag auf 630 Sitze zu begrenzen, wurden Ausgleichsmandate gestrichen. Gewinnt eine Partei mehr Direktmandate, als ihr nach Zweitstimmen zustehen (Überhang), ziehen die schwächsten Wahlkreissieger nicht in den Bundestag ein.</li>
-                </ul>
-            </div>
-            <div class="page-footer">
-                <span>[Politisches System der BRD]</span>
-                <span>Olga V.</span>
-                <span>Seite 3</span>
-            </div>
-        </div>
     </div>
 
     <script>

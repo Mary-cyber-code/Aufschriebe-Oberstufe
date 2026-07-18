@@ -739,6 +739,153 @@ body {
 
 
 /* ============================================================
+   MODAL & FORMULAR (KI-Quiz)
+   ============================================================ */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 10000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(45, 58, 46, 0.4);
+  backdrop-filter: blur(3px);
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.modal.show {
+  display: flex;
+  opacity: 1;
+}
+.modal-content {
+  background: var(--paper-cream);
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--gold);
+  width: 90%;
+  max-width: 550px;
+  position: relative;
+  box-shadow: var(--shadow-lifted);
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal.show .modal-content {
+  transform: translateY(0);
+}
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  line-height: 1;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.modal-close:hover { color: var(--forest); }
+.modal-title {
+  font-family: var(--font-heading);
+  color: var(--forest);
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+.modal-desc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-md);
+  line-height: 1.4;
+}
+.form-group {
+  margin-bottom: 1.2rem;
+  text-align: left;
+}
+.form-group label {
+  display: block;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--forest);
+  margin-bottom: 0.4rem;
+}
+.form-control {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-md);
+  background: #fff;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  transition: border-color 0.2s;
+}
+.form-control:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px var(--gold-glow);
+}
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.radio-label {
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  border: none;
+}
+.btn-gold {
+  background: var(--gold);
+  color: #fff;
+  width: 100%;
+}
+.btn-gold:hover { background: var(--gold-dark); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(201, 169, 110, 0.3); }
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--forest);
+  color: var(--forest);
+  padding: 8px 16px;
+  font-size: 0.9rem;
+}
+.btn-outline:hover { background: var(--forest); color: #fff; }
+.quiz-success {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(139, 168, 136, 0.1);
+  border: 1px solid var(--sage-green);
+  border-radius: var(--radius-md);
+  text-align: center;
+  animation: fadeIn 0.4s ease;
+}
+.quiz-success p {
+  color: var(--forest);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 
