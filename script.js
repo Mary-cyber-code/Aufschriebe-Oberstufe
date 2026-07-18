@@ -458,40 +458,60 @@
     var openBtn = document.getElementById('open-quiz-modal');
     var closeBtn = document.getElementById('close-quiz-modal');
     var modal = document.getElementById('quiz-modal');
-    var selectBox = document.getElementById('quiz-topic');
+    
+    var subjectSelect = document.getElementById('quiz-subject');
+    var topicGroup = document.getElementById('quiz-topic-group');
+    var topicSelect = document.getElementById('quiz-topic');
+    
     var generateBtn = document.getElementById('generate-quiz-prompt');
     var successBox = document.getElementById('quiz-success');
     var customText = document.getElementById('quiz-custom');
 
     if (!openBtn || !modal) return;
 
-    // 1. Dropdown befüllen
+    // 1. Dropdown 1 (Fächer) befüllen
     Object.keys(subjectData).forEach(function(key) {
       var fach = subjectData[key];
-      if (fach.categories) {
-        var optgroup = document.createElement('optgroup');
-        optgroup.label = fach.name;
-        
-        var hasTopics = false;
-        fach.categories.forEach(function(cat) {
-          if (cat.topics) {
-            cat.topics.forEach(function(t) {
-              var opt = document.createElement('option');
-              opt.value = t.link;
-              opt.textContent = t.title;
-              optgroup.appendChild(opt);
-              hasTopics = true;
-            });
-          }
-        });
-        
-        if (hasTopics) {
-          selectBox.appendChild(optgroup);
-        }
+      if (fach.categories && fach.categories.length > 0) {
+        var opt = document.createElement('option');
+        opt.value = key;
+        opt.textContent = fach.name;
+        subjectSelect.appendChild(opt);
       }
     });
 
-    // 2. Modal öffnen / schließen
+    // 2. Wenn Fach gewählt wird -> Dropdown 2 (Themen inkl. Ordner) befüllen
+    subjectSelect.addEventListener('change', function() {
+      var fachKey = this.value;
+      topicSelect.innerHTML = '<option value="">-- Bitte wählen --</option>';
+      
+      if (!fachKey) {
+        topicGroup.style.display = 'none';
+        return;
+      }
+
+      var fach = subjectData[fachKey];
+      
+      fach.categories.forEach(function(cat) {
+        if (cat.topics && cat.topics.length > 0) {
+          var optgroup = document.createElement('optgroup');
+          optgroup.label = "Ordner: " + cat.name;
+          
+          cat.topics.forEach(function(t) {
+            var opt = document.createElement('option');
+            opt.value = t.link;
+            opt.textContent = t.title;
+            optgroup.appendChild(opt);
+          });
+          
+          topicSelect.appendChild(optgroup);
+        }
+      });
+      
+      topicGroup.style.display = 'block';
+    });
+
+    // 3. Modal öffnen / schließen
     openBtn.addEventListener('click', function() {
       modal.classList.add('show');
       successBox.style.display = 'none';
@@ -508,17 +528,17 @@
       if (e.target === modal) modal.classList.remove('show');
     });
 
-    // 3. Prompt generieren
+    // 4. Prompt generieren
     generateBtn.addEventListener('click', function() {
-      var link = selectBox.value;
+      var link = topicSelect.value;
       if (!link) {
-        alert("Bitte wähle zuerst einen Lernzettel aus!");
+        alert("Bitte wähle zuerst ein Fach und einen Lernzettel aus!");
         return;
       }
       
       var afbElement = document.querySelector('input[name="quiz-afb"]:checked');
       var afb = afbElement ? afbElement.value : "AFB II";
-      var topicName = selectBox.options[selectBox.selectedIndex].text;
+      var topicName = topicSelect.options[topicSelect.selectedIndex].text;
       var extra = customText.value.trim();
 
       generateBtn.textContent = 'Lade Lernzettel...';
@@ -534,9 +554,20 @@
           var parser = new DOMParser();
           var doc = parser.parseFromString(html, "text/html");
           
-          // Reinen Text extrahieren (ohne Navigation etc., falls wir eine Page-Class haben)
-          var mainContent = doc.querySelector('.page') || doc.body;
-          var textContent = mainContent.innerText || mainContent.textContent;
+          var textContent = "";
+          
+          // NEU: Alle Seiten durchsuchen anstatt nur der Ersten!
+          var pages = doc.querySelectorAll('.page');
+          if (pages.length > 0) {
+            pages.forEach(function(page, index) {
+              textContent += "--- SEITE " + (index + 1) + " ---\n";
+              textContent += (page.innerText || page.textContent) + "\n\n";
+            });
+          } else {
+            // Fallback
+            var mainContent = doc.querySelector('.content-wrapper') || doc.body;
+            textContent = mainContent.innerText || mainContent.textContent;
+          }
           
           // Zu viele Leerzeilen bereinigen
           textContent = textContent.replace(/[\r\n]{3,}/g, '\n\n').trim();
@@ -569,6 +600,152 @@
   }
 
   /* ──────────────────────────────────────────────────────────
+     ANKI GENERATOR MODAL
+     ────────────────────────────────────────────────────────── */
+  function initAnkiGenerator() {
+    var openBtn = document.getElementById('open-anki-modal');
+    var closeBtn = document.getElementById('close-anki-modal');
+    var modal = document.getElementById('anki-modal');
+    
+    var subjectSelect = document.getElementById('anki-subject');
+    var topicGroup = document.getElementById('anki-topic-group');
+    var topicSelect = document.getElementById('anki-topic');
+    
+    var generateBtn = document.getElementById('generate-anki-prompt');
+    var successBox = document.getElementById('anki-success');
+    var customText = document.getElementById('anki-custom');
+
+    if (!openBtn || !modal) return;
+
+    // 1. Dropdown 1 (Fächer) befüllen
+    Object.keys(subjectData).forEach(function(key) {
+      var fach = subjectData[key];
+      if (fach.categories && fach.categories.length > 0) {
+        var opt = document.createElement('option');
+        opt.value = key;
+        opt.textContent = fach.name;
+        subjectSelect.appendChild(opt);
+      }
+    });
+
+    // 2. Wenn Fach gewählt wird -> Dropdown 2 (Themen inkl. Ordner) befüllen
+    subjectSelect.addEventListener('change', function() {
+      var fachKey = this.value;
+      topicSelect.innerHTML = '<option value="">-- Bitte wählen --</option>';
+      
+      if (!fachKey) {
+        topicGroup.style.display = 'none';
+        return;
+      }
+
+      var fach = subjectData[fachKey];
+      
+      fach.categories.forEach(function(cat) {
+        if (cat.topics && cat.topics.length > 0) {
+          var optgroup = document.createElement('optgroup');
+          optgroup.label = "Ordner: " + cat.name;
+          
+          cat.topics.forEach(function(t) {
+            var opt = document.createElement('option');
+            opt.value = t.link;
+            opt.textContent = t.title;
+            optgroup.appendChild(opt);
+          });
+          
+          topicSelect.appendChild(optgroup);
+        }
+      });
+      
+      topicGroup.style.display = 'block';
+    });
+
+    // 3. Modal öffnen / schließen
+    openBtn.addEventListener('click', function() {
+      modal.classList.add('show');
+      successBox.style.display = 'none';
+      generateBtn.style.display = 'inline-flex';
+      generateBtn.disabled = false;
+      generateBtn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="M8 17.929H6c-1.105 0-2-.912-2-2.036V5.036C4 3.91 4.895 3 6 3h8c1.105 0 2 .911 2 2.036v1.866m-6 .17h8c1.105 0 2 .91 2 2.035v10.857C20 21.09 19.105 22 18 22h-8c-1.105 0-2-.911-2-2.036V9.107c0-1.124.895-2.036 2-2.036z"/></svg> Prompt generieren & kopieren';
+    });
+
+    closeBtn.addEventListener('click', function() {
+      modal.classList.remove('show');
+    });
+
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) modal.classList.remove('show');
+    });
+
+    // 4. Prompt generieren
+    generateBtn.addEventListener('click', function() {
+      var link = topicSelect.value;
+      if (!link) {
+        alert("Bitte wähle zuerst ein Fach und einen Lernzettel aus!");
+        return;
+      }
+      
+      var topicName = topicSelect.options[topicSelect.selectedIndex].text;
+      var extra = customText.value.trim();
+
+      generateBtn.textContent = 'Lade Lernzettel...';
+      generateBtn.disabled = true;
+
+      fetch(link)
+        .then(function(res) {
+          if (!res.ok) throw new Error("Datei konnte nicht geladen werden.");
+          return res.text();
+        })
+        .then(function(html) {
+          // HTML parsen
+          var parser = new DOMParser();
+          var doc = parser.parseFromString(html, "text/html");
+          var textContent = "";
+          
+          var pages = doc.querySelectorAll('.page');
+          if (pages.length > 0) {
+            pages.forEach(function(page) {
+              textContent += (page.innerText || page.textContent) + "\n\n";
+            });
+          } else {
+            var mainContent = doc.querySelector('.content-wrapper') || doc.body;
+            textContent = mainContent.innerText || mainContent.textContent;
+          }
+          
+          // Zu viele Leerzeilen bereinigen
+          textContent = textContent.replace(/[\r\n]{3,}/g, '\n\n').trim();
+
+          // Baue den Prompt für Anki
+          var prompt = "Du bist ein Experte im Erstellen von Lernmaterialien und Karteikarten.\n\n";
+          prompt += "Ich möchte Karteikarten für das Programm 'Anki' zum Thema \"" + topicName + "\" erstellen.\n";
+          prompt += "Bitte lies dir den folgenden Text durch und erstelle daraus detaillierte, gut lernbare Karteikarten.\n\n";
+          prompt += "WICHTIGE REGELN FÜR DEINE ANTWORT:\n";
+          prompt += "1. Antworte AUSSCHLIESSLICH mit dem CSV-Text. Kein Hallo, keine Erklärungen, kein Markdown-Codeblock.\n";
+          prompt += "2. Das Format jeder Zeile muss exakt so aussehen: Frage;Antwort\n";
+          prompt += "3. Halte die Fragen präzise und die Antworten kurz und einprägsam. Achte darauf, dass innerhalb der Antwort keine Zeilenumbrüche stehen, sondern schreibe sie in einen fortlaufenden Satz oder trenne mit Kommata.\n";
+          
+          if (extra) {
+            prompt += "4. Zusätzliche Wünsche des Schülers:\n" + extra + "\n\n";
+          }
+          
+          prompt += "\nHier ist der Text, den du als einzige Grundlage nutzen sollst:\n";
+          prompt += "----------------------------------------\n";
+          prompt += textContent + "\n";
+          prompt += "----------------------------------------\n";
+
+          return navigator.clipboard.writeText(prompt);
+        })
+        .then(function() {
+          successBox.style.display = 'block';
+          generateBtn.style.display = 'none';
+        })
+        .catch(function(err) {
+          alert("Fehler beim Laden des Lernzettels: " + err.message);
+          generateBtn.textContent = 'Fehler aufgetreten';
+        });
+    });
+  }
+
+  /* ──────────────────────────────────────────────────────────
      INITIALISIERUNG
      ────────────────────────────────────────────────────────── */
   function init() {
@@ -576,6 +753,7 @@
     initParallax();
     initFullscreen();
     initQuizGenerator();
+    initAnkiGenerator();
 
     /* Direkt-Link via Hash (z. B. index.html#chemie) */
     var hash = window.location.hash.slice(1);
