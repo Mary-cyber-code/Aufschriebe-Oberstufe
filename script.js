@@ -782,6 +782,215 @@
   }
 
   /* ──────────────────────────────────────────────────────────
+     ABI-COUNTDOWN
+     ────────────────────────────────────────────────────────── */
+  function initCountdown() {
+    var STORAGE_KEY = 'abi_countdown_exams';
+
+    var openBtn = document.getElementById('open-countdown-modal');
+    var closeBtn = document.getElementById('close-countdown-modal');
+    var modal = document.getElementById('countdown-modal');
+    var entriesDiv = document.getElementById('countdown-entries');
+    var addBtn = document.getElementById('add-exam-entry');
+    var saveBtn = document.getElementById('save-countdown');
+    var savedMsg = document.getElementById('countdown-saved-msg');
+    var syncBtn = document.getElementById('generate-sync-link');
+    var syncMsg = document.getElementById('sync-link-msg');
+
+    var banner = document.getElementById('countdown-banner');
+    var bannerExam = document.getElementById('countdown-next-exam');
+    var bannerDays = document.getElementById('countdown-days-left');
+
+    if (!openBtn || !modal) return;
+
+    // --- Hilfsfunktionen ---
+    function loadExams() {
+      try {
+        var data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        return Array.isArray(data) ? data : [];
+      } catch(e) {
+        return [];
+      }
+    }
+
+    function saveExams(exams) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(exams));
+    }
+
+    function daysUntil(dateStr) {
+      var target = new Date(dateStr + 'T00:00:00');
+      var today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return Math.ceil((target - today) / (1000 * 60 * 60 * 24));
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      var parts = dateStr.split('-');
+      return parts[2] + '.' + parts[1] + '.' + parts[0];
+    }
+
+    // --- Eintrag erstellen ---
+    function createEntryRow(exam) {
+      var row = document.createElement('div');
+      row.style.cssText = 'display: flex; gap: 8px; margin-bottom: 10px; align-items: center;';
+
+      var nameInput = document.createElement('input');
+      nameInput.type = 'text';
+      nameInput.className = 'form-control';
+      nameInput.placeholder = 'z.B. Mathe LK';
+      nameInput.value = exam ? exam.name : '';
+      nameInput.style.cssText = 'flex: 1; padding: 8px 10px; font-size: 0.9rem;';
+
+      var dateInput = document.createElement('input');
+      dateInput.type = 'date';
+      dateInput.className = 'form-control';
+      dateInput.value = exam ? exam.date : '';
+      dateInput.style.cssText = 'flex: 1; padding: 8px 10px; font-size: 0.9rem;';
+
+      var removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.textContent = '\u00d7';
+      removeBtn.style.cssText = 'background: none; border: 1px solid #ccc; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 1.2rem; color: var(--text-secondary); flex-shrink: 0;';
+      removeBtn.addEventListener('click', function() {
+        row.remove();
+      });
+
+      row.appendChild(nameInput);
+      row.appendChild(dateInput);
+      row.appendChild(removeBtn);
+      return row;
+    }
+
+    // --- Dashboard-Banner aktualisieren ---
+    function updateBanner() {
+      var exams = loadExams();
+      if (exams.length === 0) {
+        banner.style.display = 'none';
+        return;
+      }
+
+      // Finde die n\u00e4chste zuk\u00fcnftige Pr\u00fcfung
+      var now = new Date();
+      now.setHours(0, 0, 0, 0);
+      var upcoming = exams.filter(function(e) { return e.date && daysUntil(e.date) >= 0; });
+      upcoming.sort(function(a, b) { return new Date(a.date) - new Date(b.date); });
+
+      if (upcoming.length === 0) {
+        banner.style.display = 'none';
+        return;
+      }
+
+      var next = upcoming[0];
+      var days = daysUntil(next.date);
+
+      bannerExam.textContent = next.name + ' \u2013 ' + formatDate(next.date);
+
+      if (days === 0) {
+        bannerDays.textContent = '\ud83d\udca5 Heute ist es soweit! Viel Erfolg!';
+      } else if (days === 1) {
+        bannerDays.textContent = '\u23f3 Noch 1 Tag \u2013 Du schaffst das!';
+      } else {
+        bannerDays.textContent = '\u23f3 Noch ' + days + ' Tage';
+      }
+
+      if (upcoming.length > 1) {
+        bannerDays.textContent += '  \u00b7  ' + (upcoming.length - 1) + ' weitere Pr\u00fcfung' + (upcoming.length > 2 ? 'en' : '') + ' geplant';
+      }
+
+      banner.style.display = 'block';
+    }
+
+    // --- URL-Parameter pr\u00fcfen (Sync-Link) ---
+    function importFromURL() {
+      var params = new URLSearchParams(window.location.search);
+      var syncData = params.get('abi_sync');
+      if (syncData) {
+        try {
+          var exams = JSON.parse(decodeURIComponent(syncData));
+          if (Array.isArray(exams) && exams.length > 0) {
+            saveExams(exams);
+            // URL aufr\u00e4umen (sync-Parameter entfernen)
+            var cleanUrl = window.location.origin + window.location.pathname + window.location.hash;
+            window.history.replaceState({}, '', cleanUrl);
+          }
+        } catch(e) {
+          // Fehlerhafte Daten ignorieren
+        }
+      }
+    }
+
+    // --- Modal \u00f6ffnen ---
+    openBtn.addEventListener('click', function() {
+      entriesDiv.innerHTML = '';
+      savedMsg.style.display = 'none';
+      syncMsg.style.display = 'none';
+
+      var exams = loadExams();
+      if (exams.length === 0) {
+        entriesDiv.appendChild(createEntryRow(null));
+      } else {
+        exams.forEach(function(exam) {
+          entriesDiv.appendChild(createEntryRow(exam));
+        });
+      }
+
+      modal.classList.add('show');
+    });
+
+    closeBtn.addEventListener('click', function() {
+      modal.classList.remove('show');
+    });
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) modal.classList.remove('show');
+    });
+
+    // --- Neuen Eintrag hinzuf\u00fcgen ---
+    addBtn.addEventListener('click', function() {
+      entriesDiv.appendChild(createEntryRow(null));
+    });
+
+    // --- Speichern ---
+    saveBtn.addEventListener('click', function() {
+      var rows = entriesDiv.querySelectorAll('div');
+      var exams = [];
+      rows.forEach(function(row) {
+        var inputs = row.querySelectorAll('input');
+        if (inputs.length >= 2) {
+          var name = inputs[0].value.trim();
+          var date = inputs[1].value;
+          if (name && date) {
+            exams.push({ name: name, date: date });
+          }
+        }
+      });
+      saveExams(exams);
+      updateBanner();
+      savedMsg.style.display = 'block';
+      setTimeout(function() { savedMsg.style.display = 'none'; }, 3000);
+    });
+
+    // --- Sync-Link erstellen ---
+    syncBtn.addEventListener('click', function() {
+      var exams = loadExams();
+      if (exams.length === 0) {
+        alert('Bitte speichere zuerst mindestens einen Termin!');
+        return;
+      }
+      var encoded = encodeURIComponent(JSON.stringify(exams));
+      var syncUrl = window.location.origin + window.location.pathname + '?abi_sync=' + encoded;
+      navigator.clipboard.writeText(syncUrl).then(function() {
+        syncMsg.style.display = 'block';
+        setTimeout(function() { syncMsg.style.display = 'none'; }, 5000);
+      });
+    });
+
+    // --- Initialisierung ---
+    importFromURL();
+    updateBanner();
+  }
+
+  /* ──────────────────────────────────────────────────────────
      INITIALISIERUNG
      ────────────────────────────────────────────────────────── */
   function init() {
@@ -790,6 +999,7 @@
     initFullscreen();
     initQuizGenerator();
     initAnkiGenerator();
+    initCountdown();
 
     /* Direkt-Link via Hash (z. B. index.html#chemie) */
     var hash = window.location.hash.slice(1);
