@@ -747,7 +747,7 @@
         });
     });
 
-    // 5. CSV Datei generieren & herunterladen
+    // 5. TXT Datei generieren & herunterladen (Anki-kompatibel mit Tabs)
     downloadBtn.addEventListener('click', function() {
       var content = pasteArea.value.trim();
       if (!content) {
@@ -755,15 +755,26 @@
         return;
       }
       
+      // Konvertiere ; zu Tab (\t) für perfekten Anki-Import
+      var lines = content.split('\n');
+      var processedLines = lines.map(function(line) {
+        var firstSemi = line.indexOf(';');
+        if (firstSemi !== -1) {
+          return line.substring(0, firstSemi) + '\t' + line.substring(firstSemi + 1);
+        }
+        return line;
+      });
+      var finalContent = processedLines.join('\n');
+      
       // UTF-8 BOM hinzufügen für korrekte Umlaute in Excel/Anki
       var bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
-      var blob = new Blob([bom, content], { type: 'text/csv;charset=utf-8;' });
+      var blob = new Blob([bom, finalContent], { type: 'text/plain;charset=utf-8;' });
       var url = URL.createObjectURL(blob);
       
       var link = document.createElement('a');
       link.href = url;
       var safeName = topicSelect.options[topicSelect.selectedIndex].text.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-      link.download = safeName + '_karteikarten.csv';
+      link.download = safeName + '_karteikarten.txt';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
