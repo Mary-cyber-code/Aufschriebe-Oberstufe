@@ -782,6 +782,141 @@
   }
 
   /* ──────────────────────────────────────────────────────────
+     GEMINI NOTEBOOK EXPORT
+     ────────────────────────────────────────────────────────── */
+  function initNotebookExport() {
+    var openBtn = document.getElementById('open-notebook-modal');
+    var closeBtn = document.getElementById('close-notebook-modal');
+    var modal = document.getElementById('notebook-modal');
+    
+    var subjectSelect = document.getElementById('notebook-subject');
+    var topicGroup = document.getElementById('notebook-topic-group');
+    var topicSelect = document.getElementById('notebook-topic');
+    
+    var downloadBtn = document.getElementById('download-notebook-txt');
+    var successBox = document.getElementById('notebook-success');
+
+    if (!openBtn || !modal) return;
+
+    // 1. Dropdown 1 (Fächer) befüllen
+    Object.keys(subjectData).forEach(function(key) {
+      var fach = subjectData[key];
+      if (fach.categories && fach.categories.length > 0) {
+        var opt = document.createElement('option');
+        opt.value = key;
+        opt.textContent = fach.name;
+        subjectSelect.appendChild(opt);
+      }
+    });
+
+    // 2. Wenn Fach gewählt wird -> Themen befüllen
+    subjectSelect.addEventListener('change', function() {
+      var fachKey = this.value;
+      topicSelect.innerHTML = '<option value="">-- Bitte w\u00e4hlen --</option>';
+      
+      if (!fachKey) {
+        topicGroup.style.display = 'none';
+        return;
+      }
+
+      var fach = subjectData[fachKey];
+      
+      fach.categories.forEach(function(cat) {
+        if (cat.topics && cat.topics.length > 0) {
+          var optgroup = document.createElement('optgroup');
+          optgroup.label = "Ordner: " + cat.name;
+          
+          cat.topics.forEach(function(t) {
+            var opt = document.createElement('option');
+            opt.value = t.link;
+            opt.textContent = t.title;
+            optgroup.appendChild(opt);
+          });
+          
+          topicSelect.appendChild(optgroup);
+        }
+      });
+      
+      topicGroup.style.display = 'block';
+    });
+
+    // 3. Modal öffnen / schließen
+    openBtn.addEventListener('click', function() {
+      modal.classList.add('show');
+      successBox.style.display = 'none';
+      downloadBtn.disabled = false;
+      downloadBtn.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Als .txt herunterladen';
+    });
+
+    closeBtn.addEventListener('click', function() {
+      modal.classList.remove('show');
+    });
+
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) modal.classList.remove('show');
+    });
+
+    // 4. Textdatei herunterladen
+    downloadBtn.addEventListener('click', function() {
+      var link = topicSelect.value;
+      if (!link) {
+        alert("Bitte w\u00e4hle zuerst ein Fach und einen Lernzettel aus!");
+        return;
+      }
+      
+      var topicName = topicSelect.options[topicSelect.selectedIndex].text;
+
+      downloadBtn.textContent = 'Lade Lernzettel...';
+      downloadBtn.disabled = true;
+
+      fetch(link)
+        .then(function(res) {
+          if (!res.ok) throw new Error("Datei konnte nicht geladen werden.");
+          return res.text();
+        })
+        .then(function(html) {
+          var parser = new DOMParser();
+          var doc = parser.parseFromString(html, "text/html");
+          var textContent = "";
+          
+          var pages = doc.querySelectorAll('.page');
+          if (pages.length > 0) {
+            pages.forEach(function(page, i) {
+              textContent += "--- Seite " + (i + 1) + " ---\n\n";
+              textContent += (page.innerText || page.textContent) + "\n\n";
+            });
+          } else {
+            var mainContent = doc.querySelector('.content-wrapper') || doc.body;
+            textContent = mainContent.innerText || mainContent.textContent;
+          }
+          
+          textContent = textContent.replace(/[\r\n]{3,}/g, '\n\n').trim();
+
+          // Datei erstellen und herunterladen
+          var bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+          var blob = new Blob([bom, textContent], { type: 'text/plain;charset=utf-8;' });
+          var url = URL.createObjectURL(blob);
+          
+          var a = document.createElement('a');
+          a.href = url;
+          var safeName = topicName.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+          a.download = safeName + '.txt';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+
+          successBox.style.display = 'block';
+          downloadBtn.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Als .txt herunterladen';
+          downloadBtn.disabled = false;
+        })
+        .catch(function(err) {
+          alert("Fehler beim Laden des Lernzettels: " + err.message);
+          downloadBtn.textContent = 'Fehler aufgetreten';
+        });
+    });
+  }
+
+  /* ──────────────────────────────────────────────────────────
      INITIALISIERUNG
      ────────────────────────────────────────────────────────── */
   function init() {
@@ -790,6 +925,7 @@
     initFullscreen();
     initQuizGenerator();
     initAnkiGenerator();
+    initNotebookExport();
 
     /* Direkt-Link via Hash (z. B. index.html#chemie) */
     var hash = window.location.hash.slice(1);
