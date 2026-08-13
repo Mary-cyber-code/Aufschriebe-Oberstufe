@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -149,24 +149,27 @@
             .nav-btn { padding: 6px 10px; font-size: 0.8rem; }
             nav { padding: 10px; }
         }
-
         @media print {
+            @page { size: A4; margin: 0; }
             body { background-color: white !important; padding-top: 0 !important; font-size: 0.85rem !important; line-height: 1.4 !important; }
             h1 { font-size: 1.7rem !important; margin-bottom: 1rem !important; padding-bottom: 0.5rem !important; }
-            h2 { font-size: 1.3rem !important; margin-top: 1rem !important; padding-bottom: 0.2rem !important; }
-            h3 { font-size: 1.1rem !important; margin-top: 0.8rem !important; margin-bottom: 0.3rem !important; }
+            h2 { font-size: 1.3rem !important; margin-top: 1rem !important; padding-bottom: 0.2rem !important; break-after: avoid !important; }
+            h3 { font-size: 1.1rem !important; margin-top: 0.8rem !important; margin-bottom: 0.3rem !important; break-after: avoid !important; }
             p, ul, ol { margin-bottom: 0.6rem !important; }
             li { margin-bottom: 0.2rem !important; }
             th, td { padding: 6px 10px !important; }
+            table { break-inside: avoid !important; }
             nav { display: none !important; }
             .content-wrapper { margin: 0; padding: 0; }
-            .page { margin: 0; box-shadow: none; width: auto; height: auto !important; min-height: 297mm; padding: 15mm !important; display: flex; flex-direction: column; overflow: visible !important; break-after: page; }
-            .card { background: transparent; border: none; padding: 0; box-shadow: none; }
+            .page { margin: 0; box-shadow: none; width: 210mm; min-height: 297mm; height: 297mm; padding: 15mm !important; display: block; overflow: hidden !important; break-after: page; break-before: auto; page-break-after: always; box-sizing: border-box; }
+            .page:last-child { break-after: auto; page-break-after: auto; }
+            .card { background: transparent; border: none; padding: 0; box-shadow: none; break-inside: avoid !important; }
             .flashcards-container { display: grid; grid-template-columns: repeat(3, 1fr) !important; gap: 6mm !important; }
-            .flashcard { width: auto; height: auto; min-height: auto !important; border: 1px solid #000; border-radius: 0; }
+            .flashcard { width: auto; height: auto; min-height: auto !important; border: 1px solid #000; border-radius: 0; break-inside: avoid !important; }
             .flashcard-inner { transform: none !important; transition: none; display: flex; flex-direction: column; }
             .flashcard-front { position: static; height: auto; border: none; border-bottom: 1px dashed #000; color: #000; background: transparent; transform: none; padding: 6px 10px !important; font-size: 0.95rem !important;}
             .flashcard-back { position: static; height: auto; border: none; color: #000; background: transparent; transform: none; padding: 6px 10px !important;}
+            .page-footer { break-before: auto !important; margin-top: auto; }
         }
     </style>
 </head>
