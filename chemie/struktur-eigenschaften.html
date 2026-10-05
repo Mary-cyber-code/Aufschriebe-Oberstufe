@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -463,6 +463,34 @@
             .flashcard-inner { transform: none !important; transition: none; display: flex; flex-direction: column; }
             .flashcard-front { position: static; height: auto; border: none; border-bottom: 1px dashed #000; color: #000; background: transparent; transform: none; padding: 6px 10px !important; font-size: 0.95rem !important;}
             .flashcard-back { position: static; height: auto; border: none; color: #000; background: transparent; transform: none; padding: 6px 10px !important;}
+        }
+    
+        /* ===== PC-MODUS: Bessere Lesbarkeit auf großen Bildschirmen (Druck-Modus bleibt unverändert) ===== */
+        @media screen and (min-width: 1200px) {
+            html:not(:has(body.print-mode)) { font-size: 18px; }
+            body:not(.print-mode) { font-weight: 500; line-height: 1.7; --text-secondary: #4A5A4C; }
+            body:not(.print-mode) h1 { font-weight: 700; border-bottom-width: 3px; }
+            body:not(.print-mode) h2 { font-weight: 700; border-bottom: 2px solid rgba(201, 169, 110, 0.55); }
+            body:not(.print-mode) h3 { font-weight: 700; }
+            body:not(.print-mode) .highlight { font-weight: 700; }
+            body:not(.print-mode) .card { border-width: 1.5px; padding: 35px 40px; box-shadow: 0 6px 22px rgba(45, 58, 46, 0.07); }
+            body:not(.print-mode) .table-wrapper { border-color: rgba(201, 169, 110, 0.5); }
+            body:not(.print-mode) table { font-size: 1rem; }
+            body:not(.print-mode) th, body:not(.print-mode) td { border-bottom-color: rgba(45, 58, 46, 0.18); }
+            body:not(.print-mode) th { font-weight: 700; }
+            body:not(.print-mode) .flashcard { height: 280px; }
+            body:not(.print-mode) .flashcard-front, body:not(.print-mode) .flashcard-back { border-width: 1.5px; padding: 20px; }
+            body:not(.print-mode) .flashcard-front { font-size: 1.15rem; font-weight: 700; }
+            body:not(.print-mode) .flashcard-back { font-size: 1rem; font-weight: 500; }
+            body:not(.print-mode) .reaction-arrow .arrow-text { font-size: 0.75rem; }
+            body:not(.print-mode) .nav-btn { font-size: 0.95rem; font-weight: 600; border-width: 1.5px; }
+            body:not(.print-mode) .dropdown-item { font-size: 0.95rem; font-weight: 500; }
+            body:not(.print-mode) nav { border-bottom-width: 1.5px; }
+        }
+        @media screen and (min-width: 1700px) {
+            html:not(:has(body.print-mode)) { font-size: 19.5px; }
+            body:not(.print-mode) .content-wrapper { max-width: 1800px; }
+            body:not(.print-mode) .flashcard { height: 300px; }
         }
     </style>
 </head>

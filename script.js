@@ -33,10 +33,13 @@
         '<path d="M5 14h22"/><path d="M16 8L5 14h22z"/>' +
       '</svg>',
 
-    /* Deutsch – Schreibfeder / Stift */
+    /* Deutsch – Buch mit Stift */
     deutsch:
       '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
-        '<path d="M22 5L9 25l-2 3 3-1L23 8z"/><path d="M19 8l4 3"/>' +
+        '<path d="M5 27V7a2 2 0 012-2h14a2 2 0 012 2v20"/>' +
+        '<path d="M5 27h16a2 2 0 002-2"/>' +
+        '<path d="M9 10h8M9 14h5"/>' +
+        '<path d="M24 13l-5 5-.5 2.5L21 20l5-5z"/>' +
       '</svg>',
 
     /* Englisch – aufgeschlagenes Buch */
@@ -52,11 +55,14 @@
         '<path d="M6 26C12 20 20 12 26 6" opacity="0.4"/>' +
       '</svg>',
 
-    /* Kunst – Pinsel */
+    /* Kunst – Farbpalette */
     kunst:
       '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
-        '<path d="M24 4c-4 4-8 9-11 15"/>' +
-        '<path d="M13 19c-2 0-4 2-4 4s2 4 4 4 4-1 4-3-1-3-2-3"/>' +
+        '<path d="M16 4C9.4 4 4 9.4 4 16s5.4 12 12 12c1.1 0 2-.9 2-2 0-.5-.2-1-.5-1.3-.3-.4-.5-.8-.5-1.3 0-1.1.9-2 2-2h2.4c3.6 0 6.6-3 6.6-6.6C28 8.6 22.6 4 16 4z"/>' +
+        '<circle cx="11" cy="12" r="2"/>' +
+        '<circle cx="17" cy="10" r="2"/>' +
+        '<circle cx="22" cy="14" r="2"/>' +
+        '<circle cx="11" cy="19" r="2"/>' +
       '</svg>',
 
     /* Sport – Blitz / Energie */
@@ -65,11 +71,10 @@
         '<path d="M19 4L9 16h7l-4 12 12-14h-7z"/>' +
       '</svg>',
 
-    /* Religion – Sonne */
+    /* Religion – Kreuz */
     religion:
-      '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">' +
-        '<circle cx="16" cy="16" r="5"/>' +
-        '<path d="M16 5v4m0 14v4M5 16h4m14 0h4M8.5 8.5l3 3m9 9l3 3M23.5 8.5l-3 3m-9 9l-3 3"/>' +
+      '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M16 4v24M9 11h14"/>' +
       '</svg>',
 
     /* Geschichte – Sanduhr */
@@ -88,11 +93,11 @@
         '<path d="M5 16h22"/>' +
       '</svg>',
 
-    /* Psychologie – Glühbirne */
+    /* Psychologie – Psi Symbol */
     psychologie:
       '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
-        '<path d="M12 25h8M13 28h6"/>' +
-        '<path d="M12 25c-3-2-5-6-5-10a9 9 0 0118 0c0 4-2 8-5 10"/>' +
+        '<path d="M16 4v24" />' +
+        '<path d="M8 12c0 8 4 10 8 10s8-2 8-10" />' +
       '</svg>'
   };
 
