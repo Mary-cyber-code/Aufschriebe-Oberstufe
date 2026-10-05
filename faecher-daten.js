@@ -49,6 +49,12 @@ const subjectData = {
           { title: "Geometrie", link: "mathe/geometrie_grundlagen.html" },
           { title: "Stochastik", link: "mathe/stochastik_grundlagen.html" }
         ]
+      },
+      {
+        name: "J1 – Analysis",
+        topics: [
+          { title: "Regel- & Formelsammlung (Kapitel 1)", link: "mathe/analysis_j1_formelsammlung.html" }
+        ]
       }
     ]
   },

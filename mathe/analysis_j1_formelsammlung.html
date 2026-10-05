@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mathe LK (J1): Analysis – Regel- &amp; Formelsammlung</title>
+    <!-- MathJax für LaTeX-Formeln -->
+    <script>
+        MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+          }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --paper-white: #F8F6F1;
+            --paper-cream: #FDFCF8;
+            --text-primary: #2D3A2E;
+            --text-secondary: #5A6B5C;
+            --gold: #C9A96E;
+            --forest: #3A5A3F;
+            --nav-bg: rgba(248, 246, 241, 0.95);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--paper-white);
+            color: var(--text-primary);
+            font-family: 'Raleway', sans-serif;
+            line-height: 1.6;
+            padding-top: 70px;
+        }
+
+        h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; color: var(--forest); margin-bottom: 0.5rem; }
+        h1 { font-size: 2.2rem; text-align: center; margin-bottom: 2rem; border-bottom: 2px solid var(--gold); padding-bottom: 1rem; }
+        h2 { font-size: 1.8rem; margin-top: 1.5rem; border-bottom: 1px solid rgba(201, 169, 110, 0.3); padding-bottom: 0.3rem;}
+        h3 { font-size: 1.4rem; margin-top: 1rem; color: var(--text-primary); }
+
+        p { margin-bottom: 1rem; }
+        ul, ol { margin-bottom: 1rem; padding-left: 2rem; }
+        li { margin-bottom: 0.5rem; }
+
+        .highlight { color: var(--forest); font-weight: 600; }
+        .flashcard-back .highlight { color: var(--gold); }
+
+        /* Korrekte Darstellung tiefer/höhergestellter Zahlen ohne Layout-Bugs */
+        sub, sup { line-height: 0; vertical-align: baseline; font-size: 0.8em; }
+        sub { position: relative; top: 0.3em; }
+        sup { position: relative; top: -0.3em; }
+
+        /* Reaktionspfeile */
+        .reaction-arrow { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; vertical-align: middle; margin: 0 8px; }
+        .reaction-arrow .arrow-text { font-size: 0.65rem; line-height: 1; color: var(--text-secondary); }
+        .reaction-arrow .arrow-symbol { line-height: 1; font-size: 1.2rem; margin-top: -4px; }
+        .arrow-simple { font-family: sans-serif; margin: 0 5px; }
+
+        /* Formel-Kasten & Tipp-Kasten (passend zum Botanical-Design) */
+        .formula-box {
+            background: #fff; border: 1px solid rgba(201, 169, 110, 0.4); border-radius: 6px;
+            padding: 10px 16px; margin: 0.5rem 0 1rem; text-align: center; overflow-x: auto;
+        }
+        .formula-box .formula-label { display: block; font-size: 0.8rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 2px; }
+        .tip-box {
+            background: rgba(201, 169, 110, 0.1); border-left: 4px solid var(--gold); border-radius: 4px;
+            padding: 12px 16px; margin: 1rem 0;
+        }
+        .tip-box strong { color: var(--forest); font-family: 'Playfair Display', serif; }
+        mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width: 100%; }
+
+        /* Navigation */
+        nav {
+            position: fixed; top: 0; left: 0; width: 100%; background-color: var(--nav-bg); backdrop-filter: blur(10px);
+            z-index: 1000; display: flex; justify-content: center; align-items: center; padding: 15px 20px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05); border-bottom: 1px solid var(--gold);
+        }
+        .nav-group { display: flex; gap: 15px; align-items: center; }
+        .nav-btn {
+            background: transparent; border: 1px solid var(--forest); color: var(--forest); padding: 8px 16px;
+            font-family: 'Raleway', sans-serif; font-weight: 500; font-size: 0.9rem; cursor: pointer; border-radius: 4px;
+            transition: all 0.3s ease; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;
+        }
+        .nav-btn:hover, .nav-btn.active { background: var(--forest); color: var(--paper-white); }
+        .nav-btn.gold { border-color: var(--gold); color: var(--text-primary); }
+        .nav-btn.gold:hover { background: var(--gold); color: #fff; }
+
+        /* Dropdown */
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content {
+            display: none; position: absolute; background-color: var(--paper-cream); min-width: 250px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1); border: 1px solid var(--gold); border-radius: 4px;
+            z-index: 1; top: 100%; left: 0; margin-top: 5px; max-height: 70vh; overflow-y: auto;
+        }
+        .dropdown.show .dropdown-content { display: block; }
+        .dropdown-item {
+            color: var(--text-primary); padding: 12px 16px; text-decoration: none; display: block; cursor: pointer;
+            font-family: 'Raleway', sans-serif; font-size: 0.9rem; border-bottom: 1px solid rgba(201, 169, 110, 0.1); transition: background 0.2s;
+        }
+        .dropdown-item:hover { background-color: rgba(201, 169, 110, 0.1); color: var(--forest); }
+        .dropdown-item:last-child { border-bottom: none; }
+
+        /* Container & Layout Defaults */
+        .content-wrapper { margin: 0 auto; transition: all 0.3s ease; }
+
+        /* Plakat Modus (Standard) */
+        body:not(.print-mode) .content-wrapper { max-width: 1500px; padding: 20px; display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
+        body:not(.print-mode) .page { display: contents; }
+        body:not(.print-mode) .page-footer { display: none !important; }
+        body:not(.print-mode) .card {
+            background: var(--paper-cream); border: 1px solid var(--gold); border-radius: 8px; padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03); flex: 1 1 600px; max-width: 100%;
+        }
+
+        /* Tables */
+        .table-wrapper { overflow-x: auto; margin-bottom: 1.5rem; border-radius: 4px; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.02); border: 1px solid rgba(201, 169, 110, 0.2); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid rgba(45, 58, 46, 0.1); }
+        th { background-color: rgba(58, 90, 63, 0.05); color: var(--forest); font-family: 'Playfair Display', serif; font-weight: 600; }
+        tr:last-child td { border-bottom: none; }
+
+        /* Flashcards */
+        .flashcards-container { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px; margin-bottom: 1rem; }
+        .flashcard { perspective: 1000px; width: 200px; height: 240px; cursor: pointer; flex: 1 1 200px; }
+        .flashcard-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; }
+        .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+        .flashcard-front, .flashcard-back {
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 8px; padding: 15px;
+            display: flex; align-items: center; justify-content: center; border: 1px solid var(--gold);
+            background-color: var(--paper-cream); box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            overflow-y: auto; scrollbar-width: none;
+        }
+        .flashcard-front { color: var(--forest); font-family: 'Playfair Display', serif; font-weight: 600; font-size: 1.05rem; }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--forest); color: var(--paper-white); border-color: var(--forest); font-size: 0.9rem; }
+        .flashcard span, .flashcard p { display: block; width: 100%; }
+
+        /* Druck Modus - KOMPAKTERES LAYOUT */
+        body.print-mode { background-color: #E2E2E2; padding-top: 90px; font-size: 0.85rem; line-height: 1.4; }
+        body.print-mode h1 { font-size: 1.7rem; margin-bottom: 1rem; padding-bottom: 0.5rem; }
+        body.print-mode h2 { font-size: 1.3rem; margin-top: 1rem; padding-bottom: 0.2rem; }
+        body.print-mode h3 { font-size: 1.1rem; margin-top: 0.8rem; margin-bottom: 0.3rem; }
+        body.print-mode p, body.print-mode ul, body.print-mode ol { margin-bottom: 0.6rem; }
+        body.print-mode li { margin-bottom: 0.2rem; }
+        body.print-mode th, body.print-mode td { padding: 6px 10px; }
+        body.print-mode .formula-box { padding: 6px 12px; margin: 0.3rem 0 0.6rem; }
+        body.print-mode .tip-box { padding: 8px 12px; margin: 0.6rem 0; }
+
+        body.print-mode .content-wrapper { max-width: none; padding: 0; display: block; }
+        body.print-mode .page {
+            width: 210mm; height: auto; min-height: 297mm; padding: 15mm; margin: 0 auto 20mm auto; background: white;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: visible; break-after: page;
+        }
+        body.print-mode .card { background: transparent; border: none; padding: 0; box-shadow: none; margin-bottom: 0; }
+        body.print-mode .flashcards-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; }
+        body.print-mode .flashcard { width: auto; height: auto; min-height: auto; border: 1px solid var(--text-primary); border-radius: 0; page-break-inside: avoid; }
+        body.print-mode .flashcard-inner { transform: none !important; transition: none; display: flex; flex-direction: column; }
+        body.print-mode .flashcard-front, body.print-mode .flashcard-back {
+            border: none; box-shadow: none; position: static; height: auto; padding: 6px 10px;
+            background: transparent; border-radius: 0; color: var(--text-primary); transform: none;
+        }
+        body.print-mode .flashcard-front { border-bottom: 1px dashed #ccc; font-size: 0.95rem; }
+
+        .page-footer {
+            margin-top: auto; border-top: 1px solid var(--gold); padding-top: 10px;
+            display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-secondary); font-family: 'Playfair Display', serif;
+        }
+        @media (max-width: 768px) {
+            #btn-fullscreen { display: none !important; }
+            .nav-group { gap: 8px; flex-wrap: wrap; justify-content: center; }
+            .nav-btn { padding: 6px 10px; font-size: 0.8rem; }
+            nav { padding: 10px; }
+        }
+        @media print {
+            @page { size: A4; margin: 0; }
+            body { background-color: white !important; padding-top: 0 !important; font-size: 0.85rem !important; line-height: 1.4 !important; }
+            h1 { font-size: 1.7rem !important; margin-bottom: 1rem !important; padding-bottom: 0.5rem !important; }
+            h2 { font-size: 1.3rem !important; margin-top: 1rem !important; padding-bottom: 0.2rem !important; break-after: avoid !important; }
+            h3 { font-size: 1.1rem !important; margin-top: 0.8rem !important; margin-bottom: 0.3rem !important; break-after: avoid !important; }
+            p, ul, ol { margin-bottom: 0.6rem !important; }
+            li { margin-bottom: 0.2rem !important; }
+            th, td { padding: 6px 10px !important; }
+            table { break-inside: avoid !important; }
+            .formula-box { padding: 6px 12px !important; margin: 0.3rem 0 0.6rem !important; break-inside: avoid !important; }
+            .tip-box { padding: 8px 12px !important; margin: 0.6rem 0 !important; break-inside: avoid !important; }
+            nav { display: none !important; }
+            .content-wrapper { margin: 0; padding: 0; }
+            .page { margin: 0; box-shadow: none; width: 210mm; min-height: 297mm; height: 297mm; padding: 15mm !important; display: block; overflow: hidden !important; break-after: page; break-before: auto; page-break-after: always; box-sizing: border-box; }
+            .page:last-child { break-after: auto; page-break-after: auto; }
+            .card { background: transparent; border: none; padding: 0; box-shadow: none; break-inside: avoid !important; }
+            .flashcards-container { display: grid; grid-template-columns: repeat(3, 1fr) !important; gap: 6mm !important; }
+            .flashcard { width: auto; height: auto; min-height: auto !important; border: 1px solid #000; border-radius: 0; break-inside: avoid !important; }
+            .flashcard-inner { transform: none !important; transition: none; display: flex; flex-direction: column; }
+            .flashcard-front { position: static; height: auto; border: none; border-bottom: 1px dashed #000; color: #000; background: transparent; transform: none; padding: 6px 10px !important; font-size: 0.95rem !important;}
+            .flashcard-back { position: static; height: auto; border: none; color: #000; background: transparent; transform: none; padding: 6px 10px !important;}
+            .page-footer { break-before: auto !important; margin-top: auto; }
+        }
+
+        /* ===== PC-MODUS: Bessere Lesbarkeit auf großen Bildschirmen (Druck-Modus bleibt unverändert) ===== */
+        @media screen and (min-width: 1200px) {
+            html:not(:has(body.print-mode)) { font-size: 18px; }
+            body:not(.print-mode) { font-weight: 500; line-height: 1.7; --text-secondary: #4A5A4C; }
+            body:not(.print-mode) h1 { font-weight: 700; border-bottom-width: 3px; }
+            body:not(.print-mode) h2 { font-weight: 700; border-bottom: 2px solid rgba(201, 169, 110, 0.55); }
+            body:not(.print-mode) h3 { font-weight: 700; }
+            body:not(.print-mode) .highlight { font-weight: 700; }
+            body:not(.print-mode) .card { border-width: 1.5px; padding: 35px 40px; box-shadow: 0 6px 22px rgba(45, 58, 46, 0.07); }
+            body:not(.print-mode) .table-wrapper { border-color: rgba(201, 169, 110, 0.5); }
+            body:not(.print-mode) table { font-size: 1rem; }
+            body:not(.print-mode) th, body:not(.print-mode) td { border-bottom-color: rgba(45, 58, 46, 0.18); }
+            body:not(.print-mode) th { font-weight: 700; }
+            body:not(.print-mode) .flashcard { height: 280px; }
+            body:not(.print-mode) .flashcard-front, body:not(.print-mode) .flashcard-back { border-width: 1.5px; padding: 20px; }
+            body:not(.print-mode) .flashcard-front { font-size: 1.15rem; font-weight: 700; }
+            body:not(.print-mode) .flashcard-back { font-size: 1rem; font-weight: 500; }
+            body:not(.print-mode) .reaction-arrow .arrow-text { font-size: 0.75rem; }
+            body:not(.print-mode) .nav-btn { font-size: 0.95rem; font-weight: 600; border-width: 1.5px; }
+            body:not(.print-mode) .dropdown-item { font-size: 0.95rem; font-weight: 500; }
+            body:not(.print-mode) nav { border-bottom-width: 1.5px; }
+            body:not(.print-mode) .formula-box { border-color: rgba(201, 169, 110, 0.6); }
+            body:not(.print-mode) .formula-box .formula-label { font-weight: 600; }
+        }
+        @media screen and (min-width: 1700px) {
+            html:not(:has(body.print-mode)) { font-size: 19.5px; }
+            body:not(.print-mode) .content-wrapper { max-width: 1800px; }
+            body:not(.print-mode) .flashcard { height: 300px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-group">
+            <a href="../index.html" class="nav-btn">← Journal</a>
+            <div class="dropdown">
+                <button type="button" class="nav-btn" id="btn-inhalt">Inhalt ▼</button>
+                <div class="dropdown-content" id="toc-dropdown"></div>
+            </div>
+            <button type="button" class="nav-btn" id="btn-fullscreen">Vollbild</button>
+            <button type="button" class="nav-btn active" id="btn-plakat">Plakat-Modus</button>
+            <button type="button" class="nav-btn" id="btn-druck">Druck-Modus (A4)</button>
+            <button type="button" class="nav-btn gold" id="btn-print">Drucken / PDF</button>
+        </div>
+    </nav>
+
+    <div class="content-wrapper" id="content">
+
+        <!-- SEITE 1: Vorwissen (Binomische Formeln, Potenzen & Wurzeln) -->
+        <div class="page">
+            <div class="card" id="teil-1a">
+                <h1 id="sec-titel">Mathe LK (J1) – Analysis<br><small style="font-size: 0.6em; font-weight: normal;">(Übersicht: Regel- &amp; Formelsammlung)</small></h1>
+
+                <h2 id="sec-teil1">Teil 1: Wichtiges Vorwissen (Mittelstufe)</h2>
+                <p><span class="highlight">Umformungen</span> sind der wichtigste Schritt, bevor abgeleitet oder gerechnet wird.</p>
+
+                <h3 id="sec-1-1">1. Binomische Formeln</h3>
+                <p>Wichtig zum <span class="highlight">Auflösen von Klammern</span> oder zum <span class="highlight">Faktorisieren</span>:</p>
+                <div class="table-wrapper">
+                    <table>
+                        <tr><th>Name</th><th>Formel</th></tr>
+                        <tr><td><span class="highlight">Plus-Formel</span> (1. Binom)</td><td>$(a + b)^2 = a^2 + 2ab + b^2$</td></tr>
+                        <tr><td><span class="highlight">Minus-Formel</span> (2. Binom)</td><td>$(a - b)^2 = a^2 - 2ab + b^2$</td></tr>
+                        <tr><td><span class="highlight">Plus-Minus-Formel</span> (3. Binom)</td><td>$(a + b)(a - b) = a^2 - b^2$</td></tr>
+                    </table>
+                </div>
+
+                <h3 id="sec-1-2">2. Potenz- und Wurzelgesetze (wichtig VOR dem Ableiten)</h3>
+                <p>Brüche und Wurzeln müssen vor dem Ableiten <span class="highlight">als Potenzen</span> geschrieben werden:</p>
+                <div class="table-wrapper">
+                    <table>
+                        <tr><th>Regel</th><th>Formel</th><th>Beispiel</th></tr>
+                        <tr><td><span class="highlight">Brüche umschreiben</span></td><td>$\frac{1}{x^n} = x^{-n}$</td><td>$\frac{3}{x^2} = 3x^{-2}$</td></tr>
+                        <tr><td><span class="highlight">Wurzeln umschreiben</span></td><td>$\sqrt[n]{x^m} = x^{\frac{m}{n}}$</td><td>$\sqrt{x} = x^{\frac{1}{2}} = x^{0{,}5}$</td></tr>
+                        <tr><td><span class="highlight">Gleiche Basis</span> (mal)</td><td>$x^a \cdot x^b = x^{a+b}$</td><td>$x^2 \cdot x^3 = x^5$</td></tr>
+                        <tr><td><span class="highlight">Gleiche Basis</span> (geteilt)</td><td>$\frac{x^a}{x^b} = x^{a-b}$</td><td>$\frac{x^5}{x^2} = x^3$</td></tr>
+                    </table>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>Mathe LK J1 – Analysis</span>
+                <span>Olga V.</span>
+                <span>Seite 1</span>
+            </div>
+        </div>
+
+        <!-- SEITE 2: Gleichungen lösen, e-Funktion & ln -->
+        <div class="page">
+            <div class="card" id="teil-1b">
+                <h3 id="sec-1-3">3. Gleichungen lösen (wichtig für Nullstellen &amp; Extrempunkte)</h3>
+
+                <p><span class="highlight">Mitternachtsformel (abc-Formel)</span> – für $ax^2 + bx + c = 0$:</p>
+                <div class="formula-box">
+                    $$x_{1,2} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
+                </div>
+
+                <p><span class="highlight">Ausklammern &amp; Satz vom Nullprodukt (SVNP):</span> Wenn in jedem Summanden ein $x$ oder $e^x$ steht, wird <span class="highlight">ausgeklammert</span>! Ein Produkt ist null, wenn einer der Faktoren null ist.</p>
+                <div class="formula-box">
+                    <span class="formula-label">Beispiel</span>
+                    $$x^2 \cdot e^x - 4 \cdot e^x = 0 \;\Rightarrow\; e^x \cdot (x^2 - 4) = 0$$
+                </div>
+                <p>Da $e^x \neq 0$, muss nur noch $x^2 - 4 = 0$ gelöst werden $\Rightarrow x_{1,2} = \pm 2$.</p>
+
+                <p><span class="highlight">Substitution:</span> Bei Gleichungen mit $x^4$ und $x^2$ (oder $e^{2x}$ und $e^x$).</p>
+                <div class="formula-box">
+                    <span class="formula-label">Beispiel</span>
+                    $$e^{2x} - 5e^x + 4 = 0 \quad \xrightarrow{\;z \,=\, e^x\;} \quad z^2 - 5z + 4 = 0$$
+                </div>
+                <div class="tip-box">
+                    <strong>Nicht vergessen:</strong> Nach dem Lösen <span class="highlight">zurücksubstituieren</span>: $e^x = z \;\Rightarrow\; x = \ln(z)$.
+                </div>
+
+                <h3 id="sec-1-4">4. Eigenschaften der e-Funktion und des natürlichen Logarithmus (ln)</h3>
+                <ul>
+                    <li>$e^x$ ist <span class="highlight">immer positiv</span> ($e^x > 0$). Der Graph schneidet <span class="highlight">nie die x-Achse</span>.</li>
+                    <li>$\ln(x)$ ist die <span class="highlight">Umkehrfunktion</span> zu $e^x$.</li>
+                    <li>Es gilt: $\ln(e^x) = x$ &nbsp;und&nbsp; $e^{\ln(x)} = x$.</li>
+                </ul>
+            </div>
+            <div class="page-footer">
+                <span>Mathe LK J1 – Analysis</span>
+                <span>Olga V.</span>
+                <span>Seite 2</span>
+            </div>
+        </div>
+
+        <!-- SEITE 3: Ableitungsregeln -->
+        <div class="page">
+            <div class="card" id="teil-2">
+                <h2 id="sec-teil2">Teil 2: Die neuen Ableitungsregeln (LK-Stoff)</h2>
+
+                <h3 id="sec-2-1">1. Spezielle Ableitungen (auswendig lernen!)</h3>
+                <p><span class="highlight">e-Funktion:</span> &nbsp;$f(x) = e^x \;\Rightarrow\; f'(x) = e^x$ &nbsp;(sie bleibt beim Ableiten gleich!)</p>
+                <p><span class="highlight">Trigonometrie – der Ableitungskreis:</span></p>
+                <div class="table-wrapper">
+                    <table>
+                        <tr><th>$f(x)$</th><th>$\sin(x)$</th><th>$\cos(x)$</th><th>$-\sin(x)$</th><th>$-\cos(x)$</th></tr>
+                        <tr><td><span class="highlight">$f'(x)$</span></td><td>$\cos(x)$</td><td>$-\sin(x)$</td><td>$-\cos(x)$</td><td>$\sin(x)$</td></tr>
+                    </table>
+                </div>
+                <div class="formula-box">
+                    $$\sin(x) \to \cos(x) \to -\sin(x) \to -\cos(x) \to \sin(x)$$
+                </div>
+
+                <h3 id="sec-2-2">2. Die Kettenregel (für „verschachtelte“ Funktionen)</h3>
+                <p><span class="highlight">Wann?</span> Wenn eine Funktion in einer anderen steckt (z. B. im Exponenten der e-Funktion oder in einer Klammer mit Hochzahl).</p>
+                <p><span class="highlight">Regel:</span> Äußere Ableitung <em>mal</em> innere Ableitung</p>
+                <div class="formula-box">
+                    <span class="formula-label">Formel</span>
+                    $$f(x) = u(v(x)) \;\Rightarrow\; f'(x) = u'(v(x)) \cdot v'(x)$$
+                    <span class="formula-label">Beispiel</span>
+                    $$f(x) = e^{3x^2} \;\Rightarrow\; f'(x) = e^{3x^2} \cdot 6x$$
+                </div>
+
+                <h3 id="sec-2-3">3. Die Produktregel (für multiplizierte Terme)</h3>
+                <p><span class="highlight">Wann?</span> Wenn zwei Terme mit $x$ miteinander multipliziert werden.</p>
+                <p><span class="highlight">Regel:</span> Ableiten mal Stehenlassen <em>plus</em> Stehenlassen mal Ableiten</p>
+                <div class="formula-box">
+                    <span class="formula-label">Formel</span>
+                    $$f(x) = u(x) \cdot v(x) \;\Rightarrow\; f'(x) = u'(x) \cdot v(x) + u(x) \cdot v'(x)$$
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <tr><th colspan="2">Beispiel: $f(x) = x^2 \cdot \sin(x)$</th></tr>
+                        <tr><td>$u = x^2$</td><td>$u' = 2x$</td></tr>
+                        <tr><td>$v = \sin(x)$</td><td>$v' = \cos(x)$</td></tr>
+                        <tr><td colspan="2">$\Rightarrow\; f'(x) = 2x \cdot \sin(x) + x^2 \cdot \cos(x)$</td></tr>
+                    </table>
+                </div>
+
+                <div class="tip-box">
+                    <strong>💡 Wichtiger Tipp:</strong> Wenn du eine e-Funktion mit der Produktregel ableitest, <span class="highlight">klammere den e-Term sofort aus!</span> Das macht das Weiterrechnen (Nullstellen, 2. Ableitung) wesentlich einfacher.
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>Mathe LK J1 – Analysis</span>
+                <span>Olga V.</span>
+                <span>Seite 3</span>
+            </div>
+        </div>
+
+        <!-- SEITE 4: Tangente/Normale, Extrem- & Wendepunkte -->
+        <div class="page">
+            <div class="card" id="teil-3a">
+                <h2 id="sec-teil3">Teil 3: Anwendungen (Kurvendiskussion &amp; Geometrie)</h2>
+
+                <h3 id="sec-3-1">1. Tangente und Normale am Punkt P(u | f(u))</h3>
+                <div class="formula-box">
+                    <span class="formula-label">Tangentengleichung</span>
+                    $$t(x) = f'(u) \cdot (x - u) + f(u)$$
+                </div>
+                <p>Vorgehen: y-Wert $f(u)$ und Steigung $f'(u)$ berechnen, <span class="highlight">einsetzen, ausmultiplizieren</span>.</p>
+                <div class="formula-box">
+                    <span class="formula-label">Normalengleichung (steht senkrecht zur Tangente)</span>
+                    $$n(x) = -\frac{1}{f'(u)} \cdot (x - u) + f(u)$$
+                </div>
+
+                <h3 id="sec-3-2">2. Hoch- und Tiefpunkte (Extrempunkte)</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <tr><th>Bedingung</th><th>Was ist zu tun?</th></tr>
+                        <tr><td><span class="highlight">Notwendig</span></td><td>$f'(x) = 0$ &nbsp;→ liefert die möglichen x-Werte</td></tr>
+                        <tr><td><span class="highlight">Hinreichend</span></td><td>Gefundenes $x$ in die 2. Ableitung $f''(x)$ einsetzen:<br>
+                            $f''(x) &lt; 0 \;\Rightarrow$ <span class="highlight">Hochpunkt</span><br>
+                            $f''(x) &gt; 0 \;\Rightarrow$ <span class="highlight">Tiefpunkt</span></td></tr>
+                    </table>
+                </div>
+                <div class="tip-box">
+                    <strong>Tipp:</strong> Am Schluss das $x$ in die <span class="highlight">Ausgangsfunktion $f(x)$</span> einsetzen, um die y-Koordinate zu bekommen!
+                </div>
+
+                <h3 id="sec-3-3">3. Wendepunkte (stärkste Steigung/stärkstes Gefälle, Krümmungswechsel)</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <tr><th>Bedingung</th><th>Formel</th></tr>
+                        <tr><td><span class="highlight">Notwendig</span></td><td>$f''(x) = 0$</td></tr>
+                        <tr><td><span class="highlight">Hinreichend</span></td><td>$f'''(x) \neq 0$</td></tr>
+                    </table>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>Mathe LK J1 – Analysis</span>
+                <span>Olga V.</span>
+                <span>Seite 4</span>
+            </div>
+        </div>
+
+        <!-- SEITE 5: Symmetrie, Globalverhalten, Karteikarten -->
+        <div class="page">
+            <div class="card" id="teil-3b">
+                <h3 id="sec-3-4">4. Symmetrie (Standardverfahren)</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <tr><th>Symmetrie</th><th>Bedingung</th></tr>
+                        <tr><td><span class="highlight">Achsensymmetrie</span> zur y-Achse</td><td>$f(-x) = f(x)$</td></tr>
+                        <tr><td><span class="highlight">Punktsymmetrie</span> zum Ursprung</td><td>$f(-x) = -f(x)$</td></tr>
+                    </table>
+                </div>
+
+                <h3 id="sec-3-5">5. Globalverhalten (Verhalten für x → ±∞)</h3>
+                <p><span class="highlight">Dominanzregel:</span> Die e-Funktion wächst/fällt im Unendlichen <span class="highlight">immer stärker</span> als jede Polynomfunktion ($x, x^2, x^3, \dots$). Die e-Funktion „gewinnt“ also immer.</p>
+                <div class="formula-box">
+                    <span class="formula-label">Beispiel</span>
+                    $$\lim_{x \to \infty} x^3 \cdot e^{-x} = 0$$
+                </div>
+                <p>…da $e^{-x}$ gegen 0 geht und stärker ist als das Unendlich von $x^3$. Die <span class="highlight">x-Achse</span> ist somit eine <span class="highlight">waagrechte Asymptote</span>.</p>
+
+                <h2 id="sec-quiz">Schnell-Check (Karteikarten)</h2>
+                <div class="flashcards-container">
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span style="display:block;">Wann nutze ich die Kettenregel?</span></div>
+                            <div class="flashcard-back"><span style="display:block;">Bei <span class="highlight">verschachtelten</span> Funktionen.<br><br>Äußere Ableitung · innere Ableitung</span></div>
+                        </div>
+                    </div>
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span style="display:block;">Wann nutze ich die Produktregel?</span></div>
+                            <div class="flashcard-back"><span style="display:block;">Wenn zwei Terme mit $x$ <span class="highlight">multipliziert</span> werden.<br><br>$u'v + uv'$</span></div>
+                        </div>
+                    </div>
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span style="display:block;">Ableitung von $-\sin(x)$?</span></div>
+                            <div class="flashcard-back"><span style="display:block;">$-\cos(x)$<br><br>(Ableitungskreis: sin → cos → −sin → −cos)</span></div>
+                        </div>
+                    </div>
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span style="display:block;">Bedingungen für einen Hochpunkt?</span></div>
+                            <div class="flashcard-back"><span style="display:block;">$f'(x) = 0$<br>und<br>$f''(x) &lt; 0$</span></div>
+                        </div>
+                    </div>
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span style="display:block;">Bedingungen für einen Wendepunkt?</span></div>
+                            <div class="flashcard-back"><span style="display:block;">$f''(x) = 0$<br>und<br>$f'''(x) \neq 0$</span></div>
+                        </div>
+                    </div>
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span style="display:block;">Warum darf man bei $e^x \cdot (\dots) = 0$ den e-Term ignorieren?</span></div>
+                            <div class="flashcard-back"><span style="display:block;">Weil $e^x > 0$ ist – er wird <span class="highlight">nie null</span>.<br><br>(Satz vom Nullprodukt)</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>Mathe LK J1 – Analysis</span>
+                <span>Olga V.</span>
+                <span>Seite 5</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const body = document.body;
+        const btnPlakat = document.getElementById('btn-plakat');
+        const btnDruck = document.getElementById('btn-druck');
+        const btnPrint = document.getElementById('btn-print');
+        const btnInhalt = document.getElementById('btn-inhalt');
+        const dropdown = document.getElementById('toc-dropdown');
+        const flashcards = document.querySelectorAll('.flashcard');
+
+        btnPlakat.addEventListener('click', () => { body.classList.remove('print-mode'); btnPlakat.classList.add('active'); btnDruck.classList.remove('active'); });
+        btnDruck.addEventListener('click', () => { body.classList.add('print-mode'); btnDruck.classList.add('active'); btnPlakat.classList.remove('active'); });
+        btnPrint.addEventListener('click', () => { window.print(); });
+
+        btnInhalt.addEventListener('click', (e) => { e.stopPropagation(); dropdown.parentElement.classList.toggle('show'); });
+        document.addEventListener('click', (e) => { if (!dropdown.contains(e.target) && e.target !== btnInhalt) dropdown.parentElement.classList.remove('show'); });
+
+        const btnFullscreen = document.getElementById('btn-fullscreen');
+        if(btnFullscreen) {
+            btnFullscreen.addEventListener('click', () => {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(err => console.warn(err));
+                    btnFullscreen.textContent = 'Vollbild beenden';
+                } else {
+                    if (document.exitFullscreen) document.exitFullscreen();
+                    btnFullscreen.textContent = 'Vollbild';
+                }
+            });
+        }
+
+        const headings = document.querySelectorAll('h1, h2, h3');
+        headings.forEach(heading => {
+            if (!heading.id) return;
+            const item = document.createElement('a'); item.className = 'dropdown-item';
+            if (heading.tagName === 'H2') item.style.paddingLeft = '16px';
+            else if (heading.tagName === 'H3') item.style.paddingLeft = '30px';
+            else item.style.paddingLeft = '10px';
+
+            let textContent = heading.cloneNode(true);
+            const smalls = textContent.querySelectorAll('small'); smalls.forEach(s => s.remove());
+            item.textContent = textContent.textContent.trim();
+
+            item.addEventListener('click', (e) => {
+                e.preventDefault(); dropdown.parentElement.classList.remove('show');
+                const topPosition = heading.getBoundingClientRect().top + window.scrollY - 80;
+                window.scrollTo({ top: topPosition, behavior: 'smooth' });
+            });
+            dropdown.appendChild(item);
+        });
+
+        flashcards.forEach(card => {
+            card.addEventListener('click', () => {
+                if(!body.classList.contains('print-mode')) card.classList.toggle('flipped');
+            });
+        });
+    </script>
+</body>
+</html>
