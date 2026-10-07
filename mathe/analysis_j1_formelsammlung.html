@@ -249,35 +249,41 @@
 
     <div class="content-wrapper" id="content">
 
-        <!-- SEITE 1: Vorwissen (Binomische Formeln, Potenzen & Wurzeln) -->
+        <!-- SEITE 1: Teil 1 – Umschreiben & Standard-Ableitungen -->
         <div class="page">
             <div class="card" id="teil-1a">
                 <h1 id="sec-titel">Mathe LK (J1) – Analysis<br><small style="font-size: 0.6em; font-weight: normal;">(Übersicht: Regel- &amp; Formelsammlung)</small></h1>
 
-                <h2 id="sec-teil1">Teil 1: Wichtiges Vorwissen (Mittelstufe)</h2>
-                <p><span class="highlight">Umformungen</span> sind der wichtigste Schritt, bevor abgeleitet oder gerechnet wird.</p>
+                <h2 id="sec-teil1">🧱 Teil 1: Das „Lebensretter“-Vorwissen</h2>
+                <p><em>(Ohne das geht nichts!)</em> Bevor du überhaupt ans Ableiten denkst, musst du die Funktion oft <span class="highlight">„ableitungsfreundlich“</span> machen. Die Standard-Regel ($x^n \rightarrow n \cdot x^{n-1}$) funktioniert nämlich nur für <span class="highlight">einfache Potenzen, die im Zähler stehen</span>.</p>
 
-                <h3 id="sec-1-1">1. Binomische Formeln</h3>
-                <p>Wichtig zum <span class="highlight">Auflösen von Klammern</span> oder zum <span class="highlight">Faktorisieren</span>:</p>
+                <h3 id="sec-1-1">1. Terme umschreiben vor dem Ableiten (extrem wichtig!)</h3>
                 <div class="table-wrapper">
                     <table>
-                        <tr><th>Name</th><th>Formel</th></tr>
-                        <tr><td><span class="highlight">Plus-Formel</span> (1. Binom)</td><td>$(a + b)^2 = a^2 + 2ab + b^2$</td></tr>
-                        <tr><td><span class="highlight">Minus-Formel</span> (2. Binom)</td><td>$(a - b)^2 = a^2 - 2ab + b^2$</td></tr>
-                        <tr><td><span class="highlight">Plus-Minus-Formel</span> (3. Binom)</td><td>$(a + b)(a - b) = a^2 - b^2$</td></tr>
+                        <tr><th>Umschreiben</th><th>Beispiel</th><th>Allgemein</th></tr>
+                        <tr><td><span class="highlight">Wurzeln als Potenzen</span></td><td>$\sqrt{x} = x^{\frac{1}{2}}$</td><td>$\sqrt[n]{x^m} = x^{\frac{m}{n}}$</td></tr>
+                        <tr><td><span class="highlight">Brüche als negative Potenzen</span></td><td>$\frac{1}{x} = x^{-1}$</td><td>$\frac{1}{x^n} = x^{-n}$</td></tr>
                     </table>
                 </div>
+                <div class="tip-box">
+                    <strong>⚠️ Vorsicht-Falle:</strong> Steht eine Zahl im Nenner, <span class="highlight">zieh sie als Bruch nach vorne!</span><br>
+                    $\frac{3}{2x^4}$ ist <u>nicht</u> $(1{,}5x)^{-4}$, sondern $\frac{3}{2} \cdot x^{-4} = 1{,}5\,x^{-4}$.
+                </div>
 
-                <h3 id="sec-1-2">2. Potenz- und Wurzelgesetze (wichtig VOR dem Ableiten)</h3>
-                <p>Brüche und Wurzeln müssen vor dem Ableiten <span class="highlight">als Potenzen</span> geschrieben werden:</p>
+                <h3 id="sec-1-2">2. Standard-Ableitungen</h3>
+                <div class="formula-box">
+                    <span class="formula-label">Potenzregel</span>
+                    $$f(x) = x^n \;\Rightarrow\; f'(x) = n \cdot x^{n-1}$$
+                </div>
+                <p><span class="highlight">Trigonometrie-Kreislauf:</span></p>
                 <div class="table-wrapper">
                     <table>
-                        <tr><th>Regel</th><th>Formel</th><th>Beispiel</th></tr>
-                        <tr><td><span class="highlight">Brüche umschreiben</span></td><td>$\frac{1}{x^n} = x^{-n}$</td><td>$\frac{3}{x^2} = 3x^{-2}$</td></tr>
-                        <tr><td><span class="highlight">Wurzeln umschreiben</span></td><td>$\sqrt[n]{x^m} = x^{\frac{m}{n}}$</td><td>$\sqrt{x} = x^{\frac{1}{2}} = x^{0{,}5}$</td></tr>
-                        <tr><td><span class="highlight">Gleiche Basis</span> (mal)</td><td>$x^a \cdot x^b = x^{a+b}$</td><td>$x^2 \cdot x^3 = x^5$</td></tr>
-                        <tr><td><span class="highlight">Gleiche Basis</span> (geteilt)</td><td>$\frac{x^a}{x^b} = x^{a-b}$</td><td>$\frac{x^5}{x^2} = x^3$</td></tr>
+                        <tr><th>$f(x)$</th><th>$\sin(x)$</th><th>$\cos(x)$</th><th>$-\sin(x)$</th><th>$-\cos(x)$</th></tr>
+                        <tr><td><span class="highlight">$f'(x)$</span></td><td>$\cos(x)$</td><td>$-\sin(x)$</td><td>$-\cos(x)$</td><td>$\sin(x)$</td></tr>
                     </table>
+                </div>
+                <div class="formula-box">
+                    $$\sin(x) \xrightarrow{\text{abl.}} \cos(x) \xrightarrow{\text{abl.}} -\sin(x) \xrightarrow{\text{abl.}} -\cos(x) \xrightarrow{\text{abl.}} \sin(x)$$
                 </div>
             </div>
             <div class="page-footer">
@@ -287,38 +293,40 @@
             </div>
         </div>
 
-        <!-- SEITE 2: Gleichungen lösen, e-Funktion & ln -->
+        <!-- SEITE 2: Teil 1 – Gleichungen lösen + Teil 2 – Kettenregel -->
         <div class="page">
             <div class="card" id="teil-1b">
-                <h3 id="sec-1-3">3. Gleichungen lösen (wichtig für Nullstellen &amp; Extrempunkte)</h3>
+                <h3 id="sec-1-3">3. Gleichungen lösen</h3>
+                <p><em>Wichtig, da du ständig $f'(x) = 0$ und $f''(x) = 0$ setzen musst!</em></p>
 
-                <p><span class="highlight">Mitternachtsformel (abc-Formel)</span> – für $ax^2 + bx + c = 0$:</p>
+                <p><span class="highlight">Satz vom Nullprodukt (SVNP):</span> Wenn ein Produkt null ist, muss <span class="highlight">mindestens einer der Faktoren null</span> sein. Kommt extrem oft in Kombi mit der Produktregel vor:</p>
                 <div class="formula-box">
-                    $$x_{1,2} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
+                    $$x \cdot \cos(x) = 0 \;\Rightarrow\; x = 0 \;\text{ oder }\; \cos(x) = 0$$
                 </div>
 
-                <p><span class="highlight">Ausklammern &amp; Satz vom Nullprodukt (SVNP):</span> Wenn in jedem Summanden ein $x$ oder $e^x$ steht, wird <span class="highlight">ausgeklammert</span>! Ein Produkt ist null, wenn einer der Faktoren null ist.</p>
-                <div class="formula-box">
-                    <span class="formula-label">Beispiel</span>
-                    $$x^2 \cdot e^x - 4 \cdot e^x = 0 \;\Rightarrow\; e^x \cdot (x^2 - 4) = 0$$
-                </div>
-                <p>Da $e^x \neq 0$, muss nur noch $x^2 - 4 = 0$ gelöst werden $\Rightarrow x_{1,2} = \pm 2$.</p>
-
-                <p><span class="highlight">Substitution:</span> Bei Gleichungen mit $x^4$ und $x^2$ (oder $e^{2x}$ und $e^x$).</p>
+                <p><span class="highlight">Ausklammern:</span> Mach das immer, wenn in <span class="highlight">jedem Summanden ein $x$</span> steckt!</p>
                 <div class="formula-box">
                     <span class="formula-label">Beispiel</span>
-                    $$e^{2x} - 5e^x + 4 = 0 \quad \xrightarrow{\;z \,=\, e^x\;} \quad z^2 - 5z + 4 = 0$$
+                    $$x^3 - 4x^2 = 0 \;\Rightarrow\; x^2(x - 4) = 0 \;\Rightarrow\; x_1 = 0,\; x_2 = 4$$
                 </div>
+
+                <p><span class="highlight">Substitution:</span> Bei Gleichungen wie $x^4 - 5x^2 + 4 = 0$ $\Rightarrow$ <span class="highlight">$z = x^2$ setzen</span>. Dann die Mitternachtsformel/pq-Formel für $z$ anwenden.</p>
                 <div class="tip-box">
-                    <strong>Nicht vergessen:</strong> Nach dem Lösen <span class="highlight">zurücksubstituieren</span>: $e^x = z \;\Rightarrow\; x = \ln(z)$.
+                    <strong>Nicht vergessen:</strong> Am Ende <span class="highlight">rücksubstituieren</span>: $x = \pm\sqrt{z}$.
                 </div>
+                <h2 id="sec-teil2">🚀 Teil 2: Die NEUEN Ableitungsregeln (J1-Stoff)</h2>
 
-                <h3 id="sec-1-4">4. Eigenschaften der e-Funktion und des natürlichen Logarithmus (ln)</h3>
-                <ul>
-                    <li>$e^x$ ist <span class="highlight">immer positiv</span> ($e^x > 0$). Der Graph schneidet <span class="highlight">nie die x-Achse</span>.</li>
-                    <li>$\ln(x)$ ist die <span class="highlight">Umkehrfunktion</span> zu $e^x$.</li>
-                    <li>Es gilt: $\ln(e^x) = x$ &nbsp;und&nbsp; $e^{\ln(x)} = x$.</li>
-                </ul>
+                <h3 id="sec-2-1">1. Die Kettenregel (für verschachtelte Funktionen)</h3>
+                <p><span class="highlight">Wann?</span> Wenn eine Funktion in einer anderen „steckt“ (z. B. eine Klammer mit Hochzahl, ein Term unter einer Wurzel oder im Sinus).</p>
+                <div class="formula-box">
+                    <span class="formula-label">Regel</span>
+                    $$f(x) = u(v(x)) \;\Rightarrow\; f'(x) = u'(v(x)) \cdot v'(x)$$
+                </div>
+                <p><span class="highlight">Merkspruch:</span> „Äußere Ableitung mal innere Ableitung!“ (Man nennt das auch <span class="highlight">Nachdifferenzieren</span>.)</p>
+                <div class="formula-box">
+                    <span class="formula-label">Beispiel</span>
+                    $$f(x) = (3x^2+1)^4 \;\Rightarrow\; f'(x) = \underbrace{4(3x^2+1)^3}_{\text{äußere}} \cdot \underbrace{6x}_{\text{innere}} = 24x(3x^2+1)^3$$
+                </div>
             </div>
             <div class="page-footer">
                 <span>Mathe LK J1 – Analysis</span>
@@ -327,53 +335,39 @@
             </div>
         </div>
 
-        <!-- SEITE 3: Ableitungsregeln -->
+        <!-- SEITE 3: Teil 2 – Produkt- & Quotientenregel -->
         <div class="page">
-            <div class="card" id="teil-2">
-                <h2 id="sec-teil2">Teil 2: Die neuen Ableitungsregeln (LK-Stoff)</h2>
-
-                <h3 id="sec-2-1">1. Spezielle Ableitungen (auswendig lernen!)</h3>
-                <p><span class="highlight">e-Funktion:</span> &nbsp;$f(x) = e^x \;\Rightarrow\; f'(x) = e^x$ &nbsp;(sie bleibt beim Ableiten gleich!)</p>
-                <p><span class="highlight">Trigonometrie – der Ableitungskreis:</span></p>
-                <div class="table-wrapper">
-                    <table>
-                        <tr><th>$f(x)$</th><th>$\sin(x)$</th><th>$\cos(x)$</th><th>$-\sin(x)$</th><th>$-\cos(x)$</th></tr>
-                        <tr><td><span class="highlight">$f'(x)$</span></td><td>$\cos(x)$</td><td>$-\sin(x)$</td><td>$-\cos(x)$</td><td>$\sin(x)$</td></tr>
-                    </table>
+            <div class="card" id="teil-2b">
+                <h3 id="sec-2-2">2. Die Produktregel (für multiplizierte x-Terme)</h3>
+                <p><span class="highlight">Wann?</span> Wenn zwei Terme, die <span class="highlight">beide ein $x$ enthalten</span>, miteinander multipliziert werden (z. B. $x^2 \cdot \sin(x)$).</p>
+                <div class="tip-box">
+                    <strong>Achtung:</strong> $5 \cdot \sin(x)$ braucht <u>keine</u> Produktregel, da die 5 als <span class="highlight">konstanter Faktor</span> einfach stehen bleibt.
                 </div>
                 <div class="formula-box">
-                    $$\sin(x) \to \cos(x) \to -\sin(x) \to -\cos(x) \to \sin(x)$$
-                </div>
-
-                <h3 id="sec-2-2">2. Die Kettenregel (für „verschachtelte“ Funktionen)</h3>
-                <p><span class="highlight">Wann?</span> Wenn eine Funktion in einer anderen steckt (z. B. im Exponenten der e-Funktion oder in einer Klammer mit Hochzahl).</p>
-                <p><span class="highlight">Regel:</span> Äußere Ableitung <em>mal</em> innere Ableitung</p>
-                <div class="formula-box">
-                    <span class="formula-label">Formel</span>
-                    $$f(x) = u(v(x)) \;\Rightarrow\; f'(x) = u'(v(x)) \cdot v'(x)$$
-                    <span class="formula-label">Beispiel</span>
-                    $$f(x) = e^{3x^2} \;\Rightarrow\; f'(x) = e^{3x^2} \cdot 6x$$
-                </div>
-
-                <h3 id="sec-2-3">3. Die Produktregel (für multiplizierte Terme)</h3>
-                <p><span class="highlight">Wann?</span> Wenn zwei Terme mit $x$ miteinander multipliziert werden.</p>
-                <p><span class="highlight">Regel:</span> Ableiten mal Stehenlassen <em>plus</em> Stehenlassen mal Ableiten</p>
-                <div class="formula-box">
-                    <span class="formula-label">Formel</span>
+                    <span class="formula-label">Regel</span>
                     $$f(x) = u(x) \cdot v(x) \;\Rightarrow\; f'(x) = u'(x) \cdot v(x) + u(x) \cdot v'(x)$$
                 </div>
-                <div class="table-wrapper">
-                    <table>
-                        <tr><th colspan="2">Beispiel: $f(x) = x^2 \cdot \sin(x)$</th></tr>
-                        <tr><td>$u = x^2$</td><td>$u' = 2x$</td></tr>
-                        <tr><td>$v = \sin(x)$</td><td>$v' = \cos(x)$</td></tr>
-                        <tr><td colspan="2">$\Rightarrow\; f'(x) = 2x \cdot \sin(x) + x^2 \cdot \cos(x)$</td></tr>
-                    </table>
+                <p><span class="highlight">Merkspruch:</span> „Ableiten, stehen lassen PLUS stehen lassen, ableiten.“</p>
+
+                <h3 id="sec-2-3">3. Die Quotientenregel (für Brüche mit x im Nenner)</h3>
+                <div class="formula-box">
+                    <span class="formula-label">Regel</span>
+                    $$f(x) = \frac{u(x)}{v(x)} \;\Rightarrow\; f'(x) = \frac{u'(x) \cdot v(x) - u(x) \cdot v'(x)}{\big(v(x)\big)^2}$$
+                </div>
+                <p><span class="highlight">Merkspruch: NAZ – ZAN / N²</span><br>(<span class="highlight">N</span>enner mal <span class="highlight">A</span>bleitung <span class="highlight">Z</span>ähler MINUS <span class="highlight">Z</span>ähler mal <span class="highlight">A</span>bleitung <span class="highlight">N</span>enner, durch <span class="highlight">N</span>enner ins Quadrat)</p>
+                <div class="tip-box">
+                    <strong>LK-Tipp:</strong> Du kannst die Quotientenregel fast immer umgehen, indem du den Bruch <span class="highlight">als Produkt umschreibst</span>: $\frac{\sin(x)}{x^2} = \sin(x) \cdot x^{-2}$. Dann wendest du einfach Produkt- und Kettenregel an!
                 </div>
 
-                <div class="tip-box">
-                    <strong>💡 Wichtiger Tipp:</strong> Wenn du eine e-Funktion mit der Produktregel ableitest, <span class="highlight">klammere den e-Term sofort aus!</span> Das macht das Weiterrechnen (Nullstellen, 2. Ableitung) wesentlich einfacher.
+                <h3 id="sec-2-4">Praxis-Tipp: Produkt- &amp; Kettenregel kombinieren</h3>
+                <p>Rechne das <span class="highlight">niemals nur im Kopf</span>. Schreibe dir am Rand immer kurz auf:</p>
+                <div class="table-wrapper">
+                    <table>
+                        <tr><td>$u = \dots$</td><td>$\Rightarrow\; u' = \dots$</td></tr>
+                        <tr><td>$v = \dots$</td><td>$\Rightarrow\; v' = \dots$</td></tr>
+                    </table>
                 </div>
+                <p>Setze dann erst alles in die Formel ein. Das dauert 10 Sekunden länger, erspart dir aber <span class="highlight">90 % aller Vorzeichen- und Leichtsinnsfehler!</span></p>
             </div>
             <div class="page-footer">
                 <span>Mathe LK J1 – Analysis</span>
@@ -382,43 +376,45 @@
             </div>
         </div>
 
-        <!-- SEITE 4: Tangente/Normale, Extrem- & Wendepunkte -->
+        <!-- SEITE 4: Teil 3 – Kurvendiskussion I -->
         <div class="page">
             <div class="card" id="teil-3a">
-                <h2 id="sec-teil3">Teil 3: Anwendungen (Kurvendiskussion &amp; Geometrie)</h2>
-
-                <h3 id="sec-3-1">1. Tangente und Normale am Punkt P(u | f(u))</h3>
-                <div class="formula-box">
-                    <span class="formula-label">Tangentengleichung</span>
-                    $$t(x) = f'(u) \cdot (x - u) + f(u)$$
-                </div>
-                <p>Vorgehen: y-Wert $f(u)$ und Steigung $f'(u)$ berechnen, <span class="highlight">einsetzen, ausmultiplizieren</span>.</p>
-                <div class="formula-box">
-                    <span class="formula-label">Normalengleichung (steht senkrecht zur Tangente)</span>
-                    $$n(x) = -\frac{1}{f'(u)} \cdot (x - u) + f(u)$$
-                </div>
-
-                <h3 id="sec-3-2">2. Hoch- und Tiefpunkte (Extrempunkte)</h3>
+                <h2 id="sec-teil3">📈 Teil 3: Die Kurvendiskussion (der LK-Fahrplan)</h2>
+                <p>Merke dir grundsätzlich die Bedeutungen:</p>
                 <div class="table-wrapper">
                     <table>
-                        <tr><th>Bedingung</th><th>Was ist zu tun?</th></tr>
-                        <tr><td><span class="highlight">Notwendig</span></td><td>$f'(x) = 0$ &nbsp;→ liefert die möglichen x-Werte</td></tr>
-                        <tr><td><span class="highlight">Hinreichend</span></td><td>Gefundenes $x$ in die 2. Ableitung $f''(x)$ einsetzen:<br>
-                            $f''(x) &lt; 0 \;\Rightarrow$ <span class="highlight">Hochpunkt</span><br>
-                            $f''(x) &gt; 0 \;\Rightarrow$ <span class="highlight">Tiefpunkt</span></td></tr>
+                        <tr><th>$f$</th><th>$f'$</th><th>$f''$</th></tr>
+                        <tr><td><span class="highlight">Höhe</span> (y-Wert)</td><td><span class="highlight">Steigung</span></td><td><span class="highlight">Krümmung</span></td></tr>
+                    </table>
+                </div>
+
+                <h3 id="sec-3-1">1. Monotonie (Steigungsverhalten)</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <tr><td>$f'(x) &gt; 0 \;\Rightarrow$</td><td>Graph ist <span class="highlight">streng monoton wachsend</span> (steigt)</td></tr>
+                        <tr><td>$f'(x) &lt; 0 \;\Rightarrow$</td><td>Graph ist <span class="highlight">streng monoton fallend</span> (fällt)</td></tr>
+                    </table>
+                </div>
+
+                <h3 id="sec-3-2">2. Krümmung</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <tr><td>$f''(x) &gt; 0 \;\Rightarrow$</td><td><span class="highlight">linksgekrümmt</span> (Linkskurve, wie ein lächelnder Smiley $\smile$)</td></tr>
+                        <tr><td>$f''(x) &lt; 0 \;\Rightarrow$</td><td><span class="highlight">rechtsgekrümmt</span> (Rechtskurve, wie ein trauriger Smiley $\frown$)</td></tr>
+                    </table>
+                </div>
+
+                <h3 id="sec-3-3">3. Extrempunkte (Hoch- und Tiefpunkte)</h3>
+                <p><span class="highlight">Notwendige Bedingung:</span> $f'(x) = 0$ setzen (liefert dir mögliche x-Werte, z. B. $x_E$).</p>
+                <div class="table-wrapper">
+                    <table>
+                        <tr><th>Hinreichende Bedingung</th><th>Hochpunkt (Maximum)</th><th>Tiefpunkt (Minimum)</th></tr>
+                        <tr><td><span class="highlight">Weg 1:</span> $x_E$ in $f''(x)$ einsetzen</td><td>$f''(x_E) &lt; 0$</td><td>$f''(x_E) &gt; 0$</td></tr>
+                        <tr><td><span class="highlight">Weg 2 – VZW-Kriterium:</span><br>falls $f''(x_E) = 0$ → Vorzeichenwechsel von $f'$ links/rechts von $x_E$ prüfen</td><td>VZW von $+$ nach $-$</td><td>VZW von $-$ nach $+$</td></tr>
                     </table>
                 </div>
                 <div class="tip-box">
-                    <strong>Tipp:</strong> Am Schluss das $x$ in die <span class="highlight">Ausgangsfunktion $f(x)$</span> einsetzen, um die y-Koordinate zu bekommen!
-                </div>
-
-                <h3 id="sec-3-3">3. Wendepunkte (stärkste Steigung/stärkstes Gefälle, Krümmungswechsel)</h3>
-                <div class="table-wrapper">
-                    <table>
-                        <tr><th>Bedingung</th><th>Formel</th></tr>
-                        <tr><td><span class="highlight">Notwendig</span></td><td>$f''(x) = 0$</td></tr>
-                        <tr><td><span class="highlight">Hinreichend</span></td><td>$f'''(x) \neq 0$</td></tr>
-                    </table>
+                    <strong>WICHTIG:</strong> Um den Punkt $P(x \mid y)$ vollständig anzugeben, musst du den x-Wert ganz am Ende wieder in die <span class="highlight">allererste Funktion $f(x)$</span> einsetzen, um die y-Koordinate zu berechnen!
                 </div>
             </div>
             <div class="page-footer">
@@ -428,70 +424,93 @@
             </div>
         </div>
 
-        <!-- SEITE 5: Symmetrie, Globalverhalten, Karteikarten -->
+        <!-- SEITE 5: Teil 3 – Wendepunkte + Teil 4 – Tangente & Normale -->
         <div class="page">
             <div class="card" id="teil-3b">
-                <h3 id="sec-3-4">4. Symmetrie (Standardverfahren)</h3>
+                <h3 id="sec-3-4">4. Wendepunkte (wo sich die Krümmung ändert)</h3>
                 <div class="table-wrapper">
                     <table>
-                        <tr><th>Symmetrie</th><th>Bedingung</th></tr>
-                        <tr><td><span class="highlight">Achsensymmetrie</span> zur y-Achse</td><td>$f(-x) = f(x)$</td></tr>
-                        <tr><td><span class="highlight">Punktsymmetrie</span> zum Ursprung</td><td>$f(-x) = -f(x)$</td></tr>
+                        <tr><th>Bedingung</th><th>Formel</th></tr>
+                        <tr><td><span class="highlight">Notwendig</span></td><td>$f''(x) = 0$ &nbsp;(liefert $x_W$)</td></tr>
+                        <tr><td><span class="highlight">Hinreichend</span></td><td>$f'''(x_W) \neq 0$ &nbsp;(oder Vorzeichenwechsel bei $f''$)</td></tr>
                     </table>
                 </div>
-
-                <h3 id="sec-3-5">5. Globalverhalten (Verhalten für x → ±∞)</h3>
-                <p><span class="highlight">Dominanzregel:</span> Die e-Funktion wächst/fällt im Unendlichen <span class="highlight">immer stärker</span> als jede Polynomfunktion ($x, x^2, x^3, \dots$). Die e-Funktion „gewinnt“ also immer.</p>
-                <div class="formula-box">
-                    <span class="formula-label">Beispiel</span>
-                    $$\lim_{x \to \infty} x^3 \cdot e^{-x} = 0$$
+                <div class="tip-box">
+                    <strong>Sonderfall Sattelpunkt („Terrassenpunkt“):</strong> Ein Wendepunkt, bei dem die <span class="highlight">Tangente waagrecht</span> ist. Es muss gelten: $f''(x) = 0$ <span class="highlight">UND</span> $f'(x) = 0$.
                 </div>
-                <p>…da $e^{-x}$ gegen 0 geht und stärker ist als das Unendlich von $x^3$. Die <span class="highlight">x-Achse</span> ist somit eine <span class="highlight">waagrechte Asymptote</span>.</p>
+                <h2 id="sec-teil4">📏 Teil 4: Tangente und Normale</h2>
+                <p>Es geht darum, Geradengleichungen ($y = mx + c$) aufzustellen, die den Graphen an einer Stelle $u$ <span class="highlight">berühren</span> (Tangente) oder <span class="highlight">senkrecht</span> durch ihn gehen (Normale).</p>
 
-                <h2 id="sec-quiz">Schnell-Check (Karteikarten)</h2>
-                <div class="flashcards-container">
-                    <div class="flashcard">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Wann nutze ich die Kettenregel?</span></div>
-                            <div class="flashcard-back"><span style="display:block;">Bei <span class="highlight">verschachtelten</span> Funktionen.<br><br>Äußere Ableitung · innere Ableitung</span></div>
-                        </div>
-                    </div>
-                    <div class="flashcard">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Wann nutze ich die Produktregel?</span></div>
-                            <div class="flashcard-back"><span style="display:block;">Wenn zwei Terme mit $x$ <span class="highlight">multipliziert</span> werden.<br><br>$u'v + uv'$</span></div>
-                        </div>
-                    </div>
-                    <div class="flashcard">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Ableitung von $-\sin(x)$?</span></div>
-                            <div class="flashcard-back"><span style="display:block;">$-\cos(x)$<br><br>(Ableitungskreis: sin → cos → −sin → −cos)</span></div>
-                        </div>
-                    </div>
-                    <div class="flashcard">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Bedingungen für einen Hochpunkt?</span></div>
-                            <div class="flashcard-back"><span style="display:block;">$f'(x) = 0$<br>und<br>$f''(x) &lt; 0$</span></div>
-                        </div>
-                    </div>
-                    <div class="flashcard">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Bedingungen für einen Wendepunkt?</span></div>
-                            <div class="flashcard-back"><span style="display:block;">$f''(x) = 0$<br>und<br>$f'''(x) \neq 0$</span></div>
-                        </div>
-                    </div>
-                    <div class="flashcard">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Warum darf man bei $e^x \cdot (\dots) = 0$ den e-Term ignorieren?</span></div>
-                            <div class="flashcard-back"><span style="display:block;">Weil $e^x > 0$ ist – er wird <span class="highlight">nie null</span>.<br><br>(Satz vom Nullprodukt)</span></div>
-                        </div>
-                    </div>
+                <h3 id="sec-4-1">1. Tangente (berührt den Graphen an der Stelle u)</h3>
+                <p><span class="highlight">Steigung:</span> $m_t = f'(u)$</p>
+                <div class="formula-box">
+                    <span class="formula-label">Allgemeine Tangentengleichung</span>
+                    $$y = f'(u) \cdot (x - u) + f(u)$$
+                </div>
+
+                <h3 id="sec-4-2">2. Normale (steht senkrecht/orthogonal auf der Tangente)</h3>
+                <p><span class="highlight">Steigung:</span> $m_n = -\frac{1}{m_t} = -\frac{1}{f'(u)}$</p>
+                <div class="formula-box">
+                    <span class="formula-label">Allgemeine Normalengleichung</span>
+                    $$y = -\frac{1}{f'(u)} \cdot (x - u) + f(u)$$
                 </div>
             </div>
             <div class="page-footer">
                 <span>Mathe LK J1 – Analysis</span>
                 <span>Olga V.</span>
                 <span>Seite 5</span>
+            </div>
+        </div>
+
+        <!-- SEITE 6: Teil 4 – Tangente von außen + Teil 5 – Extremwertprobleme -->
+        <div class="page">
+            <div class="card" id="teil-4b">
+                <h3 id="sec-4-3">3. Tangente von außen (LK-Klassiker! siehe Buch S. 29)</h3>
+                <p>Du hast einen Punkt $Q(x_q \mid y_q)$, der <span class="highlight">nicht auf dem Graphen</span> liegt! Du suchst die <span class="highlight">Berührstelle $u$</span> auf dem Graphen.</p>
+                <p><span class="highlight">Lösungsweg:</span> Setze $x_q$ und $y_q$ in die allgemeine Tangentengleichung ein:</p>
+                <div class="formula-box">
+                    $$y_q = f'(u) \cdot (x_q - u) + f(u)$$
+                </div>
+                <p>Du hast nun eine Gleichung, in der <span class="highlight">nur noch $u$</span> als Unbekannte steht. Löse diese Gleichung nach $u$ auf.</p>
+                <h2 id="sec-teil5">🛠️ Teil 5: Extremwertprobleme mit Nebenbedingungen</h2>
+                <p>Das sind die typischen Textaufgaben (<em>„Wie muss der Zaun gebaut werden, damit die Fläche maximal ist?“</em>). Halte dich <span class="highlight">stur an diese 5 Schritte</span> – das gibt in Klausuren die meisten Teilpunkte!</p>
+                <div class="table-wrapper">
+                    <table>
+                        <tr><th>Schritt</th><th>Was ist zu tun?</th></tr>
+                        <tr><td><span class="highlight">1. Hauptbedingung (HB)</span></td><td>Was soll maximal/minimal werden? Formel aufstellen (z. B. Rechtecksfläche $A = u \cdot v$).</td></tr>
+                        <tr><td><span class="highlight">2. Nebenbedingung (NB)</span></td><td>Welche Einschränkung gibt der Text vor? (z. B. „Der Zaun ist 100 m lang“ $\Rightarrow 2u + v = 100$ oder der Punkt liegt auf dem Graphen $\Rightarrow v = f(u)$)</td></tr>
+                        <tr><td><span class="highlight">3. Zielfunktion (ZF)</span></td><td>NB nach einer Variable auflösen (z. B. $v = 100 - 2u$) und in die HB einsetzen. Jetzt hast du eine Funktion mit nur einer Unbekannten: $A(u) = u \cdot (100 - 2u)$.</td></tr>
+                        <tr><td><span class="highlight">4. Extremum berechnen</span></td><td>Zielfunktion ableiten ($A'(u) = 0$), nach $u$ auflösen und mit $A''(u)$ prüfen (genau wie bei der Kurvendiskussion).</td></tr>
+                        <tr><td><span class="highlight">5. Randwerte prüfen</span><br><small>(gibt im LK Extrapunkte!)</small></td><td>In der Realität darf eine Strecke nicht negativ lang sein. Prüfe, was an den extremen Grenzen des Definitionsbereichs passiert. Manchmal liegt dort das eigentliche <span class="highlight">(globale) Maximum!</span></td></tr>
+                    </table>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>Mathe LK J1 – Analysis</span>
+                <span>Olga V.</span>
+                <span>Seite 6</span>
+            </div>
+        </div>
+
+        <!-- SEITE 7: Teil 6 – Theorie-Sätze + Karteikarten -->
+        <div class="page">
+            <div class="card" id="teil-6">
+                <h2 id="sec-teil6">🧠 Teil 6: Theorie-Sätze (Stetigkeit &amp; Nullstellensatz)</h2>
+                <p><em>Wird im Pflichtteil (ohne Hilfsmittel) oder als Begründungsaufgabe im LK oft gefragt.</em></p>
+
+                <h3 id="sec-6-1">Stetigkeit</h3>
+                <p>Ein Graph ist anschaulich <span class="highlight">stetig</span>, wenn man ihn <span class="highlight">„ohne den Stift abzusetzen“</span> zeichnen kann (es gibt keine Sprünge). Mathematisch muss an einer „Nahtstelle“ $x_0$ gelten: Der Grenzwert von links entspricht dem Grenzwert von rechts, und beide entsprechen dem tatsächlichen Funktionswert:</p>
+                <div class="formula-box">
+                    $$\lim_{x \to x_0^-} f(x) \;=\; \lim_{x \to x_0^+} f(x) \;=\; f(x_0)$$
+                </div>
+
+                <h3 id="sec-6-2">Nullstellensatz von Bolzano</h3>
+                <p>Wenn eine Funktion auf einem Intervall $[a;\, b]$ <span class="highlight">stetig</span> ist und die y-Werte an den Rändern $f(a)$ und $f(b)$ <span class="highlight">unterschiedliche Vorzeichen</span> haben (z. B. Minus und Plus), dann MUSS der Graph die x-Achse dazwischen zwingend mindestens einmal schneiden $\Rightarrow$ es gibt dort <span class="highlight">mindestens eine Nullstelle</span>.</p>
+            </div>
+            <div class="page-footer">
+                <span>Mathe LK J1 – Analysis</span>
+                <span>Olga V.</span>
+                <span>Seite 7</span>
             </div>
         </div>
 

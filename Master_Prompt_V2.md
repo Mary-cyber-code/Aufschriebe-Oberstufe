@@ -316,7 +316,8 @@ Beispiel-Struktur einer Seite:
 - **IDs für Navigation:** Jedes `<h1>`, `<h2>` und `<h3>` MUSS eine eindeutige `id` (z.B. `id="sec-1"`) bekommen. Diese dienen dem Inhaltsverzeichnis!
 - **Tabellen:** Müssen immer von `<div class="table-wrapper">` umschlossen sein!
 - **Wichtige Vokabeln / Kernaussagen:** Hebe wichtige Wörter im Text immer mit `<span class="highlight">Wort</span>` hervor.
-- **Karteikarten (Flashcards):** Nutze Karteikarten für kurze Vokabeln, Definitionen oder Quiz-Fragen:
+- **Inhaltstreue (ZWINGEND):** Übernimm ausschließlich die Inhalte aus den Notizen des Nutzers. Füge KEINE eigenen Inhalte, Beispiele, Lösungen oder Zusatzabschnitte hinzu – du darfst nur strukturieren, formatieren und hervorheben.
+- **Umklapp-Kärtchen (Flashcards):** Die Kärtchen sind ein **Darstellungsmittel innerhalb des regulären Aufschriebs**. Nutze sie nur, um Inhalte, die bereits in den Notizen stehen (z. B. Begriffe + Definition, Vokabeln), platzsparend und interaktiv darzustellen. Erstelle **KEINE** zusätzlichen Karteikarten-, Quiz- oder „Schnell-Check“-Abschnitte zum Abfragen – Karteikarten zum Lernen werden extern erstellt.
 ```html
 <div class="flashcards-container">
     <div class="flashcard">
