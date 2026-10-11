@@ -53,7 +53,7 @@ const subjectData = {
       {
         name: "J1 – Analysis",
         topics: [
-          { title: "Regel- & Formelsammlung (Kapitel 1)", link: "mathe/analysis_j1_formelsammlung.html" }
+          { title: "Grundlagen der Differenzialrechnung", link: "mathe/analysis_j1_formelsammlung.html" }
         ]
       }
     ]
@@ -71,6 +71,12 @@ const subjectData = {
           { title: "Struktur- & Eigenschaftsbeziehungen", link: "chemie/struktur-eigenschaften.html" },
           { title: "Atombau, Bindungen & Wechselwirkungen", link: "chemie/atombau-bindungen-wechselwirkungen.html" },
           { title: "Chemische Reaktionen", link: "chemie/chemische-reaktionen.html" }
+        ]
+      },
+      {
+        name: "J1",
+        topics: [
+          { title: "Chemische Energetik", link: "chemie/chemische-energetik.html" }
         ]
       }
     ]
