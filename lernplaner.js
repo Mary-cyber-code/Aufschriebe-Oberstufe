@@ -77,14 +77,24 @@
     return h + ' Std.' + (r ? ' ' + r + ' Min.' : '');
   }
 
+  var GEMINI_URL = 'https://gemini.google.com/app';
+  var GEMINI_LINK = '<a class="lp-tool lp-tool-gold" href="' + GEMINI_URL + '" target="_blank" rel="noopener">Gemini öffnen ↗</a>';
+
   var toastTimer = null;
-  function toast(msg) {
+  /** withGemini = true → zusätzlicher Link „Gemini öffnen“ */
+  function toast(msg, withGemini) {
     var t = $('lp-toast');
     if (!t) return;
     t.textContent = msg;
+    if (withGemini) {
+      var a = document.createElement('a');
+      a.href = GEMINI_URL; a.target = '_blank'; a.rel = 'noopener';
+      a.textContent = 'Gemini öffnen ↗';
+      t.appendChild(a);
+    }
     t.classList.add('lp-show');
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(function () { t.classList.remove('lp-show'); }, 3800);
+    toastTimer = setTimeout(function () { t.classList.remove('lp-show'); }, withGemini ? 8000 : 3800);
   }
 
   /* ──────────────────────────────────────────────────────────
@@ -787,8 +797,20 @@
       case 'FEHLER': h = '<button type="button" class="lp-tool lp-tool-gold" data-act="fehler"' + k + '>Fehleranalyse-Prompt kopieren</button>'; break;
       case 'FINAL': h = '<a class="lp-tool" href="index.html?tool=anki&fach=' + encodeURIComponent(x.fk) + '" target="_blank" rel="noopener">Anki</a>'; break;
     }
-    return h ? '<div class="lp-s-tools">' + h + '</div>' : '';
+    var hint = AI_HINTS[x.type];
+    if (hint) h += GEMINI_LINK;
+    return h ? '<div class="lp-s-tools">' + h + '</div>' + (hint ? '<div class="lp-s-hint">' + hint + '</div>' : '') : '';
   }
+
+  /* Kurz-Anleitung pro KI-Prompt: neuer Chat? Was muss ich dazugeben? */
+  var AI_HINTS = {
+    E: '💬 Neuer Chat → Prompt einfügen. Mehr musst du nicht dazugeben. Schick deine Antworten in denselben Chat, dann korrigiert Gemini sie.',
+    U: '💬 Neuer Chat → Prompt einfügen. Mehr musst du nicht dazugeben. Erst lösen, dann die Lösungen lesen – oder deine Antworten zur Korrektur in denselben Chat schicken.',
+    R: '💬 Neuer Chat → Prompt einfügen. Mehr musst du nicht dazugeben.',
+    V: '💬 Neuer Chat → Prompt einfügen. Mehr musst du nicht dazugeben.',
+    SIM: '💬 Neuer Chat → Prompt einfügen. Aufgaben auf Papier lösen, erst danach Lösungen lesen. Chat offen lassen – du brauchst ihn für die Fehleranalyse!',
+    FEHLER: '💬 Im Chat der Klausur-Simulation weiterschreiben → Prompt einfügen + deine Lösungen anhängen (abgetippt oder als Foto).'
+  };
 
   /* ──────────────────────────────────────────────────────────
      PLAN-ANSICHT
@@ -863,6 +885,20 @@
 
     (p.warnings || []).forEach(function (w) { h += '<div class="lp-box lp-warn">' + esc(w) + '</div>'; });
 
+    h += '<details class="lp-strategy"><summary>Wer sieht meinen Plan? Wird er gespeichert?</summary><ul>';
+    h += '<li><b>Nur du.</b> Der Plan wird nur in <i>diesem</i> Browser auf <i>diesem</i> Gerät gespeichert (Browser-Speicher) – nicht auf GitHub und auf keinem Server. Wer deine Website öffnet, sieht nur einen eigenen, leeren Planer.</li>';
+    h += '<li><b>Bleibt gespeichert</b>, auch wenn du die Seite schließt. <b>Weg ist er</b>, wenn du die Browserdaten löschst oder im Inkognito-Modus bist. Auf Handy und PC hast du jeweils einen eigenen Plan.</li>';
+    h += '<li><b>Tipp:</b> „Drucken / PDF“ oder der Kalender-Export sind deine Sicherungskopie.</li>';
+    h += '<li><b>KI:</b> Was du in Gemini einfügst (Lernzettel, Zusatzwissen), geht an Google und landet in deinem Gemini-Verlauf – schreib also nichts Privates ins Zusatzwissen.</li>';
+    h += '</ul></details>';
+
+    h += '<details class="lp-strategy"><summary>So nutzt du die KI-Prompts</summary><ul>';
+    h += '<li><b>Quiz, Übungsaufgaben, Klausur-Simulation:</b> Für jeden Prompt einen <b>neuen Chat</b> – sonst vermischt Gemini alte Themen. Du musst nichts dazugeben: Lernzettel, Operatoren und dein Zusatzwissen stecken schon im Prompt.</li>';
+    h += '<li><b>Fehleranalyse:</b> Im <b>gleichen Chat</b> wie die Simulation weiterschreiben und deine Lösungen dazugeben (abgetippt oder als Foto).</li>';
+    h += '<li><b>KI-Coach:</b> Lege dafür <b>einen eigenen Chat</b> an und behalte ihn. Kopiere einmal pro Woche den aktuellen Coach-Prompt neu hinein. Danach schreibst du z. B. „Start: Chemische Energetik“ und wirst abgefragt.</li>';
+    h += '<li>Der Kopieren-Button legt den Prompt in die Zwischenablage → „Gemini öffnen“ → <b>Strg+V</b> (Handy: lange tippen → Einfügen).</li>';
+    h += '</ul></details>';
+
     h += '<details class="lp-strategy"><summary>Warum ist der Plan so aufgebaut? (Lernstrategien)</summary><ul>';
     h += '<li><b>Spaced Repetition:</b> Jedes Thema wird nach 1, 3, 7, 14 … Tagen wiederholt – kurz bevor du es vergessen würdest. So landet es im Langzeitgedächtnis.</li>';
     h += '<li><b>Active Recall:</b> Abrufen statt Lesen (Blurting, Quiz, Anki). Sich-erinnern-Müssen ist anstrengend – und genau deshalb wirksam.</li>';
@@ -879,6 +915,7 @@
     h += '<button type="button" class="btn btn-outline" data-act="print">Drucken / PDF</button>';
     h += '<button type="button" class="btn btn-outline" data-act="ics">In Kalender exportieren (.ics)</button>';
     h += '<button type="button" class="btn btn-outline" data-act="coach">KI-Coach-Prompt kopieren</button>';
+    h += '<a class="btn btn-outline" href="' + GEMINI_URL + '" target="_blank" rel="noopener">Gemini öffnen ↗</a>';
     h += '<button type="button" class="btn btn-outline" data-act="replan">Neu planen ab heute</button>';
     h += '<button type="button" class="btn btn-outline" data-act="edit">Einstellungen bearbeiten</button>';
     h += '<button type="button" class="btn btn-outline" data-act="delete">Plan löschen</button>';
@@ -959,7 +996,7 @@
         });
         return LT.copyToClipboard(prompt);
       })
-      .then(function (ok) { if (ok) toast('Prompt kopiert! Füge ihn in ChatGPT, Gemini o. Ä. ein.'); })
+      .then(function (ok) { if (ok) toast(afb === 'SIM' ? 'Kopiert! Neuer Gemini-Chat → Strg+V. Chat für die Fehleranalyse offen lassen.' : 'Kopiert! Neuer Gemini-Chat → Strg+V.', true); })
       .catch(function (e) {
         toast('Lernzettel konnten nicht geladen werden. Öffne die Website über GitHub Pages (nicht als Datei).');
         console.error(e);
@@ -982,8 +1019,9 @@
     if (ops.replace(/AFB I+: /g, '').trim()) p += '\nPrüfe besonders, ob ich die Operatoren richtig umgesetzt habe:\n' + ops + '\n';
     var z = getSub(fk).zusatz.trim();
     if (z) p += '\nZusatzwissen, das ich ebenfalls können muss:\n' + z + '\n';
-    p += '\nAUFGABEN, MEINE LÖSUNGEN UND ERWARTUNGSHORIZONT:\n(hier einfügen)\n';
-    LT.copyToClipboard(p).then(function (ok) { if (ok) toast('Fehleranalyse-Prompt kopiert – deine Lösungen unten einfügen.'); });
+    p += '\nAUFGABEN & ERWARTUNGSHORIZONT: stehen weiter oben in diesem Chat (falls das ein neuer Chat ist, füge ich sie hier ein).\n';
+    p += '\nMEINE LÖSUNGEN (abgetippt oder als Foto angehängt):\n(hier einfügen)\n';
+    LT.copyToClipboard(p).then(function (ok) { if (ok) toast('Kopiert! Im Chat der Simulation einfügen + deine Lösungen anhängen.', true); });
   }
 
   function copyCoach() {
@@ -1012,7 +1050,7 @@
     t += '2. Wenn ich dir schreibe „Start: [Thema]“, stellst du mir 5 Active-Recall-Fragen nacheinander (eine pro Nachricht), wartest auf meine Antwort und korrigierst sie knapp.\n';
     t += '3. Verwende bei Aufgaben immer die offiziellen BW-Operatoren des jeweiligen Fachs.\n';
     t += '4. Motiviere mich, aber bleib ehrlich, wenn etwas noch nicht für 15 Punkte reicht.\n';
-    LT.copyToClipboard(t).then(function (ok) { if (ok) toast('KI-Coach-Prompt kopiert!'); });
+    LT.copyToClipboard(t).then(function (ok) { if (ok) toast('KI-Coach-Prompt kopiert! Eigener Gemini-Chat → Strg+V (dann z. B. „Start: [Thema]“ schreiben).', true); });
   }
 
   function icsEscape(s) {

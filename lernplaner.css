@@ -176,6 +176,9 @@
 .lp-tool.lp-tool-gold { border-color: var(--gold-dark); color: var(--gold-dark); }
 .lp-tool.lp-tool-gold:hover { background: var(--gold); color: #fff; border-color: var(--gold); }
 .lp-tool[disabled] { opacity: 0.5; cursor: wait; }
+.lp-s-hint {
+  font-size: 0.78rem; color: var(--text-light); margin-top: 6px; line-height: 1.4;
+}
 
 .lp-toast {
   position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(120px);
@@ -208,7 +211,7 @@
 
 /* ---------- Druck ---------- */
 @media print {
-  .lp-noprint, .lp-toolbar, .lp-s-tools, .deco-corner, .lp-toast, .lp-strategy { display: none !important; }
+  .lp-noprint, .lp-toolbar, .lp-s-tools, .lp-s-hint, .deco-corner, .lp-toast, .lp-strategy { display: none !important; }
   body { background: #fff; }
   .page-container { padding: 0; max-width: none; }
   .page-container::before, .page-container::after { display: none; }
