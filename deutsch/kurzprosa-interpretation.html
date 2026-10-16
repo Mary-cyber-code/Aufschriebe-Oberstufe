@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deutsch: Interpretation von Kurzprosa</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --paper-white: #F8F6F1;
+            --paper-cream: #FDFCF8;
+            --text-primary: #2D3A2E;
+            --text-secondary: #5A6B5C;
+            --gold: #C9A96E;
+            --forest: #3A5A3F;
+            --nav-bg: rgba(248, 246, 241, 0.95);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--paper-white);
+            color: var(--text-primary);
+            font-family: 'Raleway', sans-serif;
+            line-height: 1.6;
+            padding-top: 70px;
+        }
+
+        h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; color: var(--forest); margin-bottom: 0.5rem; }
+        h1 { font-size: 2.2rem; text-align: center; margin-bottom: 2rem; border-bottom: 2px solid var(--gold); padding-bottom: 1rem; }
+        h2 { font-size: 1.8rem; margin-top: 1.5rem; border-bottom: 1px solid rgba(201, 169, 110, 0.3); padding-bottom: 0.3rem;}
+        h3 { font-size: 1.4rem; margin-top: 1rem; color: var(--text-primary); }
+
+        p { margin-bottom: 1rem; }
+        ul, ol { margin-bottom: 1rem; padding-left: 2rem; }
+        li { margin-bottom: 0.5rem; }
+
+        .highlight { color: var(--forest); font-weight: 600; }
+        .flashcard-back .highlight { color: var(--gold); }
+
+        /* Korrekte Darstellung tiefer/höhergestellter Zahlen ohne Layout-Bugs */
+        sub, sup { line-height: 0; vertical-align: baseline; font-size: 0.8em; }
+        sub { position: relative; top: 0.3em; }
+        sup { position: relative; top: -0.3em; }
+
+        /* Reaktionspfeile */
+        .reaction-arrow { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; vertical-align: middle; margin: 0 8px; }
+        .reaction-arrow .arrow-text { font-size: 0.65rem; line-height: 1; color: var(--text-secondary); }
+        .reaction-arrow .arrow-symbol { line-height: 1; font-size: 1.2rem; margin-top: -4px; }
+        .arrow-simple { font-family: sans-serif; margin: 0 5px; }
+
+        /* Formel-Kasten & Tipp-Kasten (passend zum Botanical-Design) */
+        .formula-box {
+            background: #fff; border: 1px solid rgba(201, 169, 110, 0.4); border-radius: 6px;
+            padding: 10px 16px; margin: 0.5rem 0 1rem; text-align: center; overflow-x: auto;
+        }
+        .formula-box .formula-label { display: block; font-size: 0.8rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 2px; }
+        .tip-box {
+            background: rgba(201, 169, 110, 0.1); border-left: 4px solid var(--gold); border-radius: 4px;
+            padding: 12px 16px; margin: 1rem 0;
+        }
+        .tip-box strong { color: var(--forest); font-family: 'Playfair Display', serif; }
+        mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width: 100%; }
+
+        /* Navigation */
+        nav {
+            position: fixed; top: 0; left: 0; width: 100%; background-color: var(--nav-bg); backdrop-filter: blur(10px);
+            z-index: 1000; display: flex; justify-content: center; align-items: center; padding: 15px 20px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05); border-bottom: 1px solid var(--gold);
+        }
+        .nav-group { display: flex; gap: 15px; align-items: center; }
+        .nav-btn {
+            background: transparent; border: 1px solid var(--forest); color: var(--forest); padding: 8px 16px;
+            font-family: 'Raleway', sans-serif; font-weight: 500; font-size: 0.9rem; cursor: pointer; border-radius: 4px;
+            transition: all 0.3s ease; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;
+        }
+        .nav-btn:hover, .nav-btn.active { background: var(--forest); color: var(--paper-white); }
+        .nav-btn.gold { border-color: var(--gold); color: var(--text-primary); }
+        .nav-btn.gold:hover { background: var(--gold); color: #fff; }
+
+        /* Dropdown */
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content {
+            display: none; position: absolute; background-color: var(--paper-cream); min-width: 250px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1); border: 1px solid var(--gold); border-radius: 4px;
+            z-index: 1; top: 100%; left: 0; margin-top: 5px; max-height: 70vh; overflow-y: auto;
+        }
+        .dropdown.show .dropdown-content { display: block; }
+        .dropdown-item {
+            color: var(--text-primary); padding: 12px 16px; text-decoration: none; display: block; cursor: pointer;
+            font-family: 'Raleway', sans-serif; font-size: 0.9rem; border-bottom: 1px solid rgba(201, 169, 110, 0.1); transition: background 0.2s;
+        }
+        .dropdown-item:hover { background-color: rgba(201, 169, 110, 0.1); color: var(--forest); }
+        .dropdown-item:last-child { border-bottom: none; }
+
+        /* Container & Layout Defaults */
+        .content-wrapper { margin: 0 auto; transition: all 0.3s ease; }
+
+        /* Plakat Modus (Standard) */
+        body:not(.print-mode) .content-wrapper { max-width: 1500px; padding: 20px; display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
+        body:not(.print-mode) .page { display: contents; }
+        body:not(.print-mode) .page-footer { display: none !important; }
+        body:not(.print-mode) .card {
+            background: var(--paper-cream); border: 1px solid var(--gold); border-radius: 8px; padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03); flex: 1 1 600px; max-width: 100%;
+        }
+
+        /* Tables */
+        .table-wrapper { overflow-x: auto; margin-bottom: 1.5rem; border-radius: 4px; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.02); border: 1px solid rgba(201, 169, 110, 0.2); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid rgba(45, 58, 46, 0.1); }
+        th { background-color: rgba(58, 90, 63, 0.05); color: var(--forest); font-family: 'Playfair Display', serif; font-weight: 600; }
+        tr:last-child td { border-bottom: none; }
+
+        /* Flashcards */
+        .flashcards-container { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px; margin-bottom: 1rem; }
+        .flashcard { perspective: 1000px; width: 200px; height: 240px; cursor: pointer; flex: 1 1 200px; }
+        .flashcard-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; }
+        .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+        .flashcard-front, .flashcard-back {
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 8px; padding: 15px;
+            display: flex; align-items: center; justify-content: center; border: 1px solid var(--gold);
+            background-color: var(--paper-cream); box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            overflow-y: auto; scrollbar-width: none;
+        }
+        .flashcard-front { color: var(--forest); font-family: 'Playfair Display', serif; font-weight: 600; font-size: 1.05rem; }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--forest); color: var(--paper-white); border-color: var(--forest); font-size: 0.9rem; }
+        .flashcard span, .flashcard p { display: block; width: 100%; }
+
+        /* Druck Modus - KOMPAKTERES LAYOUT */
+        body.print-mode { background-color: #E2E2E2; padding-top: 90px; font-size: 0.85rem; line-height: 1.4; }
+        body.print-mode h1 { font-size: 1.7rem; margin-bottom: 1rem; padding-bottom: 0.5rem; }
+        body.print-mode h2 { font-size: 1.3rem; margin-top: 1rem; padding-bottom: 0.2rem; }
+        body.print-mode h3 { font-size: 1.1rem; margin-top: 0.8rem; margin-bottom: 0.3rem; }
+        body.print-mode p, body.print-mode ul, body.print-mode ol { margin-bottom: 0.6rem; }
+        body.print-mode li { margin-bottom: 0.2rem; }
+        body.print-mode th, body.print-mode td { padding: 6px 10px; }
+        body.print-mode .formula-box { padding: 6px 12px; margin: 0.3rem 0 0.6rem; }
+        body.print-mode .tip-box { padding: 8px 12px; margin: 0.6rem 0; }
+
+        body.print-mode .content-wrapper { max-width: none; padding: 0; display: block; }
+        body.print-mode .page {
+            width: 210mm; height: auto; min-height: 297mm; padding: 15mm; margin: 0 auto 20mm auto; background: white;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: visible; break-after: page;
+        }
+        body.print-mode .card { background: transparent; border: none; padding: 0; box-shadow: none; margin-bottom: 0; }
+        body.print-mode .flashcards-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; }
+        body.print-mode .flashcard { width: auto; height: auto; min-height: auto; border: 1px solid var(--text-primary); border-radius: 0; page-break-inside: avoid; }
+        body.print-mode .flashcard-inner { transform: none !important; transition: none; display: flex; flex-direction: column; }
+        body.print-mode .flashcard-front, body.print-mode .flashcard-back {
+            border: none; box-shadow: none; position: static; height: auto; padding: 6px 10px;
+            background: transparent; border-radius: 0; color: var(--text-primary); transform: none;
+        }
+        body.print-mode .flashcard-front { border-bottom: 1px dashed #ccc; font-size: 0.95rem; }
+
+        .page-footer {
+            margin-top: auto; border-top: 1px solid var(--gold); padding-top: 10px;
+            display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-secondary); font-family: 'Playfair Display', serif;
+        }
+        @media (max-width: 768px) {
+            #btn-fullscreen { display: none !important; }
+            .nav-group { gap: 8px; flex-wrap: wrap; justify-content: center; }
+            .nav-btn { padding: 6px 10px; font-size: 0.8rem; }
+            nav { padding: 10px; }
+        }
+        @media print {
+            @page { size: A4; margin: 0; }
+            body { background-color: white !important; padding-top: 0 !important; font-size: 0.85rem !important; line-height: 1.4 !important; }
+            h1 { font-size: 1.7rem !important; margin-bottom: 1rem !important; padding-bottom: 0.5rem !important; }
+            h2 { font-size: 1.3rem !important; margin-top: 1rem !important; padding-bottom: 0.2rem !important; break-after: avoid !important; }
+            h3 { font-size: 1.1rem !important; margin-top: 0.8rem !important; margin-bottom: 0.3rem !important; break-after: avoid !important; }
+            p, ul, ol { margin-bottom: 0.6rem !important; }
+            li { margin-bottom: 0.2rem !important; }
+            th, td { padding: 6px 10px !important; }
+            table { break-inside: avoid !important; }
+            .formula-box { padding: 6px 12px !important; margin: 0.3rem 0 0.6rem !important; break-inside: avoid !important; }
+            .tip-box { padding: 8px 12px !important; margin: 0.6rem 0 !important; break-inside: avoid !important; }
+            nav { display: none !important; }
+            .content-wrapper { margin: 0; padding: 0; }
+            .page { margin: 0; box-shadow: none; width: 210mm; min-height: 297mm; height: 297mm; padding: 15mm !important; display: block; overflow: hidden !important; break-after: page; break-before: auto; page-break-after: always; box-sizing: border-box; }
+            .page:last-child { break-after: auto; page-break-after: auto; }
+            .card { background: transparent; border: none; padding: 0; box-shadow: none; break-inside: avoid !important; }
+            .flashcards-container { display: grid; grid-template-columns: repeat(3, 1fr) !important; gap: 6mm !important; }
+            .flashcard { width: auto; height: auto; min-height: auto !important; border: 1px solid #000; border-radius: 0; break-inside: avoid !important; }
+            .flashcard-inner { transform: none !important; transition: none; display: flex; flex-direction: column; }
+            .flashcard-front { position: static; height: auto; border: none; border-bottom: 1px dashed #000; color: #000; background: transparent; transform: none; padding: 6px 10px !important; font-size: 0.95rem !important;}
+            .flashcard-back { position: static; height: auto; border: none; color: #000; background: transparent; transform: none; padding: 6px 10px !important;}
+            .page-footer { break-before: auto !important; margin-top: auto; }
+        }
+
+        /* ===== PC-MODUS: Bessere Lesbarkeit auf großen Bildschirmen (Druck-Modus bleibt unverändert) ===== */
+        @media screen and (min-width: 1200px) {
+            html:not(:has(body.print-mode)) { font-size: 18px; }
+            body:not(.print-mode) { font-weight: 500; line-height: 1.7; --text-secondary: #4A5A4C; }
+            body:not(.print-mode) h1 { font-weight: 700; border-bottom-width: 3px; }
+            body:not(.print-mode) h2 { font-weight: 700; border-bottom: 2px solid rgba(201, 169, 110, 0.55); }
+            body:not(.print-mode) h3 { font-weight: 700; }
+            body:not(.print-mode) .highlight { font-weight: 700; }
+            body:not(.print-mode) .card { border-width: 1.5px; padding: 35px 40px; box-shadow: 0 6px 22px rgba(45, 58, 46, 0.07); }
+            body:not(.print-mode) .table-wrapper { border-color: rgba(201, 169, 110, 0.5); }
+            body:not(.print-mode) table { font-size: 1rem; }
+            body:not(.print-mode) th, body:not(.print-mode) td { border-bottom-color: rgba(45, 58, 46, 0.18); }
+            body:not(.print-mode) th { font-weight: 700; }
+            body:not(.print-mode) .flashcard { height: 280px; }
+            body:not(.print-mode) .flashcard-front, body:not(.print-mode) .flashcard-back { border-width: 1.5px; padding: 20px; }
+            body:not(.print-mode) .flashcard-front { font-size: 1.15rem; font-weight: 700; }
+            body:not(.print-mode) .flashcard-back { font-size: 1rem; font-weight: 500; }
+            body:not(.print-mode) .reaction-arrow .arrow-text { font-size: 0.75rem; }
+            body:not(.print-mode) .nav-btn { font-size: 0.95rem; font-weight: 600; border-width: 1.5px; }
+            body:not(.print-mode) .dropdown-item { font-size: 0.95rem; font-weight: 500; }
+            body:not(.print-mode) nav { border-bottom-width: 1.5px; }
+            body:not(.print-mode) .formula-box { border-color: rgba(201, 169, 110, 0.6); }
+            body:not(.print-mode) .formula-box .formula-label { font-weight: 600; }
+        }
+        @media screen and (min-width: 1700px) {
+            html:not(:has(body.print-mode)) { font-size: 19.5px; }
+            body:not(.print-mode) .content-wrapper { max-width: 1800px; }
+            body:not(.print-mode) .flashcard { height: 300px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-group">
+            <a href="../index.html" class="nav-btn">← Journal</a>
+            <div class="dropdown">
+                <button type="button" class="nav-btn" id="btn-inhalt">Inhalt ▼</button>
+                <div class="dropdown-content" id="toc-dropdown"></div>
+            </div>
+            <button type="button" class="nav-btn" id="btn-fullscreen">Vollbild</button>
+            <button type="button" class="nav-btn active" id="btn-plakat">Plakat-Modus</button>
+            <button type="button" class="nav-btn" id="btn-druck">Druck-Modus (A4)</button>
+            <button type="button" class="nav-btn gold" id="btn-print">Drucken / PDF</button>
+        </div>
+    </nav>
+
+    <div class="content-wrapper" id="content">
+
+        <!-- SEITE 1: Merkmale der Kurzprosa -->
+        <div class="page">
+            <div class="card" id="teil-1">
+                <h1 id="sec-titel">Interpretation von Kurzprosa<br><small style="font-size: 0.6em; font-weight: normal;">(15-Punkte-Lernzettel – Abitur BW)</small></h1>
+
+                <h2 id="sec-1">1. Merkmale der Kurzprosa</h2>
+                <p><em>Tipp: Kärtchen anklicken zum Umdrehen.</em></p>
+                <div class="flashcards-container">
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span style="display:block;">Unvermittelter Einstieg</span></div>
+                            <div class="flashcard-back"><span style="display:block;">Beginn <span class="highlight">in medias res</span> (keine Einleitung/Vorgeschichte).</span></div>
+                        </div>
+                    </div>
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span style="display:block;">Offener / halboffener Schluss</span></div>
+                            <div class="flashcard-back"><span style="display:block;">Konflikt bleibt oft ungelöst; zwingt den Leser zur <span class="highlight">eigenen Deutung</span> (oft auch überraschende Pointe/Richtungswechsel).</span></div>
+                        </div>
+                    </div>
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span style="display:block;">Ausschnitthaftigkeit („Blitzlicht“)</span></div>
+                            <div class="flashcard-back"><span style="display:block;">Scharf umrissene <span class="highlight">Momentaufnahme</span> eines (alltäglichen) Lebens.</span></div>
+                        </div>
+                    </div>
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span style="display:block;">Reduktion</span></div>
+                            <div class="flashcard-back"><span style="display:block;">Wenige (oft <span class="highlight">namenlose</span>) Figuren, einsträngige Handlung, häufig kein Ortswechsel.</span></div>
+                        </div>
+                    </div>
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span style="display:block;">Zeitstruktur</span></div>
+                            <div class="flashcard-back"><span style="display:block;">Erzählte Zeit und Erzählzeit nähern sich an (<span class="highlight">zeitdeckend</span>), Handlung umfasst meist nur Minuten/Stunden.</span></div>
+                        </div>
+                    </div>
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span style="display:block;">Sprache</span></div>
+                            <div class="flashcard-back"><span style="display:block;">Vordergründig nüchtern, knapp und alltäglich – tiefgründig jedoch enorm <span class="highlight">metaphorisch und symbolisch verdichtet</span>.</span></div>
+                        </div>
+                    </div>
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span style="display:block;">Leerstellen (Eisberg-Modell)</span></div>
+                            <div class="flashcard-back"><span style="display:block;">Entscheidende Konflikte bleiben <span class="highlight">unausgesprochen</span>; der Leser muss die Informationen selbst verknüpfen.</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>Interpretation von Kurzprosa</span>
+                <span>Olga V.</span>
+                <span>Seite 1</span>
+            </div>
+        </div>
+
+        <!-- SEITE 2: Aufbau der Klausur -->
+        <div class="page">
+            <div class="card" id="teil-2">
+                <h2 id="sec-2">2. Aufbau der Klausur (Schritt für Schritt)</h2>
+                <div class="tip-box">
+                    <strong>Goldene Regel:</strong> Für 15 Punkte im Hauptteil zwingend das <span class="highlight">aspektorientierte Verfahren</span> statt linearer Nacherzählung wählen!
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <tr><th>Schritt</th><th>Inhalt</th></tr>
+                        <tr>
+                            <td><span class="highlight">I. Vorarbeit</span><br>(Konzeptpapier)</td>
+                            <td>Sinnabschnitte markieren, formale Besonderheiten direkt an der Textstelle notieren.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">II. Einleitung</span></td>
+                            <td><span class="highlight">Aufhänger:</span> Abstraktes Phänomen (z. B. Kommunikationsverlust), Zitat oder aktueller Bezug.<br>
+                                <span class="highlight">Basissatz (TATTE):</span> <b>T</b>itel, <b>A</b>utor, <b>T</b>extsorte, <b>T</b>hema (Worum geht es?), <b>E</b>rscheinungsjahr.<br>
+                                <span class="highlight">Zentrale Interpretationshypothese:</span> Vorläufiger, präziser Deutungsansatz der tieferen Textaussage (keine bloße Inhaltsangabe!).</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">III. Inhaltsangabe</span><br>(Gelenkstelle)</td>
+                            <td><span class="highlight">Tempus:</span> Zwingend Präsens (Vorzeitigkeit = Perfekt).<br>
+                                <span class="highlight">Regeln:</span> Maximal verknappt, sachlich, eigene Worte (keine Zitate!).<br>
+                                <span class="highlight">Wörtliche Rede:</span> Ausschließlich indirekte Rede verwenden (Konjunktiv I).</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">IV. Hauptteil</span><br>(Analyse &amp; Interpretation)</td>
+                            <td><span class="highlight">Gliederung (aspektorientiert):</span> z. B. nach dem „Analysestern“ (1. Aufbau/Handlung, 2. Erzählperspektive, 3. Figuren/Kommunikation, 4. Sprache/Symbole, 5. Raum/Zeit).<br>
+                                <span class="highlight">Der 15-Punkte-Dreischritt:</span> 1. Form (Aspekt/Stilmittel benennen) → 2. Beleg (Zitat + Zeile) → 3. Deutung (Wirkung auf inhaltliche Aussage erklären).</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">V. Schluss</span></td>
+                            <td><span class="highlight">Fazit:</span> Komprimierte Bündelung der zentralen Analyseergebnisse.<br>
+                                <span class="highlight">Verifizierung:</span> Rückgriff auf die Einleitung → Hat sich die Interpretationshypothese bestätigt, modifiziert oder erweitert?<br>
+                                <span class="highlight">Ausblick:</span> Aktualitätsbezug.</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="tip-box">
+                    <strong>Niemals Form und Inhalt trennen!</strong> (Dreischritt Form → Beleg → Deutung)
+                </div>
+                <div class="tip-box">
+                    <strong>Tabu im Schluss:</strong> Private Wertungen wie „Mir hat die Geschichte gut gefallen“.
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>Interpretation von Kurzprosa</span>
+                <span>Olga V.</span>
+                <span>Seite 2</span>
+            </div>
+        </div>
+
+        <!-- SEITE 3: Werkzeugkasten A -->
+        <div class="page">
+            <div class="card" id="teil-3a">
+                <h2 id="sec-3">3. Der analytische Werkzeugkasten</h2>
+                <h3 id="sec-3a">A. Erzähltechnik, Raum &amp; Zeit</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <tr><th>Werkzeug</th><th>Fachbegriff / Ausprägung</th><th>Typische Deutung / Wirkung</th></tr>
+                        <tr><td rowspan="3"><span class="highlight">Erzählverhalten</span></td><td>Auktorial (allwissend)</td><td>Lenkt den Leser, kommentiert, ordnet ein, schafft Distanz zum Geschehen.</td></tr>
+                        <tr><td>Personal (aus Sicht einer Figur)</td><td>Nähe zur Figur, hohe Identifikation, jedoch subjektiv und eingeschränkt.</td></tr>
+                        <tr><td>Neutral (Kamera-Auge)</td><td>Kühle, objektive Distanz; zwingt den Leser zur eigenen Urteilsbildung.</td></tr>
+                        <tr><td><span class="highlight">Sichtweise</span></td><td>Innensicht vs. Außensicht</td><td>Wechsel entlarven die Diskrepanz zwischen gespieltem Schein und wahren Gefühlen.</td></tr>
+                        <tr><td><span class="highlight">Darbietung</span></td><td>Innerer Monolog / Erlebte Rede</td><td>Direkter Einblick in die Psyche; offenbart unausgesprochene Vorwürfe/Zerrissenheit.</td></tr>
+                        <tr><td rowspan="3"><span class="highlight">Zeitgestaltung</span></td><td>Zeitraffung<br>(Erzählzeit &lt; erzählte Zeit)</td><td>Beschleunigung; unterstreicht Routine, Alltagsmonotonie oder unwichtige Phasen.</td></tr>
+                        <tr><td>Zeitdeckung<br>(Erzählzeit = erzählte Zeit)</td><td>Unmittelbarkeit, Nähe, Dramatik (oft bei Dialogen / Konfliktausbrüchen).</td></tr>
+                        <tr><td>Zeitdehnung<br>(Erzählzeit &gt; erzählte Zeit)</td><td>Fokus auf extreme emotionale Momente, Schockstarre oder innere Reflexionen.</td></tr>
+                        <tr><td rowspan="2"><span class="highlight">Raumgestaltung</span></td><td>Stimmungsraum</td><td>Umgebung spiegelt die Psyche (z. B. Nieselregen/Nacht = Isolation, Trauer, Kälte).</td></tr>
+                        <tr><td>Symbolischer / Kontrast-Raum</td><td>Orte repräsentieren Konzepte (z. B. Kino = Traumwelt vs. Straße = harte Realität; Abstellkammer = Verdrängung).</td></tr>
+                    </table>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>Interpretation von Kurzprosa</span>
+                <span>Olga V.</span>
+                <span>Seite 3</span>
+            </div>
+        </div>
+
+        <!-- SEITE 4: Werkzeugkasten B -->
+        <div class="page">
+            <div class="card" id="teil-3b">
+                <h3 id="sec-3b">B. Sprachliche &amp; syntaktische Mittel</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <tr><th>Stilmittel</th><th>Signal / Definition</th><th>Häufige Deutung in der Kurzprosa</th></tr>
+                        <tr><td><span class="highlight">Parataxe</span></td><td>Kurze Hauptsätze</td><td>Sprachlosigkeit, emotionale Kälte, Routine, festgefahrener Alltag.</td></tr>
+                        <tr><td><span class="highlight">Hypotaxe</span></td><td>Komplexe Satzgefüge</td><td>Gedankenflut, Überforderung oder Ausbruch aus der Monotonie (Dynamik).</td></tr>
+                        <tr><td><span class="highlight">Anapher / Parallelismus</span></td><td>Gleicher Satzanfang / -bau</td><td>Ritualisierte Zwänge, monotones Leben, Unvermögen, Probleme zu lösen.</td></tr>
+                        <tr><td><span class="highlight">Inversion</span> (Kopfstellung)</td><td>Umstellung der Wortfolge</td><td>Legt extremen Fokus auf das erste Wort (z. B. „Zornig geht er“ → Aggression).</td></tr>
+                        <tr><td><span class="highlight">Polysyndeton</span></td><td>Vielfachverbindung („und … und“)</td><td>Verlangsamung der Bewegung, Resignation, physische/psychische Erschöpfung.</td></tr>
+                        <tr><td><span class="highlight">Klimax / Hyperbel</span></td><td>Steigerung / Übertreibung</td><td>Kontrollverlust, eskalierende innerliche Wut, Dramatisierung.</td></tr>
+                        <tr><td><span class="highlight">Ellipse / Aposiopese</span></td><td>Unvollständiger Satz / Satzabbruch</td><td>Kommunikationsabbruch, Kapitulation, das Unausgesprochene (Feigheit).</td></tr>
+                        <tr><td><span class="highlight">Ding-Symbol / Leitmotiv</span></td><td>Wiederkehrender Gegenstand</td><td>Projektionsfläche für Unbewältigtes (Narbe = Verletzlichkeit; Spiegel = Konfrontation; Silberpapier = verlorenes Glück).</td></tr>
+                        <tr><td><span class="highlight">Wortfeld / Repetitio</span></td><td>Häufung thematischer Wörter</td><td>Schafft Grundatmosphäre; Wortarmut zeigt Unfähigkeit zur differenzierten Kommunikation (z. B. „keuchen, gehen, heulen“).</td></tr>
+                    </table>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>Interpretation von Kurzprosa</span>
+                <span>Olga V.</span>
+                <span>Seite 4</span>
+            </div>
+        </div>
+
+        <!-- SEITE 5: Best Practices & Transfer -->
+        <div class="page">
+            <div class="card" id="teil-4">
+                <h2 id="sec-4">4. Best Practices &amp; Transfer</h2>
+                <p><em>(„Aha-Momente“ aus den Textbeispielen)</em></p>
+                <div class="table-wrapper">
+                    <table>
+                        <tr><th>Erkenntnis</th><th>Erklärung</th></tr>
+                        <tr><td><span class="highlight">Der Titel ist oft ein ironischer Code</span></td><td>Moderne oder scheinbar positive Titel („Happy End“, „Tanzen gehen“) stehen in der Kurzprosa meist im krassen Kontrast zur trostlosen Realität der Figuren.</td></tr>
+                        <tr><td><span class="highlight">Syntax ahmt Handlung nach</span><br>(Form = Inhalt)</td><td>Wenn eine Paarbeziehung stagniert, ist der Satzbau repetitiv (Parataxen, Anaphern). Bricht eine Figur aus dieser Routine aus (z. B. ein spontaner Tanz), werden die Sätze plötzlich weich, lang und fließend (Hypotaxen).</td></tr>
+                        <tr><td><span class="highlight">Das Kommunikations-Paradox</span><br>(Schulz von Thun)</td><td>In Kurzgeschichten scheitert Kommunikation fast immer. Eine emotionale/verzweifelte Geste wird oft mit einer rein pragmatischen Antwort (Sach-Ohr) abgetan. Der wahre Konflikt findet im Kopf statt (Diskrepanz Dialog vs. Innerer Monolog).</td></tr>
+                        <tr><td><span class="highlight">Körpersprache verrät Machtverhältnisse</span></td><td>Achte auf asymmetrische Bewegungen. Geht einer stumm voraus, während der andere keuchend hinterherläuft? Das definiert die psychologische Abhängigkeit und Dominanz der Figuren besser als jedes gesprochene Wort.</td></tr>
+                        <tr><td><span class="highlight">Kreisstruktur bedeutet Stagnation</span></td><td>Wenn eine Geschichte mit demselben Bild endet, mit dem sie begann (z. B. der Blick in den Spiegel, die Farbe Silber), zeigt das: Der Ausbruchsversuch ist gescheitert. Das Hamsterrad des Alltags dreht sich unverändert weiter.</td></tr>
+                        <tr><td><span class="highlight">Tempuswechsel verraten Emotionen</span></td><td>Springt der Text kurzzeitig vom Präteritum ins Präsens (z. B. bei einer Erinnerung), zeigt dies, dass das Vergangene für die Psyche der Figur extrem real und unbewältigt ist.</td></tr>
+                    </table>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>Interpretation von Kurzprosa</span>
+                <span>Olga V.</span>
+                <span>Seite 5</span>
+            </div>
+        </div>
+
+        <!-- SEITE 6: 15-Punkte-Vokabular -->
+        <div class="page">
+            <div class="card" id="teil-5">
+                <h2 id="sec-5">5. 15-Punkte-Vokabular (Formulierungshilfen)</h2>
+                <div class="tip-box">
+                    <strong>Tipp:</strong> Streiche simple Wörter wie „schön“, „zeigen“ oder „sagen“. Nutze <span class="highlight">analytische Distanzsprache</span>, um den Korrektor zu beeindrucken!
+                </div>
+
+                <h3 id="sec-5-1">Einleitung &amp; Strukturierung (roter Faden)</h3>
+                <ul>
+                    <li><em>„Diese existenzielle Thematik hat sich in der vorliegenden Kurzgeschichte offenbar niedergeschlagen …“</em></li>
+                    <li><em>„Der Text beleuchtet das Phänomen [X] kritisch und kann verstanden werden als Kommentar zu …“</em></li>
+                    <li><em>„Zur Verifizierung dieser Hypothese wird der Text im Folgenden einer aspektorientierten Analyse unterzogen.“</em></li>
+                    <li><em>„Nach der Betrachtung der äußeren Handlungsstruktur rückt nun die psychologische Disposition der Figuren in den Fokus.“</em></li>
+                </ul>
+
+                <h3 id="sec-5-2">Form und Inhalt absolut verketten (Analyse-Vokabular)</h3>
+                <ul>
+                    <li><em>„Diese formale Eigenheit des Textes <span class="highlight">korrespondiert</span> auf der inhaltlichen Ebene mit …“</em></li>
+                    <li><em>„Die parataktische Syntax <span class="highlight">ahmt</span> die innere Zerrissenheit / Distanz der Figuren <span class="highlight">nach</span> …“</em></li>
+                    <li><em>„Das Ausbleiben einer verbalen Reaktion <span class="highlight">entlarvt / offenbart / impliziert</span> …“</em></li>
+                    <li><em>„Die [rhetorische Figur] <span class="highlight">visualisiert / veranschaulicht / evoziert</span> die Resignation der Protagonistin.“</em></li>
+                    <li><em>„Die Beschränkung auf monotone Alltagssprache offenbart das Unvermögen der Figuren, ihren Konflikt differenziert zu verbalisieren.“</em></li>
+                    <li><em>„Die Kopfstellung des Adjektivs <span class="highlight">akzentuiert / rückt in den Fokus</span> …“</em></li>
+                    <li><em>„Diese Formulierung kann im Textzusammenhang als unbewusster Hinweis auf […] verstanden werden.“</em></li>
+                </ul>
+
+                <h3 id="sec-5-3">Schluss &amp; Fazit</h3>
+                <ul>
+                    <li><em>„Als Resümee der aspektorientierten Textanalyse ergibt sich <span class="highlight">konklusiv</span>, dass …“</em></li>
+                    <li><em>„Zusammenfassend hat die Untersuchung dargelegt, dass die äußere Banalität im extremen Kontrast zur inneren Tragödie der Figuren steht.“</em></li>
+                    <li><em>„Im Rückblick auf die eingangs aufgestellte Interpretationshypothese lässt sich abschließend <span class="highlight">verifizieren / modifizieren</span>, dass …“</em></li>
+                </ul>
+            </div>
+            <div class="page-footer">
+                <span>Interpretation von Kurzprosa</span>
+                <span>Olga V.</span>
+                <span>Seite 6</span>
+            </div>
+        </div>
+
+        <!-- SEITE 7: Herzstück – Analysestern (1–4) -->
+        <div class="page">
+            <div class="card" id="teil-6a">
+                <h2 id="sec-6">Das Herzstück der Analyse: Der analytische Werkzeugkasten</h2>
+                <div class="table-wrapper">
+                    <table>
+                        <tr><th>Aspekt (nach Analysestern)</th><th>Fokus &amp; Leitfragen</th><th>🧠 Merkhilfe &amp; typische Deutung (für 15 Punkte)</th></tr>
+                        <tr>
+                            <td><span class="highlight">1. Titel</span></td>
+                            <td>Gibt es einen Zusammenhang zwischen Titel und Text? Weckt er Erwartungen?</td>
+                            <td><span class="highlight">Der Titel ist oft ein ironischer Code.</span> Ein scheinbar positiver Titel (z. B. „Happy End“) steht in Kurzgeschichten fast immer im krassen Kontrast zur trostlosen Beziehungsrealität. Erwartungsbrüche unbedingt benennen!</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">2. Handlung</span><br>(Innen vs. Außen)</td>
+                            <td><b>Äußere Handlung:</b> Was tun die Figuren faktisch? (Ereignisse)<br><b>Innere Handlung:</b> Was denken/fühlen sie dabei?</td>
+                            <td><span class="highlight">Suche den Kontrast.</span> Die äußere Handlung ist in Kurzgeschichten extrem banal (z. B. auf offener Straße laufen, Zeitung lesen). Die innere Handlung ist oft hochgradig dramatisch. Diesen Kontrast aus äußerer Banalität und innerer Tragödie musst du aufzeigen.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">3. Kommunikation</span></td>
+                            <td>Verbale vs. non-verbale Kommunikation. Liegen Kommunikationsstörungen vor? (Modell von Schulz von Thun / 4 Ohren)</td>
+                            <td><span class="highlight">Kommunikation scheitert fast immer.</span> Eine emotionale Aussage (Selbstoffenbarung) wird oft mit einer rein pragmatischen Antwort (Sach-Ohr) abgetan. Achte zwingend auf nonverbale Signale (Gesten) und das Schweigen oder abgebrochene Sätze (Aposiopese), da hier die wahren Konflikte liegen.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">4. Figuren &amp; Konstellation</span></td>
+                            <td>Wie charakterisiert der Erzähler die Figuren (direkt/indirekt)? Wie stehen sie zueinander (Symmetrie vs. Asymmetrie)?</td>
+                            <td><span class="highlight">Achte auf Machtverhältnisse &amp; Körpersprache.</span> Wer geht voran, wer läuft (keuchend) hinterher? Wer bricht Dialoge ab? Physische Positionen im Raum spiegeln psychologische Abhängigkeiten und Dominanz wider.</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>Interpretation von Kurzprosa</span>
+                <span>Olga V.</span>
+                <span>Seite 7</span>
+            </div>
+        </div>
+
+        <!-- SEITE 8: Herzstück – Analysestern (5–7) + Ding-Symbole -->
+        <div class="page">
+            <div class="card" id="teil-6b">
+                <div class="table-wrapper">
+                    <table>
+                        <tr><th>Aspekt (nach Analysestern)</th><th>Fokus &amp; Leitfragen</th><th>🧠 Merkhilfe &amp; typische Deutung (für 15 Punkte)</th></tr>
+                        <tr>
+                            <td><span class="highlight">5. Raum &amp; Ort</span></td>
+                            <td>Welche Funktion hat der Schauplatz? (Soziales Milieu, Stimmungsraum, symbolischer Raum)</td>
+                            <td><span class="highlight">Räume spiegeln die Seele.</span> Ein Stimmungsraum (z. B. Nacht, Kälte, Regen) visualisiert Isolation oder Trauer. Kontrast-Räume (z. B. Kino = warme Scheinwelt vs. Straße = harte Realität) betonen ungelebte Sehnsüchte.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">6. Zeitgestaltung</span></td>
+                            <td>Stimmen Erzählzeit und erzählte Zeit überein? Gibt es Rückblenden oder Zeitsprünge?</td>
+                            <td><span class="highlight">Tempuswechsel verraten Traumata.</span> Wenn ein Text im Präteritum steht, aber plötzlich für eine Erinnerung ins Präsens wechselt, zeigt das: Dieses Erlebnis ist psychologisch noch nicht verarbeitet und absolut präsent. Zeitraffung betont hingegen einen monotonen Alltag.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">7. Erzähler &amp; Perspektive</span></td>
+                            <td>Wer erzählt (auktorial, personal, neutral)?<br>Aus wessen Sicht (Außensicht vs. Innensicht)?</td>
+                            <td><span class="highlight">Innensicht lenkt Sympathie.</span> Wenn wir nur die Innensicht (z. B. innerer Monolog) einer Person kennen, macht uns der Autor bewusst parteiisch. Ein Wechsel zur Außensicht oder eine fehlende Innensicht der zweiten Person erzeugt Entfremdung und zeigt, dass sich das Paar gegenseitig nicht mehr versteht.</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3 id="sec-6-1">💡 Extra-Tipp für die Interpretation: Die „Ding-Symbole“</h3>
+                <p>Wenn in einer Kurzgeschichte ein unscheinbarer Gegenstand auffällig oft erwähnt wird oder sogar den Titel prägt (z. B. ein Brautkleid, ein rotes Spielzeugauto, ein Streifen Silberpapier, eine Narbe), handelt es sich fast immer um ein <span class="highlight">Leitmotiv oder Ding-Symbol</span>.</p>
+                <div class="tip-box">
+                    <strong>Dein Deutungsauftrag:</strong> Solche Gegenstände dienen als <span class="highlight">stumme Zeugen und Projektionsflächen</span> für das, was die Figuren nicht aussprechen können (verlorenes Glück, Verletzlichkeit, verdrängte Traumata). Identifiziere sie im Hauptteil und erkläre zwingend, <span class="highlight">wofür sie stellvertretend stehen</span>.
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>Interpretation von Kurzprosa</span>
+                <span>Olga V.</span>
+                <span>Seite 8</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const body = document.body;
+        const btnPlakat = document.getElementById('btn-plakat');
+        const btnDruck = document.getElementById('btn-druck');
+        const btnPrint = document.getElementById('btn-print');
+        const btnInhalt = document.getElementById('btn-inhalt');
+        const dropdown = document.getElementById('toc-dropdown');
+        const flashcards = document.querySelectorAll('.flashcard');
+
+        btnPlakat.addEventListener('click', () => { body.classList.remove('print-mode'); btnPlakat.classList.add('active'); btnDruck.classList.remove('active'); });
+        btnDruck.addEventListener('click', () => { body.classList.add('print-mode'); btnDruck.classList.add('active'); btnPlakat.classList.remove('active'); });
+        btnPrint.addEventListener('click', () => { window.print(); });
+
+        btnInhalt.addEventListener('click', (e) => { e.stopPropagation(); dropdown.parentElement.classList.toggle('show'); });
+        document.addEventListener('click', (e) => { if (!dropdown.contains(e.target) && e.target !== btnInhalt) dropdown.parentElement.classList.remove('show'); });
+
+        const btnFullscreen = document.getElementById('btn-fullscreen');
+        if(btnFullscreen) {
+            btnFullscreen.addEventListener('click', () => {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(err => console.warn(err));
+                    btnFullscreen.textContent = 'Vollbild beenden';
+                } else {
+                    if (document.exitFullscreen) document.exitFullscreen();
+                    btnFullscreen.textContent = 'Vollbild';
+                }
+            });
+        }
+
+        const headings = document.querySelectorAll('h1, h2, h3');
+        headings.forEach(heading => {
+            if (!heading.id) return;
+            const item = document.createElement('a'); item.className = 'dropdown-item';
+            if (heading.tagName === 'H2') item.style.paddingLeft = '16px';
+            else if (heading.tagName === 'H3') item.style.paddingLeft = '30px';
+            else item.style.paddingLeft = '10px';
+
+            let textContent = heading.cloneNode(true);
+            const smalls = textContent.querySelectorAll('small'); smalls.forEach(s => s.remove());
+            item.textContent = textContent.textContent.trim();
+
+            item.addEventListener('click', (e) => {
+                e.preventDefault(); dropdown.parentElement.classList.remove('show');
+                const topPosition = heading.getBoundingClientRect().top + window.scrollY - 80;
+                window.scrollTo({ top: topPosition, behavior: 'smooth' });
+            });
+            dropdown.appendChild(item);
+        });
+
+        flashcards.forEach(card => {
+            card.addEventListener('click', () => {
+                if(!body.classList.contains('print-mode')) card.classList.toggle('flipped');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -108,7 +108,14 @@ const subjectData = {
     section: "gk",
     type: "GK",
     accent: "kraft-brown",
-    categories: []
+    categories: [
+      {
+        name: "J1",
+        topics: [
+          { title: "Interpretation von Kurzprosa", link: "deutsch/kurzprosa-interpretation.html" }
+        ]
+      }
+    ]
   },
 
   englisch: {
