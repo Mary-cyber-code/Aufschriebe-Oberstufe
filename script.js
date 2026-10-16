@@ -533,75 +533,86 @@
       if (e.target === modal) modal.classList.remove('show');
     });
 
-    // 4. Prompt generieren
+    // 4. Prompt generieren (fachspezifische BW-Operatoren via LernTools)
     generateBtn.addEventListener('click', function() {
       var link = topicSelect.value;
       if (!link) {
         alert("Bitte wähle zuerst ein Fach und einen Lernzettel aus!");
         return;
       }
-      
+      if (!window.LernTools) {
+        alert("lerntools-core.js konnte nicht geladen werden.");
+        return;
+      }
+
+      var fachKey = subjectSelect.value;
       var afbElement = document.querySelector('input[name="quiz-afb"]:checked');
-      var afb = afbElement ? afbElement.value : "AFB II";
+      var afb = afbElement ? afbElement.value : "II";
       var topicName = topicSelect.options[topicSelect.selectedIndex].text;
       var extra = customText.value.trim();
+      var zusatzBox = document.getElementById('quiz-zusatz');
+      var zusatz = (zusatzBox && zusatzBox.checked) ? LernTools.getZusatzwissen(fachKey) : '';
 
       generateBtn.textContent = 'Lade Lernzettel...';
       generateBtn.disabled = true;
 
-      fetch(link)
-        .then(function(res) {
-          if (!res.ok) throw new Error("Datei konnte nicht geladen werden.");
-          return res.text();
+      LernTools.loadTopicText(link)
+        .then(function(textContent) {
+          var prompt = LernTools.buildQuizPrompt({
+            fachKey: fachKey,
+            topicTitles: [topicName],
+            text: textContent,
+            afb: afb,
+            extra: extra,
+            zusatz: zusatz
+          });
+          return LernTools.copyToClipboard(prompt);
         })
-        .then(function(html) {
-          // HTML parsen
-          var parser = new DOMParser();
-          var doc = parser.parseFromString(html, "text/html");
-          
-          var textContent = "";
-          
-          // NEU: Alle Seiten durchsuchen anstatt nur der Ersten!
-          var pages = doc.querySelectorAll('.page');
-          if (pages.length > 0) {
-            pages.forEach(function(page, index) {
-              textContent += "--- SEITE " + (index + 1) + " ---\n";
-              textContent += (page.innerText || page.textContent) + "\n\n";
-            });
-          } else {
-            // Fallback
-            var mainContent = doc.querySelector('.content-wrapper') || doc.body;
-            textContent = mainContent.innerText || mainContent.textContent;
-          }
-          
-          // Zu viele Leerzeilen bereinigen
-          textContent = textContent.replace(/[\r\n]{3,}/g, '\n\n').trim();
-
-          // Baue den Prompt
-          var prompt = "Du bist ein professioneller Gymnasiallehrer für das Abitur in Baden-Württemberg.\n\n";
-          prompt += "Bitte erstelle mir Übungsaufgaben (und erst darunter die Musterlösungen) zum Thema \"" + topicName + "\".\n";
-          prompt += "Der Fokus der Aufgaben soll auf folgendem Anforderungsbereich liegen: " + afb + ".\n\n";
-          
-          if (extra) {
-            prompt += "Zusätzliche Wünsche des Schülers:\n" + extra + "\n\n";
-          }
-          
-          prompt += "Verwende für die Aufgaben AUSSCHLIESSLICH die Fakten und Informationen aus meinem folgenden Lernzettel-Text. Erfinde nichts Neues dazu, sondern prüfe genau dieses Wissen ab:\n";
-          prompt += "----------------------------------------\n";
-          prompt += textContent + "\n";
-          prompt += "----------------------------------------\n";
-
-          return navigator.clipboard.writeText(prompt);
-        })
-        .then(function() {
-          successBox.style.display = 'block';
+        .then(function(ok) {
           generateBtn.style.display = 'none';
+          if (ok) successBox.style.display = 'block';
         })
         .catch(function(err) {
           alert("Fehler beim Laden des Lernzettels: " + err.message);
           generateBtn.textContent = 'Fehler aufgetreten';
+          generateBtn.disabled = false;
         });
     });
+
+    // 5. Fachspezifische AFB-Infos + Operatoren anzeigen
+    function updateAfbInfo() {
+      var info = document.getElementById('quiz-afb-info');
+      var zGroup = document.getElementById('quiz-zusatz-group');
+      var fachKey = subjectSelect.value;
+      if (!info || !window.LernTools) return;
+      if (!fachKey) { info.style.display = 'none'; if (zGroup) zGroup.style.display = 'none'; return; }
+
+      var afbEl = document.querySelector('input[name="quiz-afb"]:checked');
+      var afb = afbEl ? afbEl.value : 'II';
+      var esc = function(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); };
+      var html = '';
+      if (afb === 'MIX') {
+        html = '<b>Klausur-Mix in ' + esc(subjectData[fachKey].name) + ':</b> AFB I ca. 30 %, AFB II ca. 40 %, AFB III ca. 30 % – wie im Abitur.';
+        ['I', 'II', 'III'].forEach(function(a) {
+          var ops = LernTools.getOperatorNames(fachKey, a, 6);
+          if (ops) html += '<br><b>AFB ' + a + ':</b> <i>' + esc(ops) + '</i>';
+        });
+      } else {
+        html = '<b>AFB ' + afb + ' in ' + esc(subjectData[fachKey].name) + ':</b> ' + esc(LernTools.getAfbDescription(fachKey, afb));
+        var ops = LernTools.getOperatorNames(fachKey, afb);
+        if (ops) html += '<br><b>Operatoren:</b> <i>' + esc(ops) + '</i>';
+      }
+      info.innerHTML = html;
+      info.style.display = 'block';
+
+      if (zGroup) zGroup.style.display = LernTools.getZusatzwissen(fachKey) ? 'block' : 'none';
+    }
+
+    subjectSelect.addEventListener('change', updateAfbInfo);
+    Array.prototype.forEach.call(document.querySelectorAll('input[name="quiz-afb"]'), function(r) {
+      r.addEventListener('change', updateAfbInfo);
+    });
+    openBtn.addEventListener('click', updateAfbInfo);
   }
 
   /* ──────────────────────────────────────────────────────────
@@ -733,6 +744,11 @@
           
           if (extra) {
             prompt += "4. Zusätzliche Wünsche des Schülers:\n" + extra + "\n\n";
+          }
+
+          var ankiZusatz = window.LernTools ? LernTools.getZusatzwissen(subjectSelect.value) : '';
+          if (ankiZusatz) {
+            prompt += "\nErstelle zusätzlich Karteikarten zu folgendem Zusatzwissen, das ebenfalls prüfungsrelevant ist (gleiches Format):\n" + ankiZusatz + "\n";
           }
           
           prompt += "\nHier ist der Text, den du als einzige Grundlage nutzen sollst:\n";
@@ -922,6 +938,42 @@
   }
 
   /* ──────────────────────────────────────────────────────────
+     DEEP-LINKS AUS DEM LERNPLANER
+     z. B. index.html?tool=quiz&fach=mathe&topic=mathe/x.html&afb=III
+     ────────────────────────────────────────────────────────── */
+  function handleToolDeepLink() {
+    var q = {};
+    window.location.search.replace(/^\?/, '').split('&').forEach(function(part) {
+      if (!part) return;
+      var kv = part.split('=');
+      q[decodeURIComponent(kv[0])] = decodeURIComponent((kv[1] || '').replace(/\+/g, ' '));
+    });
+    var map = {
+      quiz:     ['open-quiz-modal', 'quiz-subject', 'quiz-topic'],
+      anki:     ['open-anki-modal', 'anki-subject', 'anki-topic'],
+      notebook: ['open-notebook-modal', 'notebook-subject', 'notebook-topic']
+    };
+    var m = map[q.tool];
+    if (!m) return;
+    var openBtn = document.getElementById(m[0]);
+    if (!openBtn) return;
+    openBtn.click();
+    var subj = document.getElementById(m[1]);
+    if (q.fach && subjectData[q.fach] && subj) {
+      subj.value = q.fach;
+      subj.dispatchEvent(new Event('change'));
+      if (q.topic) {
+        var ts = document.getElementById(m[2]);
+        if (ts) ts.value = q.topic;
+      }
+    }
+    if (q.tool === 'quiz' && q.afb) {
+      var r = document.querySelector('input[name="quiz-afb"][value="' + q.afb + '"]');
+      if (r) { r.checked = true; r.dispatchEvent(new Event('change')); }
+    }
+  }
+
+  /* ──────────────────────────────────────────────────────────
      INITIALISIERUNG
      ────────────────────────────────────────────────────────── */
   function init() {
@@ -931,6 +983,7 @@
     initQuizGenerator();
     initAnkiGenerator();
     initNotebookExport();
+    handleToolDeepLink();
 
     /* Direkt-Link via Hash (z. B. index.html#chemie) */
     var hash = window.location.hash.slice(1);

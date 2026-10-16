@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lernplaner · Oberstufen-Aufschriebe</title>
+  <meta name="description" content="Persönlicher Lernplan für Klausuren und Abitur – mit Spaced Repetition, Active Recall und Klausursimulation.">
+  <meta name="author" content="Olga V.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none' stroke='%233A5A3F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='5' y='6' width='22' height='21' rx='2'/><path d='M5 12h22M11 3v6M21 3v6'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="lernplaner.css">
+</head>
+<body>
+
+  <div class="deco-corner deco-corner--tl" aria-hidden="true"></div>
+  <div class="deco-corner deco-corner--br" aria-hidden="true"></div>
+
+  <noscript>
+    <p style="text-align:center;padding:3rem 1rem;font-family:sans-serif;color:#5A6B5C;">Bitte aktiviere JavaScript, um den Lernplaner zu nutzen.</p>
+  </noscript>
+
+  <div class="page-container lp-container">
+
+    <nav class="subject-nav lp-noprint">
+      <a href="index.html" class="back-button">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 5l-7 7 7 7"/></svg>
+        <span>Zurück zum Journal</span>
+      </a>
+    </nav>
+
+    <header class="subject-header">
+      <span class="subject-icon" style="color: var(--gold);" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="6" width="22" height="21" rx="2"/><path d="M5 12h22M11 3v6M21 3v6"/><path d="M10 18l3 3 6-6"/></svg>
+      </span>
+      <h1 class="subject-title">Lernplaner</h1>
+      <span class="subject-badge">Dein Weg zu 15 Punkten</span>
+    </header>
+
+    <!-- ================= EINSTELLUNGEN ================= -->
+    <div id="lp-setup" class="lp-noprint">
+
+      <!-- Schritt 1 -->
+      <section class="lp-step">
+        <div class="lp-step-head">
+          <span class="lp-step-num">1</span>
+          <div>
+            <h2 class="lp-step-title">Themen auswählen &amp; einschätzen</h2>
+            <p class="lp-step-desc">Öffne ein Fach, hake die Themen an, die drankommen, und schätze ehrlich ein, wie gut du sie schon kannst. Je schwächer, desto mehr Zeit plant der Lernplaner ein. Mit ★ markierst du besonders klausurrelevante Themen.</p>
+          </div>
+        </div>
+        <div id="lp-subjects"></div>
+      </section>
+
+      <!-- Schritt 2 -->
+      <section class="lp-step">
+        <div class="lp-step-head">
+          <span class="lp-step-num">2</span>
+          <div>
+            <h2 class="lp-step-title">Deine Lernzeit</h2>
+            <p class="lp-step-desc">Wie viele Minuten kannst du an welchem Wochentag realistisch lernen? Plane lieber etwas weniger ein – ein Plan, den du durchhältst, schlägt jeden perfekten Plan.</p>
+          </div>
+        </div>
+        <div class="lp-time-grid">
+          <div class="form-group">
+            <label for="lp-start">Start des Lernplans</label>
+            <input type="date" id="lp-start" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="lp-block">Länge einer Lerneinheit</label>
+            <select id="lp-block" class="form-control">
+              <option value="25">25 Min. + 5 Min. Pause (Pomodoro)</option>
+              <option value="45">45 Min. + 10 Min. Pause</option>
+              <option value="60">60 Min. + 15 Min. Pause</option>
+            </select>
+          </div>
+        </div>
+        <label class="lp-sublabel">Lernzeit pro Wochentag (in Minuten)</label>
+        <div id="lp-weekdays" class="lp-weekdays"></div>
+        <p id="lp-week-sum" class="lp-hint"></p>
+      </section>
+
+      <div class="lp-generate-wrap">
+        <button id="lp-generate" class="btn btn-gold lp-generate">
+          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Lernplan erstellen
+        </button>
+        <p id="lp-error" class="lp-error" role="alert"></p>
+      </div>
+    </div>
+
+    <!-- ================= PLAN ================= -->
+    <div id="lp-result"></div>
+
+    <footer class="site-footer lp-noprint">
+      <span class="footer-line" aria-hidden="true"></span>
+      <p>Website erstellt von Olga V.</p>
+    </footer>
+  </div>
+
+  <div id="lp-toast" class="lp-toast" role="status" aria-live="polite"></div>
+
+  <script src="faecher-daten.js"></script>
+  <script src="operatoren-daten.js"></script>
+  <script src="lerntools-core.js"></script>
+  <script src="lernplaner.js"></script>
+</body>
+</html>
