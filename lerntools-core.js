@@ -63,8 +63,19 @@
   function getZusatzwissen(fachKey) {
     try {
       var state = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-      if (state && state.settings && state.settings.subjects && state.settings.subjects[fachKey]) {
-        return (state.settings.subjects[fachKey].zusatz || '').trim();
+      if (!state) return '';
+      if (state.settings && state.settings.subjects && state.settings.subjects[fachKey]) {
+        var z = (state.settings.subjects[fachKey].zusatz || '').trim();
+        if (z) return z;
+      }
+      if (Array.isArray(state.projects)) {
+        for (var i = 0; i < state.projects.length; i++) {
+          var p = state.projects[i];
+          if (p && p.settings && p.settings.subjects && p.settings.subjects[fachKey]) {
+            var pz = (p.settings.subjects[fachKey].zusatz || '').trim();
+            if (pz) return pz;
+          }
+        }
       }
     } catch (e) { /* ignorieren */ }
     return '';

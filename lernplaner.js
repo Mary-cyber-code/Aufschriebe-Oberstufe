@@ -98,37 +98,295 @@
   }
 
   /* ──────────────────────────────────────────────────────────
-     Zustand
+     Zustand & Projekte (mehrere Lernpläne parallel / nacheinander)
      ────────────────────────────────────────────────────────── */
-  function defaults() {
+  function makeId() {
+    return 'p_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 6);
+  }
+
+  function defaults(id, name) {
     return {
+      id: id || makeId(),
+      name: name || 'Lernplan 1',
       settings: { start: todayStr(), minutes: [60, 60, 60, 60, 60, 90, 0], block: 45, subjects: {} },
       plan: null,
       done: {}
     };
   }
 
-  function load() {
-    var d = defaults();
-    try {
-      var s = JSON.parse(localStorage.getItem(KEY) || 'null');
-      if (s && s.settings) {
-        d.settings.start = validDate(s.settings.start) ? s.settings.start : d.settings.start;
-        if (s.settings.minutes && s.settings.minutes.length === 7) d.settings.minutes = s.settings.minutes.map(function (m) { return +m || 0; });
-        if ([25, 45, 60].indexOf(+s.settings.block) >= 0) d.settings.block = +s.settings.block;
-        d.settings.subjects = s.settings.subjects || {};
-        d.plan = s.plan || null;
-        d.done = s.done || {};
+  function sanitizeProj(raw, idx) {
+    var d = defaults(raw && raw.id ? String(raw.id) : makeId(), raw && raw.name ? String(raw.name) : ('Lernplan ' + (idx + 1)));
+    if (raw && raw.settings) {
+      d.settings.start = validDate(raw.settings.start) ? raw.settings.start : d.settings.start;
+      if (raw.settings.minutes && raw.settings.minutes.length === 7) {
+        d.settings.minutes = raw.settings.minutes.map(function (m) { return +m || 0; });
       }
-    } catch (e) { /* defekte Daten ignorieren */ }
+      if ([25, 45, 60].indexOf(+raw.settings.block) >= 0) d.settings.block = +raw.settings.block;
+      d.settings.subjects = raw.settings.subjects || {};
+      d.plan = raw.plan || null;
+      d.done = raw.done || {};
+    }
     return d;
   }
 
-  var state = load();
+  function loadStore() {
+    var st = { activeId: '', projects: [] };
+    try {
+      var raw = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (raw && Array.isArray(raw.projects) && raw.projects.length) {
+        st.projects = raw.projects.map(sanitizeProj);
+        st.activeId = raw.activeId || st.projects[0].id;
+      } else if (raw && raw.settings) {
+        var migrated = sanitizeProj({ id: 'p_1', name: 'Lernplan 1', settings: raw.settings, plan: raw.plan, done: raw.done }, 0);
+        st.projects = [migrated];
+        st.activeId = migrated.id;
+      }
+    } catch (e) { /* defekte Daten ignorieren */ }
+    if (!st.projects.length) {
+      var first = defaults('p_1', 'Lernplan 1');
+      st.projects = [first];
+      st.activeId = first.id;
+    }
+    var found = st.projects.filter(function (p) { return p.id === st.activeId; })[0];
+    if (!found) st.activeId = st.projects[0].id;
+    return st;
+  }
+
+  var store = loadStore();
+  var state = store.projects.filter(function (p) { return p.id === store.activeId; })[0] || store.projects[0];
 
   function save() {
-    try { localStorage.setItem(KEY, JSON.stringify(state)); }
-    catch (e) { toast('Speichern nicht möglich – ist der private Modus aktiv?'); }
+    try {
+      store.activeId = state.id;
+      /* Spiegelung auf Top-Level für Abwärtskompatibilität (z. B. lerntools-core.js) */
+      store.settings = state.settings;
+      store.plan = state.plan;
+      store.done = state.done;
+      localStorage.setItem(KEY, JSON.stringify(store));
+      renderProjects();
+    } catch (e) {
+      toast('Speichern nicht möglich – ist der private Modus aktiv?');
+    }
+  }
+
+  /** Klonen der Einschätzungen, eigenen Themen & Zusatzwissen für ein neues Projekt */
+  function cloneKnowledgeFromCurrent() {
+    var out = {};
+    var src = (state && state.settings && state.settings.subjects) || {};
+    Object.keys(src).forEach(function (fk) {
+      var s = src[fk] || {};
+      var topicsCopy = {};
+      if (s.topics) {
+        Object.keys(s.topics).forEach(function (k) {
+          var t = s.topics[k] || {};
+          topicsCopy[k] = { selected: false, level: t.level || 2, important: !!t.important };
+        });
+      }
+      var customCopy = (s.custom || []).map(function (c) {
+        return { id: c.id, title: c.title, note: c.note || '', level: c.level || 2, important: !!c.important, selected: false };
+      });
+      out[fk] = {
+        topics: topicsCopy,
+        custom: customCopy,
+        exam: '',
+        simMinutes: s.simMinutes || 90,
+        zusatz: s.zusatz || ''
+      };
+    });
+    return out;
+  }
+
+  function projSubtitle(proj) {
+    if (proj.plan && proj.plan.exams && proj.plan.exams.length) {
+      return proj.plan.exams.map(function (e) { return fachName(e.fk) + ' (' + fmtShort(e.date) + ')'; }).join(', ');
+    }
+    var subs = (proj.settings && proj.settings.subjects) || {};
+    var active = [];
+    Object.keys(subjectData).forEach(function (fk) {
+      var st = subs[fk];
+      if (!st) return;
+      var hasSel = false;
+      if (st.topics) {
+        Object.keys(st.topics).forEach(function (k) { if (st.topics[k] && st.topics[k].selected) hasSel = true; });
+      }
+      if ((st.custom || []).some(function (c) { return c.selected !== false; })) hasSel = true;
+      if (hasSel) active.push(fachName(fk) + (st.exam ? ' (' + fmtShort(st.exam) + ')' : ''));
+    });
+    return active.length ? active.join(', ') + ' · Entwurf' : 'Noch keine Themen gewählt';
+  }
+
+  function renderProjects() {
+    var box = $('lp-projects');
+    if (!box) return;
+    var h = '<div class="lp-proj-top">';
+    h += '<span class="lp-proj-label">🗂️ Deine Lernplan-Projekte</span>';
+    h += '<span class="lp-proj-hint">Du kannst in <b>einem</b> Projekt mehrere Klausuren (gleichzeitig oder nacheinander) planen – oder hier getrennte Projekte anlegen:</span>';
+    h += '</div>';
+    h += '<div class="lp-proj-tabs">';
+    store.projects.forEach(function (p) {
+      var active = p.id === state.id;
+      var pid = esc(p.id);
+      h += '<div class="lp-proj-tab' + (active ? ' lp-active' : '') + '" data-proj-act="switch" data-id="' + pid + '">';
+      h += '<div><div>' + esc(p.name) + '</div><span class="lp-proj-sub">' + esc(projSubtitle(p)) + '</span></div>';
+      h += '<button type="button" class="lp-proj-icon" data-proj-act="rename" data-id="' + pid + '" title="Projekt umbenennen" aria-label="Projekt umbenennen">✏️</button>';
+      if (store.projects.length > 1) {
+        h += '<button type="button" class="lp-proj-icon" data-proj-act="del-proj" data-id="' + pid + '" title="Projekt löschen" aria-label="Projekt löschen">&times;</button>';
+      }
+      h += '</div>';
+    });
+    h += '<button type="button" class="lp-proj-add" data-proj-act="new">+ Neuer Lernplan</button>';
+    h += '</div>';
+    box.innerHTML = h;
+  }
+
+  function switchProject(id) {
+    var target = store.projects.filter(function (p) { return p.id === id; })[0];
+    if (!target || target.id === state.id) return;
+    state = target;
+    store.activeId = state.id;
+    save();
+    renderSubjects();
+    renderTime();
+    renderPlan();
+    setupVisible(!state.plan);
+    $('lp-error').textContent = '';
+    toast('Gewechselt zu „' + state.name + '“');
+  }
+
+  function openNewProjectModal() {
+    var overlay = document.createElement('div');
+    overlay.className = 'modal show';
+    overlay.style.zIndex = '25000';
+    var nextName = 'Lernplan ' + (store.projects.length + 1);
+    overlay.innerHTML =
+      '<div class="modal-content" style="max-width: 480px;">' +
+        '<button class="modal-close" aria-label="Schließen">&times;</button>' +
+        '<h2 class="modal-title">Neues Lernplan-Projekt anlegen</h2>' +
+        '<p class="modal-desc">Lege einen weiteren Lernplan an – z. B. für die nächste Klausurenphase, ein einzelnes Fach oder einen Nachschreibtermin.</p>' +
+        '<div class="form-group" style="margin-top: 12px;">' +
+          '<label>Name des Projekts</label>' +
+          '<input type="text" class="form-control" id="lp-new-proj-name" maxlength="60" value="' + esc(nextName) + '" placeholder="z. B. Klausurenphase Herbst / Mathe &amp; Chemie">' +
+        '</div>' +
+        '<label style="display:flex;align-items:flex-start;gap:8px;font-size:0.88rem;color:var(--text-secondary);cursor:pointer;margin:10px 0 16px;">' +
+          '<input type="checkbox" id="lp-new-proj-copy" checked style="margin-top:3px;accent-color:var(--forest);">' +
+          '<span>Bisherige <b>Selbsteinschätzungen</b>, <b>eigene Themen</b> und <b>Zusatzwissen</b> übernehmen (nur Häkchen &amp; Klausurtermine starten leer)</span>' +
+        '</label>' +
+        '<div style="display:flex;gap:10px;justify-content:flex-end;">' +
+          '<button type="button" class="btn btn-outline" data-act="cancel">Abbrechen</button>' +
+          '<button type="button" class="btn btn-gold" data-act="create" style="width:auto;">Projekt erstellen</button>' +
+        '</div>' +
+      '</div>';
+
+    function close() { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }
+    function create() {
+      var nameInp = overlay.querySelector('#lp-new-proj-name');
+      var copyChk = overlay.querySelector('#lp-new-proj-copy');
+      var name = (nameInp.value || '').trim() || nextName;
+      var np = defaults(makeId(), name);
+      if (state.settings && state.settings.minutes) np.settings.minutes = state.settings.minutes.slice();
+      if (state.settings && state.settings.block) np.settings.block = state.settings.block;
+      if (copyChk && copyChk.checked) np.settings.subjects = cloneKnowledgeFromCurrent();
+      store.projects.push(np);
+      state = np;
+      store.activeId = np.id;
+      save();
+      renderSubjects();
+      renderTime();
+      renderPlan();
+      setupVisible(true);
+      $('lp-error').textContent = '';
+      close();
+      toast('Projekt „' + name + '“ erstellt!');
+    }
+    overlay.querySelector('.modal-close').addEventListener('click', close);
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) { close(); return; }
+      var b = e.target.closest('[data-act]');
+      if (!b) return;
+      if (b.getAttribute('data-act') === 'cancel') close();
+      else if (b.getAttribute('data-act') === 'create') create();
+    });
+    overlay.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); create(); }
+      else if (e.key === 'Escape') close();
+    });
+    document.body.appendChild(overlay);
+    var inp = overlay.querySelector('#lp-new-proj-name');
+    if (inp) { inp.focus(); inp.select(); }
+  }
+
+  function openRenameProjectModal(id) {
+    var proj = store.projects.filter(function (p) { return p.id === id; })[0];
+    if (!proj) return;
+    var overlay = document.createElement('div');
+    overlay.className = 'modal show';
+    overlay.style.zIndex = '25000';
+    overlay.innerHTML =
+      '<div class="modal-content" style="max-width: 440px;">' +
+        '<button class="modal-close" aria-label="Schließen">&times;</button>' +
+        '<h2 class="modal-title">Projekt umbenennen</h2>' +
+        '<div class="form-group" style="margin: 12px 0 16px;">' +
+          '<label>Neuer Name</label>' +
+          '<input type="text" class="form-control" id="lp-ren-proj-name" maxlength="60" value="' + esc(proj.name) + '">' +
+        '</div>' +
+        '<div style="display:flex;gap:10px;justify-content:flex-end;">' +
+          '<button type="button" class="btn btn-outline" data-act="cancel">Abbrechen</button>' +
+          '<button type="button" class="btn btn-gold" data-act="save" style="width:auto;">Speichern</button>' +
+        '</div>' +
+      '</div>';
+
+    function close() { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }
+    function doSave() {
+      var val = (overlay.querySelector('#lp-ren-proj-name').value || '').trim();
+      if (val) { proj.name = val; save(); renderPlan(); toast('Umbenannt in „' + val + '“'); }
+      close();
+    }
+    overlay.querySelector('.modal-close').addEventListener('click', close);
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) { close(); return; }
+      var b = e.target.closest('[data-act]');
+      if (!b) return;
+      if (b.getAttribute('data-act') === 'cancel') close();
+      else if (b.getAttribute('data-act') === 'save') doSave();
+    });
+    overlay.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); doSave(); }
+      else if (e.key === 'Escape') close();
+    });
+    document.body.appendChild(overlay);
+    var inp = overlay.querySelector('#lp-ren-proj-name');
+    if (inp) { inp.focus(); inp.select(); }
+  }
+
+  function deleteProjectById(id) {
+    if (store.projects.length <= 1) { openDeleteModal(); return; }
+    var target = store.projects.filter(function (p) { return p.id === id; })[0];
+    if (!target) return;
+    store.projects = store.projects.filter(function (p) { return p.id !== id; });
+    if (state.id === id) state = store.projects[0];
+    store.activeId = state.id;
+    save();
+    renderSubjects();
+    renderTime();
+    renderPlan();
+    setupVisible(!state.plan);
+    $('lp-error').textContent = '';
+    toast('Projekt „' + target.name + '“ gelöscht.');
+  }
+
+  function initProjectEvents() {
+    var box = $('lp-projects');
+    if (!box) return;
+    box.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-proj-act]');
+      if (!btn) return;
+      var act = btn.getAttribute('data-proj-act');
+      var id = btn.getAttribute('data-id');
+      if (act === 'new') { openNewProjectModal(); }
+      else if (act === 'rename') { e.stopPropagation(); openRenameProjectModal(id); }
+      else if (act === 'del-proj') { e.stopPropagation(); deleteProjectById(id); }
+      else if (act === 'switch') { switchProject(id); }
+    });
   }
 
   function getSub(fk) {
@@ -219,7 +477,12 @@
     h += '<summary>' + esc(f.name) + ' <span class="lp-sum-type">' + esc(f.type || '') + '</span>';
     h += '<span class="lp-sum-count' + sum.cls + '">' + esc(sum.text) + '</span></summary>';
     h += '<div class="lp-subject-body">';
+    h += '<div class="lp-fach-bar">';
     h += '<p class="lp-hint"><b>Neu</b> = noch nie gelernt · <b>Unsicher</b> = viele Lücken · <b>Grundlagen</b> = AFB I sitzt · <b>Sicher</b> = auch AFB III klappt · <b>★</b> = besonders klausurrelevant</p>';
+    if (topics.length) {
+      h += '<button type="button" class="lp-fach-test-btn" data-act="test-fach">🎯 Einstufungs-Test für ' + esc(f.name) + ' starten</button>';
+    }
+    h += '</div>';
 
     if (!topics.length) {
       h += '<p class="lp-empty-note">Für dieses Fach gibt es noch keine Lernzettel – füge unten einfach eigene Themen hinzu.</p>';
@@ -238,6 +501,7 @@
         h += '<button type="button" class="lp-del" data-act="del" data-key="' + k + '" title="Thema löschen" aria-label="Thema löschen">&times;</button>';
       }
       h += '</div>';
+      h += '<button type="button" class="lp-test-btn" data-act="test-topic" data-key="' + k + '" title="Kurzer Abfrage-Test, damit die Website deine Stufe einschätzt">🎯 Test</button>';
       h += '<div class="lp-levels" role="radiogroup" aria-label="Wie gut kannst du ' + esc(t.title) + '?">';
       LEVELS.forEach(function (l) {
         h += '<label title="' + esc(l.hint) + '"><input type="radio" name="lv-' + esc(fk) + '-' + i + '" value="' + l.v + '" data-act="lvl" data-key="' + k + '"' + (t.level === l.v ? ' checked' : '') + '>';
@@ -314,6 +578,389 @@
     markStale();
   }
 
+  /* ──────────────────────────────────────────────────────────
+     EINSTUFUNGS-TEST (Wissen abfragen & Stufe 1–4 einschätzen)
+     ────────────────────────────────────────────────────────── */
+  function prettyMath(str) {
+    var s = String(str == null ? '' : str);
+    s = s.replace(/\\frac\{([^{}]+)\}\{([^{}]+)\}/g, '($1)/($2)');
+    s = s.replace(/\\sqrt\{([^{}]+)\}/g, '√($1)');
+    s = s.replace(/\\(?:text|mathrm|mathbf)\{([^{}]+)\}/g, '$1');
+    s = s.replace(/\\Delta\b/g, 'Δ').replace(/\\alpha\b/g, 'α').replace(/\\beta\b/g, 'β').replace(/\\pi\b/g, 'π').replace(/\\infty\b/g, '∞');
+    s = s.replace(/\\cdot\b/g, '·').replace(/\\times\b/g, '×').replace(/\\pm\b/g, '±').replace(/\\approx\b/g, '≈');
+    s = s.replace(/\\neq\b/g, '≠').replace(/\\le(?:q)?\b/g, '≤').replace(/\\ge(?:q)?\b/g, '≥');
+    s = s.replace(/\\(?:long)?rightarrow\b|\\to\b/g, '→').replace(/\\rightleftharpoons\b|\\leftrightarrow\b/g, '⇌');
+    s = s.replace(/\^\\circ/g, '°').replace(/\\[,;!]/g, ' ');
+    s = s.replace(/\$([^$]+)\$/g, '$1');
+    s = s.replace(/\{([^{}]+)\}/g, '$1');
+    return s.replace(/\s+/g, ' ').trim();
+  }
+
+  var FALLBACK_CARDS = {
+    'mathe/analysis_j1_formelsammlung.html': [
+      { tag: 'AFB I · Lernzettel-Check', q: 'Was gibt der Differenzenquotient (f(b) − f(a)) / (b − a) geometrisch an – und was die Ableitung f\'(x₀)?', a: 'Differenzenquotient = mittlere Änderungsrate (Sekantensteigung). Ableitung f\'(x₀) = momentane Änderungsrate (Tangentensteigung im Punkt P(x₀|f(x₀))).' },
+      { tag: 'AFB I · Ableitungsregeln', q: 'Wie lauten Potenzregel, Faktorregel und die Ableitungen von sin(x) und cos(x)?', a: 'f(x) = xⁿ → f\'(x) = n·xⁿ⁻¹ · Konstanter Faktor bleibt erhalten · (sin x)\' = cos x · (cos x)\' = −sin x.' },
+      { tag: 'AFB I–II · Tangente & Normale', q: 'Wie lautet die allgemeine Tangentengleichung und Normalengleichung an der Stelle u?', a: 'Tangente: y = f\'(u)·(x − u) + f(u) · Normale (senkrecht dazu): y = (−1/f\'(u))·(x − u) + f(u) mit m_t · m_n = −1.' },
+      { tag: 'AFB II · Grafisches Ableiten (NEW-Regel)', q: 'Was passiert beim grafischen Ableiten (NEW-Regel) aus einem Extrempunkt (Hoch-/Tiefpunkt) und einem Wendepunkt von f im Graphen von f\'?', a: 'Extrempunkt von f → Nullstelle mit Vorzeichenwechsel bei f\' · Wendepunkt von f → Extrempunkt (lokales Maximum/Minimum der Steigung) bei f\'.' }
+    ],
+    'chemie/chemische-energetik.html': [
+      { tag: 'AFB I · Reaktionsarten', q: 'Was bedeutet exotherm (ΔH < 0) und endotherm (ΔH > 0) für Wärmeabgabe und das Energiediagramm?', a: 'Exotherm (ΔH < 0): gibt Wärme an die Umgebung ab, Produkte liegen energetisch tiefer als Edukte. Endotherm (ΔH > 0): nimmt Wärme auf, Produkte liegen höher als Edukte.' },
+      { tag: 'AFB I · Kalorimetrie-Grundformel', q: 'Mit welchen zwei Formeln berechnest du im Kalorimeter zuerst die Wärme Q und daraus die molare Reaktionsenthalpie Δ_R H_m?', a: '1) Q = m · c · ΔT (mit c_Wasser = 4,18 J/(g·K)) · 2) Δ_R H_m = −Q_Wasser / n (mit n = m/M und Vorzeichenwechsel!).' },
+      { tag: 'AFB II · Satz von Hess', q: 'Was besagt der Satz von Hess und wie lautet die Formel zur Berechnung von Δ_R H_m aus Standardbildungsenthalpien Δ_f H°_m?', a: 'Die Reaktionsenthalpie hängt nur vom Anfangs- und Endzustand ab, nicht vom Weg: Δ_R H°_m = Summe Δ_f H°_m(Produkte) − Summe Δ_f H°_m(Edukte). Reine Elemente im Standardzustand haben Δ_f H°_m = 0.' },
+      { tag: 'AFB II · Experiment-Check', q: 'Was ist der systematische Hauptfehler beim einfachen Becherglas-/Styropor-Kalorimeter und wie wirkt er sich auf den Messwert aus?', a: 'Wärmeverlust an die Umgebung (und Erwärmung des Gefäßes selbst) → gemessenes ΔT ist zu klein → berechneter Betrag von Δ_R H_m fällt kleiner aus als der Literaturwert.' }
+    ],
+    'deutsch/kurzprosa-interpretation.html': [
+      { tag: 'AFB I · Merkmale der Kurzprosa', q: 'Nenne mindestens 5 typische Gattungsmerkmale einer modernen Kurzgeschichte (Kurzprosa).', a: '1) Unvermittelter Einstieg (in medias res), 2) Offener/halboffener Schluss, 3) Ausschnitthaftigkeit („Blitzlicht“), 4) Reduktion (wenige Figuren/Orte), 5) Alltagssprache mit starker Symbolik/Metaphorik & Leerstellen (Eisberg-Modell).' },
+      { tag: 'AFB I · Klausur-Aufbau', q: 'Was gehört zwingend in den Basissatz (TATTE) + die Einleitung, und welche goldene Regel gilt für die Gliederung des Hauptteils?', a: 'TATTE = Titel, Autor, Textsorte, Thema, Erscheinungsjahr + zentrale Interpretationshypothese. Im Hauptteil zwingend aspektorientiert gliedern (nicht linear nacherzählen!) und im Dreischritt: Form → Beleg (Zitat + Zeile) → Deutung.' },
+      { tag: 'AFB II · Erzähltechnik', q: 'Worin unterscheiden sich auktoriales, personales und neutrales Erzählverhalten in ihrer Wirkung auf den Leser?', a: 'Auktorial: Überblick, Kommentare, Distanz. Personal: Innensicht einer Figur, hohe Nähe/Identifikation, aber subjektiv. Neutral (Kamera-Auge): reine Außensicht, zwingt den Leser zur eigenen Deutung der Leerstellen.' },
+      { tag: 'AFB II · Kommunikation (Schulz von Thun / Watzlawick)', q: 'Welche 4 Seiten einer Nachricht unterscheidet Schulz von Thun und wie entlarvt man gestörte Kommunikation im Text?', a: 'Sachinhalt, Selbstoffenbarung, Beziehungsebene, Appell. Gestörte Kommunikation zeigt sich oft durch Diskrepanz zwischen Gesagtem und Gemeintem (Subtext), Aneinander-Vorbeireden oder nonverbale Signale.' }
+    ],
+    'gk/politisches-system-brd.html': [
+      { tag: 'AFB I · Verfassungsprinzipien', q: 'Welche Staatsstrukturprinzipien legt Art. 20 GG fest und was schützt die Ewigkeitsklausel (Art. 79 Abs. 3 GG)?', a: 'Demokratie, Rechtsstaat, Sozialstaat, Bundesstaat, Republik (und Gewaltenteilung). Art. 79 Abs. 3 GG schützt Art. 1 (Menschenwürde) und Art. 20 GG vor jeder Verfassungsänderung.' },
+      { tag: 'AFB I–II · Verfassungsorgane', q: 'Welche zentralen Aufgaben hat der Bundestag (und wie unterscheidet sich das konstruktive Misstrauensvotum Art. 67 GG von der Vertrauensfrage Art. 68 GG)?', a: 'Bundestag: Gesetzgebung, Wahl des Bundeskanzlers, Kontrolle der Regierung, Budgetrecht. Art. 67 GG: Bundestag wählt aktiv mit Mehrheit einen neuen Kanzler. Art. 68 GG: Kanzler stellt selbst die Vertrauensfrage.' }
+    ]
+  };
+
+  function cleanCardText(el) {
+    if (!el) return '';
+    var clone = el.cloneNode(true);
+    Array.prototype.forEach.call(clone.querySelectorAll('.flashcard-label, .formula-label'), function (n) {
+      if (n.parentNode) n.parentNode.removeChild(n);
+    });
+    return prettyMath(clone.textContent || '');
+  }
+
+  function extractCardsFromHtml(html) {
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    var root = doc.querySelector('.content-wrapper') || doc.body;
+    if (!root) return [];
+    var items = [];
+    var seen = {};
+    function add(tag, q, a) {
+      q = prettyMath(q); a = prettyMath(a);
+      if (!q || !a || q.length < 5 || a.length < 3 || q === a) return;
+      var k = q.toLowerCase().slice(0, 60);
+      if (seen[k]) return;
+      seen[k] = 1;
+      items.push({ tag: tag, q: q, a: a });
+    }
+
+    /* 1. Flashcards im Lernzettel */
+    Array.prototype.forEach.call(root.querySelectorAll('.flashcard'), function (fc) {
+      var fr = fc.querySelector('.flashcard-front');
+      var bk = fc.querySelector('.flashcard-back');
+      var q = cleanCardText(fr).replace(/^(?:Frage|Begriff)\s*[:\-–]?\s*/i, '');
+      var a = cleanCardText(bk).replace(/^Antwort\s*[:\-–]?\s*/i, '');
+      add('AFB I–II · Karteikarte aus deinem Lernzettel', q, a);
+    });
+
+    /* 2. Formel-Boxen */
+    Array.prototype.forEach.call(root.querySelectorAll('.formula-box'), function (fb) {
+      var lblEl = fb.querySelector('.formula-label');
+      var label = lblEl ? prettyMath(lblEl.textContent) : '';
+      if (!label && fb.previousElementSibling) {
+        var prevTxt = prettyMath(fb.previousElementSibling.textContent || '');
+        if (prevTxt.length >= 4 && prevTxt.length <= 90) label = prevTxt.replace(/:$/, '');
+      }
+      var formula = cleanCardText(fb);
+      if (label && formula && formula.length >= 3 && formula.length <= 200) {
+        add('AFB I · Formel / Gleichung aus deinem Lernzettel', 'Wie lautet die Formel bzw. Gleichung zu: „' + label + '“?', formula);
+      }
+    });
+
+    /* 3. Tabellen-Zeilen */
+    Array.prototype.forEach.call(root.querySelectorAll('table'), function (tbl) {
+      var ths = tbl.querySelectorAll('th');
+      var th0 = ths.length ? prettyMath(ths[0].textContent) : '';
+      var colCount = ths.length;
+      Array.prototype.forEach.call(tbl.querySelectorAll('tr'), function (tr) {
+        var tds = tr.querySelectorAll('td');
+        if (tds.length < 2) return;
+        if (colCount && tds.length !== colCount) return; /* überspringt verschobene rowspan-Folgezeilen */
+        var c0 = prettyMath(tds[0].textContent);
+        var rest = [];
+        for (var i = 1; i < tds.length; i++) {
+          var txt = prettyMath(tds[i].textContent);
+          if (txt) rest.push(txt);
+        }
+        var ans = rest.join(' · ');
+        if (c0.length >= 3 && c0.length <= 65 && ans.length >= 10 && ans.length <= 260) {
+          add('AFB I–II · Übersicht aus deinem Lernzettel', 'Erkläre kurz bzw. gib an' + (th0 ? ' (' + th0 + ')' : '') + ': „' + c0 + '“', ans);
+        }
+      });
+    });
+
+    /* 4. Hervorgehobene Schlüsselbegriffe in Merksätzen / Listen */
+    if (items.length < 6) {
+      Array.prototype.forEach.call(root.querySelectorAll('li, p'), function (el) {
+        if (el.closest('table, .flashcard, .formula-box, nav, .page-footer')) return;
+        var hl = el.querySelector('.highlight, strong');
+        if (!hl) return;
+        var term = prettyMath(hl.textContent).replace(/[:–\-]+$/, '').trim();
+        var full = prettyMath(el.textContent);
+        if (term.length >= 4 && term.length <= 48 && full.length >= term.length + 18 && full.length <= 250) {
+          add('AFB I–II · Schlüsselbegriff aus deinem Lernzettel', 'Was gilt im Zusammenhang mit „' + term + '“?', full);
+        }
+      });
+    }
+
+    /* Gleichmäßig 4 Fragen über den gesamten Lernzettel auswählen */
+    if (items.length <= 4) return items;
+    var picked = [];
+    for (var i = 0; i < 4; i++) {
+      var idx = Math.min(items.length - 1, Math.floor(i * items.length / 4));
+      picked.push(items[idx]);
+    }
+    return picked;
+  }
+
+  function buildTopicQuestions(fk, topic) {
+    var opsII = LT.getOperatorNames(fk, 'II', 4) || 'erläutern, analysieren, berechnen';
+    var opsIII = LT.getOperatorNames(fk, 'III', 4) || 'beurteilen, erörtern, begründen';
+    var afbII = LT.getAfbDescription(fk, 'II') || 'Selbstständiges Erklären, Verknüpfen und Anwenden auf bekannte Zusammenhänge.';
+    var afbIII = LT.getAfbDescription(fk, 'III') || 'Transfer auf neue Problemstellungen, eigenständige Begründung und kriteriengeleitete Beurteilung.';
+    var zusatz = (getSub(fk).zusatz || '').trim();
+
+    var checkQuestions = [
+      {
+        tag: 'AFB II · Klausur-Anwendung (' + opsII + ')',
+        q: 'Anwendungs-Check zu „' + topic.title + '“: Könntest du jetzt sofort (ohne Spicken auf dem Lernzettel!) eine typische Klausuraufgabe im ' + LT.AFB_LABELS.II + ' (Operatoren z. B. ' + opsII + ') vollständig und mit sauberer Fachsprache lösen?',
+        a: 'Kriterium für ' + LT.AFB_LABELS.II + ' in ' + fachName(fk) + ': ' + afbII + (FACH_TIPS[fk] ? ' Wichtig: ' + FACH_TIPS[fk] : '')
+      },
+      {
+        tag: 'AFB III · 15-Punkte-Transfer (' + opsIII + ')',
+        q: 'Transfer-Check zu „' + topic.title + '“: Traust du dir auch eine ungewohnte Transfer-, Begründungs- oder Urteilsaufgabe im ' + LT.AFB_LABELS.III + ' (Operatoren z. B. ' + opsIII + ') inklusive Sonderfällen und typischen Klausurfallen sicher zu?',
+        a: 'Kriterium für ' + LT.AFB_LABELS.III + ' (13–15 Punkte): ' + afbIII + (zusatz ? ' Denke dabei auch an dein eingetragenes Zusatzwissen!' : '')
+      }
+    ];
+
+    function finalize(contentCards) {
+      if (!contentCards || !contentCards.length) {
+        if (FALLBACK_CARDS[topic.link]) {
+          contentCards = FALLBACK_CARDS[topic.link].slice();
+        } else {
+          contentCards = [
+            {
+              tag: 'AFB I · Active Recall (Grundbegriffe)',
+              q: 'Nenne aus dem Kopf die 3–5 wichtigsten Fachbegriffe, Definitionen oder Grundregeln zum Thema „' + topic.title + '“.',
+              a: 'Prüfe ehrlich: Konntest du die zentralen Begriffe und Definitionen flüssig und fachsprachlich präzise erklären, ohne erst nachsehen zu müssen?' + (topic.note ? ' (' + topic.note + ')' : '')
+            },
+            {
+              tag: 'AFB I–II · Vorgehen / Struktur / Formeln',
+              q: 'Erkläre laut in eigenen Worten (Feynman-Check): Welche Formeln, Gesetze, Argumentationsschritte oder Analysemethoden braucht man bei „' + topic.title + '“?',
+              a: 'Prüfe ehrlich: Sitzt das Schritt-für-Schritt-Vorgehen auswendig oder musstest du bei einzelnen Schritten/Formeln noch raten?'
+            },
+            {
+              tag: 'AFB II · Typische Klausurfalle',
+              q: 'Was ist bei „' + topic.title + '“ der häufigste Fehler in Klausuren – und worauf musst du besonders achten?',
+              a: (FACH_TIPS[fk] || 'Achte auf präzise Fachsprache, vollständige Herleitung/Begründung und die genaue Beachtung des Operators.') + (zusatz ? ' Zusatzwissen: ' + zusatz.slice(0, 180) : '')
+            }
+          ];
+        }
+      }
+      return contentCards.concat(checkQuestions);
+    }
+
+    if (!topic.link) return Promise.resolve(finalize([]));
+    return fetch(topic.link)
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
+      .then(function (html) { return finalize(extractCardsFromHtml(html)); })
+      .catch(function () { return finalize([]); });
+  }
+
+  function scoreToLevel(pct) {
+    if (pct < 30) return 1;
+    if (pct < 60) return 2;
+    if (pct < 85) return 3;
+    return 4;
+  }
+
+  function levelPlanExplanation(lv) {
+    switch (lv) {
+      case 1: return 'Der Lernplaner plant für dich <b>3 Erarbeitungs-Einheiten</b> (Feynman-Methode + Aktiv-Vertiefung) und <b>3 Übungs-Einheiten</b> (AFB I → II → III) ein.';
+      case 2: return 'Der Lernplaner plant <b>2 Erarbeitungs-Einheiten</b> zum Lückenschließen und <b>3 aufbauende Übungs-Einheiten</b> (AFB I → II → III) ein.';
+      case 3: return 'Die Grundlagen sitzen! Der Planer plant nur noch <b>1 kurze Vertiefung</b> und geht direkt in <b>2 Klausur-Übungseinheiten (Fokus AFB II &amp; III)</b>.';
+      case 4: return 'Stark! Du sparst dir das Grundlagentraining und bekommst gezielte <b>AFB-III- &amp; Klausur-Mix-Einheiten</b> plus Spaced Repetition für sichere 15 Punkte.';
+    }
+    return '';
+  }
+
+  function openDiagnosticModal(fk, topicsList) {
+    if (!topicsList || !topicsList.length) {
+      toast('Füge zuerst ein Thema hinzu.');
+      return;
+    }
+    var overlay = document.createElement('div');
+    overlay.className = 'modal show';
+    overlay.style.zIndex = '25000';
+    overlay.innerHTML =
+      '<div class="modal-content" style="max-width: 640px;">' +
+        '<button class="modal-close" aria-label="Schließen">&times;</button>' +
+        '<div id="lp-diag-body"><p class="modal-desc">Lade Einstufungs-Fragen …</p></div>' +
+      '</div>';
+    document.body.appendChild(overlay);
+
+    var body = overlay.querySelector('#lp-diag-body');
+    var tIdx = 0;
+    var qIdx = 0;
+    var questions = [];
+    var points = 0;
+    var maxPoints = 0;
+    var results = []; /* { topic, pct, level } */
+
+    function close() {
+      if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+      rerenderSubject(fk);
+      markStale();
+    }
+    overlay.querySelector('.modal-close').addEventListener('click', close);
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
+
+    function startTopic(idx) {
+      tIdx = idx;
+      qIdx = 0;
+      points = 0;
+      maxPoints = 0;
+      var topic = topicsList[tIdx];
+      body.innerHTML = '<h2 class="modal-title">🎯 Einstufungs-Test: ' + esc(topic.title) + '</h2>' +
+        '<p class="modal-desc">Stelle Fragen aus deinem Lernzettel und den BW-Anforderungsbereichen zusammen …</p>';
+      buildTopicQuestions(fk, topic).then(function (qs) {
+        questions = qs;
+        renderQuestion();
+      });
+    }
+
+    function renderQuestion() {
+      var topic = topicsList[tIdx];
+      var q = questions[qIdx];
+      var totalTopics = topicsList.length;
+      var h = '';
+      if (totalTopics > 1) {
+        h += '<div style="font-size:0.78rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);font-weight:700;margin-bottom:2px;">Thema ' + (tIdx + 1) + ' von ' + totalTopics + ' · ' + esc(fachName(fk)) + '</div>';
+      }
+      h += '<h2 class="modal-title" style="margin-bottom:4px;">🎯 ' + esc(topic.title) + '</h2>';
+      h += '<div style="display:flex;justify-content:space-between;align-items:center;font-size:0.84rem;color:var(--text-secondary);margin-bottom:8px;">';
+      h += '<span>Frage <b>' + (qIdx + 1) + '</b> von <b>' + questions.length + '</b></span>';
+      if (topic.link) h += '<span style="color:var(--forest);">✓ Aus deinem Lernzettel &amp; BW-Operatoren</span>';
+      h += '</div>';
+      h += '<div class="lp-progress" style="height:8px;margin-bottom:12px;"><div style="width:' + Math.round((qIdx / questions.length) * 100) + '%"></div></div>';
+
+      h += '<div class="lp-diag-card">';
+      h += '<span class="lp-diag-tag">' + esc(q.tag) + '</span>';
+      h += '<div class="lp-diag-q">' + esc(q.q) + '</div>';
+      h += '<p class="lp-hint" id="lp-diag-think" style="margin:0;">💭 Überlege dir die Antwort kurz im Kopf (oder stichpunktartig) und decke dann die Lösung auf.</p>';
+      h += '<div class="lp-diag-sol" id="lp-diag-sol" style="display:none;"><b>Lösung / Prüfkriterium:</b><br>' + esc(q.a) + '</div>';
+      h += '</div>';
+
+      h += '<div id="lp-diag-reveal-wrap" style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px;">';
+      h += '<button type="button" class="btn btn-gold" data-diag="reveal" style="flex:1;">👁️ Lösung aufdecken &amp; einschätzen</button>';
+      if (totalTopics > 1) {
+        h += '<button type="button" class="btn btn-outline" data-diag="skip-topic" style="width:auto;">Thema überspringen</button>';
+      }
+      h += '</div>';
+
+      h += '<div id="lp-diag-rate-wrap" style="display:none;margin-top:12px;">';
+      h += '<div style="font-size:0.85rem;font-weight:700;color:var(--forest);margin-bottom:4px;">Wie gut hättest du das ohne Hilfe gewusst?</div>';
+      h += '<div class="lp-diag-rates">';
+      h += '<button type="button" class="lp-diag-rate r0" data-diag="rate" data-pts="0"><b>❌ Wusste ich nicht</b><span>0 Punkte · Noch neu / große Lücke</span></button>';
+      h += '<button type="button" class="lp-diag-rate r1" data-diag="rate" data-pts="1"><b>〰️ Teilweise / unsicher</b><span>1 Punkt · Ungefähr, aber unvollständig</span></button>';
+      h += '<button type="button" class="lp-diag-rate r2" data-diag="rate" data-pts="2"><b>✅ Saß sofort &amp; komplett</b><span>2 Punkte · Präzise &amp; klausurreif</span></button>';
+      h += '</div></div>';
+
+      body.innerHTML = h;
+    }
+
+    function finishTopic() {
+      var topic = topicsList[tIdx];
+      var pct = maxPoints ? Math.round((points / maxPoints) * 100) : 50;
+      var lv = scoreToLevel(pct);
+      var lvObj = LEVELS[lv - 1];
+
+      /* Automatisch im Thema speichern & Thema aktivieren */
+      setTopic(fk, topic.key, 'level', lv);
+      setTopic(fk, topic.key, 'selected', true);
+      results.push({ topic: topic, pct: pct, level: lv });
+
+      var h = '<h2 class="modal-title">Ergebnis: ' + esc(topic.title) + '</h2>';
+      h += '<p class="modal-desc">Du hast <b>' + points + ' von ' + maxPoints + ' Punkten (' + pct + ' %)</b> erreicht. Die Website hat deine Stufe automatisch eingetragen und das Thema ausgewählt:</p>';
+      h += '<div class="lp-diag-card" style="text-align:center;">';
+      h += '<div style="font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);">Eingeschätzte Lernstufe</div>';
+      h += '<div class="lp-diag-badge lv' + lv + '">' + lv + '/4 · ' + esc(lvObj.label) + '</div>';
+      h += '<p style="font-size:0.9rem;color:var(--text-primary);margin:6px 0 10px;">' + levelPlanExplanation(lv) + '</p>';
+      h += '<div style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:6px;">Möchtest du die Stufe von Hand anpassen?</div>';
+      h += '<div class="lp-levels" style="justify-content:center;">';
+      LEVELS.forEach(function (l) {
+        h += '<label><input type="radio" name="diag-override" value="' + l.v + '" data-diag="override" data-val="' + l.v + '"' + (l.v === lv ? ' checked' : '') + '>';
+        h += '<span class="lv' + l.v + '">' + esc(l.label) + '</span></label>';
+      });
+      h += '</div></div>';
+
+      h += '<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;margin-top:14px;">';
+      h += '<button type="button" class="btn btn-outline" data-diag="ai-test" style="width:auto;font-size:0.85rem;">🤖 Zusätzlich Live-Test-Prompt für Gemini kopieren</button>';
+      if (tIdx + 1 < topicsList.length) {
+        h += '<button type="button" class="btn btn-gold" data-diag="next-topic" style="width:auto;">Weiter: ' + esc(topicsList[tIdx + 1].title) + ' →</button>';
+      } else {
+        h += '<button type="button" class="btn btn-gold" data-diag="done" style="width:auto;">Übernehmen &amp; fertig ✓</button>';
+      }
+      h += '</div>';
+
+      body.innerHTML = h;
+    }
+
+    body.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-diag]');
+      if (!btn) return;
+      var act = btn.getAttribute('data-diag');
+      if (act === 'reveal') {
+        var sol = body.querySelector('#lp-diag-sol');
+        var rev = body.querySelector('#lp-diag-reveal-wrap');
+        var rate = body.querySelector('#lp-diag-rate-wrap');
+        var think = body.querySelector('#lp-diag-think');
+        if (sol) sol.style.display = '';
+        if (think) think.style.display = 'none';
+        if (rev) rev.style.display = 'none';
+        if (rate) rate.style.display = '';
+      } else if (act === 'rate') {
+        var pts = +btn.getAttribute('data-pts') || 0;
+        points += pts;
+        maxPoints += 2;
+        qIdx++;
+        if (qIdx < questions.length) renderQuestion();
+        else finishTopic();
+      } else if (act === 'skip-topic') {
+        if (tIdx + 1 < topicsList.length) startTopic(tIdx + 1);
+        else close();
+      } else if (act === 'override') {
+        var newLv = +btn.getAttribute('data-val');
+        var topic = topicsList[tIdx];
+        setTopic(fk, topic.key, 'level', newLv);
+        if (results.length) results[results.length - 1].level = newLv;
+        var badge = body.querySelector('.lp-diag-badge');
+        if (badge) {
+          badge.className = 'lp-diag-badge lv' + newLv;
+          badge.textContent = newLv + '/4 · ' + LEVELS[newLv - 1].label;
+        }
+        toast('Stufe auf „' + LEVELS[newLv - 1].label + '“ angepasst.');
+      } else if (act === 'next-topic') {
+        startTopic(tIdx + 1);
+      } else if (act === 'ai-test') {
+        var t = topicsList[tIdx];
+        var prompt = 'Du bist meine Fachlehrkraft für ' + fachName(fk) + ' (Oberstufe Baden-Württemberg). ' +
+          'Führe mit mir einen kurzen Einstufungstest zum Thema „' + t.title + '“ durch: ' +
+          'Stelle mir nacheinander 4 kurze Fragen (von AFB I bis AFB III), warte jeweils auf meine Antwort, korrigiere sie kurz und empfiehl mir am Ende eine Lernstufe: ' +
+          '1 = Neu, 2 = Unsicher, 3 = Grundlagen sitzen, 4 = Sicher (auch AFB III). Starte jetzt direkt mit Frage 1!';
+        LT.copyToClipboard(prompt).then(function (ok) {
+          if (ok) toast('Einstufungs-Prompt kopiert! Neuer Gemini-Chat → Strg+V.', true);
+        });
+      } else if (act === 'done') {
+        close();
+        toast('Einstufung gespeichert ✓');
+      }
+    });
+
+    startTopic(0);
+  }
+
   function initSubjectEvents() {
     var box = $('lp-subjects');
 
@@ -352,6 +999,13 @@
         b.classList.toggle('lp-on', on);
         b.setAttribute('aria-pressed', on ? 'true' : 'false');
         markStale();
+      } else if (act === 'test-topic') {
+        var tp = findTopic(fk, key);
+        if (tp) openDiagnosticModal(fk, [tp]);
+      } else if (act === 'test-fach') {
+        var allT = subjTopics(fk);
+        var selT = allT.filter(function (x) { return x.selected; });
+        openDiagnosticModal(fk, selT.length ? selT : allT);
       } else if (act === 'del') {
         var st = getSub(fk), id = key.slice(2);
         st.custom = st.custom.filter(function (c) { return String(c.id) !== id; });
@@ -881,7 +1535,7 @@
     var inRange = today >= p.days[0].date && today <= lastDate;
 
     var h = '<section class="lp-summary">';
-    h += '<h2>Dein Lernplan</h2>';
+    h += '<h2>Dein Lernplan: ' + esc(state.name || 'Lernplan') + '</h2>';
     h += '<p class="lp-step-desc">' + fmtDay(p.days[0].date) + ' – ' + fmtDay(lastDate) + ' · ' + esc(fks.join(', ')) + '</p>';
     h += '<div class="lp-stats">';
     h += '<div class="lp-stat"><b>' + sessions + '</b><span>Einheiten</span></div>';
@@ -1113,19 +1767,29 @@
     overlay.className = 'modal show';
     overlay.style.zIndex = '25000';
     var hasPlan = !!(state.plan && state.plan.days && state.plan.days.length);
+    var multi = store.projects.length > 1;
+    var pName = esc(state.name || 'Lernplan');
     overlay.innerHTML =
-      '<div class="modal-content" style="max-width: 520px;">' +
+      '<div class="modal-content" style="max-width: 540px;">' +
         '<button class="modal-close" aria-label="Schließen">&times;</button>' +
         '<h2 class="modal-title">Lernplan löschen / zurücksetzen</h2>' +
-        '<p class="modal-desc">Hast du dich vertippt oder möchtest du neu starten? Wähle aus, was gelöscht werden soll:</p>' +
+        '<p class="modal-desc">Aktuelles Projekt: <b>' + pName + '</b>. Wähle aus, was gelöscht werden soll:</p>' +
         '<div style="display: flex; flex-direction: column; gap: 10px; margin-top: 14px;">' +
           (hasPlan ? '<button type="button" class="btn btn-outline" data-del="plan-only" style="text-align: left; padding: 12px 16px;">' +
-            '<b>1. Nur berechneten Plan löschen (Eingaben behalten)</b><br>' +
-            '<span style="font-size: 0.82rem; font-weight: 400; color: var(--text-secondary);">Löscht den Kalender-Plan und die Häkchen. Deine gewählten Themen, Klausurtermine und dein Zusatzwissen bleiben da, damit du Fehler schnell korrigieren kannst.</span>' +
+            '<b>Nur berechneten Kalender-Plan löschen (Eingaben behalten)</b><br>' +
+            '<span style="font-size: 0.82rem; font-weight: 400; color: var(--text-secondary);">Löscht den Kalender-Plan und die Häkchen in „' + pName + '“. Deine gewählten Themen, Klausurtermine und dein Zusatzwissen bleiben erhalten.</span>' +
+          '</button>' : '') +
+          '<button type="button" class="btn btn-outline" data-del="reset-proj" style="text-align: left; padding: 12px 16px;">' +
+            '<b>Projekt „' + pName + '“ komplett auf Anfang zurücksetzen</b><br>' +
+            '<span style="font-size: 0.82rem; font-weight: 400; color: var(--text-secondary);">Leert alle ausgewählten Themen, Termine und den Plan in diesem Projekt' + (multi ? ' (deine anderen Projekte bleiben unberührt)' : '') + '.</span>' +
+          '</button>' +
+          (multi ? '<button type="button" class="btn btn-danger" data-del="del-proj" style="text-align: left; padding: 12px 16px; border-radius: var(--radius-md);">' +
+            '<b>Projekt „' + pName + '“ komplett löschen</b><br>' +
+            '<span style="font-size: 0.82rem; font-weight: 400; opacity: 0.9;">Entfernt dieses Projekt aus deiner Projekt-Leiste und wechselt zum nächsten Projekt.</span>' +
           '</button>' : '') +
           '<button type="button" class="btn btn-danger" data-del="all" style="text-align: left; padding: 12px 16px; border-radius: var(--radius-md);">' +
-            '<b>' + (hasPlan ? '2. ' : '') + 'Alles komplett zurücksetzen (Neu anfangen)</b><br>' +
-            '<span style="font-size: 0.82rem; font-weight: 400; opacity: 0.9;">Löscht den Plan UND setzt alle ausgewählten Themen, Termine, eigenen Themen, Lernzeiten und Zusatzwissen komplett auf Anfang zurück.</span>' +
+            '<b>Alle Projekte &amp; Daten komplett löschen (Werkseinstellung)</b><br>' +
+            '<span style="font-size: 0.82rem; font-weight: 400; opacity: 0.9;">Löscht sämtliche Lernplan-Projekte, Themen, Termine und das Zusatzwissen im Browser.</span>' +
           '</button>' +
           '<button type="button" class="btn btn-outline" data-del="cancel" style="margin-top: 4px;">Abbrechen</button>' +
         '</div>' +
@@ -1149,9 +1813,12 @@
         close();
         $('lp-setup').scrollIntoView({ behavior: 'smooth', block: 'start' });
         toast('Plan gelöscht – du kannst deine Eingaben jetzt korrigieren.');
-      } else if (mode === 'all') {
-        state = defaults();
-        try { localStorage.removeItem(KEY); } catch (err) { /* ignore */ }
+      } else if (mode === 'reset-proj') {
+        var fresh = defaults(state.id, state.name);
+        state.settings = fresh.settings;
+        state.plan = null;
+        state.done = {};
+        save();
         renderSubjects();
         renderTime();
         renderPlan();
@@ -1159,7 +1826,24 @@
         $('lp-error').textContent = '';
         close();
         $('lp-setup').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        toast('Alles wurde komplett auf Anfang zurückgesetzt.');
+        toast('Projekt „' + state.name + '“ wurde zurückgesetzt.');
+      } else if (mode === 'del-proj') {
+        close();
+        deleteProjectById(state.id);
+      } else if (mode === 'all') {
+        var first = defaults('p_1', 'Lernplan 1');
+        store = { activeId: first.id, projects: [first] };
+        state = first;
+        try { localStorage.removeItem(KEY); } catch (err) { /* ignore */ }
+        renderProjects();
+        renderSubjects();
+        renderTime();
+        renderPlan();
+        setupVisible(true);
+        $('lp-error').textContent = '';
+        close();
+        $('lp-setup').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        toast('Alle Projekte und Eingaben wurden komplett zurückgesetzt.');
       } else {
         close();
       }
@@ -1211,8 +1895,10 @@
      Start
      ────────────────────────────────────────────────────────── */
   function init() {
+    renderProjects();
     renderSubjects();
     renderTime();
+    initProjectEvents();
     initSubjectEvents();
     initTimeEvents();
     initPlanEvents();
