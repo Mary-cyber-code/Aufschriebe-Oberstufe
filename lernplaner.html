@@ -83,10 +83,15 @@
       </section>
 
       <div class="lp-generate-wrap">
-        <button id="lp-generate" class="btn btn-gold lp-generate">
-          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-          Lernplan erstellen
-        </button>
+        <div class="lp-generate-btns">
+          <button id="lp-generate" class="btn btn-gold lp-generate">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            Lernplan erstellen
+          </button>
+          <button id="lp-reset" type="button" class="btn btn-danger lp-reset-btn">
+            🗑️ Eingaben / Plan löschen
+          </button>
+        </div>
         <p class="lp-hint" style="margin-top:8px;">🔒 Dein Plan, deine Einschätzungen und dein Zusatzwissen werden automatisch <b>nur lokal in deinem Browser</b> gespeichert – niemand sonst kann sie sehen.</p>
         <p id="lp-error" class="lp-error" role="alert"></p>
       </div>

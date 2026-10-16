@@ -266,6 +266,9 @@
     h += '<label>Zusatzwissen – muss ich können, steht aber auf keinem Lernzettel</label>';
     h += '<textarea class="form-control" rows="4" data-act="zusatz" placeholder="z. B. Definitionen aus dem Heft, Formeln vom Arbeitsblatt, Fachbegriffe, Lektüre-Details, Hinweise der Lehrkraft …">' + esc(st.zusatz) + '</textarea>';
     h += '<p class="lp-hint">Wird automatisch in deine Quiz- und Simulations-Prompts eingebaut – hier im Lernplaner und im KI-Quiz-Generator auf der Startseite.</p>';
+    if (anySel || st.custom.length || st.exam || (st.zusatz && st.zusatz.trim())) {
+      h += '<button type="button" class="lp-fach-reset" data-act="reset-fach">🗑️ Eingaben für ' + esc(f.name) + ' zurücksetzen</button>';
+    }
     h += '</div></div>';
 
     h += '</div></details>';
@@ -357,6 +360,12 @@
         markStale();
       } else if (act === 'add') {
         addCustom(fk, det);
+      } else if (act === 'reset-fach') {
+        state.settings.subjects[fk] = { topics: {}, custom: [], exam: '', simMinutes: 90, zusatz: '' };
+        save();
+        rerenderSubject(fk);
+        markStale();
+        toast(fachName(fk) + ' zurückgesetzt.');
       }
     });
 
@@ -918,7 +927,7 @@
     h += '<a class="btn btn-outline" href="' + GEMINI_URL + '" target="_blank" rel="noopener">Gemini öffnen ↗</a>';
     h += '<button type="button" class="btn btn-outline" data-act="replan">Neu planen ab heute</button>';
     h += '<button type="button" class="btn btn-outline" data-act="edit">Einstellungen bearbeiten</button>';
-    h += '<button type="button" class="btn btn-outline" data-act="delete">Plan löschen</button>';
+    h += '<button type="button" class="btn btn-danger" data-act="delete">🗑️ Plan löschen / Zurücksetzen</button>';
     h += '</div></section>';
 
     var curWeek = null, weekNo = 0;
@@ -1099,6 +1108,65 @@
     toast('Kalenderdatei heruntergeladen – öffne sie, um die Termine zu importieren.');
   }
 
+  function openDeleteModal() {
+    var overlay = document.createElement('div');
+    overlay.className = 'modal show';
+    overlay.style.zIndex = '25000';
+    var hasPlan = !!(state.plan && state.plan.days && state.plan.days.length);
+    overlay.innerHTML =
+      '<div class="modal-content" style="max-width: 520px;">' +
+        '<button class="modal-close" aria-label="Schließen">&times;</button>' +
+        '<h2 class="modal-title">Lernplan löschen / zurücksetzen</h2>' +
+        '<p class="modal-desc">Hast du dich vertippt oder möchtest du neu starten? Wähle aus, was gelöscht werden soll:</p>' +
+        '<div style="display: flex; flex-direction: column; gap: 10px; margin-top: 14px;">' +
+          (hasPlan ? '<button type="button" class="btn btn-outline" data-del="plan-only" style="text-align: left; padding: 12px 16px;">' +
+            '<b>1. Nur berechneten Plan löschen (Eingaben behalten)</b><br>' +
+            '<span style="font-size: 0.82rem; font-weight: 400; color: var(--text-secondary);">Löscht den Kalender-Plan und die Häkchen. Deine gewählten Themen, Klausurtermine und dein Zusatzwissen bleiben da, damit du Fehler schnell korrigieren kannst.</span>' +
+          '</button>' : '') +
+          '<button type="button" class="btn btn-danger" data-del="all" style="text-align: left; padding: 12px 16px; border-radius: var(--radius-md);">' +
+            '<b>' + (hasPlan ? '2. ' : '') + 'Alles komplett zurücksetzen (Neu anfangen)</b><br>' +
+            '<span style="font-size: 0.82rem; font-weight: 400; opacity: 0.9;">Löscht den Plan UND setzt alle ausgewählten Themen, Termine, eigenen Themen, Lernzeiten und Zusatzwissen komplett auf Anfang zurück.</span>' +
+          '</button>' +
+          '<button type="button" class="btn btn-outline" data-del="cancel" style="margin-top: 4px;">Abbrechen</button>' +
+        '</div>' +
+      '</div>';
+
+    function close() {
+      if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+    }
+    overlay.querySelector('.modal-close').addEventListener('click', close);
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) { close(); return; }
+      var btn = e.target.closest('[data-del]');
+      if (!btn) return;
+      var mode = btn.getAttribute('data-del');
+      if (mode === 'plan-only') {
+        state.plan = null;
+        state.done = {};
+        save();
+        renderPlan();
+        setupVisible(true);
+        close();
+        $('lp-setup').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        toast('Plan gelöscht – du kannst deine Eingaben jetzt korrigieren.');
+      } else if (mode === 'all') {
+        state = defaults();
+        try { localStorage.removeItem(KEY); } catch (err) { /* ignore */ }
+        renderSubjects();
+        renderTime();
+        renderPlan();
+        setupVisible(true);
+        $('lp-error').textContent = '';
+        close();
+        $('lp-setup').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        toast('Alles wurde komplett auf Anfang zurückgesetzt.');
+      } else {
+        close();
+      }
+    });
+    document.body.appendChild(overlay);
+  }
+
   /* ──────────────────────────────────────────────────────────
      Events im Plan
      ────────────────────────────────────────────────────────── */
@@ -1131,12 +1199,7 @@
         setupVisible(true);
         $('lp-setup').scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else if (act === 'delete') {
-        if (!window.confirm('Plan und alle Häkchen wirklich löschen? Deine Themen, Einschätzungen und dein Zusatzwissen bleiben erhalten.')) return;
-        state.plan = null;
-        state.done = {};
-        save();
-        renderPlan();
-        setupVisible(true);
+        openDeleteModal();
       } else if (act === 'today') {
         var el = $('lp-day-' + todayStr());
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1154,6 +1217,8 @@
     initTimeEvents();
     initPlanEvents();
     $('lp-generate').addEventListener('click', generate);
+    var resetBtn = $('lp-reset');
+    if (resetBtn) resetBtn.addEventListener('click', openDeleteModal);
 
     /* Fach per URL öffnen: lernplaner.html?fach=mathe */
     var m = /[?&]fach=([^&]+)/.exec(location.search);

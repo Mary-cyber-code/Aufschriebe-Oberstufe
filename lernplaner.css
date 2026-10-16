@@ -102,7 +102,22 @@
 .lp-weekdays input { text-align: center; padding: 8px 4px; }
 
 .lp-generate-wrap { text-align: center; margin: var(--space-md) 0 var(--space-lg); }
+.lp-generate-btns { display: flex; justify-content: center; align-items: center; gap: 12px; flex-wrap: wrap; }
 .lp-generate { width: auto; padding: 14px 36px; font-size: 1.2rem; }
+.lp-reset-btn { width: auto; padding: 12px 20px; font-size: 0.95rem; font-family: var(--font-body); font-weight: 600; }
+.btn-danger {
+  background: transparent; color: #A0453A; border: 1.5px solid #B5705F;
+  transition: all 0.2s ease; cursor: pointer;
+}
+.btn-danger:hover {
+  background: #A0453A; color: #fff; border-color: #A0453A; transform: translateY(-1px);
+}
+.lp-fach-reset {
+  background: none; border: 1px solid rgba(160,69,58,0.4); color: #A0453A; border-radius: 14px;
+  padding: 4px 12px; font-size: 0.78rem; font-family: var(--font-body); font-weight: 600; cursor: pointer;
+  transition: all 0.2s; margin-top: 8px;
+}
+.lp-fach-reset:hover { background: #A0453A; color: #fff; border-color: #A0453A; }
 
 /* ---------- Ergebnis ---------- */
 .lp-summary {
