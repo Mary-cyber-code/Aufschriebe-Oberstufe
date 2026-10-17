@@ -59,20 +59,38 @@
     return ops.join(', ');
   }
 
-  /** Zusatzwissen (aus dem Lernplaner gespeichert) für ein Fach */
+  function formatSubZusatz(sub) {
+    if (!sub) return '';
+    var parts = [];
+    var z = (sub.zusatz || '').trim();
+    if (z) parts.push(z);
+    if (Array.isArray(sub.files) && sub.files.length) {
+      sub.files.forEach(function (f) {
+        if (!f || !f.name) return;
+        if (f.text && f.text.trim()) {
+          parts.push('--- HOCHGELADENES ÜBUNGSBLATT (' + f.name + ') ---\n' + f.text.trim());
+        } else {
+          parts.push('--- HOCHGELADENES ÜBUNGSBLATT (' + f.name + ' – als Bild/Scan vorhanden, bitte Aufgabenstil daran orientieren bzw. angehängte Datei beachten) ---');
+        }
+      });
+    }
+    return parts.join('\n\n');
+  }
+
+  /** Zusatzwissen + hochgeladene Übungsaufgaben (aus dem Lernplaner gespeichert) für ein Fach */
   function getZusatzwissen(fachKey) {
     try {
       var state = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
       if (!state) return '';
       if (state.settings && state.settings.subjects && state.settings.subjects[fachKey]) {
-        var z = (state.settings.subjects[fachKey].zusatz || '').trim();
+        var z = formatSubZusatz(state.settings.subjects[fachKey]);
         if (z) return z;
       }
       if (Array.isArray(state.projects)) {
         for (var i = 0; i < state.projects.length; i++) {
           var p = state.projects[i];
           if (p && p.settings && p.settings.subjects && p.settings.subjects[fachKey]) {
-            var pz = (p.settings.subjects[fachKey].zusatz || '').trim();
+            var pz = formatSubZusatz(p.settings.subjects[fachKey]);
             if (pz) return pz;
           }
         }

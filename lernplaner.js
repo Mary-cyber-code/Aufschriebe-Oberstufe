@@ -39,15 +39,103 @@
   };
 
   var FACH_TIPS = {
-    mathe:    'Rechne vollständig mit Lösungsweg – das Ergebnis allein bringt kaum Punkte.',
-    chemie:   'Achte auf Fachsprache, Einheiten und vollständige Reaktionsgleichungen.',
-    biologie: 'Nutze Fachbegriffe präzise und beziehe dich bei Material-Aufgaben immer auf das Material.',
-    deutsch:  'Formuliere mindestens eine Passage komplett aus: Form → Beleg (Zitat + Zeile) → Deutung.',
-    englisch: 'Write in English and match the text type the operator asks for (linking words!).',
-    gk:       'Belege mit Material/Beispielen und urteile mit Kriterien (z. B. Effizienz, Legitimität).',
+    mathe:      'Rechne vollständig mit Lösungsweg – das Ergebnis allein bringt kaum Punkte.',
+    chemie:     'Achte auf Fachsprache, Einheiten und vollständige Reaktionsgleichungen.',
+    biologie:   'Nutze Fachbegriffe präzise und beziehe dich bei Material-Aufgaben immer auf das Material.',
+    deutsch:    'Formuliere mindestens eine Passage komplett aus: Form → Beleg (Zitat + Zeile) → Deutung.',
+    englisch:   'Write in English and match the text type the operator asks for (linking words!).',
+    gk:         'Belege mit Material/Beispielen und urteile mit Kriterien (z. B. Effizienz, Legitimität).',
     geschichte: 'Ordne Quellen immer in den historischen Kontext ein, bevor du urteilst.',
-    geographie: 'Werte Karten/Diagramme systematisch aus und verknüpfe Raumbeispiele.'
+    geographie: 'Werte Karten/Diagramme systematisch aus und verknüpfe Raumbeispiele.',
+    religion:   'Belege mit Bibelstellen/Theologen und trenne Darstellung sauber von deiner Stellungnahme.',
+    psychologie:'Verknüpfe psychologische Theorien/Experimente immer konkret mit dem Fallbeispiel.',
+    kunst:      'Trenne Beschreibung, Formanalyse und Deutung; skizziere Kompositionslinien.',
+    sport:      'Verknüpfe biologisch-trainingswissenschaftliche Theorie mit konkreten Bewegungsbeispielen.'
   };
+
+  /* Fachspezifische Lernprofile: Gewichtung (Erarbeiten vs. Üben/Schreiben/Rechnen) & konkrete Methodik */
+  var FACH_PROFILES = {
+    mathe: {
+      badge: '📐 <b>Mathe-Lernprofil (ca. 20 % Regeln · 80 % Rechenpraxis &amp; Transfer):</b> Weniger Auswendiglernen, dafür deutlich mehr Rechen-, Anwendungs- und Begründungseinheiten.',
+      eN: [2, 1, 1, 0],
+      uN: [4, 4, 3, 2],
+      e1: '<b>Kochrezept &amp; Grundidee verstehen:</b> Lies den Lernzettel, schreibe dir für jeden Aufgabentyp ein klares Schritt-für-Schritt-Kochrezept (z. B. Tangente/Normale, Ableiten, Vorzeichenwechsel) und rechne 2 Musterbeispiele komplett ohne Spicken nach.',
+      e2: '<b>Formeln &amp; Standardverfahren sichern:</b> Schreibe alle Regeln/Formeln aus dem Kopf auf ein leeres Blatt und rechne die Beispiele auf dem Lernzettel selbstständig durch.',
+      uI: '<b>Rechenroutine (Hilfsmittelfreier Teil):</b> Trainiere schnelles, fehlerfreies Ableiten, Umformen und Gleichungenlösen auf Papier – ohne Taschenrechner und ohne Lernzettel.',
+      uII: '<b>Anwendungs- &amp; Sachaufgaben:</b> Übersetze Textangaben in mathematische Ansätze (z. B. „momentane Änderungsrate“ = f\'(x), „steilster Anstieg“ = Wendepunkt) und schreibe jeden Rechenschritt sauber auf.',
+      uIII: '<b>15-Punkte-Transfer (Begründungen &amp; Parameter):</b> Löse „Begründen Sie“- und „Entscheiden Sie“-Aufgaben (z. B. grafisches Ableiten mit NEW-Regel, Funktionsscharen oder Umkehraufgaben).',
+      uMIX: '<b>Klausur-Mix auf Zeit:</b> Rechne gemischte Aufgaben (Pflichtteil + Wahlteil, AFB I–III) mit Stoppuhr und vollständigem Lösungsweg.',
+      r: '<b>Formel-Sprint + 2 Kurzaufgaben (Active Recall):</b> Notiere alle Ableitungsregeln und Formeln aus dem Kopf auf Papier und rechne 2 kurze Aufgaben.'
+    },
+    chemie: {
+      badge: '🧪 <b>Chemie-Lernprofil (50 % Teilchenebene &amp; Gleichungen · 50 % Stöchiometrie, Kalorimetrie &amp; Versuchsauswertung):</b> Kombination aus Verständnis, Reaktionsgleichungen und Rechnen mit Einheiten.',
+      eN: [2, 2, 1, 0],
+      uN: [3, 3, 3, 2],
+      e1: '<b>Teilchenebene &amp; Experimente durchdringen (Feynman):</b> Erkläre laut, was auf Teilchen- und Energieebene passiert. Trenne bei jedem Versuch (z. B. V1–V4) streng zwischen Beobachtung und Deutung.',
+      e2: '<b>Reaktionsgleichungen, Formeln &amp; Einheiten:</b> Stelle alle Reaktionsgleichungen (mit Aggregatzuständen) und Berechnungsformeln (z. B. n = m/M, Q = m·c·ΔT, Δ_R H_m) selbstständig auf und erstelle Anki-Karten.',
+      uI: '<b>Grundbegriffe, Gleichungen &amp; Energiediagramme:</b> Richte Reaktionsgleichungen ein, zeichne beschriftete Energiediagramme und benenne Fachbegriffe präzise.',
+      uII: '<b>Rechen- &amp; Auswertungs-Training:</b> Rechne Kalorimetrie-/Stöchiometrie-Aufgaben komplett mit allen Einheiten (J, kJ/mol, K) und Vorzeichen (exotherm − / endotherm +) durch.',
+      uIII: '<b>Fehlerdiskussion &amp; Transfer (15-Punkte-Training):</b> Beurteile systematische Messfehler im Experiment (warum weicht der Messwert vom Literaturwert ab?) und übertrage Konzepte (z. B. Satz von Hess) auf unbekannte Reaktionen.',
+      uMIX: '<b>Chemie-Klausur-Mix:</b> Kombiniere Theorie, Reaktionsgleichungen, Rechnung und Versuchsauswertung unter Zeitdruck.',
+      r: '<b>Formel-, Vorzeichen- &amp; Gleichungs-Check (Blurting):</b> Schreibe Reaktionsgleichungen, Formeln + Einheiten und Energiediagramme aus dem Kopf auf + Anki-Karten.'
+    },
+    deutsch: {
+      badge: '✍️ <b>Deutsch-Lernprofil (Aufsatz- &amp; Schreibtraining):</b> Fokus auf Textanalyse, Formulierungshilfen und das Ausformulieren im 15-Punkte-Dreischritt (Form → Beleg → Deutung).',
+      eN: [2, 1, 1, 0],
+      uN: [3, 3, 3, 2],
+      e1: '<b>Klausur-Bauplan &amp; Analyse-Werkzeugkasten:</b> Verinnerliche Gattungsmerkmale, den Aufsatz-Aufbau (TATTE-Einleitung, Inhaltsangabe im Konjunktiv I, aspektorientierter Hauptteil) sowie Erzähltechnik und Kommunikationsmodelle.',
+      e2: '<b>Stilmittel, Fachbegriffe &amp; Formulierungshilfen:</b> Präge dir starke Analyse-Verben („verdeutlicht“, „entlarvt“, „korrespondiert mit“) und die typische Wirkung von Erzählperspektive, Raum/Zeit und Sprachbildern ein.',
+      uI: '<b>Schreibtraining 1 – Einleitung &amp; Inhaltsangabe:</b> Schreibe zu einem Übungstext eine vollständige Einleitung (Aufhänger + TATTE + zentrale Deutungshypothese) und eine knappe Inhaltsangabe im Präsens &amp; Konjunktiv I.',
+      uII: '<b>Schreibtraining 2 – Hauptteil-Absätze im 15-Punkte-Dreischritt:</b> Formuliere 2–3 Analyse-Absätze (Erzählverhalten, Sprache/Symbole, Beziehungsebene) komplett im Fließtext aus: 1. Form → 2. Beleg (Zitat + Zeile) → 3. funktionale Deutung!',
+      uIII: '<b>Schreibtraining 3 – Tiefendeutung, Leerstellen &amp; Schluss:</b> Deute das „Eisberg-Modell“ (Subtext/Wendepunkte), überprüfe deine Eingangshypothese im Fazit und trainiere den Motiv- oder Werkvergleich.',
+      uMIX: '<b>Aufsatz-Training auf Zeit:</b> Erstelle in 15 Min. ein komplettes Schreibkonzept (Sinnabschnitte + Analysestern) und schreibe Einleitung + mindestens zwei zentrale Hauptteil-Absätze im Fließtext.',
+      r: '<b>Aufsatz-Checkliste &amp; Dreischritt-Recall:</b> Rufe TATTE, Konjunktiv-I-Formen, Erzählperspektiven und deine besten Formulierungshilfen aktiv aus dem Kopf ab.'
+    },
+    englisch: {
+      badge: '🇬🇧 <b>Englisch-Lernprofil (Active Writing &amp; Textproduktion):</b> Training von Outline/Comprehension, Language &amp; Style Analysis, Comment/Discussion und Mediation.',
+      eN: [2, 1, 1, 0],
+      uN: [3, 3, 3, 2],
+      e1: '<b>Topic Vocabulary, Fakten &amp; Textsorten-Regeln:</b> Lerne das Themen-Vokabular, wichtige Linking Words und die Struktur für Outline, Analysis, Comment und Mediation.',
+      e2: '<b>Analytical Phrases &amp; Stylistic Devices:</b> Präge dir englische Redemittel für die Analyse („The author employs … to convey …“) und Argumentationen aktiv ein.',
+      uI: '<b>Writing Practice 1 – Outline / Comprehension &amp; Mediation:</b> Fasse einen Text strukturiert in eigenen englischen Worten zusammen (present tense, no quotes!) oder bearbeite eine Mediations-Aufgabe.',
+      uII: '<b>Writing Practice 2 – Analysis (Point–Evidence–Analysis):</b> Schreibe 2–3 analytische Absätze auf Englisch (characterisation, narrative perspective, tone/stylistic devices) mit präzisen Textbelegen.',
+      uIII: '<b>Writing Practice 3 – Comment / Discussion (15-Punkte-Stil):</b> Schreibe einen überzeugenden Comment (oder Speech/Letter) mit starken Argumenten, Beispielen, differenziertem Fazit und abwechslungsreichen Linking Words.',
+      uMIX: '<b>Full Writing Task (mit Timer):</b> Schreibe eine komplette Teilaufgabe auf Englisch auf Zeit, prüfe danach Grammatik, Register und Satzbau.',
+      r: '<b>Vocabulary &amp; Linking-Words Recall:</b> Schreibe 10 starke Linking Words, Topic Vocabulary und Analytical Phrases aus dem Kopf auf + Anki-Karten.'
+    },
+    gesellschaft: {
+      badge: '🏛️ <b>Gesellschaftswiss.-Lernprofil (45 % Fakten, Modelle &amp; Artikel auswendig · 55 % Materialanalyse &amp; Urteilsbildung):</b> Kombiniert aktives Einprägen von Fachbegriffen/Gesetzen mit Textanalyse und kriteriengeleitetem Urteil.',
+      eN: [3, 2, 1, 0],
+      uN: [3, 3, 2, 2],
+      e1: '<b>Modelle, Fachbegriffe &amp; Zusammenhänge durchdringen (Feynman):</b> Erkläre die zentralen Konzepte, Modelle, Theorien oder Verfassungsartikel laut in eigenen Worten und zeichne dir ein Übersichts-Schema.',
+      e2: '<b>Faktenwissen, Gesetze/Daten &amp; Beispiele auswendig lernen:</b> Erstelle und lerne Anki-Karten zu allen Definitionen, Artikeln/Paragraphen (z. B. GG), historischen Eckdaten oder Raum-/Fallbeispielen.',
+      uI: '<b>Darstellungs-Training (AFB I – herausarbeiten / beschreiben):</b> Werte ein Material (Textquelle, Statistik, Karikatur, Karte) strukturiert und in eigenen Worten aus (Einleitungssatz + Kernaussagen).',
+      uII: '<b>Analyse &amp; Einordnung (AFB II – erläutern / vergleichen / einordnen):</b> Verknüpfe die Materialaussagen systematisch mit deinem gelernten Fachwissen, Modellen und konkreten Beispielen/Artikeln.',
+      uIII: '<b>Urteilsbildung &amp; Erörterung (AFB III – beurteilen / erörtern):</b> Schreibe eine Pro-Contra-Argumentation im Fließtext und fälle ein begründetes Sach- und Werturteil anhand klarer Urteilskriterien (z. B. Effizienz vs. Legitimität).',
+      uMIX: '<b>Klausur-Aufgabe komplett (AFB I–III):</b> Bearbeite eine mehrteilige Materialaufgabe von der Auswertung bis zum Kriterien-Urteil im Fließtext.',
+      r: '<b>Blurting (Begriffe, Artikel/Daten &amp; Urteilskriterien):</b> Schreibe alle Fachbegriffe, Modelle und Pro-/Contra-Argumente zum Thema aus dem Kopf auf + Anki-Karten.'
+    },
+    bio_natur: {
+      badge: '🧬 <b>Biologie-/Praxis-Lernprofil (45 % Prozesse &amp; Fachbegriffe auswendig · 55 % Material- &amp; Hypothesen-Training):</b> Abläufe als Flussdiagramm beherrschen und auf unbekannte Experimente/Materialien anwenden.',
+      eN: [3, 2, 1, 0],
+      uN: [3, 3, 2, 2],
+      e1: '<b>Abläufe &amp; Struktur-Funktions-Beziehungen verstehen (Feynman):</b> Zeichne den Prozess als Schritt-für-Schritt-Flussdiagramm und erkläre ihn laut ohne Vorlage.',
+      e2: '<b>Fachbegriffe &amp; Diagramme auswendig lernen:</b> Erstelle Anki-Karten zu allen Fachbegriffen und zeichne wichtige Schemata aus dem Gedächtnis.',
+      uI: '<b>Beschreiben &amp; Darstellen (AFB I):</b> Beschreibe Abbildungen, Messkurven oder Prozesse präzise in der Fachsprache (erst beschreiben, noch nicht deuten!).',
+      uII: '<b>Material- &amp; Experiment-Auswertung (AFB II):</b> Erkläre Messergebnisse mithilfe deines Fachwissens und verknüpfe mehrere Materialien.',
+      uIII: '<b>Hypothesen &amp; Beurteilung (AFB III – 15-Punkte-Training):</b> Stelle begründete Hypothesen zu neuen Experimenten auf oder beurteile Sachverhalte kriteriengeleitet.',
+      uMIX: '<b>Materialgebundene Klausuraufgabe (AFB I–III):</b> Löse eine komplette Abitur-/Klausuraufgabe mit Materialauswertung auf Zeit.',
+      r: '<b>Flussdiagramm-Blurting &amp; Anki:</b> Skizziere den kompletten Ablauf und alle Schlüsselbegriffe in 5 Min. aus dem Kopf auf ein leeres Blatt.'
+    }
+  };
+
+  function getProfile(fk) {
+    if (FACH_PROFILES[fk]) return FACH_PROFILES[fk];
+    if (fk === 'gk' || fk === 'geschichte' || fk === 'geographie' || fk === 'religion' || fk === 'psychologie') {
+      return FACH_PROFILES.gesellschaft;
+    }
+    return FACH_PROFILES.bio_natur;
+  }
 
   /* ──────────────────────────────────────────────────────────
      Hilfsfunktionen
@@ -169,7 +257,7 @@
     }
   }
 
-  /** Klonen der Einschätzungen, eigenen Themen & Zusatzwissen für ein neues Projekt */
+  /** Klonen der Einschätzungen, eigenen Themen, Übungsblätter & Zusatzwissen für ein neues Projekt */
   function cloneKnowledgeFromCurrent() {
     var out = {};
     var src = (state && state.settings && state.settings.subjects) || {};
@@ -185,9 +273,13 @@
       var customCopy = (s.custom || []).map(function (c) {
         return { id: c.id, title: c.title, note: c.note || '', level: c.level || 2, important: !!c.important, selected: false };
       });
+      var filesCopy = (s.files || []).map(function (f) {
+        return { id: f.id, name: f.name, text: f.text || '', pages: f.pages || 0, isScan: !!f.isScan };
+      });
       out[fk] = {
         topics: topicsCopy,
         custom: customCopy,
+        files: filesCopy,
         exam: '',
         simMinutes: s.simMinutes || 90,
         zusatz: s.zusatz || ''
@@ -395,6 +487,7 @@
     if (!st) st = all[fk] = {};
     if (!st.topics) st.topics = {};
     if (!st.custom) st.custom = [];
+    if (!st.files) st.files = [];
     if (st.exam == null) st.exam = '';
     if (!st.simMinutes) st.simMinutes = 90;
     if (st.zusatz == null) st.zusatz = '';
@@ -446,11 +539,12 @@
     var s = state.settings, subs = {};
     Object.keys(subjectData).forEach(function (fk) {
       var sel = subjTopics(fk).filter(function (t) { return t.selected; });
-      if (!sel.length) return;
       var st = getSub(fk);
+      if (!sel.length && !(st.files && st.files.length)) return;
       subs[fk] = {
         exam: st.exam, sim: st.simMinutes,
-        t: sel.map(function (t) { return t.key + ':' + t.level + ':' + (t.important ? 1 : 0); })
+        t: sel.map(function (t) { return t.key + ':' + t.level + ':' + (t.important ? 1 : 0); }),
+        f: (st.files || []).map(function (fl) { return fl.id; })
       };
     });
     return JSON.stringify({ m: s.minutes, b: s.block, s: subs });
@@ -462,8 +556,12 @@
   function subjectSummary(fk) {
     var sel = subjTopics(fk).filter(function (t) { return t.selected; }).length;
     var st = getSub(fk);
-    if (!sel) return { cls: ' lp-empty', text: 'nicht ausgewählt' };
-    var txt = sel + (sel === 1 ? ' Thema' : ' Themen');
+    var fc = (st.files || []).length;
+    if (!sel && !fc) return { cls: ' lp-empty', text: 'nicht ausgewählt' };
+    var parts = [];
+    if (sel) parts.push(sel + (sel === 1 ? ' Thema' : ' Themen'));
+    if (fc) parts.push(fc + (fc === 1 ? ' Übungsblatt' : ' Übungsblätter'));
+    var txt = parts.join(' + ');
     txt += st.exam ? ' · Klausur ' + fmtShort(st.exam) : ' · Termin fehlt!';
     return { cls: '', text: txt };
   }
@@ -471,12 +569,14 @@
   function renderSubject(fk, open) {
     var f = subjectData[fk], st = getSub(fk), topics = subjTopics(fk);
     var sum = subjectSummary(fk);
-    var anySel = topics.some(function (t) { return t.selected; });
+    var anySel = topics.some(function (t) { return t.selected; }) || (st.files && st.files.length > 0);
+    var prof = getProfile(fk);
 
     var h = '<details class="lp-subject" data-fach="' + esc(fk) + '"' + (open ? ' open' : '') + '>';
     h += '<summary>' + esc(f.name) + ' <span class="lp-sum-type">' + esc(f.type || '') + '</span>';
     h += '<span class="lp-sum-count' + sum.cls + '">' + esc(sum.text) + '</span></summary>';
     h += '<div class="lp-subject-body">';
+    h += '<div class="lp-fach-profile">' + prof.badge + '</div>';
     h += '<div class="lp-fach-bar">';
     h += '<p class="lp-hint"><b>Neu</b> = noch nie gelernt · <b>Unsicher</b> = viele Lücken · <b>Grundlagen</b> = AFB I sitzt · <b>Sicher</b> = auch AFB III klappt · <b>★</b> = besonders klausurrelevant</p>';
     if (topics.length) {
@@ -526,11 +626,39 @@
     });
     h += '</select></div></div>';
 
+    /* --- Eigene Übungsaufgaben / Arbeitsblätter (PDF / TXT / Bild) --- */
+    h += '<div class="lp-subject-opts"><div class="form-group lp-full">';
+    h += '<div class="lp-files-box">';
+    h += '<div class="lp-files-head">';
+    h += '<div><label style="margin:0;color:var(--forest);font-family:var(--font-heading);">📄 Eigene Übungsaufgaben / Arbeitsblätter (PDF, Text, Foto)</label>';
+    h += '<p class="lp-hint" style="margin:2px 0 0;">Lade Übungsblätter oder Altklausuren hoch: Sie werden als eigene Übungseinheit im Lernplan eingeplant und in deine KI-Prompts einbezogen.</p></div>';
+    h += '<label class="lp-upload-btn">📎 Übungsblatt hochladen<input type="file" accept=".pdf,.txt,.md,.png,.jpg,.jpeg,.webp" multiple data-act="file-upload" style="display:none;"></label>';
+    h += '</div>';
+    if (st.files && st.files.length) {
+      h += '<div class="lp-file-list">';
+      st.files.forEach(function (fl) {
+        var fid = esc(fl.id);
+        var meta = fl.text && fl.text.trim()
+          ? '✓ Text ausgelesen (' + (fl.pages ? fl.pages + ' S., ' : '') + Math.round(fl.text.length / 100) / 10 + 'k Zeichen) – wird automatisch in Prompts &amp; Lernplan eingebaut'
+          : '📷 Scan / Bild – als Übungseinheit eingeplant (in Gemini einfach per + anhängen oder Text einfügen)';
+        h += '<div class="lp-file-item">';
+        h += '<div class="lp-file-info"><span>📄</span><div><div class="lp-file-name">' + esc(fl.name) + '</div><div class="lp-file-meta">' + meta + '</div></div></div>';
+        h += '<div class="lp-file-actions">';
+        h += '<button type="button" class="lp-tool lp-tool-gold" data-act="file-solve" data-fid="' + fid + '" title="Prompt kopieren: Musterlösung &amp; Schritt-für-Schritt-Erklärung zu diesem Blatt">Musterlösung (KI)</button>';
+        h += '<button type="button" class="lp-tool" data-act="file-twin" data-fid="' + fid + '" title="Prompt kopieren: Neue Parallelaufgaben im exakt gleichen Stil erstellen">Parallelaufgaben</button>';
+        h += '<button type="button" class="lp-tool" data-act="file-edit" data-fid="' + fid + '" title="Ausgelesenen Text ansehen oder bearbeiten">✏️ Text</button>';
+        h += '<button type="button" class="lp-del" data-act="file-del" data-fid="' + fid + '" title="Übungsblatt entfernen">&times;</button>';
+        h += '</div></div>';
+      });
+      h += '</div>';
+    }
+    h += '</div></div></div>';
+
     h += '<div class="lp-subject-opts"><div class="form-group lp-full">';
     h += '<label>Zusatzwissen – muss ich können, steht aber auf keinem Lernzettel</label>';
     h += '<textarea class="form-control" rows="4" data-act="zusatz" placeholder="z. B. Definitionen aus dem Heft, Formeln vom Arbeitsblatt, Fachbegriffe, Lektüre-Details, Hinweise der Lehrkraft …">' + esc(st.zusatz) + '</textarea>';
     h += '<p class="lp-hint">Wird automatisch in deine Quiz- und Simulations-Prompts eingebaut – hier im Lernplaner und im KI-Quiz-Generator auf der Startseite.</p>';
-    if (anySel || st.custom.length || st.exam || (st.zusatz && st.zusatz.trim())) {
+    if (anySel || st.custom.length || (st.files && st.files.length) || st.exam || (st.zusatz && st.zusatz.trim())) {
       h += '<button type="button" class="lp-fach-reset" data-act="reset-fach">🗑️ Eingaben für ' + esc(f.name) + ' zurücksetzen</button>';
     }
     h += '</div></div>';
@@ -961,6 +1089,203 @@
     startTopic(0);
   }
 
+  /* ──────────────────────────────────────────────────────────
+     ÜBUNGSBLÄTTER HOCHLADEN (PDF / TXT / BILD) & KI-PROMPTS
+     ────────────────────────────────────────────────────────── */
+  var pdfJsPromise = null;
+  function ensurePdfJs() {
+    if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
+    if (pdfJsPromise) return pdfJsPromise;
+    pdfJsPromise = new Promise(function (resolve, reject) {
+      var s = document.createElement('script');
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+      s.onload = function () {
+        if (window.pdfjsLib) {
+          window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+          resolve(window.pdfjsLib);
+        } else reject(new Error('pdf.js nicht verfügbar'));
+      };
+      s.onerror = function () { pdfJsPromise = null; reject(new Error('pdf.js konnte nicht geladen werden')); };
+      document.head.appendChild(s);
+    });
+    return pdfJsPromise;
+  }
+
+  function readPdfFile(file) {
+    return new Promise(function (resolve) {
+      var reader = new FileReader();
+      reader.onload = function () {
+        var buf = reader.result;
+        ensurePdfJs()
+          .then(function (pdfjs) { return pdfjs.getDocument({ data: buf }).promise; })
+          .then(function (pdf) {
+            var maxP = Math.min(pdf.numPages, 25);
+            var chain = Promise.resolve('');
+            for (var p = 1; p <= maxP; p++) {
+              (function (pageNo) {
+                chain = chain.then(function (acc) {
+                  return pdf.getPage(pageNo).then(function (page) {
+                    return page.getTextContent();
+                  }).then(function (tc) {
+                    var pageTxt = (tc.items || []).map(function (it) { return it.str || ''; }).join(' ').replace(/\s+/g, ' ').trim();
+                    return acc + (pageTxt ? (acc ? '\n\n' : '') + '[Seite ' + pageNo + '] ' + pageTxt : '');
+                  });
+                });
+              })(p);
+            }
+            return chain.then(function (full) {
+              var trimmed = full.slice(0, 25000).trim();
+              resolve({ text: trimmed, pages: pdf.numPages, isScan: trimmed.length < 20 });
+            });
+          })
+          .catch(function () {
+            resolve({ text: '', pages: 0, isScan: true });
+          });
+      };
+      reader.onerror = function () { resolve({ text: '', pages: 0, isScan: true }); };
+      reader.readAsArrayBuffer(file);
+    });
+  }
+
+  function readTextFile(file) {
+    return new Promise(function (resolve) {
+      var reader = new FileReader();
+      reader.onload = function () {
+        var txt = String(reader.result || '').slice(0, 25000).trim();
+        resolve({ text: txt, pages: 1, isScan: !txt });
+      };
+      reader.onerror = function () { resolve({ text: '', pages: 0, isScan: true }); };
+      reader.readAsText(file);
+    });
+  }
+
+  function handleFilesUpload(fk, fileList) {
+    if (!fileList || !fileList.length) return;
+    var st = getSub(fk);
+    var filesArr = Array.prototype.slice.call(fileList);
+    toast('Lese ' + filesArr.length + (filesArr.length === 1 ? ' Übungsblatt' : ' Übungsblätter') + ' ein …');
+
+    Promise.all(filesArr.map(function (file) {
+      var name = file.name || 'Übungsblatt';
+      var lower = name.toLowerCase();
+      var p;
+      if (lower.slice(-4) === '.pdf' || file.type === 'application/pdf') {
+        p = readPdfFile(file);
+      } else if (lower.slice(-4) === '.txt' || lower.slice(-3) === '.md' || (file.type && file.type.indexOf('text/') === 0)) {
+        p = readTextFile(file);
+      } else {
+        p = Promise.resolve({ text: '', pages: 1, isScan: true });
+      }
+      return p.then(function (res) {
+        return {
+          id: 'f_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 6),
+          name: name,
+          text: res.text || '',
+          pages: res.pages || 0,
+          isScan: !!res.isScan
+        };
+      });
+    })).then(function (entries) {
+      entries.forEach(function (en) { st.files.push(en); });
+      save();
+      rerenderSubject(fk);
+      markStale();
+      var extractedCount = entries.filter(function (e) { return e.text && e.text.length >= 20; }).length;
+      if (extractedCount === entries.length) {
+        toast('Übungsblatt gespeichert & Text erfolgreich ausgelesen! ✓');
+      } else {
+        toast('Übungsblatt gespeichert! (Bei Scans/Fotos einfach in Gemini per + anhängen oder über „✏️ Text“ einfügen.)');
+      }
+    });
+  }
+
+  function findFile(fk, fid) {
+    var st = getSub(fk);
+    var list = st.files || [];
+    for (var i = 0; i < list.length; i++) if (list[i].id === fid) return list[i];
+    return null;
+  }
+
+  function openFileEditModal(fk, fid) {
+    var fl = findFile(fk, fid);
+    if (!fl) return;
+    var overlay = document.createElement('div');
+    overlay.className = 'modal show';
+    overlay.style.zIndex = '25000';
+    overlay.innerHTML =
+      '<div class="modal-content" style="max-width: 600px;">' +
+        '<button class="modal-close" aria-label="Schließen">&times;</button>' +
+        '<h2 class="modal-title">📄 ' + esc(fl.name) + '</h2>' +
+        '<p class="modal-desc">Hier siehst du den ausgelesenen Text deines Übungsblatts. Falls es ein Foto/Scan ohne Text war, kannst du hier optional Aufgabenstellungen reinkopieren – oder die Datei später direkt in Gemini per <b>+</b> anhängen.</p>' +
+        '<div class="form-group" style="margin:12px 0;">' +
+          '<label>Aufgabentext / Notizen zum Übungsblatt</label>' +
+          '<textarea class="form-control" id="lp-file-text-inp" rows="9" placeholder="Ausgelesener Text oder eigene Aufgaben-Notizen …">' + esc(fl.text || '') + '</textarea>' +
+        '</div>' +
+        '<div style="display:flex;gap:10px;justify-content:flex-end;">' +
+          '<button type="button" class="btn btn-outline" data-act="cancel">Abbrechen</button>' +
+          '<button type="button" class="btn btn-gold" data-act="save" style="width:auto;">Speichern</button>' +
+        '</div>' +
+      '</div>';
+
+    function close() { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }
+    overlay.querySelector('.modal-close').addEventListener('click', close);
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) { close(); return; }
+      var b = e.target.closest('[data-act]');
+      if (!b) return;
+      if (b.getAttribute('data-act') === 'cancel') close();
+      else if (b.getAttribute('data-act') === 'save') {
+        fl.text = (overlay.querySelector('#lp-file-text-inp').value || '').trim();
+        fl.isScan = !fl.text;
+        save();
+        rerenderSubject(fk);
+        close();
+        toast('Text zum Übungsblatt gespeichert ✓');
+      }
+    });
+    document.body.appendChild(overlay);
+  }
+
+  function copyFilePrompt(fk, fid, mode) {
+    var fl = findFile(fk, fid);
+    if (!fl) { toast('Übungsblatt nicht gefunden.'); return; }
+    var st = getSub(fk);
+    var hasTxt = !!(fl.text && fl.text.trim());
+    var ops = ['I', 'II', 'III'].map(function (a) { return LT.AFB_LABELS[a] + ': ' + LT.getOperatorNames(fk, a, 6); }).join('\n');
+    var p = 'Du bist meine Fachlehrkraft für ' + fachName(fk) + ' (Oberstufe Baden-Württemberg, Ziel: 15 Notenpunkte).\n\n';
+
+    if (mode === 'twin') {
+      p += 'AUFGABE: Erstelle mir zu meinem Übungsblatt „' + fl.name + '“ neue PARALLELAUFGABEN (Zwillingsaufgaben) auf exakt demselben Niveau, im selben Aufgabenstil und mit denselben Operatoren.\n';
+      p += '• Gib zuerst nur die neuen Aufgabenstellungen (mit Punktzahl/AFB) an.\n';
+      p += '• Gib erst ganz am Ende (deutlich abgetrennt) einen vollständigen, kleinschrittigen Erwartungshorizont auf 15-Punkte-Niveau an.\n';
+    } else {
+      p += 'AUFGABE: Hilf mir beim Bearbeiten meines Übungsblatts „' + fl.name + '“.\n';
+      p += '• Erstelle zu jeder Aufgabe auf dem Blatt eine vollständige, kleinschrittige 15-Punkte-Musterlösung (inkl. Lösungsweg, Fachbegriffen und Erklärung typischer Klausurfallen).\n';
+      p += '• Wenn ich dir gleich meine eigenen Lösungen mitschicke, korrigiere sie streng nach BW-Maßstab und erkläre mir jeden Fehler.\n';
+    }
+
+    if (ops.replace(/AFB I+: /g, '').trim()) {
+      p += '\nOffizielle Operatoren in ' + fachName(fk) + ' (Baden-Württemberg):\n' + ops + '\n';
+    }
+    if (st.zusatz && st.zusatz.trim()) {
+      p += '\nMein Zusatzwissen aus dem Unterricht:\n' + st.zusatz.trim() + '\n';
+    }
+    if (hasTxt) {
+      p += '\n=== INHALT DES HOCHGELADENEN ÜBUNGSBLATTS (' + fl.name + ') ===\n' + fl.text.trim() + '\n';
+    } else {
+      p += '\n=== HINWEIS ZUM ÜBUNGSBLATT (' + fl.name + ') ===\nIch hänge das Übungsblatt „' + fl.name + '“ als PDF oder Bild direkt an diese Nachricht an. Bitte lies alle Aufgaben daraus ab!\n';
+    }
+
+    LT.copyToClipboard(p).then(function (ok) {
+      if (!ok) return;
+      if (hasTxt) {
+        toast('Prompt inkl. Übungsblatt-Text kopiert! Neuer Gemini-Chat → Strg+V.', true);
+      } else {
+        toast('Prompt kopiert! Neuer Gemini-Chat → Strg+V + Datei „' + fl.name + '“ über + anhängen.', true);
+      }
+    });
+  }
+
   function initSubjectEvents() {
     var box = $('lp-subjects');
 
@@ -974,6 +1299,7 @@
       else if (act === 'lvl') { setTopic(fk, key, 'level', +t.value); }
       else if (act === 'exam') { st.exam = t.value; save(); updateSummary(fk); }
       else if (act === 'sim') { st.simMinutes = +t.value; save(); }
+      else if (act === 'file-upload') { handleFilesUpload(fk, t.files); t.value = ''; return; }
       else return;
       markStale();
     });
@@ -990,9 +1316,11 @@
       var b = e.target.closest('[data-act]');
       if (!b) return;
       var act = b.getAttribute('data-act');
+      if (act === 'file-upload') return; /* wird über change behandelt */
       var det = b.closest('details.lp-subject');
       if (!det) return;
       var fk = det.getAttribute('data-fach'), key = b.getAttribute('data-key');
+      var fid = b.getAttribute('data-fid');
       if (act === 'star') {
         var on = !b.classList.contains('lp-on');
         setTopic(fk, key, 'important', on);
@@ -1006,6 +1334,19 @@
         var allT = subjTopics(fk);
         var selT = allT.filter(function (x) { return x.selected; });
         openDiagnosticModal(fk, selT.length ? selT : allT);
+      } else if (act === 'file-solve') {
+        copyFilePrompt(fk, fid, 'solve');
+      } else if (act === 'file-twin') {
+        copyFilePrompt(fk, fid, 'twin');
+      } else if (act === 'file-edit') {
+        openFileEditModal(fk, fid);
+      } else if (act === 'file-del') {
+        var stf = getSub(fk);
+        stf.files = (stf.files || []).filter(function (fl) { return fl.id !== fid; });
+        save();
+        rerenderSubject(fk);
+        markStale();
+        toast('Übungsblatt entfernt.');
       } else if (act === 'del') {
         var st = getSub(fk), id = key.slice(2);
         st.custom = st.custom.filter(function (c) { return String(c.id) !== id; });
@@ -1015,7 +1356,7 @@
       } else if (act === 'add') {
         addCustom(fk, det);
       } else if (act === 'reset-fach') {
-        state.settings.subjects[fk] = { topics: {}, custom: [], exam: '', simMinutes: 90, zusatz: '' };
+        state.settings.subjects[fk] = { topics: {}, custom: [], files: [], exam: '', simMinutes: 90, zusatz: '' };
         save();
         rerenderSubject(fk);
         markStale();
@@ -1071,16 +1412,21 @@
   }
 
   /* ──────────────────────────────────────────────────────────
-     PLANUNG
+     PLANUNG (Fachspezifisch + Hochgeladene Übungsblätter)
      ────────────────────────────────────────────────────────── */
   function buildQueue(t, fk) {
+    if (t.isFile) {
+      var fid = 'U|' + fk + '|' + t.key + '|1';
+      return state.done[fid] ? [] : [{ type: 'U', n: 1, of: 1, afb: 'FILE' }];
+    }
+    var prof = getProfile(fk);
     var L = t.level;
-    var eN = [3, 2, 1, 0][L - 1];
-    var uN = [3, 3, 2, 2][L - 1] + (t.important ? 1 : 0);
-    var seq = L <= 2 ? ['I', 'II', 'III', 'MIX', 'III'] : ['II', 'III', 'MIX', 'III'];
+    var eN = prof.eN[L - 1];
+    var uN = prof.uN[L - 1] + (t.important ? 1 : 0);
+    var seq = L <= 2 ? ['I', 'II', 'III', 'MIX', 'III', 'MIX'] : ['II', 'III', 'MIX', 'III', 'MIX'];
     var q = [], i;
     for (i = 0; i < eN; i++) q.push({ type: 'E', n: i + 1, of: eN });
-    for (i = 0; i < uN; i++) q.push({ type: 'U', n: i + 1, of: uN, afb: seq[i] });
+    for (i = 0; i < uN; i++) q.push({ type: 'U', n: i + 1, of: uN, afb: seq[i] || 'III' });
     return q.filter(function (task) {
       return !state.done[task.type + '|' + fk + '|' + t.key + '|' + task.n];
     });
@@ -1090,19 +1436,31 @@
     var subs = [], errors = [];
     Object.keys(subjectData).forEach(function (fk) {
       var topics = subjTopics(fk).filter(function (t) { return t.selected; });
-      if (!topics.length) return;
       var st = getSub(fk);
+      var files = st.files || [];
+      if (!topics.length && !files.length) return;
       if (!validDate(st.exam)) { errors.push('Trage für ' + fachName(fk) + ' einen Klausurtermin ein.'); return; }
       if (diff(start, st.exam) < 1) { errors.push('Der Klausurtermin in ' + fachName(fk) + ' liegt nicht nach dem Planstart (' + fmtShort(start) + ') – Termin ändern oder Themen abwählen.'); return; }
       var sub = { fk: fk, st: st, exam: st.exam, topics: [], remaining: 0, vCount: 0 };
       topics.forEach(function (tp) {
         var t = {
           uid: fk + '|' + tp.key, key: tp.key, title: tp.title, link: tp.link, note: tp.note,
-          level: tp.level, important: tp.important, sub: sub, ptr: 0, anchor: null
+          level: tp.level, important: tp.important, sub: sub, ptr: 0, anchor: null, isFile: false
         };
         t.queue = buildQueue(t, fk);
         sub.remaining += t.queue.length;
         sub.topics.push(t);
+      });
+      /* Hochgeladene Übungsblätter als eigene Übungs-Einheiten einplanen */
+      files.forEach(function (fl) {
+        var fKey = 'file:' + fl.id;
+        var ft = {
+          uid: fk + '|' + fKey, key: fKey, fileId: fl.id, title: '📄 Übungsblatt: ' + fl.name,
+          link: '', note: '', level: 2, important: true, sub: sub, ptr: 0, anchor: null, isFile: true
+        };
+        ft.queue = buildQueue(ft, fk);
+        sub.remaining += ft.queue.length;
+        sub.topics.push(ft);
       });
       subs.push(sub);
     });
@@ -1229,11 +1587,11 @@
 
     function pickV(d) {
       var cand = subs.filter(function (sub) {
-        return d < sub.finalIdx && d !== sub.simIdx && d !== sub.fehlerIdx && sub.topics.length;
+        return d < sub.finalIdx && d !== sub.simIdx && d !== sub.fehlerIdx && sub.topics.some(function (t) { return !t.isFile; });
       });
       if (!cand.length) return null;
       var sub = cand[0]; /* nächste Klausur zuerst (subs ist nach Termin sortiert) */
-      var sorted = sub.topics.slice().sort(function (a, b) {
+      var sorted = sub.topics.filter(function (t) { return !t.isFile; }).sort(function (a, b) {
         return (a.level - b.level) || ((b.important ? 1 : 0) - (a.important ? 1 : 0));
       });
       var t = sorted[sub.vCount % sorted.length];
@@ -1301,7 +1659,7 @@
         tToday[best.uid] = (tToday[best.uid] || 0) + 1;
         if (tk.type === 'E') eToday[best.uid] = 1;
         lastKey = best.uid; lastFk = best.sub.fk; learned++;
-        if (best.anchor === null) { best.anchor = d; makeReviews(best, d); }
+        if (best.anchor === null && !best.isFile) { best.anchor = d; makeReviews(best, d); }
       }
 
       due.forEach(placeReview);
@@ -1348,7 +1706,7 @@
     }
     var c = collectSubjects(start);
     if (c.errors.length) { err.textContent = c.errors.join(' '); return; }
-    if (!c.subs.length) { err.textContent = 'Wähle in Schritt 1 mindestens ein Thema aus.'; return; }
+    if (!c.subs.length) { err.textContent = 'Wähle in Schritt 1 mindestens ein Thema oder lade ein Übungsblatt hoch.'; return; }
 
     /* vergangene Tage eines bestehenden Plans behalten */
     var keep = [];
@@ -1393,26 +1751,32 @@
   }
 
   /* ──────────────────────────────────────────────────────────
-     Texte zu den Einheiten
+     Texte zu den Einheiten (Fachspezifisch!)
      ────────────────────────────────────────────────────────── */
   function methodText(x) {
+    var prof = getProfile(x.fk);
     var tip = FACH_TIPS[x.fk] ? ' ' + FACH_TIPS[x.fk] : '';
     var z = getSub(x.fk).zusatz.trim() ? ' Denk auch an dein Zusatzwissen.' : '';
     switch (x.type) {
       case 'E':
-        if (x.n === 1) return '<b>Feynman-Methode:</b> Lies den Lernzettel abschnittsweise, schließe ihn und erkläre jeden Abschnitt laut in eigenen Worten – als würdest du es einer Mitschülerin erklären. Wo du hängen bleibst, nachlesen: Das sind deine Lücken. Zum Schluss 3 Kernaussagen aus dem Kopf aufschreiben.' + z;
-        return '<b>Aktiv vertiefen:</b> Arbeite Beispiele und Formeln selbst nach (rechnen/formulieren statt nur lesen). Erstelle Anki-Karten zu allem, was du auswendig können musst, und kläre offene Fragen.' + z;
+        return (x.n === 1 ? prof.e1 : prof.e2) + z;
       case 'U':
-        var a = '';
-        if (x.afb === 'MIX') a = 'Gemischte Aufgaben wie in der Klausur (AFB I–III) – mit Timer.';
-        else {
-          a = '<b>' + LT.AFB_LABELS[x.afb] + ':</b> ' + esc(LT.getAfbDescription(x.fk, x.afb));
-          var ops = LT.getOperatorNames(x.fk, x.afb, 6);
-          if (ops) a += ' <i>Operatoren: ' + esc(ops) + '</i>';
+        if (x.afb === 'FILE') {
+          return '<b>Eigenes Übungsblatt bearbeiten:</b> Löse die Aufgaben deines hochgeladenen Übungsblatts zuerst komplett selbstständig ohne Spicken (wie in der Klausur). Nutze danach die Buttons unten, um dir von Gemini die 15-Punkte-Musterlösung erklären zu lassen oder neue Parallelaufgaben im gleichen Stil zu generieren.';
         }
-        return a + '<br><b>So geht’s:</b> Aufgaben ohne Lernzettel lösen, erst danach mit dem Erwartungshorizont korrigieren. Jeden Fehler ins Fehlerprotokoll: Was war falsch? Warum? Wie richtig?' + esc(tip);
+        var uSpec = prof['u' + x.afb] || prof.uMIX || '';
+        var a = '';
+        if (x.afb === 'MIX') {
+          a = uSpec;
+        } else {
+          a = uSpec + '<br><span style="font-size:0.84rem;color:var(--text-secondary);"><b>' + LT.AFB_LABELS[x.afb] + ' (' + esc(fachName(x.fk)) + '):</b> ' + esc(LT.getAfbDescription(x.fk, x.afb));
+          var ops = LT.getOperatorNames(x.fk, x.afb, 6);
+          if (ops) a += ' · <i>Operatoren: ' + esc(ops) + '</i>';
+          a += '</span>';
+        }
+        return a + '<br><b>Kontrolle:</b> Erst ohne Hilfsmittel lösen, dann mit dem Erwartungshorizont abgleichen und jeden Fehler im Fehlerprotokoll notieren.' + esc(tip);
       case 'R':
-        return '<b>Blurting (Active Recall):</b> 5–10 Min. alles aufschreiben, was du zum Thema weißt – ohne Hilfsmittel. Dann mit dem Lernzettel vergleichen und Lücken farbig ergänzen. Danach deine fälligen Anki-Karten.' + z;
+        return prof.r + z;
       case 'SIM':
         return '<b>Wie im Ernstfall:</b> ' + fmtMin(x.min) + ' am Stück, nur erlaubte Hilfsmittel, Handy in einen anderen Raum. Erst danach die Lösungen ansehen und dich ehrlich mit Notenpunkten bewerten. Notiere, wo dir Zeit gefehlt hat.';
       case 'FEHLER':
@@ -1428,7 +1792,10 @@
   function metaText(x) {
     var p = [fmtMin(x.min)];
     if (x.type === 'E' && x.of > 1) p.push('Einheit ' + x.n + '/' + x.of);
-    if (x.type === 'U') p.push(x.afb === 'MIX' ? 'Klausur-Mix' : LT.AFB_LABELS[x.afb]);
+    if (x.type === 'U') {
+      if (x.afb === 'FILE') p.push('Eigenes Übungsblatt');
+      else p.push(x.afb === 'MIX' ? 'Klausur-Mix' : LT.AFB_LABELS[x.afb]);
+    }
     if (x.type === 'R') p.push(x.n + '. Wiederholung (Spaced Repetition)');
     if (x.optional) p.push('optional');
     return p.join(' · ');
@@ -1447,6 +1814,14 @@
     var anki = x.link ? '<a class="lp-tool" href="' + esc(deepLink('anki', x)) + '" target="_blank" rel="noopener">Anki-Karten</a>' : '';
     function quiz(afb, label) {
       return '<button type="button" class="lp-tool lp-tool-gold" data-act="quiz" data-afb="' + afb + '"' + k + '>' + label + '</button>';
+    }
+    if (x.type === 'U' && x.afb === 'FILE' && x.key && x.key.indexOf('file:') === 0) {
+      var fid = esc(x.key.slice(5));
+      var fkAttr = ' data-fach="' + esc(x.fk) + '" data-fid="' + fid + '"';
+      h = '<button type="button" class="lp-tool lp-tool-gold" data-act="file-solve"' + fkAttr + '>📄 Musterlösung &amp; Erklärung (KI)</button>' +
+          '<button type="button" class="lp-tool lp-tool-gold" data-act="file-twin"' + fkAttr + '>🔁 Parallelaufgaben generieren</button>' +
+          GEMINI_LINK;
+      return '<div class="lp-s-tools">' + h + '</div><div class="lp-s-hint">💬 Neuer Chat → Prompt einfügen (bei einem Scan/Foto die Datei in Gemini über + anhängen).</div>';
     }
     switch (x.type) {
       case 'E':
@@ -1468,7 +1843,7 @@
   /* Kurz-Anleitung pro KI-Prompt: neuer Chat? Was muss ich dazugeben? */
   var AI_HINTS = {
     E: '💬 Neuer Chat → Prompt einfügen. Mehr musst du nicht dazugeben. Schick deine Antworten in denselben Chat, dann korrigiert Gemini sie.',
-    U: '💬 Neuer Chat → Prompt einfügen. Mehr musst du nicht dazugeben. Erst lösen, dann die Lösungen lesen – oder deine Antworten zur Korrektur in denselben Chat schicken.',
+    U: '💬 Neuer Chat → Prompt einfügen. Mehr musst du nicht dazugeben (Lernzettel, hochgeladene Übungsblätter & Zusatzwissen sind schon drin).',
     R: '💬 Neuer Chat → Prompt einfügen. Mehr musst du nicht dazugeben.',
     V: '💬 Neuer Chat → Prompt einfügen. Mehr musst du nicht dazugeben.',
     SIM: '💬 Neuer Chat → Prompt einfügen. Aufgaben auf Papier lösen, erst danach Lösungen lesen. Chat offen lassen – du brauchst ihn für die Fehleranalyse!',
@@ -1540,7 +1915,7 @@
     h += '<div class="lp-stats">';
     h += '<div class="lp-stat"><b>' + sessions + '</b><span>Einheiten</span></div>';
     h += '<div class="lp-stat"><b>' + Math.round(minutes / 60) + '</b><span>Lernstunden</span></div>';
-    h += '<div class="lp-stat"><b>' + Object.keys(topicCount).length + '</b><span>Themen</span></div>';
+    h += '<div class="lp-stat"><b>' + Object.keys(topicCount).length + '</b><span>Themen / Blätter</span></div>';
     if (nextExam) h += '<div class="lp-stat"><b>' + diff(today, nextExam.date) + '</b><span>Tage bis ' + esc(fachName(nextExam.fk)) + '</span></div>';
     h += '</div>';
     h += '<div class="lp-progress"><div id="lp-prog-bar" style="width:0%"></div></div><p id="lp-prog-label" class="lp-progress-label"></p>';
@@ -1548,15 +1923,21 @@
 
     (p.warnings || []).forEach(function (w) { h += '<div class="lp-box lp-warn">' + esc(w) + '</div>'; });
 
+    h += '<details class="lp-strategy"><summary>⚙️ Wie wurde dieser Lernplan erstellt (ohne lokale KI)?</summary><ul>';
+    h += '<li><b>Mathematischer Planungs-Algorithmus:</b> Dein Kalender wird direkt im Browser von einem fest programmierten Algorithmus berechnet – ganz ohne externe KI.</li>';
+    h += '<li><b>Fachspezifisch angepasst:</b> In <b>Mathe</b> plant er mehr Rechen- &amp; Anwendungs-Einheiten, in <b>Deutsch/Englisch</b> Aufsatz-Schreibtraining im Dreischritt, in <b>Chemie</b> Teilchenebene + Gleichungen + Rechnungen und in <b>GK/Geschichte/Bio</b> aktives Auswendiglernen + Materialanalyse &amp; Urteilsbildung.</li>';
+    h += '<li><b>Eigene Übungsblätter inklusive:</b> Hochgeladene PDFs/Arbeitsblätter werden als eigene Übungseinheiten eingeplant und automatisch in deine KI-Prompts integriert.</li>';
+    h += '</ul></details>';
+
     h += '<details class="lp-strategy"><summary>Wer sieht meinen Plan? Wird er gespeichert?</summary><ul>';
     h += '<li><b>Nur du.</b> Der Plan wird nur in <i>diesem</i> Browser auf <i>diesem</i> Gerät gespeichert (Browser-Speicher) – nicht auf GitHub und auf keinem Server. Wer deine Website öffnet, sieht nur einen eigenen, leeren Planer.</li>';
     h += '<li><b>Bleibt gespeichert</b>, auch wenn du die Seite schließt. <b>Weg ist er</b>, wenn du die Browserdaten löschst oder im Inkognito-Modus bist. Auf Handy und PC hast du jeweils einen eigenen Plan.</li>';
-    h += '<li><b>Tipp:</b> „Drucken / PDF“ oder der Kalender-Export sind deine Sicherungskopie.</li>';
-    h += '<li><b>KI:</b> Was du in Gemini einfügst (Lernzettel, Zusatzwissen), geht an Google und landet in deinem Gemini-Verlauf – schreib also nichts Privates ins Zusatzwissen.</li>';
+    h += '<li><b>Tipp:</b> Über <b>„📤 Plan exportieren / Backup“</b> kannst du ihn jederzeit als PDF, Kalender, Text/Checkliste, Excel-Tabelle oder Backup-Datei (zum Übertragen aufs Handy/Tablet) speichern.</li>';
+    h += '<li><b>KI:</b> Was du in Gemini einfügst (Lernzettel, Übungsblätter, Zusatzwissen), geht an Google und landet in deinem Gemini-Verlauf – schreib also nichts Privates hinein.</li>';
     h += '</ul></details>';
 
     h += '<details class="lp-strategy"><summary>So nutzt du die KI-Prompts</summary><ul>';
-    h += '<li><b>Quiz, Übungsaufgaben, Klausur-Simulation:</b> Für jeden Prompt einen <b>neuen Chat</b> – sonst vermischt Gemini alte Themen. Du musst nichts dazugeben: Lernzettel, Operatoren und dein Zusatzwissen stecken schon im Prompt.</li>';
+    h += '<li><b>Quiz, Übungsaufgaben, Klausur-Simulation:</b> Für jeden Prompt einen <b>neuen Chat</b> – sonst vermischt Gemini alte Themen. Du musst nichts dazugeben: Lernzettel, Operatoren, hochgeladene PDF-Texte und dein Zusatzwissen stecken schon im Prompt.</li>';
     h += '<li><b>Fehleranalyse:</b> Im <b>gleichen Chat</b> wie die Simulation weiterschreiben und deine Lösungen dazugeben (abgetippt oder als Foto).</li>';
     h += '<li><b>KI-Coach:</b> Lege dafür <b>einen eigenen Chat</b> an und behalte ihn. Kopiere einmal pro Woche den aktuellen Coach-Prompt neu hinein. Danach schreibst du z. B. „Start: Chemische Energetik“ und wirst abgefragt.</li>';
     h += '<li>Der Kopieren-Button legt den Prompt in die Zwischenablage → „Gemini öffnen“ → <b>Strg+V</b> (Handy: lange tippen → Einfügen).</li>';
@@ -1575,8 +1956,9 @@
 
     h += '<div class="lp-toolbar">';
     if (inRange) h += '<button type="button" class="btn btn-gold" data-act="today">Zu heute springen</button>';
+    h += '<button type="button" class="btn btn-gold" data-act="export">📤 Plan exportieren / Backup</button>';
     h += '<button type="button" class="btn btn-outline" data-act="print">Drucken / PDF</button>';
-    h += '<button type="button" class="btn btn-outline" data-act="ics">In Kalender exportieren (.ics)</button>';
+    h += '<button type="button" class="btn btn-outline" data-act="ics">Kalender (.ics)</button>';
     h += '<button type="button" class="btn btn-outline" data-act="coach">KI-Coach-Prompt kopieren</button>';
     h += '<a class="btn btn-outline" href="' + GEMINI_URL + '" target="_blank" rel="noopener">Gemini öffnen ↗</a>';
     h += '<button type="button" class="btn btn-outline" data-act="replan">Neu planen ab heute</button>';
@@ -1652,10 +2034,11 @@
     LT.loadTopicsText(topics.map(function (t) { return { title: t.title, link: t.link, note: t.note }; }))
       .then(function (text) {
         var st = getSub(fk);
+        var fullZusatz = LT.getZusatzwissen ? LT.getZusatzwissen(fk) : st.zusatz.trim();
         var prompt = LT.buildQuizPrompt({
           fachKey: fk,
           topicTitles: topics.map(function (t) { return t.title; }),
-          text: text, afb: afb, zusatz: st.zusatz.trim(), simMinutes: st.simMinutes
+          text: text, afb: afb, zusatz: fullZusatz, simMinutes: st.simMinutes
         });
         return LT.copyToClipboard(prompt);
       })
@@ -1680,8 +2063,8 @@
     p += '5. Formuliere zu jeder Wissenslücke eine Karteikarte (Vorderseite | Rückseite).\n';
     var ops = ['I', 'II', 'III'].map(function (a) { return LT.AFB_LABELS[a] + ': ' + LT.getOperatorNames(fk, a); }).join('\n');
     if (ops.replace(/AFB I+: /g, '').trim()) p += '\nPrüfe besonders, ob ich die Operatoren richtig umgesetzt habe:\n' + ops + '\n';
-    var z = getSub(fk).zusatz.trim();
-    if (z) p += '\nZusatzwissen, das ich ebenfalls können muss:\n' + z + '\n';
+    var z = LT.getZusatzwissen ? LT.getZusatzwissen(fk) : getSub(fk).zusatz.trim();
+    if (z) p += '\nZusatzwissen / Übungsblätter, die ich ebenfalls können muss:\n' + z + '\n';
     p += '\nAUFGABEN & ERWARTUNGSHORIZONT: stehen weiter oben in diesem Chat (falls das ein neuer Chat ist, füge ich sie hier ein).\n';
     p += '\nMEINE LÖSUNGEN (abgetippt oder als Foto angehängt):\n(hier einfügen)\n';
     LT.copyToClipboard(p).then(function (ok) { if (ok) toast('Kopiert! Im Chat der Simulation einfügen + deine Lösungen anhängen.', true); });
@@ -1695,6 +2078,10 @@
       t += '\n' + fachName(e.fk) + ' – Klausur am ' + fmtDay(e.date) + '\n';
       subjTopics(e.fk).filter(function (x) { return x.selected; }).forEach(function (x) {
         t += '  • ' + x.title + ' (' + x.level + '/4 ' + LEVELS[x.level - 1].label + ')' + (x.important ? ' ★' : '') + '\n';
+      });
+      var files = getSub(e.fk).files || [];
+      files.forEach(function (fl) {
+        t += '  • Eigenes Übungsblatt: ' + fl.name + '\n';
       });
       var z = getSub(e.fk).zusatz.trim();
       if (z) t += '  Zusatzwissen: ' + z.replace(/\n+/g, ' | ') + '\n';
@@ -1716,6 +2103,19 @@
     LT.copyToClipboard(t).then(function (ok) { if (ok) toast('KI-Coach-Prompt kopiert! Eigener Gemini-Chat → Strg+V (dann z. B. „Start: [Thema]“ schreiben).', true); });
   }
 
+  function downloadBlob(content, mime, filename) {
+    var blob = new Blob([content], { type: mime });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+
+  function safeFilename(s) {
+    return String(s || 'Lernplan').replace(/[^a-zA-Z0-9äöüÄÖÜß_\-]+/g, '-').replace(/^-+|-+$/g, '') || 'Lernplan';
+  }
+
   function icsEscape(s) {
     return String(s).replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
   }
@@ -1728,8 +2128,9 @@
 
   function exportIcs() {
     var p = state.plan;
+    if (!p || !p.days || !p.days.length) { toast('Erstelle zuerst deinen Lernplan.'); return; }
     var stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
-    var L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Olga V.//Lernplaner//DE', 'CALSCALE:GREGORIAN', 'X-WR-CALNAME:Lernplan'];
+    var L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Olga V.//Lernplaner//DE', 'CALSCALE:GREGORIAN', 'X-WR-CALNAME:' + (state.name || 'Lernplan')];
     function ev(date, uid, summary, desc) {
       L.push('BEGIN:VEVENT');
       L.push('UID:' + uid + '@lernplaner-olga');
@@ -1749,17 +2150,200 @@
       var desc = d.sessions.map(function (x) {
         return '• ' + TYPE_LABEL[x.type] + ': ' + fachName(x.fk) + (x.title ? ' – ' + x.title : '') + ' (' + metaText(x) + ')';
       }).join('\n');
-      ev(d.date, 'lp-' + d.date, 'Lernen ' + fmtMin(mins) + ' (' + fs.join(', ') + ')', desc);
+      ev(d.date, 'lp-' + state.id + '-' + d.date, 'Lernen ' + fmtMin(mins) + ' (' + fs.join(', ') + ')', desc);
     });
-    (p.exams || []).forEach(function (e) { ev(e.date, 'exam-' + e.fk + '-' + e.date, 'Klausur ' + fachName(e.fk), 'Viel Erfolg! Du bist vorbereitet.'); });
+    (p.exams || []).forEach(function (e) { ev(e.date, 'exam-' + state.id + '-' + e.fk + '-' + e.date, 'Klausur ' + fachName(e.fk), 'Viel Erfolg! Du bist vorbereitet.'); });
     L.push('END:VCALENDAR');
-    var blob = new Blob([L.join('\r\n') + '\r\n'], { type: 'text/calendar;charset=utf-8' });
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url; a.download = 'Lernplan.ics';
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
-    toast('Kalenderdatei heruntergeladen – öffne sie, um die Termine zu importieren.');
+    downloadBlob(L.join('\r\n') + '\r\n', 'text/calendar;charset=utf-8', safeFilename(state.name) + '.ics');
+    toast('Kalenderdatei (.ics) heruntergeladen – öffne sie zum Importieren.');
+  }
+
+  function buildMarkdownText() {
+    var p = state.plan;
+    if (!p || !p.days || !p.days.length) return '';
+    var pr = progress();
+    var lines = [];
+    lines.push('# 🌿 ' + (state.name || 'Dein Lernplan'));
+    lines.push('Zeitraum: ' + fmtDay(p.days[0].date) + ' bis ' + fmtDay(p.days[p.days.length - 1].date));
+    lines.push('Fortschritt: ' + pr.done + ' / ' + pr.total + ' Einheiten erledigt (' + pr.pct + ' %)');
+    if (p.exams && p.exams.length) {
+      lines.push('Klausurtermine: ' + p.exams.map(function (e) { return fachName(e.fk) + ' am ' + fmtDay(e.date); }).join(' · '));
+    }
+    lines.push('');
+    var curWeek = null, weekNo = 0;
+    p.days.forEach(function (d) {
+      var ws = addDays(d.date, -wdIdx(d.date));
+      if (ws !== curWeek) {
+        curWeek = ws; weekNo++;
+        lines.push('## Woche ' + weekNo + ' (' + fmtShort(ws) + ' – ' + fmtShort(addDays(ws, 6)) + ')');
+      }
+      if (!d.sessions.length) {
+        lines.push('- **' + fmtDay(d.date) + ':** _Lernfrei / Puffertag_');
+        return;
+      }
+      lines.push('### ' + fmtDay(d.date));
+      d.sessions.forEach(function (x) {
+        var chk = state.done[x.id] ? '[x]' : '[ ]';
+        var label = TYPE_LABEL[x.type] + ' · ' + fachName(x.fk) + ' – ' + (x.title || 'Alle Themen') + ' (' + metaText(x) + ')';
+        lines.push('- ' + chk + ' **' + label + '**');
+      });
+      lines.push('');
+    });
+    return lines.join('\r\n');
+  }
+
+  function exportMarkdown(copyOnly) {
+    var md = buildMarkdownText();
+    if (!md) { toast('Erstelle zuerst deinen Lernplan.'); return; }
+    if (copyOnly) {
+      LT.copyToClipboard(md).then(function (ok) {
+        if (ok) toast('Lernplan als Text kopiert! Ideal für WhatsApp, Notion, GoodNotes oder Notizen. ✓');
+      });
+    } else {
+      downloadBlob(md, 'text/markdown;charset=utf-8', safeFilename(state.name) + '.md');
+      toast('Lernplan als Markdown-/Textdatei (.md) heruntergeladen! ✓');
+    }
+  }
+
+  function csvCell(val) {
+    var s = String(val == null ? '' : val).replace(/"/g, '""');
+    return '"' + s + '"';
+  }
+
+  function exportCsv() {
+    var p = state.plan;
+    if (!p || !p.days || !p.days.length) { toast('Erstelle zuerst deinen Lernplan.'); return; }
+    var rows = [['Datum', 'Wochentag', 'Fach', 'Art der Einheit', 'Thema / Übungsblatt', 'Details / AFB', 'Dauer (Min.)', 'Status'].map(csvCell).join(';')];
+    p.days.forEach(function (d) {
+      var wd = WD[wdIdx(d.date)];
+      if (!d.sessions.length) {
+        rows.push([d.date, wd, '-', 'Lernfrei / Puffer', '-', '-', '0', '-'].map(csvCell).join(';'));
+        return;
+      }
+      d.sessions.forEach(function (x) {
+        rows.push([
+          d.date,
+          wd,
+          fachName(x.fk),
+          TYPE_LABEL[x.type] || x.type,
+          x.title || 'Alle Themen',
+          metaText(x),
+          String(x.min || 0),
+          state.done[x.id] ? 'Erledigt' : 'Offen'
+        ].map(csvCell).join(';'));
+      });
+    });
+    downloadBlob('\uFEFF' + rows.join('\r\n'), 'text/csv;charset=utf-8', safeFilename(state.name) + '.csv');
+    toast('Excel-/CSV-Tabelle (.csv) heruntergeladen! ✓');
+  }
+
+  function exportJsonBackup() {
+    save();
+    var json = JSON.stringify(store, null, 2);
+    downloadBlob(json, 'application/json;charset=utf-8', 'Lernplaner-Backup-' + todayStr() + '.json');
+    toast('Backup-Datei (.json) heruntergeladen – damit kannst du alles z. B. aufs Handy übertragen! ✓');
+  }
+
+  function importJsonBackup(file) {
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        var raw = JSON.parse(String(reader.result || 'null'));
+        if (!raw || (!Array.isArray(raw.projects) && !raw.settings)) {
+          toast('Ungültige Backup-Datei.');
+          return;
+        }
+        localStorage.setItem(KEY, JSON.stringify(raw));
+        store = loadStore();
+        state = store.projects.filter(function (p) { return p.id === store.activeId; })[0] || store.projects[0];
+        save();
+        renderProjects();
+        renderSubjects();
+        renderTime();
+        renderPlan();
+        setupVisible(!state.plan);
+        toast('Backup erfolgreich geladen! Alle Projekte & Eingaben sind wieder da ✓');
+      } catch (e) {
+        toast('Backup-Datei konnte nicht gelesen werden.');
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  function openExportModal() {
+    var hasPlan = !!(state.plan && state.plan.days && state.plan.days.length);
+    var overlay = document.createElement('div');
+    overlay.className = 'modal show';
+    overlay.style.zIndex = '25000';
+    overlay.innerHTML =
+      '<div class="modal-content" style="max-width: 560px;">' +
+        '<button class="modal-close" aria-label="Schließen">&times;</button>' +
+        '<h2 class="modal-title">📤 Lernplan exportieren &amp; Backup</h2>' +
+        '<p class="modal-desc">Speichere deinen Lernplan „<b>' + esc(state.name || 'Lernplan') + '</b>“ in deinem Wunschformat oder übertrage alle Daten auf ein anderes Gerät (z. B. Handy / Tablet):</p>' +
+        '<div class="lp-exp-list">' +
+          (hasPlan ? (
+            '<button type="button" class="lp-exp-card" data-exp="print">' +
+              '<div><b>🖨️ Als PDF speichern / Drucken</b><span>Sauberes A4-Layout zum Ausdrucken oder im Druckmenü „Als PDF speichern“.</span></div>' +
+              '<span class="lp-exp-badge">PDF / Druck</span>' +
+            '</button>' +
+            '<button type="button" class="lp-exp-card" data-exp="ics">' +
+              '<div><b>📅 In Kalender importieren (.ics)</b><span>Für Apple Kalender (iPhone/iPad/Mac), Google Kalender oder Outlook.</span></div>' +
+              '<span class="lp-exp-badge">.ics</span>' +
+            '</button>' +
+            '<button type="button" class="lp-exp-card" data-exp="copy-md">' +
+              '<div><b>📋 Als Text / Checkliste kopieren</b><span>Kopiert den gesamten Plan mit Abhak-Kästchen für WhatsApp, Notion, GoodNotes oder Notizen.</span></div>' +
+              '<span class="lp-exp-badge">Zwischenablage</span>' +
+            '</button>' +
+            '<button type="button" class="lp-exp-card" data-exp="dl-md">' +
+              '<div><b>📝 Als Markdown- / Textdatei herunterladen (.md)</b><span>Speichert den kompletten Lernplan als übersichtliche Textdatei.</span></div>' +
+              '<span class="lp-exp-badge">.md</span>' +
+            '</button>' +
+            '<button type="button" class="lp-exp-card" data-exp="csv">' +
+              '<div><b>📊 Als Excel- / Google-Sheets-Tabelle (.csv)</b><span>Alle Lerntage, Fächer, Themen, Dauer und Status als Tabelle.</span></div>' +
+              '<span class="lp-exp-badge">.csv</span>' +
+            '</button>'
+          ) : '<p class="lp-hint" style="margin:4px 0;"><i>Hinweis: Erstelle zuerst deinen Lernplan, um auch PDF-, Kalender-, Text- und Excel-Exporte zu nutzen.</i></p>') +
+          '<button type="button" class="lp-exp-card" data-exp="json-out">' +
+            '<div><b>💾 Komplettes Backup herunterladen (.json)</b><span>Sichert alle deine Lernplan-Projekte, Häkchen, Übungsblätter &amp; Zusatzwissen in einer Datei.</span></div>' +
+            '<span class="lp-exp-badge">Backup ↓</span>' +
+          '</button>' +
+          '<label class="lp-exp-card" style="margin:0;">' +
+            '<div><b>📥 Backup-Datei wieder einspielen (.json)</b><span>Lade ein gespeichertes Backup (z. B. vom PC aufs Handy oder Tablet).</span></div>' +
+            '<span class="lp-exp-badge">Backup ↑</span>' +
+            '<input type="file" accept=".json,application/json" data-exp="json-in" style="display:none;">' +
+          '</label>' +
+        '</div>' +
+        '<div style="display:flex;justify-content:flex-end;margin-top:14px;">' +
+          '<button type="button" class="btn btn-outline" data-exp="close">Schließen</button>' +
+        '</div>' +
+      '</div>';
+
+    function close() { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }
+    overlay.querySelector('.modal-close').addEventListener('click', close);
+    var fileInp = overlay.querySelector('[data-exp="json-in"]');
+    if (fileInp) {
+      fileInp.addEventListener('change', function () {
+        if (this.files && this.files[0]) {
+          importJsonBackup(this.files[0]);
+          close();
+        }
+      });
+    }
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) { close(); return; }
+      var b = e.target.closest('[data-exp]');
+      if (!b || b.tagName === 'INPUT') return;
+      var act = b.getAttribute('data-exp');
+      if (act === 'print') { close(); window.print(); }
+      else if (act === 'ics') { exportIcs(); }
+      else if (act === 'copy-md') { exportMarkdown(true); }
+      else if (act === 'dl-md') { exportMarkdown(false); }
+      else if (act === 'csv') { exportCsv(); }
+      else if (act === 'json-out') { exportJsonBackup(); }
+      else if (act === 'close') { close(); }
+    });
+    document.body.appendChild(overlay);
   }
 
   function openDeleteModal() {
@@ -1777,7 +2361,7 @@
         '<div style="display: flex; flex-direction: column; gap: 10px; margin-top: 14px;">' +
           (hasPlan ? '<button type="button" class="btn btn-outline" data-del="plan-only" style="text-align: left; padding: 12px 16px;">' +
             '<b>Nur berechneten Kalender-Plan löschen (Eingaben behalten)</b><br>' +
-            '<span style="font-size: 0.82rem; font-weight: 400; color: var(--text-secondary);">Löscht den Kalender-Plan und die Häkchen in „' + pName + '“. Deine gewählten Themen, Klausurtermine und dein Zusatzwissen bleiben erhalten.</span>' +
+            '<span style="font-size: 0.82rem; font-weight: 400; color: var(--text-secondary);">Löscht den Kalender-Plan und die Häkchen in „' + pName + '“. Deine gewählten Themen, Klausurtermine, Übungsblätter und dein Zusatzwissen bleiben erhalten.</span>' +
           '</button>' : '') +
           '<button type="button" class="btn btn-outline" data-del="reset-proj" style="text-align: left; padding: 12px 16px;">' +
             '<b>Projekt „' + pName + '“ komplett auf Anfang zurücksetzen</b><br>' +
@@ -1789,7 +2373,7 @@
           '</button>' : '') +
           '<button type="button" class="btn btn-danger" data-del="all" style="text-align: left; padding: 12px 16px; border-radius: var(--radius-md);">' +
             '<b>Alle Projekte &amp; Daten komplett löschen (Werkseinstellung)</b><br>' +
-            '<span style="font-size: 0.82rem; font-weight: 400; opacity: 0.9;">Löscht sämtliche Lernplan-Projekte, Themen, Termine und das Zusatzwissen im Browser.</span>' +
+            '<span style="font-size: 0.82rem; font-weight: 400; opacity: 0.9;">Löscht sämtliche Lernplan-Projekte, Themen, Termine, Übungsblätter und das Zusatzwissen im Browser.</span>' +
           '</button>' +
           '<button type="button" class="btn btn-outline" data-del="cancel" style="margin-top: 4px;">Abbrechen</button>' +
         '</div>' +
@@ -1875,6 +2459,9 @@
       var act = b.getAttribute('data-act');
       if (act === 'quiz') copyQuiz(b);
       else if (act === 'fehler') copyFehler(b);
+      else if (act === 'file-solve') copyFilePrompt(b.getAttribute('data-fach'), b.getAttribute('data-fid'), 'solve');
+      else if (act === 'file-twin') copyFilePrompt(b.getAttribute('data-fach'), b.getAttribute('data-fid'), 'twin');
+      else if (act === 'export') openExportModal();
       else if (act === 'print') window.print();
       else if (act === 'ics') exportIcs();
       else if (act === 'coach') copyCoach();
@@ -1905,6 +2492,8 @@
     $('lp-generate').addEventListener('click', generate);
     var resetBtn = $('lp-reset');
     if (resetBtn) resetBtn.addEventListener('click', openDeleteModal);
+    var expSetupBtn = $('lp-export-setup');
+    if (expSetupBtn) expSetupBtn.addEventListener('click', openExportModal);
 
     /* Fach per URL öffnen: lernplaner.html?fach=mathe */
     var m = /[?&]fach=([^&]+)/.exec(location.search);
