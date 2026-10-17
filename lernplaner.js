@@ -80,16 +80,16 @@
       r: '<b>Formel-, Vorzeichen- &amp; Gleichungs-Check (Blurting):</b> Schreibe Reaktionsgleichungen, Formeln + Einheiten und Energiediagramme aus dem Kopf auf + Anki-Karten.'
     },
     deutsch: {
-      badge: '✍️ <b>Deutsch-Lernprofil (Aufsatz- &amp; Schreibtraining):</b> Fokus auf Textanalyse, Formulierungshilfen und das Ausformulieren im 15-Punkte-Dreischritt (Form → Beleg → Deutung).',
+      badge: '✍️ <b>Deutsch-Lernprofil (Ganzen Aufsatz schreiben statt Kleinteil-Arbeit!):</b> In Deutsch schreibst du <b>einen durchgehenden Aufsatz im Fließtext</b> (z. B. zu einer Kurzgeschichte). Dein Plan trainiert deshalb Schritt für Schritt die Aufsatz-Bausteine (TATTE-Einleitung → Inhaltsangabe → Hauptteil im 15-Punkte-Dreischritt → Schluss) bis zum kompletten Probe-Aufsatz.',
       eN: [2, 1, 1, 0],
       uN: [3, 3, 3, 2],
-      e1: '<b>Klausur-Bauplan &amp; Analyse-Werkzeugkasten:</b> Verinnerliche Gattungsmerkmale, den Aufsatz-Aufbau (TATTE-Einleitung, Inhaltsangabe im Konjunktiv I, aspektorientierter Hauptteil) sowie Erzähltechnik und Kommunikationsmodelle.',
-      e2: '<b>Stilmittel, Fachbegriffe &amp; Formulierungshilfen:</b> Präge dir starke Analyse-Verben („verdeutlicht“, „entlarvt“, „korrespondiert mit“) und die typische Wirkung von Erzählperspektive, Raum/Zeit und Sprachbildern ein.',
-      uI: '<b>Schreibtraining 1 – Einleitung &amp; Inhaltsangabe:</b> Schreibe zu einem Übungstext eine vollständige Einleitung (Aufhänger + TATTE + zentrale Deutungshypothese) und eine knappe Inhaltsangabe im Präsens &amp; Konjunktiv I.',
-      uII: '<b>Schreibtraining 2 – Hauptteil-Absätze im 15-Punkte-Dreischritt:</b> Formuliere 2–3 Analyse-Absätze (Erzählverhalten, Sprache/Symbole, Beziehungsebene) komplett im Fließtext aus: 1. Form → 2. Beleg (Zitat + Zeile) → 3. funktionale Deutung!',
-      uIII: '<b>Schreibtraining 3 – Tiefendeutung, Leerstellen &amp; Schluss:</b> Deute das „Eisberg-Modell“ (Subtext/Wendepunkte), überprüfe deine Eingangshypothese im Fazit und trainiere den Motiv- oder Werkvergleich.',
-      uMIX: '<b>Aufsatz-Training auf Zeit:</b> Erstelle in 15 Min. ein komplettes Schreibkonzept (Sinnabschnitte + Analysestern) und schreibe Einleitung + mindestens zwei zentrale Hauptteil-Absätze im Fließtext.',
-      r: '<b>Aufsatz-Checkliste &amp; Dreischritt-Recall:</b> Rufe TATTE, Konjunktiv-I-Formen, Erzählperspektiven und deine besten Formulierungshilfen aktiv aus dem Kopf ab.'
+      e1: '<b>Aufsatz-Bauplan &amp; Analyse-Werkzeugkasten verinnerlichen:</b> Wiederhole die Gattungsmerkmale, den Aufsatz-Aufbau (Aufhänger + TATTE + zentrale Deutungshypothese, Inhaltsangabe im Präsens &amp; Konjunktiv I, aspektorientierter Hauptteil im Dreischritt) sowie Erzähltechnik und die Kommunikationsmodelle (Schulz von Thun &amp; Watzlawick).',
+      e2: '<b>Formulierungshilfen, Stilmittel &amp; 15-Punkte-Vokabular sichern:</b> Präge dir starke Analyse-Verben („verdeutlicht“, „entlarvt“, „korrespondiert mit“, „symbolisiert“) sowie die typische Wirkung von Erzählperspektive, Raum/Zeit, Leitmotiven und Leerstellen (Eisberg-Modell) aktiv ein.',
+      uI: '<b>Aufsatz-Baustein 1 – Einleitung (TATTE) &amp; Inhaltsangabe schreiben:</b> Lass dir über den Button unten eine Übungs-Kurzgeschichte geben und schreibe dazu im Fließtext: 1) eine vollständige Einleitung (Aufhänger + TATTE-Basissatz + präzise Deutungshypothese) und 2) die Einteilung in Sinnabschnitte + eine knappe Inhaltsangabe im Präsens &amp; Konjunktiv I (ohne Zitate!).',
+      uII: '<b>Aufsatz-Baustein 2 – Hauptteil-Absätze im 15-Punkte-Dreischritt schreiben:</b> Schreibe zu einer Übungs-Kurzgeschichte 2–3 zusammenhängende Hauptteil-Absätze im Fließtext (1. Erzähltechnik &amp; Perspektive, 2. Figurenbeziehung &amp; Kommunikation nach Schulz von Thun / Watzlawick, 3. Sprache &amp; Symbolik) – streng im Dreischritt: <b>1. Form/Aspekt → 2. Beleg (Zitat + Zeile) → 3. funktionale Deutung</b>!',
+      uIII: '<b>Aufsatz-Baustein 3 – Tiefendeutung (Eisberg-Modell) &amp; Aufsatz-Schluss schreiben:</b> Formuliere an einer Übungs-Kurzgeschichte die Deutung der Leerstellen, des Wendepunkts und des offenen Schlusses im Fließtext aus und verfasse einen abiturreifen Schlussabsatz (Fazit, Überprüfung der Eingangshypothese &amp; Ausblick ohne private Wertung).',
+      uMIX: '<b>Komplettes Aufsatz-Training an einer Kurzgeschichte:</b> Erstelle in 15 Min. ein Schreibkonzept (Sinnabschnitte + Analysestern) zu einer neuen Übungs-Kurzgeschichte und schreibe anschließend Einleitung, Inhaltsangabe, 2–3 zentrale Hauptteil-Absätze im Dreischritt und den Schluss im Fließtext.',
+      r: '<b>Aufsatz-Checkliste &amp; Formulierungshilfen-Recall:</b> Rufe TATTE, Konjunktiv-I-Formen, Erzählperspektiven, die 4 Seiten einer Nachricht und deine 10 besten Analyse-Verben aktiv aus dem Kopf ab.'
     },
     englisch: {
       badge: '🇬🇧 <b>Englisch-Lernprofil (Active Writing &amp; Textproduktion):</b> Training von Outline/Comprehension, Language &amp; Style Analysis, Comment/Discussion und Mediation.',
@@ -481,6 +481,12 @@
     });
   }
 
+  function defaultSimMin(fk) {
+    if (fk === 'deutsch') return 180;
+    if (fk === 'englisch') return 135;
+    return 90;
+  }
+
   function getSub(fk) {
     var all = state.settings.subjects;
     var st = all[fk];
@@ -489,7 +495,7 @@
     if (!st.custom) st.custom = [];
     if (!st.files) st.files = [];
     if (st.exam == null) st.exam = '';
-    if (!st.simMinutes) st.simMinutes = 90;
+    if (!st.simMinutes) st.simMinutes = defaultSimMin(fk);
     if (st.zusatz == null) st.zusatz = '';
     return st;
   }
@@ -1254,7 +1260,18 @@
     var ops = ['I', 'II', 'III'].map(function (a) { return LT.AFB_LABELS[a] + ': ' + LT.getOperatorNames(fk, a, 6); }).join('\n');
     var p = 'Du bist meine Fachlehrkraft für ' + fachName(fk) + ' (Oberstufe Baden-Württemberg, Ziel: 15 Notenpunkte).\n\n';
 
-    if (mode === 'twin') {
+    if (fk === 'deutsch') {
+      if (mode === 'twin') {
+        p += 'AUFGABE (DEUTSCH-AUFSATZTRAINING): Erstelle mir passend zu meinem hochgeladenen Text/Arbeitsblatt „' + fl.name + '“ eine NEUE, vergleichbare Übungs-Kurzgeschichte (bzw. einen Primärtext im gleichen Stil & Schwierigkeitsgrad, durchgehend alle 5 Zeilen mit [Z. 5], [Z. 10] … nummeriert) sowie EINE authentische baden-württembergische Aufsatz-Aufgabenstellung.\n';
+        p += '• Gib zuerst nur den neuen Text (mit Zeilennummern) und die Aufsatz-Aufgabenstellung an.\n';
+        p += '• Gib darunter (hinter einer deutlichen Trennlinie) einen strukturierten Erwartungshorizont UND einen vollständig ausformulierten 15-Punkte-Musteraufsatz (Einleitung mit TATTE & Deutungshypothese → Inhaltsangabe im Konjunktiv I → aspektorientierter Hauptteil im 15-Punkte-Dreischritt → Schluss) an.\n';
+      } else {
+        p += 'AUFGABE (DEUTSCH-MUSTERAUFSATZ & INTERPRETATIONSHILFE): Hilf mir beim Interpretieren meines hochgeladenen Textes/Übungsblatts „' + fl.name + '“.\n';
+        p += '• Erstelle zuerst einen übersichtlichen Schreibplan (Sinnabschnitte, zentrale Deutungshypothese, Analysestern zu Erzähltechnik, Figuren/Kommunikation & Sprache/Symbolik).\n';
+        p += '• Schreibe danach einen vollständig ausformulierten **15-Punkte-Musteraufsatz im Fließtext** (Einleitung mit Aufhänger, TATTE & Deutungshypothese → Inhaltsangabe im Präsens & Konjunktiv I → aspektorientierter Hauptteil im 15-Punkte-Dreischritt [Form → Zitat + Zeile → Deutung] → abiturreifer Schluss).\n';
+        p += '• Wenn ich dir gleich meinen eigenen Aufsatz mitschicke, korrigiere ihn Satz für Satz nach BW-Maßstab (0–15 Punkte).\n';
+      }
+    } else if (mode === 'twin') {
       p += 'AUFGABE: Erstelle mir zu meinem Übungsblatt „' + fl.name + '“ neue PARALLELAUFGABEN (Zwillingsaufgaben) auf exakt demselben Niveau, im selben Aufgabenstil und mit denselben Operatoren.\n';
       p += '• Gib zuerst nur die neuen Aufgabenstellungen (mit Punktzahl/AFB) an.\n';
       p += '• Gib erst ganz am Ende (deutlich abgetrennt) einen vollständigen, kleinschrittigen Erwartungshorizont auf 15-Punkte-Niveau an.\n';
@@ -1273,7 +1290,7 @@
     if (hasTxt) {
       p += '\n=== INHALT DES HOCHGELADENEN ÜBUNGSBLATTS (' + fl.name + ') ===\n' + fl.text.trim() + '\n';
     } else {
-      p += '\n=== HINWEIS ZUM ÜBUNGSBLATT (' + fl.name + ') ===\nIch hänge das Übungsblatt „' + fl.name + '“ als PDF oder Bild direkt an diese Nachricht an. Bitte lies alle Aufgaben daraus ab!\n';
+      p += '\n=== HINWEIS ZUM ÜBUNGSBLATT (' + fl.name + ') ===\nIch hänge das Übungsblatt „' + fl.name + '“ als PDF oder Bild direkt an diese Nachricht an. Bitte lies alle Aufgaben/Texte daraus ab!\n';
     }
 
     LT.copyToClipboard(p).then(function (ok) {
@@ -1356,7 +1373,7 @@
       } else if (act === 'add') {
         addCustom(fk, det);
       } else if (act === 'reset-fach') {
-        state.settings.subjects[fk] = { topics: {}, custom: [], files: [], exam: '', simMinutes: 90, zusatz: '' };
+        state.settings.subjects[fk] = { topics: {}, custom: [], files: [], exam: '', simMinutes: defaultSimMin(fk), zusatz: '' };
         save();
         rerenderSubject(fk);
         markStale();
@@ -1753,6 +1770,23 @@
   /* ──────────────────────────────────────────────────────────
      Texte zu den Einheiten (Fachspezifisch!)
      ────────────────────────────────────────────────────────── */
+  var DEUTSCH_BAUSTEIN_LABELS = {
+    I:   'Aufsatz-Baustein 1: Einleitung (TATTE) & Inhaltsangabe',
+    II:  'Aufsatz-Baustein 2: Hauptteil im 15-P-Dreischritt',
+    III: 'Aufsatz-Baustein 3: Tiefendeutung (Eisberg) & Schluss',
+    MIX: 'Komplettes Aufsatz-Training (Kurzgeschichte)'
+  };
+
+  function sessionTypeLabel(x) {
+    if (x.fk === 'deutsch') {
+      if (x.type === 'E') return 'Aufsatz-Handwerk';
+      if (x.type === 'U') return x.afb === 'FILE' ? 'Eigener Text' : (x.afb === 'MIX' ? 'Aufsatz-Training' : 'Schreibtraining');
+      if (x.type === 'SIM') return 'Probe-Aufsatz (Klausur)';
+      if (x.type === 'FEHLER') return 'Aufsatz-Lektorat';
+    }
+    return TYPE_LABEL[x.type] || x.type;
+  }
+
   function methodText(x) {
     var prof = getProfile(x.fk);
     var tip = FACH_TIPS[x.fk] ? ' ' + FACH_TIPS[x.fk] : '';
@@ -1762,9 +1796,15 @@
         return (x.n === 1 ? prof.e1 : prof.e2) + z;
       case 'U':
         if (x.afb === 'FILE') {
+          if (x.fk === 'deutsch') {
+            return '<b>Eigenen Text / eigenes Arbeitsblatt interpretieren:</b> Lies deinen hochgeladenen Text gründlich, markiere Sinnabschnitte &amp; Stilmittel und schreibe deine Interpretation (oder Gliederung + Hauptteil-Absätze) zuerst selbst. Nutze danach die Buttons unten für den <b>15-Punkte-Musteraufsatz</b> oder eine <b>neue Übungs-Kurzgeschichte</b>.';
+          }
           return '<b>Eigenes Übungsblatt bearbeiten:</b> Löse die Aufgaben deines hochgeladenen Übungsblatts zuerst komplett selbstständig ohne Spicken (wie in der Klausur). Nutze danach die Buttons unten, um dir von Gemini die 15-Punkte-Musterlösung erklären zu lassen oder neue Parallelaufgaben im gleichen Stil zu generieren.';
         }
         var uSpec = prof['u' + x.afb] || prof.uMIX || '';
+        if (x.fk === 'deutsch') {
+          return uSpec + '<br><b>Kontrolle:</b> Vergleiche deinen geschriebenen Text danach mit dem <b>15-Punkte-Musteraufsatz</b> von Gemini (oder schick deinen Text direkt in den Chat, damit Gemini ihn Satz für Satz korrigiert!).';
+        }
         var a = '';
         if (x.afb === 'MIX') {
           a = uSpec;
@@ -1778,12 +1818,26 @@
       case 'R':
         return prof.r + z;
       case 'SIM':
+        if (x.fk === 'deutsch') {
+          return '<b>Generalprobe – Einen ganzen Aufsatz unter Klausurbedingungen schreiben (' + fmtMin(x.min) + ' am Stück):</b> Handy weg, nur Stift, Papier &amp; die Kurzgeschichte aus dem KI-Prompt!<br>' +
+            '1. <b>Vorarbeit (ca. 15–20 Min.):</b> Kurzgeschichte 2× lesen, Sinnabschnitte, Wendepunkt &amp; Sprachbilder am Rand markieren, Schreibplan (Analysestern) + zentrale Deutungshypothese notieren.<br>' +
+            '2. <b>Ganzen Aufsatz im Fließtext schreiben:</b> Einleitung (Aufhänger + TATTE + Deutungshypothese) → Inhaltsangabe (Präsens &amp; Konjunktiv I) → aspektorientierter Hauptteil im <b>15-Punkte-Dreischritt (Form → Zitat mit Zeile → Deutung)</b> → Schluss (Fazit, Rückbezug zur Hypothese, Ausblick) + 10 Min. Sprach- &amp; Komma-Check am Ende!';
+        }
         return '<b>Wie im Ernstfall:</b> ' + fmtMin(x.min) + ' am Stück, nur erlaubte Hilfsmittel, Handy in einen anderen Raum. Erst danach die Lösungen ansehen und dich ehrlich mit Notenpunkten bewerten. Notiere, wo dir Zeit gefehlt hat.';
       case 'FEHLER':
+        if (x.fk === 'deutsch') {
+          return '<b>Aufsatz-Lektorat &amp; 15-Punkte-Feinschliff:</b> Lass deinen Probe-Aufsatz von Gemini nach BW-Abiturmaßstab (60 % Inhalt / 40 % Sprache &amp; Ausdruck) korrigieren. Prüfe gezielt: Sitzt der TATTE-Basissatz + Deutungshypothese? Ist die Inhaltsangabe strikt im Präsens &amp; Konjunktiv I? Hast du im Hauptteil wirklich überall den <b>Dreischritt (Form → Zitat + Zeile → Deutung)</b> eingehalten statt nachzuerzählen? Formuliere deine 2–3 schwächsten Absätze mit deinen starken Analyse-Verben noch einmal neu!';
+        }
         return '<b>Aus Fehlern Punkte machen:</b> Gehe Simulation und Fehlerprotokoll durch und sortiere jeden Fehler: Wissenslücke · Operator nicht erfüllt · Flüchtigkeit · Zeitproblem. Für jede Wissenslücke eine Anki-Karte, dann die 1–2 schwächsten Themen gezielt nachüben.';
       case 'FINAL':
+        if (x.fk === 'deutsch') {
+          return '<b>Letzter Check vor dem Aufsatz:</b> Überfliege noch einmal deinen Aufsatz-Bauplan (TATTE, Konjunktiv-I-Formen, 15-Punkte-Dreischritt, Schulz von Thun / Watzlawick) und deine besten Formulierungshilfen/Analyse-Verben. Kein neuer Stoff mehr – Stifte &amp; Textmarker einpacken und früh schlafen!';
+        }
         return '<b>Nur noch leicht wiederholen:</b> Lernzettel überfliegen, Fehlerprotokoll und Anki-Karten durchgehen. Kein neuer Stoff! Materialien packen, etwas Schönes machen und früh schlafen – im Schlaf festigt sich das Gelernte.';
       case 'V':
+        if (x.fk === 'deutsch') {
+          return '<b>Puffer / 15-Punkte-Schreibtraining:</b> Hast du eine Einheit verpasst? Hol sie jetzt nach. Ist alles erledigt: Übe an einer anspruchsvollen Kurzgeschichte das Entschlüsseln von Leerstellen (Eisberg-Modell) und Dingsymbolen im Dreischritt – genau diese Tiefendeutung bringt 14–15 Punkte!';
+        }
         return '<b>Puffer:</b> Hast du eine Einheit verpasst? Hol sie jetzt nach. Ist alles erledigt: AFB-III-Aufgaben zu diesem Thema – genau dort entscheidet sich der Unterschied zwischen 12 und 15 Punkten.';
     }
     return '';
@@ -1793,7 +1847,8 @@
     var p = [fmtMin(x.min)];
     if (x.type === 'E' && x.of > 1) p.push('Einheit ' + x.n + '/' + x.of);
     if (x.type === 'U') {
-      if (x.afb === 'FILE') p.push('Eigenes Übungsblatt');
+      if (x.afb === 'FILE') p.push(x.fk === 'deutsch' ? 'Eigener Übungstext / Arbeitsblatt' : 'Eigenes Übungsblatt');
+      else if (x.fk === 'deutsch' && DEUTSCH_BAUSTEIN_LABELS[x.afb]) p.push(DEUTSCH_BAUSTEIN_LABELS[x.afb]);
       else p.push(x.afb === 'MIX' ? 'Klausur-Mix' : LT.AFB_LABELS[x.afb]);
     }
     if (x.type === 'R') p.push(x.n + '. Wiederholung (Spaced Repetition)');
@@ -1812,30 +1867,46 @@
     var h = '', k = ' data-fach="' + esc(x.fk) + '" data-key="' + esc(x.key) + '"';
     var lz = x.link ? '<a class="lp-tool" href="' + esc(x.link) + '" target="_blank" rel="noopener">Lernzettel</a>' : '';
     var anki = x.link ? '<a class="lp-tool" href="' + esc(deepLink('anki', x)) + '" target="_blank" rel="noopener">Anki-Karten</a>' : '';
+    var isDe = x.fk === 'deutsch';
     function quiz(afb, label) {
       return '<button type="button" class="lp-tool lp-tool-gold" data-act="quiz" data-afb="' + afb + '"' + k + '>' + label + '</button>';
     }
     if (x.type === 'U' && x.afb === 'FILE' && x.key && x.key.indexOf('file:') === 0) {
       var fid = esc(x.key.slice(5));
       var fkAttr = ' data-fach="' + esc(x.fk) + '" data-fid="' + fid + '"';
-      h = '<button type="button" class="lp-tool lp-tool-gold" data-act="file-solve"' + fkAttr + '>📄 Musterlösung &amp; Erklärung (KI)</button>' +
-          '<button type="button" class="lp-tool lp-tool-gold" data-act="file-twin"' + fkAttr + '>🔁 Parallelaufgaben generieren</button>' +
+      h = '<button type="button" class="lp-tool lp-tool-gold" data-act="file-solve"' + fkAttr + '>' + (isDe ? '📄 15-P-Musteraufsatz &amp; Schreibplan (KI)' : '📄 Musterlösung &amp; Erklärung (KI)') + '</button>' +
+          '<button type="button" class="lp-tool lp-tool-gold" data-act="file-twin"' + fkAttr + '>' + (isDe ? '🔁 Neue Übungs-Kurzgeschichte generieren' : '🔁 Parallelaufgaben generieren') + '</button>' +
           GEMINI_LINK;
       return '<div class="lp-s-tools">' + h + '</div><div class="lp-s-hint">💬 Neuer Chat → Prompt einfügen (bei einem Scan/Foto die Datei in Gemini über + anhängen).</div>';
     }
     switch (x.type) {
       case 'E':
-        h = lz + quiz('I', 'Verständnis-Quiz kopieren') + anki;
+        h = lz + quiz('I', isDe ? '✍️ Übungs-Kurzgeschichte + Einstieg kopieren' : 'Verständnis-Quiz kopieren') + anki;
         if (x.n === 1 && x.link) h += '<a class="lp-tool" href="' + esc(deepLink('notebook', x)) + '" target="_blank" rel="noopener">NotebookLM</a>';
         break;
-      case 'U': h = quiz(x.afb, (x.afb === 'MIX' ? 'Klausur-Mix' : LT.AFB_LABELS[x.afb]) + '-Aufgaben kopieren') + lz; break;
-      case 'R': h = anki + quiz('MIX', 'Mini-Test kopieren') + lz; break;
-      case 'V': h = quiz('III', 'AFB-III-Aufgaben kopieren') + lz; break;
-      case 'SIM': h = quiz('SIM', 'Klausur-Prompt kopieren'); break;
-      case 'FEHLER': h = '<button type="button" class="lp-tool lp-tool-gold" data-act="fehler"' + k + '>Fehleranalyse-Prompt kopieren</button>'; break;
+      case 'U':
+        if (isDe) {
+          var deBtnLbl = x.afb === 'I'   ? '✍️ Kurzgeschichte + Training: Einleitung &amp; Inhaltsangabe kopieren'
+                       : x.afb === 'II'  ? '✍️ Kurzgeschichte + Training: Hauptteil im Dreischritt kopieren'
+                       : x.afb === 'III' ? '✍️ Kurzgeschichte + Training: Tiefendeutung &amp; Schluss kopieren'
+                       : '📝 Übungs-Kurzgeschichte + kompletter Aufsatz-Auftrag kopieren';
+          h = quiz(x.afb, deBtnLbl) + lz;
+        } else {
+          h = quiz(x.afb, (x.afb === 'MIX' ? 'Klausur-Mix' : LT.AFB_LABELS[x.afb]) + '-Aufgaben kopieren') + lz;
+        }
+        break;
+      case 'R': h = anki + quiz('MIX', isDe ? '📝 Kurzgeschichte + Aufsatz-Training kopieren' : 'Mini-Test kopieren') + lz; break;
+      case 'V': h = quiz('III', isDe ? '✍️ Kurzgeschichte + Tiefendeutungs-Training kopieren' : 'AFB-III-Aufgaben kopieren') + lz; break;
+      case 'SIM': h = quiz('SIM', isDe ? '📝 Deutsch-Klausur (Kurzgeschichte + Aufsatz-Auftrag) kopieren' : 'Klausur-Prompt kopieren'); break;
+      case 'FEHLER': h = '<button type="button" class="lp-tool lp-tool-gold" data-act="fehler"' + k + '>' + (isDe ? '🔍 Aufsatz-Korrektur &amp; 15-Punkte-Lektorat kopieren' : 'Fehleranalyse-Prompt kopieren') + '</button>'; break;
       case 'FINAL': h = '<a class="lp-tool" href="index.html?tool=anki&fach=' + encodeURIComponent(x.fk) + '" target="_blank" rel="noopener">Anki</a>'; break;
     }
     var hint = AI_HINTS[x.type];
+    if (isDe && x.type === 'SIM') {
+      hint = '💬 Neuer Chat → Prompt einfügen. Gemini gibt dir eine Kurzgeschichte mit Zeilennummern + 1 Aufsatz-Auftrag (und darunter den 15-P-Musteraufsatz). Chat für die Aufsatz-Korrektur offen lassen!';
+    } else if (isDe && x.type === 'FEHLER') {
+      hint = '💬 Im Chat deines Probe-Aufsatzes weiterschreiben → Prompt einfügen + deinen geschriebenen Aufsatz anhängen (abgetippt oder als Foto deiner Handschrift).';
+    }
     if (hint) h += GEMINI_LINK;
     return h ? '<div class="lp-s-tools">' + h + '</div>' + (hint ? '<div class="lp-s-hint">' + hint + '</div>' : '') : '';
   }
@@ -1876,12 +1947,19 @@
 
   function renderSession(x, past) {
     var done = !!state.done[x.id];
-    var title = esc(fachName(x.fk)) + ' · ' + (x.type === 'SIM' || x.type === 'FEHLER' || x.type === 'FINAL' ? 'alle Themen' : esc(x.title));
+    var subTitle = (x.type === 'SIM' || x.type === 'FEHLER' || x.type === 'FINAL')
+      ? (x.fk === 'deutsch'
+          ? (x.type === 'SIM' ? 'Ganzen Aufsatz schreiben (z. B. Kurzgeschichte interpretieren)'
+             : x.type === 'FEHLER' ? 'Aufsatz-Korrektur & 15-Punkte-Feinschliff'
+             : 'Aufsatz-Checkliste & Formulierungshilfen')
+          : 'alle Themen')
+      : esc(x.title);
+    var title = esc(fachName(x.fk)) + ' · ' + subTitle;
     var h = '<div class="lp-session' + (done ? ' lp-done' : '') + '" data-id="' + esc(x.id) + '">';
     if (x.missed) h += '<span title="verpasst" style="width:20px;text-align:center;color:var(--text-light);">–</span>';
     else h += '<input type="checkbox" data-act="done" data-id="' + esc(x.id) + '"' + (done ? ' checked' : '') + ' aria-label="Erledigt">';
     h += '<div class="lp-s-main">';
-    h += '<div class="lp-s-title"><span class="lp-s-type lp-t-' + x.type + '">' + TYPE_LABEL[x.type] + '</span>' + title + '</div>';
+    h += '<div class="lp-s-title"><span class="lp-s-type lp-t-' + x.type + '">' + esc(sessionTypeLabel(x)) + '</span>' + title + '</div>';
     h += '<div class="lp-s-meta">' + esc(metaText(x)) + (x.missed ? ' · verpasst → ' + ((x.type === 'E' || x.type === 'U') ? 'neu eingeplant' : 'übersprungen') : '') + '</div>';
     if (!past) {
       h += '<div class="lp-s-method">' + methodText(x) + '</div>';
@@ -1925,7 +2003,7 @@
 
     h += '<details class="lp-strategy"><summary>⚙️ Wie wurde dieser Lernplan erstellt (ohne lokale KI)?</summary><ul>';
     h += '<li><b>Mathematischer Planungs-Algorithmus:</b> Dein Kalender wird direkt im Browser von einem fest programmierten Algorithmus berechnet – ganz ohne externe KI.</li>';
-    h += '<li><b>Fachspezifisch angepasst:</b> In <b>Mathe</b> plant er mehr Rechen- &amp; Anwendungs-Einheiten, in <b>Deutsch/Englisch</b> Aufsatz-Schreibtraining im Dreischritt, in <b>Chemie</b> Teilchenebene + Gleichungen + Rechnungen und in <b>GK/Geschichte/Bio</b> aktives Auswendiglernen + Materialanalyse &amp; Urteilsbildung.</li>';
+    h += '<li><b>Fachspezifisch angepasst:</b> In <b>Mathe</b> plant er mehr Rechen- &amp; Anwendungs-Einheiten, in <b>Deutsch</b> ein aufbauendes <b>Aufsatz-Schreibtraining</b> (TATTE-Einleitung → Inhaltsangabe → Hauptteil im 15-P-Dreischritt → ganzer Probe-Aufsatz zu einer Kurzgeschichte), in <b>Chemie</b> Teilchenebene + Gleichungen + Rechnungen und in <b>GK/Geschichte/Bio</b> aktives Auswendiglernen + Materialanalyse &amp; Urteilsbildung.</li>';
     h += '<li><b>Eigene Übungsblätter inklusive:</b> Hochgeladene PDFs/Arbeitsblätter werden als eigene Übungseinheiten eingeplant und automatisch in deine KI-Prompts integriert.</li>';
     h += '</ul></details>';
 
@@ -2053,6 +2131,27 @@
   function copyFehler(btn) {
     var fk = btn.getAttribute('data-fach');
     var topics = topicsForPrompt(fk, '', 'SIM').map(function (t) { return t.title; });
+    var z = LT.getZusatzwissen ? LT.getZusatzwissen(fk) : getSub(fk).zusatz.trim();
+
+    if (fk === 'deutsch') {
+      var pd = 'Du bist eine erfahrene Deutsch-Lehrkraft an einem allgemeinbildenden Gymnasium in Baden-Württemberg.\n';
+      pd += 'Ich habe einen Probe-Aufsatz (Klausur-Simulation) zum Thema „' + topics.join(', ') + '“ geschrieben.\n';
+      pd += 'Unten füge ich meinen geschriebenen Aufsatz (abgetippt oder als Foto) ein. Bitte korrigiere und bewerte ihn streng nach dem BW-Abiturmaßstab:\n\n';
+      pd += '1. GESAMTBEWERTUNG (0–15 Notenpunkte): Bewerte getrennt nach **Inhaltlicher Leistung (60 %)** und **Darstellungsleistung / Sprache / Ausdruck (40 %)**.\n';
+      pd += '2. DETAILLIERTER AUFSATZ-CHECK:\n';
+      pd += '   • **Einleitung:** Sitzt der Aufhänger, der vollständige **TATTE-Basissatz** und eine präzise **zentrale Interpretationshypothese**?\n';
+      pd += '   • **Inhaltsangabe:** Sind die Sinnabschnitte logisch, ist das Tempus durchgehend **Präsens** und wurde bei Figurenäußerungen sauber der **Konjunktiv I** (ohne Zitate!) genutzt?\n';
+      pd += '   • **Hauptteil (Analyse & Interpretation):** Wurde aspektorientiert gegliedert (statt linearer Nacherzählung) und überall der **15-Punkte-Dreischritt (1. Form/Aspekt → 2. Zitat mit Zeile → 3. funktionale Deutung)** eingehalten? Wurden Erzähltechnik, Sprache/Symbolik und Kommunikationsmodelle (z. B. Schulz von Thun / Watzlawick) tiefgründig auf den Text angewendet?\n';
+      pd += '   • **Schluss:** Gibt es ein komprimiertes Fazit, den Rückbezug zur Eingangshypothese und einen gelungenen Ausblick?\n';
+      pd += '3. VORHER → NACHHER (15-PUNKTE-UPGRADE): Nimm meine **3 schwächsten Absätze oder Sätze** aus meinem Aufsatz und schreibe sie mir direkt in einer **perfekten 15-Punkte-Version** (mit gehobenen Analyse-Verben und sauberem Dreischritt) um!\n';
+      pd += '4. Nenne mir meine 3 wichtigsten Schreib-Tipps für die echte Klausur.\n';
+      if (z) pd += '\nZusatzwissen / Vorgaben meiner Lehrkraft:\n' + z + '\n';
+      pd += '\nTEXTGRUNDLAGE & AUFGABENSTELLUNG: stehen weiter oben in diesem Chat (falls das ein neuer Chat ist, füge ich sie hier ein).\n';
+      pd += '\nMEIN GESCHRIEBENER AUFSATZ (abgetippt oder als Foto angehängt):\n(hier einfügen)\n';
+      LT.copyToClipboard(pd).then(function (ok) { if (ok) toast('Aufsatz-Korrektur-Prompt kopiert! Im Chat der Simulation einfügen + deinen Aufsatz anhängen.', true); });
+      return;
+    }
+
     var p = 'Du bist eine erfahrene Lehrkraft für ' + fachName(fk) + ' an einem Gymnasium in Baden-Württemberg.\n';
     p += 'Ich habe eine Klausur-Simulation zu folgenden Themen geschrieben: ' + topics.join(', ') + '.\n';
     p += 'Unten füge ich die Aufgaben, meine Lösungen und den Erwartungshorizont ein. Bitte:\n';
@@ -2063,7 +2162,6 @@
     p += '5. Formuliere zu jeder Wissenslücke eine Karteikarte (Vorderseite | Rückseite).\n';
     var ops = ['I', 'II', 'III'].map(function (a) { return LT.AFB_LABELS[a] + ': ' + LT.getOperatorNames(fk, a); }).join('\n');
     if (ops.replace(/AFB I+: /g, '').trim()) p += '\nPrüfe besonders, ob ich die Operatoren richtig umgesetzt habe:\n' + ops + '\n';
-    var z = LT.getZusatzwissen ? LT.getZusatzwissen(fk) : getSub(fk).zusatz.trim();
     if (z) p += '\nZusatzwissen / Übungsblätter, die ich ebenfalls können muss:\n' + z + '\n';
     p += '\nAUFGABEN & ERWARTUNGSHORIZONT: stehen weiter oben in diesem Chat (falls das ein neuer Chat ist, füge ich sie hier ein).\n';
     p += '\nMEINE LÖSUNGEN (abgetippt oder als Foto angehängt):\n(hier einfügen)\n';

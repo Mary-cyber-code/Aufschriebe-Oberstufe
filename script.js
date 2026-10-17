@@ -579,19 +579,55 @@
         });
     });
 
-    // 5. Fachspezifische AFB-Infos + Operatoren anzeigen
+    // 5. Fachspezifische AFB-Infos + Operatoren (und Deutsch-Aufsatz-Modus) anzeigen
+    var lastQuizFach = '';
     function updateAfbInfo() {
       var info = document.getElementById('quiz-afb-info');
       var zGroup = document.getElementById('quiz-zusatz-group');
       var fachKey = subjectSelect.value;
       if (!info || !window.LernTools) return;
+
+      /* Radio-Beschriftungen je nach Fach (Deutsch = Aufsatz-Training statt Kleinteil-Arbeit) anpassen */
+      var isDe = fachKey === 'deutsch';
+      if (fachKey !== lastQuizFach) {
+        lastQuizFach = fachKey;
+        if (isDe) {
+          var mixRadio = document.querySelector('input[name="quiz-afb"][value="MIX"]');
+          if (mixRadio) mixRadio.checked = true;
+        }
+      }
+      var radioLabels = {
+        I:   isDe ? 'Aufsatz-Baustein 1: Einleitung (TATTE) & Inhaltsangabe (an einer Kurzgeschichte)' : 'AFB I (Reproduktion)',
+        II:  isDe ? 'Aufsatz-Baustein 2: Hauptteil-Analyse im 15-P-Dreischritt (an einer Kurzgeschichte)' : 'AFB II (Reorganisation & Transfer)',
+        III: isDe ? 'Aufsatz-Baustein 3: Tiefendeutung (Eisberg) & Schluss (an einer Kurzgeschichte)' : 'AFB III (Reflexion & Problemlösung)',
+        MIX: isDe ? '✍️ Ganzer Aufsatz / Klausur (Vollständige Kurzgeschichte + 1 Aufsatz-Auftrag + 15-P-Musteraufsatz)' : 'Klausur-Mix (AFB I – III)'
+      };
+      Array.prototype.forEach.call(document.querySelectorAll('input[name="quiz-afb"]'), function(r) {
+        var lbl = r.parentNode;
+        if (!lbl || !radioLabels[r.value]) return;
+        /* Textknoten hinter dem Input aktualisieren */
+        while (lbl.childNodes.length > 1) lbl.removeChild(lbl.lastChild);
+        lbl.appendChild(document.createTextNode(' ' + radioLabels[r.value]));
+      });
+
       if (!fachKey) { info.style.display = 'none'; if (zGroup) zGroup.style.display = 'none'; return; }
 
       var afbEl = document.querySelector('input[name="quiz-afb"]:checked');
       var afb = afbEl ? afbEl.value : 'II';
       var esc = function(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); };
       var html = '';
-      if (afb === 'MIX') {
+      if (isDe) {
+        if (afb === 'MIX') {
+          html = '<b>✍️ Echte Deutsch-Klausur (Aufsatz im Fließtext statt Einzel-Fragen!):</b><br>' +
+                 'Gemini gibt dir <b>1) eine komplette Übungs-Kurzgeschichte mit Zeilennummern [Z. 5], [Z. 10] …</b>, darunter <b>2) EINE authentische BW-Aufsatz-Aufgabenstellung</b> (z. B. <i>„Interpretieren Sie die Kurzgeschichte …“</i>) und unter der Trennlinie <b>3) den Erwartungshorizont + einen komplett ausformulierten 15-Punkte-Musteraufsatz</b>!';
+        } else if (afb === 'I') {
+          html = '<b>✍️ Aufsatz-Baustein 1 (Einleitung &amp; Inhaltsangabe):</b><br>Du bekommst eine kurze Übungs-Kurzgeschichte (mit Zeilennummern) und trainierst die <b>Einleitung (Aufhänger + TATTE + Deutungshypothese)</b> sowie die <b>Inhaltsangabe im Präsens &amp; Konjunktiv I</b> (inkl. 15-Punkte-Musterlösung).';
+        } else if (afb === 'II') {
+          html = '<b>✍️ Aufsatz-Baustein 2 (Hauptteil im 15-Punkte-Dreischritt):</b><br>Du bekommst eine dichte Übungs-Kurzgeschichte und trainierst 2–3 <b>aspektorientierte Hauptteil-Absätze</b> (Erzähltechnik, Kommunikation nach Schulz von Thun / Watzlawick, Sprache/Symbolik) im Dreischritt: <b>Form → Zitat + Zeile → Deutung</b>.';
+        } else {
+          html = '<b>✍️ Aufsatz-Baustein 3 (Tiefendeutung &amp; Schluss):</b><br>Du bekommst eine Übungs-Kurzgeschichte mit offenem Schluss und trainierst die <b>Deutung der Leerstellen (Eisberg-Modell)</b> sowie einen abiturreifen <b>Schlussabsatz</b> (Fazit, Hypothesen-Rückbezug, Ausblick).';
+        }
+      } else if (afb === 'MIX') {
         html = '<b>Klausur-Mix in ' + esc(subjectData[fachKey].name) + ':</b> AFB I ca. 30 %, AFB II ca. 40 %, AFB III ca. 30 % – wie im Abitur.';
         ['I', 'II', 'III'].forEach(function(a) {
           var ops = LernTools.getOperatorNames(fachKey, a, 6);
