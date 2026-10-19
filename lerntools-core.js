@@ -155,7 +155,7 @@
   }
 
   /* ──────────────────────────────────────────────────────────
-     Spezial-Prompt für DEUTSCH (Aufsatz / Textinterpretation statt Einzelfragen!)
+     Spezial-Prompt für DEUTSCH (Aufsatz / Textinterpretation nach dem 7-Schritte-Bauplan!)
      ────────────────────────────────────────────────────────── */
   function buildDeutschEssayPrompt(opts, fach, opData, kurs, themen, afb) {
     var p = '';
@@ -165,43 +165,46 @@
     p += 'Thema meines Lernzettels: "' + themen + '".\n\n';
 
     p += '⚠️ WICHTIGER GRUNDSATZ – ECHTE DEUTSCH-KLAUSUR STATT KLASSENARBEIT:\n';
-    p += 'In Deutsch schreibt man KEINE „normale Arbeit“ mit nummerierten Wissensfragen oder Kleinteil-Aufgaben (NICHT: „1. Nennen Sie die Merkmale der Kurzprosa (6 BE)“, „2. Erklären Sie das Vier-Ohren-Modell (8 BE)“), ';
-    p += 'sondern EINEN ZUSAMMENHÄNGENDEN AUFSATZ im Fließtext zu einem konkreten literarischen oder pragmatischen Text (z. B. einer Kurzgeschichte)!\n';
-    p += 'Mein Lernzettel unten enthält mein Analyse-Handwerkszeug (Aufbau, TATTE-Einleitung, Inhaltsangabe im Konjunktiv I, aspektorientierter Hauptteil im 15-Punkte-Dreischritt, Erzähltechnik, Kommunikationsmodelle nach Schulz von Thun / Watzlawick, Stilmittel & Formulierungshilfen). ';
-    p += 'Frage dieses Wissen NIEMALS als theoretische Wissensabfrage ab, sondern gib mir einen konkreten Text, auf den ich dieses Handwerkszeug im Aufsatz anwenden muss!\n\n';
+    p += 'In Deutsch schreibt man KEINE „normale Arbeit“ mit nummerierten Wissensfragen oder Kleinteil-Aufgaben (NICHT: „1. Nennen Sie die Merkmale der Kurzprosa (6 BE)“, „2. Erklären Sie die Erlebte Rede (8 BE)“), ';
+    p += 'sondern EINEN ZUSAMMENHÄNGENDEN AUFSATZ im Fließtext zu einem konkreten literarischen Text (z. B. einer Kurzgeschichte)!\n';
+    p += 'Mein Lernzettel unten enthält meinen **7-Schritte-Klausur-Bauplan** (1. Einleitung & Deutungshypothese, 2. Strukturierte Inhaltsangabe, 3. Hauptteil Block 1: Rahmen/Einstieg/Grundstimmung, 4. Block 2: Hauptfigur & innerer Konflikt, 5. Block 3: Figurenkonstellation & Kommunikation, 6. Block 4: Wendepunkt/Titel/offener Schluss, 7. Fazit), meine **15-Punkte-Satzschablonen** sowie mein **Fachbegriffs-Lexikon (Werkzeugkasten A, B, C)**. ';
+    p += 'Frage dieses Wissen NIEMALS als theoretische Wissensabfrage ab, sondern gib mir eine konkrete Kurzgeschichte, auf die ich diesen Bauplan im Aufsatz anwenden muss!\n\n';
 
     if (afb === 'SIM') {
       p += 'AUFTRAG – VOLLSTÄNDIGE DEUTSCH-AUFSATZKLAUSUR (Bearbeitungszeit ca. ' + (opts.simMinutes || 180) + ' Minuten):\n';
-      p += '1. TEXTGRUNDLAGE: Gib mir zuerst eine vollständige, literarisch anspruchsvolle moderne Kurzgeschichte (ca. 450–650 Wörter, mit Titel, Autor/in und Erscheinungsjahr für den TATTE-Basissatz) auf echtem BW-Oberstufen-/Abiturniveau ';
+      p += '1. TEXTGRUNDLAGE: Gib mir zuerst eine vollständige, literarisch anspruchsvolle moderne Kurzgeschichte (ca. 450–650 Wörter, mit Titel, Autor/in und Erscheinungsjahr) auf echtem BW-Oberstufen-/Abiturniveau ';
       p += '(falls ich unten im Zusatzwissen/Übungsblatt nicht schon einen eigenen Primärtext mitgeliefert habe). ';
-      p += 'Der Text muss sich perfekt für eine 15-Punkte-Interpretation eignen: Einstieg in medias res, alltägliche Situation mit unausgesprochenem Konflikt (Eisberg-Modell), Dialoge mit Subtext/gestörter Kommunikation (für Schulz von Thun & Watzlawick), markante Erzählperspektive, Leitmotive/Dingsymbole, Wendepunkt und offener Schluss.\n';
+      p += 'Der Text muss sich perfekt für alle **4 Hauptteil-Blöcke** meines Klausur-Bauplans eignen:\n';
+      p += '   • **Für Block 1:** Einstieg in medias res (temporale/lokale Deixis, kataphorischer Einstieg), symbolischer Stimmungsraum (Wortfeld Kälte/Enge), zeitdeckendes Erzähltempo & mechanische Handgriffe (Parataxe/Asyndeton)\n';
+      p += '   • **Für Block 2:** Personales Erzählverhalten mit Innensicht, **Erlebte Rede** (3. Person + Präteritum, 15-Punkte-Joker!) / Innerer Monolog, Metaphern/Vergleiche & innerer Zwiespalt (Ambivalenz)\n';
+      p += '   • **Für Block 3:** Festgefahrene Figurenkonstellation & gestörte Kommunikation im Dialog (Rückzug in die Außensicht/neutrales Erzählverhalten, banale Sachebene vs. unterkühlte Beziehungsebene, beredtes Schweigen, Ellipsen/Aposiopese)\n';
+      p += '   • **Für Block 4:** Klarer Wendepunkt (Epiphanie oder Desillusionierung/Resignation), zentrales **Dingsymbol/Leitmotiv**, deutbarer (evtl. ironischer) Titel & abrupter **offener Schluss** mit Leerstellen.\n';
       p += '   → Nummeriere den Text zwingend alle 5 Zeilen mit [Z. 5], [Z. 10], [Z. 15] …, damit ich im Aufsatz korrekt mit Zeilenangaben zitieren kann!\n';
-      p += '2. AUFGABENSTELLUNG: Formuliere darunter EINE authentische baden-württembergische Klausur-Aufgabenstellung für einen vollständigen Aufsatz (z. B. „**Interpretieren** Sie die vorliegende Kurzgeschichte ‚…‘ von … (Jahr). **Untersuchen** Sie dabei insbesondere die Kommunikationssituation und Beziehung zwischen den Figuren sowie die erzähltechnische und sprachliche Gestaltung.“).\n';
-      p += '   → Meine Aufgabe ist es, dazu EINEN kompletten Aufsatz im Fließtext zu schreiben (Einleitung mit Aufhänger + TATTE + Deutungshypothese → Inhaltsangabe im Präsens & Konjunktiv I → aspektorientierter Hauptteil im 15-Punkte-Dreischritt → Schluss mit Fazit, Verifizierung der Hypothese & Ausblick).\n';
+      p += '2. AUFGABENSTELLUNG: Formuliere darunter EINE authentische baden-württembergische Klausur-Aufgabenstellung für einen vollständigen Aufsatz (z. B. „**Interpretieren** Sie die vorliegende Kurzgeschichte ‚…‘ von … (Jahr). **Untersuchen** Sie dabei insbesondere den inneren Konflikt der Hauptfigur, die Kommunikationssituation sowie die erzähltechnische und sprachliche Gestaltung.“).\n';
       p += '   → Gib die im BW-Deutschabitur übliche Gewichtung an (Inhaltliche Leistung 60 % / Darstellungsleistung & Ausdruck 40 % → 0–15 Notenpunkte).\n';
     } else if (afb === 'MIX') {
-      p += 'AUFTRAG – KOMPLETTES AUFSATZ-TRAINING AN EINER KURZGESCHICHTE:\n';
-      p += '1. TEXTGRUNDLAGE: Gib mir zuerst eine vollständige, dichte Übungs-Kurzgeschichte (ca. 350–500 Wörter, mit Titel, Autor/in, Erscheinungsjahr und Zeilennummerierung [Z. 5], [Z. 10] …), die reich an Erzähltechnik, Sprachbildern, Leerstellen und Figurenkommunikation ist.\n';
-      p += '2. AUFGABENSTELLUNG: Stelle mir darunter EINE übergeordnete Aufsatz-Aufgabenstellung im Stil des BW-Abiturs (**Interpretieren** Sie … / **Untersuchen** Sie dabei insbesondere …), zu der ich einen kompletten Aufsatz (oder einen vollständigen Aufsatz-Entwurf + Einleitung, 2–3 Hauptteil-Absätze im Dreischritt und Schluss) im Fließtext verfasse.\n';
+      p += 'AUFTRAG – KOMPLETTES AUFSATZ-TRAINING NACH DEM 7-SCHRITTE-BAUPLAN:\n';
+      p += '1. TEXTGRUNDLAGE: Gib mir zuerst eine vollständige, dichte Übungs-Kurzgeschichte (ca. 350–500 Wörter, mit Titel, Autor/in, Erscheinungsjahr und Zeilennummerierung [Z. 5], [Z. 10] …), an der sich alle 4 Hauptteil-Blöcke (Rahmen/Einstieg, Hauptfigur/Erlebte Rede, Figurenkonstellation/Dialog, Wendepunkt/Dingsymbol/offener Schluss) hervorragend anwenden lassen.\n';
+      p += '2. AUFGABENSTELLUNG: Stelle mir darunter EINE übergeordnete Aufsatz-Aufgabenstellung im Stil des BW-Abiturs (**Interpretieren** Sie …), zu der ich einen kompletten Aufsatz entlang meiner 7 Klausur-Bausteine im Fließtext verfasse.\n';
     } else if (afb === 'I') {
-      p += 'AUFTRAG – SCHREIBTRAINING 1 (AUFSATZ-EINSTIEG: EINLEITUNG, TATTE & INHALTSANGABE):\n';
-      p += '1. TEXTGRUNDLAGE: Gib mir eine prägnante Übungs-Kurzgeschichte (ca. 250–400 Wörter, mit Titel, Autor/in, Erscheinungsjahr, direkter Figurenrede und Zeilennummern [Z. 5], [Z. 10] …).\n';
-      p += '2. SCHREIBAUFTRAG (Fließtext statt Stichpunkte!): Stelle mir die Aufgabe, zu dieser Kurzgeschichte den kompletten ersten Teil eines 15-Punkte-Aufsatzes zu schreiben:\n';
-      p += '   • Eine gelungene **Einleitung** (thematischer Aufhänger + vollständiger **TATTE-Basissatz** + präzise **zentrale Interpretationshypothese**)\n';
-      p += '   • Die Einteilung in **Sinnabschnitte** (mit Zeilenangaben) sowie eine knappe, sachliche **Inhaltsangabe** als Gelenkstelle (zwingend im **Präsens**, in eigenen Worten ohne Zitate und bei Figurenäußerungen im **Konjunktiv I**).\n';
+      p += 'AUFTRAG – SCHREIBTRAINING 1 (BAUSTEIN 1, 2 & HAUPTTEIL BLOCK 1: EINLEITUNG, INHALTSANGABE & RAHMEN/EINSTIEG):\n';
+      p += '1. TEXTGRUNDLAGE: Gib mir eine prägnante Übungs-Kurzgeschichte (ca. 250–400 Wörter, mit Titel, Autor/in, Erscheinungsjahr, Einstieg in medias res, Stimmungsraum, direkter Rede und Zeilennummern [Z. 5], [Z. 10] …).\n';
+      p += '2. SCHREIBAUFTRAG (Fließtext mit meinen Satzschablonen!): Stelle mir die Aufgabe, zu dieser Kurzgeschichte die ersten 3 Bausteine meines Klausur-Bauplans auszuformulieren:\n';
+      p += '   • **1. Einleitung & Deutungshypothese** (Basissatz + tieferer psychologischer/zwischenmenschlicher Konflikt: Entfremdung, Diskrepanz zwischen Fassade und Innerem)\n';
+      p += '   • **2. Strukturierte Inhaltsangabe** (Gliederung in 3 Sinnabschnitte mit Zeilenangaben, streng im Präsens & Konjunktiv I, ohne Zitate)\n';
+      p += '   • **3. Hauptteil – Block 1: Rahmen, Einstieg & Grundstimmung** (Einstieg in medias res, Deixis/kataphorischer Einstieg, Stimmungsraum, Zeitdeckung & Parataxe/Asyndeton im Dreischritt).\n';
     } else if (afb === 'II') {
-      p += 'AUFTRAG – SCHREIBTRAINING 2 (HAUPTTEIL-ANALYSE IM 15-PUNKTE-DREISCHRITT):\n';
-      p += '1. TEXTGRUNDLAGE: Gib mir eine literarisch dichte Übungs-Kurzgeschichte (ca. 300–450 Wörter, mit Titel, Autor/in, Erscheinungsjahr und Zeilennummern [Z. 5], [Z. 10] …), die einen klaren Beziehungskonflikt im Dialog, eine markante Erzählperspektive und starke Sprachbilder/Dingsymbole enthält.\n';
-      p += '2. SCHREIBAUFTRAG: Stelle mir die Aufgabe, zu diesem Text **2–3 zusammenhängende Hauptteil-Absätze im Fließtext** (aspektorientiertes Verfahren) zu verfassen und dabei konsequent den **15-Punkte-Dreischritt** (**1. Form/Aspekt benennen → 2. Beleg mit Zitat & Zeile → 3. funktionale Deutung**) anzuwenden:\n';
-      p += '   • **Absatz 1:** Analyse der Erzähltechnik (Erzählverhalten, Perspektive, Innensicht/Außensicht, Raum- & Zeitgestaltung)\n';
-      p += '   • **Absatz 2:** Analyse der Figurenbeziehung & Kommunikation (unter direkter Anwendung von **Schulz von Thun** oder **Watzlawick** aus meinem Lernzettel)\n';
-      p += '   • **Absatz 3:** Analyse der sprachlich-stilistischen Gestaltung, Leitmotive und Symbolik.\n';
+      p += 'AUFTRAG – SCHREIBTRAINING 2 (HAUPTTEIL BLOCK 2 & BLOCK 3: HAUPTFIGUR/INNENWELT & KOMMUNIKATION):\n';
+      p += '1. TEXTGRUNDLAGE: Gib mir eine literarisch dichte Übungs-Kurzgeschichte (ca. 300–450 Wörter, mit Titel, Autor/in, Erscheinungsjahr und Zeilennummern [Z. 5], [Z. 10] …), die sowohl **Erlebte Rede / Innensicht** der Hauptfigur als auch einen unterkühlten **Dialog mit gestörter Kommunikation** (Sachebene vs. Beziehungsebene, Ellipsen/Aposiopese) enthält.\n';
+      p += '2. SCHREIBAUFTRAG: Stelle mir die Aufgabe, zu diesem Text die zwei zentralen Hauptteil-Blöcke (je ca. 25 Min.) im Fließtext mit Scharnier-Satz, Head-Sentence und **15-Punkte-Dreischritt** zu schreiben:\n';
+      p += '   • **4. Hauptteil – Block 2: Hauptfigur & innerer Konflikt** (Erzählform, personales Erzählverhalten, Innensicht, *Erlebte Rede* / Innerer Monolog, Metapher/Hypotaxe, Ambivalenz zwischen Anpassung und Ausbruchswunsch)\n';
+      p += '   • **5. Hauptteil – Block 3: Figurenkonstellation & Kommunikation** (Dominanz/Distanz, Perspektivwechsel in die Außensicht im Dialog, Sachebene vs. Beziehungsebene, beredtes Schweigen, Ellipse/Aposiopese/Parallelismus).\n';
     } else {
-      p += 'AUFTRAG – SCHREIBTRAINING 3 (TIEFENDEUTUNG, EISBERG-MODELL & AUFSATZ-SCHLUSS):\n';
-      p += '1. TEXTGRUNDLAGE: Gib mir eine anspruchsvolle Übungs-Kurzgeschichte (ca. 300–450 Wörter, mit Titel, Autor/in, Erscheinungsjahr und Zeilennummern [Z. 5], [Z. 10] …) mit deutlichen Leerstellen (Eisberg-Modell), einem subtilen Wendepunkt und einem offenen/mehrdeutigen Schluss.\n';
-      p += '2. SCHREIBAUFTRAG: Stelle mir die Aufgabe, im Fließtext:\n';
-      p += '   • Einen tiefgründigen **Deutungs-Absatz** zu den **Leerstellen (Eisberg-Modell)**, dem **Wendepunkt** und der Funktion des **offenen Schlusses** im 15-Punkte-Dreischritt zu schreiben\n';
-      p += '   • Einen abiturreifen **Schlussabsatz** zu verfassen (komprimiertes Fazit der Analyse, **Verifizierung/Differenzierung der zentralen Interpretationshypothese** und weiterführender gesellschaftlicher Ausblick ohne private Wertung).\n';
+      p += 'AUFTRAG – SCHREIBTRAINING 3 (HAUPTTEIL BLOCK 4: WENDEPUNKT, TITEL & OFFENER SCHLUSS + BAUSTEIN 7: FAZIT):\n';
+      p += '1. TEXTGRUNDLAGE: Gib mir eine anspruchsvolle Übungs-Kurzgeschichte (ca. 300–450 Wörter, mit Titel, Autor/in, Erscheinungsjahr und Zeilennummern [Z. 5], [Z. 10] …) mit einem markanten **Dingsymbol/Leitmotiv**, einem symbolischen oder ironischen **Titel**, einem **Wendepunkt** und einem abrupten **offenen Schluss** mit Leerstellen.\n';
+      p += '2. SCHREIBAUFTRAG: Stelle mir die Aufgabe, im Fließtext die letzten beiden Klausur-Bausteine auszuarbeiten:\n';
+      p += '   • **6. Hauptteil – Block 4: Wendepunkt, Titel & offener Schluss** (Epiphanie/Resignation, Deutung des Dingsymbols & Titels sowie Funktion des offenen Schlusses im Dreischritt)\n';
+      p += '   • **7. Schluss / Fazit** (Rückbezug zur Deutungshypothese, Synthese von Inhalt & Form, impliziter Appell an den Leser – ohne neue Zitate!).\n';
     }
 
     if (opData && opData.aufgabenarten) {
@@ -209,15 +212,14 @@
     }
 
     p += '\nAUFBAU DEINER ANTWORT:\n';
-    p += '1. Zuerst NUR die **Kurzgeschichte / Textgrundlage (mit Zeilennummern [Z. 5], [Z. 10] …)** und darunter die **Aufsatz-Aufgabenstellung** (mit kurzem Schreibhinweis). Noch KEINE Deutung oder Lösung verraten!\n';
+    p += '1. Zuerst NUR die **Kurzgeschichte / Textgrundlage (mit Zeilennummern [Z. 5], [Z. 10] …)** und darunter die **Aufsatz-Aufgabenstellung** (mit kurzem Hinweis auf die zu schreibenden Blöcke). Noch KEINE Deutung oder Lösung verraten!\n';
     p += '2. Dann eine deutliche Trennlinie mit dem Hinweis: "▼ ERWARTUNGSHORIZONT & 15-PUNKTE-MUSTERAUFSATZ – erst nach dem Schreiben lesen ▼".\n';
-    p += '3. Darunter **Teil A – Strukturierter Erwartungshorizont (BW-Maßstab)**:\n';
-    p += '   • Zentrale Interpretationshypothese & Gliederung in Sinnabschnitte (mit Zeilenangaben)\n';
-    p += '   • Wichtigste Analyse-Ergebnisse zu Erzähltechnik, Figuren & Kommunikation (konkrete Anwendung von Schulz von Thun / Watzlawick!), Sprache/Symbolik & Eisberg-Modell (jeweils mit Zitat + Zeile)\n';
-    p += '   • Bewertungsmaßstab (was unterscheidet einen 10-Punkte-Aufsatz von einem 15-Punkte-Aufsatz?).\n';
+    p += '3. Darunter **Teil A – Strukturierter Erwartungshorizont (entlang der 7 Klausur-Bausteine)**:\n';
+    p += '   • Deutungshypothese & Sinnabschnitte (mit Zeilenangaben)\n';
+    p += '   • Wichtigste Form-Beobachtungen (aus Werkzeugkasten A, B, C) + Zeilenbelege + Deutung für Block 1, Block 2 (inkl. Erlebter Rede), Block 3 (inkl. Sachebene vs. Beziehungsebene) und Block 4 (inkl. Dingsymbol, Titel & offenem Schluss).\n';
     p += '4. Darunter **Teil B – Vollständig ausformulierter 15-Punkte-Musteraufsatz (im Fließtext!)**:\n';
-    p += '   • Schreibe den geforderten Aufsatz (bzw. die geforderten Aufsatz-Bausteine) komplett als vorbildlichen 15-Punkte-Aufsatz vor – exakt nach den Regeln meines Lernzettels (TATTE, Konjunktiv I, aspektorientierter Aufbau, 15-Punkte-Dreischritt Form → Zitat + Zeile → Deutung und gehobene Analyse-Verben vom Lernzettel)!\n';
-    p += '5. Beende deine Antwort mit dem Hinweis: *"📸 Tipp: Schicke mir jetzt deinen geschriebenen Aufsatz (abgetippt oder als Foto deiner Handschrift) hier in den Chat – ich korrigiere ihn dir Satz für Satz und bewerte ihn nach dem BW-Abiturmaßstab (0–15 Notenpunkte)!"*\n';
+    p += '   • Schreibe den geforderten Aufsatz (bzw. die geforderten Blöcke) komplett als vorbildlichen 15-Punkte-Aufsatz im Fließtext vor – und nutze dabei aktiv die **15-Punkte-Satzschablonen, Scharnier-Sätze, Head-Sentences und Dreischritt-Verknüpfungen** von meinem Lernzettel!\n';
+    p += '5. Beende deine Antwort mit dem Hinweis: *"📸 Tipp: Schicke mir jetzt deinen geschriebenen Aufsatz (abgetippt oder als Foto deiner Handschrift) hier in den Chat – ich korrigiere ihn dir Block für Block (1–7) und bewerte ihn nach dem BW-Abiturmaßstab (0–15 Notenpunkte)!"*\n';
 
     if (opts.extra) {
       p += '\nZUSÄTZLICHE WÜNSCHE DER SCHÜLERIN:\n' + opts.extra + '\n';
@@ -228,7 +230,7 @@
       p += '----------------------------------------\n' + opts.zusatz + '\n----------------------------------------\n';
     }
 
-    p += '\nMEIN DEUTSCH-LERNZETTEL (nutze die Methoden, Modelle, Fachbegriffe und Formulierungshilfen hieraus als verbindlichen Maßstab für die Aufsatz-Anforderungen und den 15-Punkte-Musteraufsatz):\n';
+    p += '\nMEIN DEUTSCH-LERNZETTEL (nutze den 7-Schritte-Klausur-Bauplan, die 15-Punkte-Satzschablonen und die Werkzeugkästen A, B, C hieraus als verbindlichen Maßstab):\n';
     p += '----------------------------------------\n';
     p += (opts.text || '') + '\n';
     p += '----------------------------------------\n';

@@ -29,40 +29,65 @@
         }
 
         h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; color: var(--forest); margin-bottom: 0.5rem; }
-        h1 { font-size: 2.2rem; text-align: center; margin-bottom: 2rem; border-bottom: 2px solid var(--gold); padding-bottom: 1rem; }
-        h2 { font-size: 1.8rem; margin-top: 1.5rem; border-bottom: 1px solid rgba(201, 169, 110, 0.3); padding-bottom: 0.3rem;}
-        h3 { font-size: 1.4rem; margin-top: 1rem; color: var(--text-primary); }
+        h1 { font-size: 2.2rem; text-align: center; margin-bottom: 1.5rem; border-bottom: 2px solid var(--gold); padding-bottom: 1rem; }
+        h2 { font-size: 1.75rem; margin-top: 1.2rem; border-bottom: 1px solid rgba(201, 169, 110, 0.35); padding-bottom: 0.3rem; }
+        h3 { font-size: 1.35rem; margin-top: 1rem; color: var(--text-primary); }
 
-        p { margin-bottom: 1rem; }
-        ul, ol { margin-bottom: 1rem; padding-left: 2rem; }
-        li { margin-bottom: 0.5rem; }
+        p { margin-bottom: 0.85rem; }
+        ul, ol { margin-bottom: 0.85rem; padding-left: 1.4rem; }
+        li { margin-bottom: 0.35rem; }
 
         .highlight { color: var(--forest); font-weight: 600; }
         .flashcard-back .highlight { color: var(--gold); }
 
-        /* Korrekte Darstellung tiefer/höhergestellter Zahlen ohne Layout-Bugs */
         sub, sup { line-height: 0; vertical-align: baseline; font-size: 0.8em; }
         sub { position: relative; top: 0.3em; }
         sup { position: relative; top: -0.3em; }
 
-        /* Reaktionspfeile */
-        .reaction-arrow { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; vertical-align: middle; margin: 0 8px; }
-        .reaction-arrow .arrow-text { font-size: 0.65rem; line-height: 1; color: var(--text-secondary); }
-        .reaction-arrow .arrow-symbol { line-height: 1; font-size: 1.2rem; margin-top: -4px; }
-        .arrow-simple { font-family: sans-serif; margin: 0 5px; }
-
         /* Formel-Kasten & Tipp-Kasten (passend zum Botanical-Design) */
         .formula-box {
-            background: #fff; border: 1px solid rgba(201, 169, 110, 0.4); border-radius: 6px;
-            padding: 10px 16px; margin: 0.5rem 0 1rem; text-align: center; overflow-x: auto;
+            background: #fff; border: 1px solid rgba(201, 169, 110, 0.45); border-radius: 6px;
+            padding: 10px 16px; margin: 0.5rem 0 0.9rem; text-align: left; overflow-x: auto;
         }
-        .formula-box .formula-label { display: block; font-size: 0.8rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 2px; }
+        .formula-box .formula-label { display: block; font-size: 0.78rem; letter-spacing: 1.2px; text-transform: uppercase; color: var(--forest); font-weight: 700; margin-bottom: 4px; }
         .tip-box {
             background: rgba(201, 169, 110, 0.1); border-left: 4px solid var(--gold); border-radius: 4px;
-            padding: 12px 16px; margin: 1rem 0;
+            padding: 12px 16px; margin: 0.85rem 0;
         }
         .tip-box strong { color: var(--forest); font-family: 'Playfair Display', serif; }
-        mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width: 100%; }
+
+        .template-quote {
+            background: rgba(58, 90, 63, 0.04);
+            border-left: 3px solid var(--forest);
+            padding: 8px 12px;
+            border-radius: 0 4px 4px 0;
+            margin-top: 6px;
+            font-style: italic;
+            font-size: 0.92rem;
+            line-height: 1.5;
+        }
+        .template-quote + .template-quote { margin-top: 8px; }
+        .template-label {
+            display: block;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: var(--forest);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+        .time-badge {
+            display: inline-block;
+            background: rgba(201, 169, 110, 0.2);
+            color: var(--text-primary);
+            border: 1px solid rgba(201, 169, 110, 0.55);
+            border-radius: 999px;
+            padding: 2px 9px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            margin-top: 4px;
+        }
 
         /* Navigation */
         nav {
@@ -83,7 +108,7 @@
         /* Dropdown */
         .dropdown { position: relative; display: inline-block; }
         .dropdown-content {
-            display: none; position: absolute; background-color: var(--paper-cream); min-width: 250px;
+            display: none; position: absolute; background-color: var(--paper-cream); min-width: 260px;
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1); border: 1px solid var(--gold); border-radius: 4px;
             z-index: 1; top: 100%; left: 0; margin-top: 5px; max-height: 70vh; overflow-y: auto;
         }
@@ -104,19 +129,22 @@
         body:not(.print-mode) .page-footer { display: none !important; }
         body:not(.print-mode) .card {
             background: var(--paper-cream); border: 1px solid var(--gold); border-radius: 8px; padding: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03); flex: 1 1 600px; max-width: 100%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03); flex: 1 1 100%; max-width: 100%;
         }
 
         /* Tables */
-        .table-wrapper { overflow-x: auto; margin-bottom: 1.5rem; border-radius: 4px; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.02); border: 1px solid rgba(201, 169, 110, 0.2); }
-        table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
-        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid rgba(45, 58, 46, 0.1); }
-        th { background-color: rgba(58, 90, 63, 0.05); color: var(--forest); font-family: 'Playfair Display', serif; font-weight: 600; }
+        .table-wrapper { overflow-x: auto; margin-bottom: 1.2rem; border-radius: 4px; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.02); border: 1px solid rgba(201, 169, 110, 0.25); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.93rem; }
+        th, td { padding: 11px 14px; text-align: left; border-bottom: 1px solid rgba(45, 58, 46, 0.1); vertical-align: top; }
+        th { background-color: rgba(58, 90, 63, 0.06); color: var(--forest); font-family: 'Playfair Display', serif; font-weight: 600; }
         tr:last-child td { border-bottom: none; }
+        td ul { margin-bottom: 0; padding-left: 1.15rem; }
+        td li { margin-bottom: 0.3rem; }
+        td li:last-child { margin-bottom: 0; }
 
         /* Flashcards */
-        .flashcards-container { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px; margin-bottom: 1rem; }
-        .flashcard { perspective: 1000px; width: 200px; height: 240px; cursor: pointer; flex: 1 1 200px; }
+        .flashcards-container { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 12px; margin-bottom: 1rem; }
+        .flashcard { perspective: 1000px; width: 200px; height: 230px; cursor: pointer; flex: 1 1 200px; }
         .flashcard-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; }
         .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
         .flashcard-front, .flashcard-back {
@@ -125,39 +153,44 @@
             background-color: var(--paper-cream); box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             overflow-y: auto; scrollbar-width: none;
         }
-        .flashcard-front { color: var(--forest); font-family: 'Playfair Display', serif; font-weight: 600; font-size: 1.05rem; }
-        .flashcard-back { transform: rotateY(180deg); background-color: var(--forest); color: var(--paper-white); border-color: var(--forest); font-size: 0.9rem; }
+        .flashcard-front { color: var(--forest); font-family: 'Playfair Display', serif; font-weight: 600; font-size: 1.02rem; }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--forest); color: var(--paper-white); border-color: var(--forest); font-size: 0.88rem; }
         .flashcard span, .flashcard p { display: block; width: 100%; }
 
         /* Druck Modus - KOMPAKTERES LAYOUT */
-        body.print-mode { background-color: #E2E2E2; padding-top: 90px; font-size: 0.85rem; line-height: 1.4; }
-        body.print-mode h1 { font-size: 1.7rem; margin-bottom: 1rem; padding-bottom: 0.5rem; }
-        body.print-mode h2 { font-size: 1.3rem; margin-top: 1rem; padding-bottom: 0.2rem; }
-        body.print-mode h3 { font-size: 1.1rem; margin-top: 0.8rem; margin-bottom: 0.3rem; }
-        body.print-mode p, body.print-mode ul, body.print-mode ol { margin-bottom: 0.6rem; }
-        body.print-mode li { margin-bottom: 0.2rem; }
-        body.print-mode th, body.print-mode td { padding: 6px 10px; }
-        body.print-mode .formula-box { padding: 6px 12px; margin: 0.3rem 0 0.6rem; }
-        body.print-mode .tip-box { padding: 8px 12px; margin: 0.6rem 0; }
+        body.print-mode { background-color: #E2E2E2; padding-top: 90px; font-size: 0.8rem; line-height: 1.35; }
+        body.print-mode h1 { font-size: 1.55rem; margin-bottom: 0.7rem; padding-bottom: 0.4rem; }
+        body.print-mode h2 { font-size: 1.2rem; margin-top: 0.6rem; padding-bottom: 0.2rem; }
+        body.print-mode h3 { font-size: 1.02rem; margin-top: 0.6rem; margin-bottom: 0.25rem; }
+        body.print-mode p, body.print-mode ul, body.print-mode ol { margin-bottom: 0.45rem; }
+        body.print-mode li { margin-bottom: 0.18rem; }
+        body.print-mode table { font-size: 0.78rem; }
+        body.print-mode th, body.print-mode td { padding: 5px 8px; }
+        body.print-mode .template-quote { padding: 5px 8px; font-size: 0.76rem; line-height: 1.35; margin-top: 4px; }
+        body.print-mode .template-label { font-size: 0.7rem; }
+        body.print-mode .time-badge { font-size: 0.7rem; padding: 1px 6px; }
+        body.print-mode .formula-box { padding: 5px 10px; margin: 0.25rem 0 0.5rem; }
+        body.print-mode .tip-box { padding: 6px 10px; margin: 0.45rem 0; }
 
         body.print-mode .content-wrapper { max-width: none; padding: 0; display: block; }
         body.print-mode .page {
-            width: 210mm; height: auto; min-height: 297mm; padding: 15mm; margin: 0 auto 20mm auto; background: white;
+            width: 210mm; height: auto; min-height: 297mm; padding: 13mm 14mm; margin: 0 auto 20mm auto; background: white;
             box-shadow: 0 0 15px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: visible; break-after: page;
         }
         body.print-mode .card { background: transparent; border: none; padding: 0; box-shadow: none; margin-bottom: 0; }
-        body.print-mode .flashcards-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; }
+        body.print-mode .flashcards-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; margin-top: 6px; }
         body.print-mode .flashcard { width: auto; height: auto; min-height: auto; border: 1px solid var(--text-primary); border-radius: 0; page-break-inside: avoid; }
         body.print-mode .flashcard-inner { transform: none !important; transition: none; display: flex; flex-direction: column; }
         body.print-mode .flashcard-front, body.print-mode .flashcard-back {
-            border: none; box-shadow: none; position: static; height: auto; padding: 6px 10px;
+            border: none; box-shadow: none; position: static; height: auto; padding: 5px 8px;
             background: transparent; border-radius: 0; color: var(--text-primary); transform: none;
         }
-        body.print-mode .flashcard-front { border-bottom: 1px dashed #ccc; font-size: 0.95rem; }
+        body.print-mode .flashcard-front { border-bottom: 1px dashed #ccc; font-size: 0.85rem; }
+        body.print-mode .flashcard-back { font-size: 0.76rem; }
 
         .page-footer {
-            margin-top: auto; border-top: 1px solid var(--gold); padding-top: 10px;
-            display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-secondary); font-family: 'Playfair Display', serif;
+            margin-top: auto; border-top: 1px solid var(--gold); padding-top: 8px;
+            display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--text-secondary); font-family: 'Playfair Display', serif;
         }
         @media (max-width: 768px) {
             #btn-fullscreen { display: none !important; }
@@ -167,57 +200,55 @@
         }
         @media print {
             @page { size: A4; margin: 0; }
-            body { background-color: white !important; padding-top: 0 !important; font-size: 0.85rem !important; line-height: 1.4 !important; }
-            h1 { font-size: 1.7rem !important; margin-bottom: 1rem !important; padding-bottom: 0.5rem !important; }
-            h2 { font-size: 1.3rem !important; margin-top: 1rem !important; padding-bottom: 0.2rem !important; break-after: avoid !important; }
-            h3 { font-size: 1.1rem !important; margin-top: 0.8rem !important; margin-bottom: 0.3rem !important; break-after: avoid !important; }
-            p, ul, ol { margin-bottom: 0.6rem !important; }
-            li { margin-bottom: 0.2rem !important; }
-            th, td { padding: 6px 10px !important; }
-            table { break-inside: avoid !important; }
-            .formula-box { padding: 6px 12px !important; margin: 0.3rem 0 0.6rem !important; break-inside: avoid !important; }
-            .tip-box { padding: 8px 12px !important; margin: 0.6rem 0 !important; break-inside: avoid !important; }
+            body { background-color: white !important; padding-top: 0 !important; font-size: 0.79rem !important; line-height: 1.34 !important; }
+            h1 { font-size: 1.5rem !important; margin-bottom: 0.6rem !important; padding-bottom: 0.35rem !important; }
+            h2 { font-size: 1.18rem !important; margin-top: 0.5rem !important; padding-bottom: 0.18rem !important; break-after: avoid !important; }
+            h3 { font-size: 1rem !important; margin-top: 0.5rem !important; margin-bottom: 0.2rem !important; break-after: avoid !important; }
+            p, ul, ol { margin-bottom: 0.4rem !important; }
+            li { margin-bottom: 0.16rem !important; }
+            table { font-size: 0.76rem !important; break-inside: auto !important; }
+            tr { break-inside: avoid !important; }
+            th, td { padding: 5px 7px !important; }
+            .template-quote { padding: 4px 7px !important; font-size: 0.74rem !important; line-height: 1.32 !important; }
+            .formula-box { padding: 5px 10px !important; margin: 0.25rem 0 0.45rem !important; break-inside: avoid !important; }
+            .tip-box { padding: 6px 10px !important; margin: 0.4rem 0 !important; break-inside: avoid !important; }
             nav { display: none !important; }
             .content-wrapper { margin: 0; padding: 0; }
-            .page { margin: 0; box-shadow: none; width: 210mm; min-height: 297mm; height: 297mm; padding: 15mm !important; display: block; overflow: hidden !important; break-after: page; break-before: auto; page-break-after: always; box-sizing: border-box; }
+            .page { margin: 0; box-shadow: none; width: 210mm; min-height: 297mm; height: 297mm; padding: 12mm 14mm !important; display: flex; flex-direction: column; overflow: hidden !important; break-after: page; break-before: auto; page-break-after: always; box-sizing: border-box; }
             .page:last-child { break-after: auto; page-break-after: auto; }
-            .card { background: transparent; border: none; padding: 0; box-shadow: none; break-inside: avoid !important; }
-            .flashcards-container { display: grid; grid-template-columns: repeat(3, 1fr) !important; gap: 6mm !important; }
+            .card { background: transparent; border: none; padding: 0; box-shadow: none; }
+            .flashcards-container { display: grid; grid-template-columns: repeat(3, 1fr) !important; gap: 4mm !important; }
             .flashcard { width: auto; height: auto; min-height: auto !important; border: 1px solid #000; border-radius: 0; break-inside: avoid !important; }
             .flashcard-inner { transform: none !important; transition: none; display: flex; flex-direction: column; }
-            .flashcard-front { position: static; height: auto; border: none; border-bottom: 1px dashed #000; color: #000; background: transparent; transform: none; padding: 6px 10px !important; font-size: 0.95rem !important;}
-            .flashcard-back { position: static; height: auto; border: none; color: #000; background: transparent; transform: none; padding: 6px 10px !important;}
+            .flashcard-front { position: static; height: auto; border: none; border-bottom: 1px dashed #000; color: #000; background: transparent; transform: none; padding: 4px 7px !important; font-size: 0.82rem !important;}
+            .flashcard-back { position: static; height: auto; border: none; color: #000; background: transparent; transform: none; padding: 4px 7px !important; font-size: 0.74rem !important;}
             .page-footer { break-before: auto !important; margin-top: auto; }
         }
 
         /* ===== PC-MODUS: Bessere Lesbarkeit auf großen Bildschirmen (Druck-Modus bleibt unverändert) ===== */
         @media screen and (min-width: 1200px) {
-            html:not(:has(body.print-mode)) { font-size: 18px; }
-            body:not(.print-mode) { font-weight: 500; line-height: 1.7; --text-secondary: #4A5A4C; }
+            html:not(:has(body.print-mode)) { font-size: 17.5px; }
+            body:not(.print-mode) { font-weight: 500; line-height: 1.65; --text-secondary: #4A5A4C; }
             body:not(.print-mode) h1 { font-weight: 700; border-bottom-width: 3px; }
             body:not(.print-mode) h2 { font-weight: 700; border-bottom: 2px solid rgba(201, 169, 110, 0.55); }
             body:not(.print-mode) h3 { font-weight: 700; }
             body:not(.print-mode) .highlight { font-weight: 700; }
-            body:not(.print-mode) .card { border-width: 1.5px; padding: 35px 40px; box-shadow: 0 6px 22px rgba(45, 58, 46, 0.07); }
+            body:not(.print-mode) .card { border-width: 1.5px; padding: 32px 36px; box-shadow: 0 6px 22px rgba(45, 58, 46, 0.07); }
             body:not(.print-mode) .table-wrapper { border-color: rgba(201, 169, 110, 0.5); }
-            body:not(.print-mode) table { font-size: 1rem; }
+            body:not(.print-mode) table { font-size: 0.96rem; }
             body:not(.print-mode) th, body:not(.print-mode) td { border-bottom-color: rgba(45, 58, 46, 0.18); }
             body:not(.print-mode) th { font-weight: 700; }
-            body:not(.print-mode) .flashcard { height: 280px; }
-            body:not(.print-mode) .flashcard-front, body:not(.print-mode) .flashcard-back { border-width: 1.5px; padding: 20px; }
-            body:not(.print-mode) .flashcard-front { font-size: 1.15rem; font-weight: 700; }
-            body:not(.print-mode) .flashcard-back { font-size: 1rem; font-weight: 500; }
-            body:not(.print-mode) .reaction-arrow .arrow-text { font-size: 0.75rem; }
+            body:not(.print-mode) .flashcard { height: 260px; }
+            body:not(.print-mode) .flashcard-front, body:not(.print-mode) .flashcard-back { border-width: 1.5px; padding: 18px; }
+            body:not(.print-mode) .flashcard-front { font-size: 1.1rem; font-weight: 700; }
+            body:not(.print-mode) .flashcard-back { font-size: 0.95rem; font-weight: 500; }
             body:not(.print-mode) .nav-btn { font-size: 0.95rem; font-weight: 600; border-width: 1.5px; }
             body:not(.print-mode) .dropdown-item { font-size: 0.95rem; font-weight: 500; }
             body:not(.print-mode) nav { border-bottom-width: 1.5px; }
-            body:not(.print-mode) .formula-box { border-color: rgba(201, 169, 110, 0.6); }
-            body:not(.print-mode) .formula-box .formula-label { font-weight: 600; }
         }
         @media screen and (min-width: 1700px) {
-            html:not(:has(body.print-mode)) { font-size: 19.5px; }
+            html:not(:has(body.print-mode)) { font-size: 19px; }
             body:not(.print-mode) .content-wrapper { max-width: 1800px; }
-            body:not(.print-mode) .flashcard { height: 300px; }
         }
     </style>
 </head>
@@ -239,56 +270,114 @@
 
     <div class="content-wrapper" id="content">
 
-        <!-- SEITE 1: Merkmale der Kurzprosa -->
+        <!-- ============================================================
+             SEITE 1: Teil 1 – Klausur-Bauplan (Bausteine 1 bis 3)
+             ============================================================ -->
         <div class="page">
-            <div class="card" id="teil-1">
-                <h1 id="sec-titel">Interpretation von Kurzprosa<br><small style="font-size: 0.6em; font-weight: normal;">(15-Punkte-Lernzettel – Abitur BW)</small></h1>
+            <div class="card" id="teil-1a">
+                <h1 id="sec-titel">Interpretation von Kurzprosa<br><small style="font-size: 0.58em; font-weight: normal;">(15-Punkte-Klausur-Bauplan &amp; Fachbegriffs-Lexikon – Abitur BW)</small></h1>
 
-                <h2 id="sec-1">1. Merkmale der Kurzprosa</h2>
-                <p><em>Tipp: Kärtchen anklicken zum Umdrehen.</em></p>
-                <div class="flashcards-container">
-                    <div class="flashcard">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Unvermittelter Einstieg</span></div>
-                            <div class="flashcard-back"><span style="display:block;">Beginn <span class="highlight">in medias res</span> (keine Einleitung/Vorgeschichte).</span></div>
-                        </div>
-                    </div>
-                    <div class="flashcard">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Offener / halboffener Schluss</span></div>
-                            <div class="flashcard-back"><span style="display:block;">Konflikt bleibt oft ungelöst; zwingt den Leser zur <span class="highlight">eigenen Deutung</span> (oft auch überraschende Pointe/Richtungswechsel).</span></div>
-                        </div>
-                    </div>
-                    <div class="flashcard">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Ausschnitthaftigkeit („Blitzlicht“)</span></div>
-                            <div class="flashcard-back"><span style="display:block;">Scharf umrissene <span class="highlight">Momentaufnahme</span> eines (alltäglichen) Lebens.</span></div>
-                        </div>
-                    </div>
-                    <div class="flashcard">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Reduktion</span></div>
-                            <div class="flashcard-back"><span style="display:block;">Wenige (oft <span class="highlight">namenlose</span>) Figuren, einsträngige Handlung, häufig kein Ortswechsel.</span></div>
-                        </div>
-                    </div>
-                    <div class="flashcard">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Zeitstruktur</span></div>
-                            <div class="flashcard-back"><span style="display:block;">Erzählte Zeit und Erzählzeit nähern sich an (<span class="highlight">zeitdeckend</span>), Handlung umfasst meist nur Minuten/Stunden.</span></div>
-                        </div>
-                    </div>
-                    <div class="flashcard">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Sprache</span></div>
-                            <div class="flashcard-back"><span style="display:block;">Vordergründig nüchtern, knapp und alltäglich – tiefgründig jedoch enorm <span class="highlight">metaphorisch und symbolisch verdichtet</span>.</span></div>
-                        </div>
-                    </div>
-                    <div class="flashcard">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front"><span style="display:block;">Leerstellen (Eisberg-Modell)</span></div>
-                            <div class="flashcard-back"><span style="display:block;">Entscheidende Konflikte bleiben <span class="highlight">unausgesprochen</span>; der Leser muss die Informationen selbst verknüpfen.</span></div>
-                        </div>
-                    </div>
+                <h2 id="sec-teil1">Teil 1: Der komplette Klausur-Bauplan (Einleitung bis Schluss)</h2>
+                <p>Hier siehst du in chronologischer Reihenfolge für jeden einzelnen Abschnitt deiner Arbeit, was <strong>inhaltlich</strong> rein muss, welche <strong>Form-Werkzeuge</strong> du dort auspackst und wie du die Sätze auf <strong>15-Punkte-Niveau</strong> einleitest.</p>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 16%;">Klausur-Baustein &amp; Zeit</th>
+                                <th style="width: 26%;">Was muss INHALTLICH rein?<br><small>(Dein Fokus / Analysestern)</small></th>
+                                <th style="width: 28%;">Welche FORM-Werkzeuge &amp; Fachbegriffe gehören genau hierher?</th>
+                                <th style="width: 30%;">15-Punkte-Satzschablonen<br><small>(Direkt zum Übernehmen!)</small></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- 1. Einleitung & Deutungshypothese -->
+                            <tr id="sec-b1">
+                                <td>
+                                    <span class="highlight">1. Einleitung &amp; Deutungshypothese</span><br>
+                                    <span class="time-badge">ca. 8–10 Min.</span>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li><span class="highlight">Basissatz:</span> Titel, Autor/in, Erscheinungsjahr, Textsorte (Kurzgeschichte), zentrales Thema.</li>
+                                        <li><span class="highlight">Deutungshypothese:</span> Dein roter Faden! Welcher tiefere psychologische oder zwischenmenschliche Konflikt steckt hinter der harmlosen Alltagsszene?</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li><span class="highlight">Epochen-/Gattungsbegriff:</span> Moderne Kurzprosa / Kurzgeschichte (ggf. Nachkriegsliteratur, Alltagsrealismus).</li>
+                                        <li><span class="highlight">Schlüsselbegriffe für die Hypothese:</span> Entfremdung, Kommunikationsunfähigkeit, Diskrepanz zwischen Fassade und Innerem, Rollenzwang, Ambivalenz, Desillusionierung, Eskapismus (Realitätsflucht).</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <div class="template-quote">
+                                        <span class="template-label">Basissatz + Hypothese:</span>
+                                        „In der Kurzgeschichte ‚[Titel]‘ von [Autor] aus dem Jahr [Jahr] wird anhand einer scheinbar banalen Alltagssituation [Thema, z. B. ein Ehekonflikt] thematisiert. Im Zentrum steht dabei die Deutungshypothese, dass der Text die fundamentale [z. B. Entfremdung / Kommunikationslosigkeit] zwischen [Figuren] entlarvt, wobei der Protagonist an der Diskrepanz zwischen [z. B. innerem Ausbruchswunsch und äußerer Anpassung] scheitert.“
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- 2. Strukturierte Inhaltsangabe -->
+                            <tr id="sec-b2">
+                                <td>
+                                    <span class="highlight">2. Strukturierte Inhaltsangabe</span><br>
+                                    <span class="time-badge">ca. 10–12 Min.</span>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li><span class="highlight">Äußere Handlung (Überblick):</span> Knappe Zusammenfassung des Geschehens.</li>
+                                        <li><span class="highlight">Gliederung in Sinnabschnitte:</span> Nicht Satz für Satz nacherzählen, sondern zeigen, wie der Text aufgebaut ist (z. B. Z. 1–10 Ausgangslage, Z. 11–25 Konflikt, Z. 26–35 Ende).</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li><span class="highlight">Tempus:</span> Streng im Präsens (Vorzeitiges im Perfekt).</li>
+                                        <li><span class="highlight">Modus:</span> Indirekte Rede mit Konjunktiv I (z. B. sie sagt, er sei müde).</li>
+                                        <li><span class="highlight">Tabus:</span> Keine Zitate, keine Deutung, keine Spannung aufbauen.</li>
+                                        <li><span class="highlight">Erzählstruktur-Begriffe:</span> Ausgangssituation, Konfliktentfaltung, Wendepunkt, offener Ausgang.</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <div class="template-quote">
+                                        <span class="template-label">Struktur-Formel:</span>
+                                        „Die Handlung lässt sich in drei Sinnabschnitte gliedern: Zunächst wird in den Zeilen [X–Y] die Ausgangssituation im [Ort] geschildert, in der [Handlung 1]. Daraufhin verdichtet sich der Konflikt (Z. [X–Y]), indem [Handlung 2]. Abschließend kulminiert das Geschehen in [Wendepunkt/Ende] (Z. [X–Y]), ohne dass eine Lösung erfolgt.“
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- 3. Hauptteil – Block 1: Rahmen, Einstieg & Grundstimmung -->
+                            <tr id="sec-b3">
+                                <td>
+                                    <span class="highlight">3. Hauptteil – Block 1: Rahmen, Einstieg &amp; Grundstimmung</span><br>
+                                    <span class="time-badge">ca. 15 Min.</span>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li><span class="highlight">Merkmale Kurzgeschichte (1):</span> Unmittelbarer Einstieg ohne Vorrede.</li>
+                                        <li><span class="highlight">Gestaltung von Ort &amp; Zeit:</span> Symbolischer Raum (Enge vs. Weite), Tages-/Jahreszeit, Wetter als Spiegel der Stimmung.</li>
+                                        <li><span class="highlight">Äußere Handlung (Detail):</span> Was tun die Figuren rein äußerlich (Kamerablick)?</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li><span class="highlight">Einstieg:</span> in medias res (mitten ins Geschehen), temporale/lokale Deixis (Wörter wie „Jetzt“, „Hier“), kataphorischer Einstieg (Personalpronomen „Er/Sie“ ohne Namensnennung).</li>
+                                        <li><span class="highlight">Zeitgestaltung:</span> Erzählzeit vs. erzählte Zeit: Zeitdeckung (1:1 wie im Film), Zeitraffung (Zeitsprung), Zeitdehnung (Gedanken in Sekundenbruchteilen werden lang erzählt).</li>
+                                        <li><span class="highlight">Raum &amp; Syntax:</span> Bedeutungsraum / Stimmungsraum, Wortfelder (Kälte, Dunkelheit), Parataxe, asyndetische Reihung (mechanische Verben).</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <div class="template-quote">
+                                        <span class="template-label">Head-Sentence Block 1:</span>
+                                        „Typisch für die Gattung der Kurzgeschichte setzt die Handlung unvermittelt in medias res ein, wobei die Raum- und Zeitgestaltung von Beginn an als symbolischer Spiegel der Grundstimmung fungiert.“
+                                    </div>
+                                    <div class="template-quote">
+                                        <span class="template-label">Dreischritt-Verknüpfung:</span>
+                                        „Auf Ebene der äußeren Handlung korrespondiert diese Tristesse mit einem zeitdeckenden Erzähltempo sowie einer asyndetischen Parataxe mechanischer Verben (‚…‘, Z. X), welche die Handgriffe der Figur als bloße Übersprungshandlungen entlarven.“
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <div class="page-footer">
@@ -298,50 +387,94 @@
             </div>
         </div>
 
-        <!-- SEITE 2: Aufbau der Klausur -->
+        <!-- ============================================================
+             SEITE 2: Teil 1 – Klausur-Bauplan (Bausteine 4 & 5)
+             ============================================================ -->
         <div class="page">
-            <div class="card" id="teil-2">
-                <h2 id="sec-2">2. Aufbau der Klausur (Schritt für Schritt)</h2>
-                <div class="tip-box">
-                    <strong>Goldene Regel:</strong> Für 15 Punkte im Hauptteil zwingend das <span class="highlight">aspektorientierte Verfahren</span> statt linearer Nacherzählung wählen!
-                </div>
+            <div class="card" id="teil-1b">
+                <h3 id="sec-teil1-forts">Klausur-Bauplan (Fortsetzung): Hauptteil – Block 2 &amp; Block 3</h3>
+
                 <div class="table-wrapper">
                     <table>
-                        <tr><th>Schritt</th><th>Inhalt</th></tr>
-                        <tr>
-                            <td><span class="highlight">I. Vorarbeit</span><br>(Konzeptpapier)</td>
-                            <td>Sinnabschnitte markieren, formale Besonderheiten direkt an der Textstelle notieren.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="highlight">II. Einleitung</span></td>
-                            <td><span class="highlight">Aufhänger:</span> Abstraktes Phänomen (z. B. Kommunikationsverlust), Zitat oder aktueller Bezug.<br>
-                                <span class="highlight">Basissatz (TATTE):</span> <b>T</b>itel, <b>A</b>utor, <b>T</b>extsorte, <b>T</b>hema (Worum geht es?), <b>E</b>rscheinungsjahr.<br>
-                                <span class="highlight">Zentrale Interpretationshypothese:</span> Vorläufiger, präziser Deutungsansatz der tieferen Textaussage (keine bloße Inhaltsangabe!).</td>
-                        </tr>
-                        <tr>
-                            <td><span class="highlight">III. Inhaltsangabe</span><br>(Gelenkstelle)</td>
-                            <td><span class="highlight">Tempus:</span> Zwingend Präsens (Vorzeitigkeit = Perfekt).<br>
-                                <span class="highlight">Regeln:</span> Maximal verknappt, sachlich, eigene Worte (keine Zitate!).<br>
-                                <span class="highlight">Wörtliche Rede:</span> Ausschließlich indirekte Rede verwenden (Konjunktiv I).</td>
-                        </tr>
-                        <tr>
-                            <td><span class="highlight">IV. Hauptteil</span><br>(Analyse &amp; Interpretation)</td>
-                            <td><span class="highlight">Gliederung (aspektorientiert):</span> z. B. nach dem „Analysestern“ (1. Aufbau/Handlung, 2. Erzählperspektive, 3. Figuren/Kommunikation, 4. Sprache/Symbole, 5. Raum/Zeit).<br>
-                                <span class="highlight">Der 15-Punkte-Dreischritt:</span> 1. Form (Aspekt/Stilmittel benennen) → 2. Beleg (Zitat + Zeile) → 3. Deutung (Wirkung auf inhaltliche Aussage erklären).</td>
-                        </tr>
-                        <tr>
-                            <td><span class="highlight">V. Schluss</span></td>
-                            <td><span class="highlight">Fazit:</span> Komprimierte Bündelung der zentralen Analyseergebnisse.<br>
-                                <span class="highlight">Verifizierung:</span> Rückgriff auf die Einleitung → Hat sich die Interpretationshypothese bestätigt, modifiziert oder erweitert?<br>
-                                <span class="highlight">Ausblick:</span> Aktualitätsbezug.</td>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th style="width: 16%;">Klausur-Baustein &amp; Zeit</th>
+                                <th style="width: 26%;">Was muss INHALTLICH rein?<br><small>(Dein Fokus / Analysestern)</small></th>
+                                <th style="width: 28%;">Welche FORM-Werkzeuge &amp; Fachbegriffe gehören genau hierher?</th>
+                                <th style="width: 30%;">15-Punkte-Satzschablonen<br><small>(Direkt zum Übernehmen!)</small></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- 4. Hauptteil – Block 2: Hauptfigur & innerer Konflikt -->
+                            <tr id="sec-b4">
+                                <td>
+                                    <span class="highlight">4. Hauptteil – Block 2: Hauptfigur &amp; innerer Konflikt</span><br>
+                                    <span class="time-badge">ca. 25 Min.</span>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li><span class="highlight">Figurencharakteristik (Protagonist):</span> Ängste, Wünsche, Selbstbild.</li>
+                                        <li><span class="highlight">Innere Handlung:</span> Das seelische Drama hinter der ruhigen Fassade; der Zwiespalt (Ambivalenz).</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li><span class="highlight">Erzählform:</span> Ich-Erzähler oder Er-/Sie-Erzähler.</li>
+                                        <li><span class="highlight">Erzählverhalten:</span> Personal (durch die Brille der Figur), auktorial (allwissend), neutral (Kamerablick).</li>
+                                        <li><span class="highlight">Perspektive:</span> Innensicht vs. Außensicht.</li>
+                                        <li><span class="highlight">Darbietungsformen der Gedanken:</span> Innerer Monolog (Ich-Form, Präsens), Erlebte Rede (3. Person + Präteritum, aber Gedanken der Figur!), Bewusstseinsstrom (Stream of consciousness: ungeordnete Gedankenfetzen).</li>
+                                        <li><span class="highlight">Stilmittel &amp; Syntax:</span> Metapher, Vergleich, Hyperbel, Ironie, Hypotaxe (Grübeln), Ellipse (Gedankenabbruch).</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <div class="template-quote">
+                                        <span class="template-label">Scharnier-Satz + Head-Sentence Block 2:</span>
+                                        „Im scharfen Kontrast zu dieser ereignislosen äußeren Szenerie offenbart die Innensicht des personalen Erzählverhaltens in Bezug auf die innere Handlung einen tiefgreifenden psychischen Konflikt der Hauptfigur.“
+                                    </div>
+                                    <div class="template-quote">
+                                        <span class="template-label">Dreischritt-Verknüpfung:</span>
+                                        „Durch den Einsatz der erlebten Rede (‚…‘, Z. X) sowie die metaphorische Verdichtung (‚…‘, Z. Y) wird die Ambivalenz zwischen äußerer Rollenanpassung und innerem Ausbruchswunsch unmittelbar erfahrbar.“
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- 5. Hauptteil – Block 3: Figurenkonstellation & Kommunikation -->
+                            <tr id="sec-b5">
+                                <td>
+                                    <span class="highlight">5. Hauptteil – Block 3: Figurenkonstellation &amp; Kommunikation</span><br>
+                                    <span class="time-badge">ca. 25 Min.</span>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li><span class="highlight">Figurenkonstellation:</span> Wie stehen die Figuren zueinander? (Dominanz vs. Unterwerfung, Nähe vs. Distanz, Ehe/Familie).</li>
+                                        <li><span class="highlight">Kommunikation:</span> Das Scheitern des Gesprächs (Aneinander-vorbei-Reden, Floskeln, Verschweigen, nonverbale Signale / Körpersprache).</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li><span class="highlight">Perspektivwechsel:</span> Oft Rückzug in die Außensicht / neutrales Erzählverhalten während der Dialoge (zeigt emotionale Distanz!).</li>
+                                        <li><span class="highlight">Redewiedergabe:</span> Direkte Rede (Dialoge), knappe Alltagssprache / Umgangssprache.</li>
+                                        <li><span class="highlight">Syntaktische Dialog-Mittel:</span> Rhetorische Fragen, Ellipsen (abgebrochene Sätze), Aposiopese (Satzabbruch durch Gedankenstrich), Parallelismus (nebeneinanderher leben), Antithese / Kontrast.</li>
+                                        <li><span class="highlight">Kommunikationstheorie (Bonus für 15 P.!):</span> Beziehungsebene vs. Sachebene (man redet über Banales wie den Füller-Preis, meint aber Kontrolle/Gleichgültigkeit), beredtes Schweigen.</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <div class="template-quote">
+                                        <span class="template-label">Scharnier-Satz + Head-Sentence Block 3:</span>
+                                        „Diese innere Isolation des Protagonisten resultiert maßgeblich aus der festgefahrenen Figurenkonstellation und spiegelt sich in der gestörten Kommunikation mit [Name des Gegenübers] wider.“
+                                    </div>
+                                    <div class="template-quote">
+                                        <span class="template-label">Dreischritt-Verknüpfung:</span>
+                                        „In der direkten Rede dominiert eine unterkühlte Alltagssprache: Während auf der Sachebene lediglich Belanglosigkeiten ausgetauscht werden (‚…‘, Z. X), offenbart das Schweigen über die wahren Bedürfnisse auf der Beziehungsebene eine völlige Entfremdung.“
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
+
                 <div class="tip-box">
-                    <strong>Niemals Form und Inhalt trennen!</strong> (Dreischritt Form → Beleg → Deutung)
-                </div>
-                <div class="tip-box">
-                    <strong>Tabu im Schluss:</strong> Private Wertungen wie „Mir hat die Geschichte gut gefallen“.
+                    <strong>Goldene 15-Punkte-Regel für alle 4 Hauptteil-Blöcke:</strong> Verknüpfe in jedem Absatz zwingend <span class="highlight">1. Form (Fachbegriff) → 2. Beleg (Zitat + Zeile) → 3. funktionale Deutung (Wirkung für den Konflikt)</span>. Niemals Form und Inhalt trennen!
                 </div>
             </div>
             <div class="page-footer">
@@ -351,25 +484,89 @@
             </div>
         </div>
 
-        <!-- SEITE 3: Werkzeugkasten A -->
+        <!-- ============================================================
+             SEITE 3: Teil 1 – Klausur-Bauplan (Bausteine 6 & 7)
+             ============================================================ -->
         <div class="page">
-            <div class="card" id="teil-3a">
-                <h2 id="sec-3">3. Der analytische Werkzeugkasten</h2>
-                <h3 id="sec-3a">A. Erzähltechnik, Raum &amp; Zeit</h3>
+            <div class="card" id="teil-1c">
+                <h3 id="sec-teil1-schluss">Klausur-Bauplan (Abschluss): Hauptteil – Block 4 &amp; Schluss / Fazit</h3>
+
                 <div class="table-wrapper">
                     <table>
-                        <tr><th>Werkzeug</th><th>Fachbegriff / Ausprägung</th><th>Typische Deutung / Wirkung</th></tr>
-                        <tr><td rowspan="3"><span class="highlight">Erzählverhalten</span></td><td>Auktorial (allwissend)</td><td>Lenkt den Leser, kommentiert, ordnet ein, schafft Distanz zum Geschehen.</td></tr>
-                        <tr><td>Personal (aus Sicht einer Figur)</td><td>Nähe zur Figur, hohe Identifikation, jedoch subjektiv und eingeschränkt.</td></tr>
-                        <tr><td>Neutral (Kamera-Auge)</td><td>Kühle, objektive Distanz; zwingt den Leser zur eigenen Urteilsbildung.</td></tr>
-                        <tr><td><span class="highlight">Sichtweise</span></td><td>Innensicht vs. Außensicht</td><td>Wechsel entlarven die Diskrepanz zwischen gespieltem Schein und wahren Gefühlen.</td></tr>
-                        <tr><td><span class="highlight">Darbietung</span></td><td>Innerer Monolog / Erlebte Rede</td><td>Direkter Einblick in die Psyche; offenbart unausgesprochene Vorwürfe/Zerrissenheit.</td></tr>
-                        <tr><td rowspan="3"><span class="highlight">Zeitgestaltung</span></td><td>Zeitraffung<br>(Erzählzeit &lt; erzählte Zeit)</td><td>Beschleunigung; unterstreicht Routine, Alltagsmonotonie oder unwichtige Phasen.</td></tr>
-                        <tr><td>Zeitdeckung<br>(Erzählzeit = erzählte Zeit)</td><td>Unmittelbarkeit, Nähe, Dramatik (oft bei Dialogen / Konfliktausbrüchen).</td></tr>
-                        <tr><td>Zeitdehnung<br>(Erzählzeit &gt; erzählte Zeit)</td><td>Fokus auf extreme emotionale Momente, Schockstarre oder innere Reflexionen.</td></tr>
-                        <tr><td rowspan="2"><span class="highlight">Raumgestaltung</span></td><td>Stimmungsraum</td><td>Umgebung spiegelt die Psyche (z. B. Nieselregen/Nacht = Isolation, Trauer, Kälte).</td></tr>
-                        <tr><td>Symbolischer / Kontrast-Raum</td><td>Orte repräsentieren Konzepte (z. B. Kino = Traumwelt vs. Straße = harte Realität; Abstellkammer = Verdrängung).</td></tr>
+                        <thead>
+                            <tr>
+                                <th style="width: 16%;">Klausur-Baustein &amp; Zeit</th>
+                                <th style="width: 26%;">Was muss INHALTLICH rein?<br><small>(Dein Fokus / Analysestern)</small></th>
+                                <th style="width: 28%;">Welche FORM-Werkzeuge &amp; Fachbegriffe gehören genau hierher?</th>
+                                <th style="width: 30%;">15-Punkte-Satzschablonen<br><small>(Direkt zum Übernehmen!)</small></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- 6. Hauptteil – Block 4: Wendepunkt, Titel & offener Schluss -->
+                            <tr id="sec-b6">
+                                <td>
+                                    <span class="highlight">6. Hauptteil – Block 4: Wendepunkt, Titel &amp; offener Schluss</span><br>
+                                    <span class="time-badge">ca. 15 Min.</span>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li><span class="highlight">Erzählstruktur / Wendepunkt:</span> Der Moment der Erkenntnis (Epiphanie) oder des endgültigen Scheiterns (Desillusionierung / Resignation).</li>
+                                        <li><span class="highlight">Titel-Deutung:</span> Warum heißt der Text so? (Oft ironisch oder ein Sehnsuchtsmotiv).</li>
+                                        <li><span class="highlight">Merkmale Kurzgeschichte (2):</span> Der offene Schluss (Abbruch ohne Lösung).</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li><span class="highlight">Symbolik:</span> Dingsymbol / Leitmotiv (ein konkreter Gegenstand wie Spiegel, Füller, zerknülltes Papier, Uhr, Schnee, der für etwas Abstraktes steht), Chiffre (schwer entschlüsselbares Sprachbild).</li>
+                                        <li><span class="highlight">Zeit &amp; Struktur am Ende:</span> Abrupter Abbruch der Handlung, Aussparung (Leerstellen), die der Leser selbst füllen muss.</li>
+                                        <li><span class="highlight">Titel-Technik:</span> Ironischer Kontrasttitel, symbolischer Titel, Zitat-Titel.</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <div class="template-quote">
+                                        <span class="template-label">Scharnier-Satz + Head-Sentence Block 4:</span>
+                                        „Ihren strukturellen Höhepunkt erreicht diese Krise im Wendepunkt am Ende der Erzählung, der zugleich die symbolische Bedeutung des Titels ‚[Titel]‘ sowie den gattungstypischen offenen Schluss erschließt.“
+                                    </div>
+                                    <div class="template-quote">
+                                        <span class="template-label">Dreischritt-Verknüpfung:</span>
+                                        „Das [Gegenstand, z. B. zerknüllte Blatt] fungiert hierbei als zentrales Dingsymbol für die endgültige Resignation der Figur (vgl. Z. X). Indem die Handlung im offenen Schluss unvermittelt abbricht, wird dem Leser jede harmonische Lösung verweigert.“
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- 7. Schluss / Fazit -->
+                            <tr id="sec-b7">
+                                <td>
+                                    <span class="highlight">7. Schluss / Fazit</span><br>
+                                    <span class="time-badge">ca. 10 Min.</span>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li><span class="highlight">Rückbezug zur Deutungshypothese:</span> Bestätigung und Abrundung.</li>
+                                        <li><span class="highlight">Synthese von Inhalt &amp; Form:</span> 1–2 Sätze dazu, wie Sprache und Erzähltechnik die Kernaussage getragen haben.</li>
+                                        <li><span class="highlight">Ausblick / Appell:</span> Was macht der Text mit dem Leser?</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li><span class="highlight">Wirkungs-Begriffe:</span> Desillusionierung, Spiegelbild gesellschaftlicher Routine, impliziter Appell an den Leser, zeitlose Aktualität.</li>
+                                        <li><span class="highlight">Strenges Tabu:</span> Keine neuen Textzitate und keine neuen Einzelbeobachtungen mehr aufmachen!</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <div class="template-quote">
+                                        <span class="template-label">Abschluss-Formel:</span>
+                                        „Zusammenfassend bestätigt sich die eingangs formulierte Deutungshypothese: Durch das präzise Zusammenspiel von [Hauptmittel 1, z. B. personaler Innensicht], [Hauptmittel 2, z. B. parataktischer Syntax] und der Symbolik des [Motiv] gelingt es [Autor], die [Kernaussage, z. B. Sprachlosigkeit moderner Beziehungen] eindringlich offenzulegen. Der offene Ausgang wirkt dabei als impliziter Appell an den Leser, eigene festgefahrene Alltagsstrukturen kritisch zu hinterfragen.“
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
+                </div>
+
+                <div class="formula-box">
+                    <span class="formula-label">⏱️ Zeitmanagement-Überblick (Gesamtschreibzeit ca. 110 Min. + Lese-/Konzeptphase)</span>
+                    <strong>1. Einleitung:</strong> 8–10 Min. · <strong>2. Inhaltsangabe:</strong> 10–12 Min. · <strong>3. Block 1 (Rahmen/Einstieg):</strong> 15 Min. · <strong>4. Block 2 (Hauptfigur/Innenwelt):</strong> 25 Min. · <strong>5. Block 3 (Konstellation/Dialog):</strong> 25 Min. · <strong>6. Block 4 (Wendepunkt/Titel/Schluss):</strong> 15 Min. · <strong>7. Fazit:</strong> 10 Min.
                 </div>
             </div>
             <div class="page-footer">
@@ -379,22 +576,96 @@
             </div>
         </div>
 
-        <!-- SEITE 4: Werkzeugkasten B -->
+        <!-- ============================================================
+             SEITE 4: Teil 2 – Fachbegriffs-Lexikon (Werkzeugkasten A & B)
+             ============================================================ -->
         <div class="page">
-            <div class="card" id="teil-3b">
-                <h3 id="sec-3b">B. Sprachliche &amp; syntaktische Mittel</h3>
+            <div class="card" id="teil-2ab">
+                <h2 id="sec-teil2">Teil 2: Dein Fachbegriffs-Lexikon für die „Form“ (Spickzettel zum Einprägen)</h2>
+                <p>Wenn du in einem der 4 Blöcke nach dem passenden <strong>Form-Begriff (Schritt 1 im Dreischritt)</strong> suchst, sind hier die drei wichtigsten Werkzeugkästen auf einen Blick:</p>
+
+                <h3 id="sec-wk-a">A. Werkzeugkasten: Zeitgestaltung &amp; Erzählstruktur (Perfekt für Block 1 &amp; 4)</h3>
                 <div class="table-wrapper">
                     <table>
-                        <tr><th>Stilmittel</th><th>Signal / Definition</th><th>Häufige Deutung in der Kurzprosa</th></tr>
-                        <tr><td><span class="highlight">Parataxe</span></td><td>Kurze Hauptsätze</td><td>Sprachlosigkeit, emotionale Kälte, Routine, festgefahrener Alltag.</td></tr>
-                        <tr><td><span class="highlight">Hypotaxe</span></td><td>Komplexe Satzgefüge</td><td>Gedankenflut, Überforderung oder Ausbruch aus der Monotonie (Dynamik).</td></tr>
-                        <tr><td><span class="highlight">Anapher / Parallelismus</span></td><td>Gleicher Satzanfang / -bau</td><td>Ritualisierte Zwänge, monotones Leben, Unvermögen, Probleme zu lösen.</td></tr>
-                        <tr><td><span class="highlight">Inversion</span> (Kopfstellung)</td><td>Umstellung der Wortfolge</td><td>Legt extremen Fokus auf das erste Wort (z. B. „Zornig geht er“ → Aggression).</td></tr>
-                        <tr><td><span class="highlight">Polysyndeton</span></td><td>Vielfachverbindung („und … und“)</td><td>Verlangsamung der Bewegung, Resignation, physische/psychische Erschöpfung.</td></tr>
-                        <tr><td><span class="highlight">Klimax / Hyperbel</span></td><td>Steigerung / Übertreibung</td><td>Kontrollverlust, eskalierende innerliche Wut, Dramatisierung.</td></tr>
-                        <tr><td><span class="highlight">Ellipse / Aposiopese</span></td><td>Unvollständiger Satz / Satzabbruch</td><td>Kommunikationsabbruch, Kapitulation, das Unausgesprochene (Feigheit).</td></tr>
-                        <tr><td><span class="highlight">Ding-Symbol / Leitmotiv</span></td><td>Wiederkehrender Gegenstand</td><td>Projektionsfläche für Unbewältigtes (Narbe = Verletzlichkeit; Spiegel = Konfrontation; Silberpapier = verlorenes Glück).</td></tr>
-                        <tr><td><span class="highlight">Wortfeld / Repetitio</span></td><td>Häufung thematischer Wörter</td><td>Schafft Grundatmosphäre; Wortarmut zeigt Unfähigkeit zur differenzierten Kommunikation (z. B. „keuchen, gehen, heulen“).</td></tr>
+                        <thead>
+                            <tr>
+                                <th style="width: 26%;">Fachbegriff</th>
+                                <th style="width: 37%;">Erklärung &amp; Erkennungsmerkmal</th>
+                                <th style="width: 37%;">Typische Deutung / Funktion im Aufsatz</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="highlight">Erzählzeit vs. erzählte Zeit</span></td>
+                                <td><b>Erzählzeit</b> = Wie lange braucht man zum Lesen (z. B. 5 Minuten / 2 Seiten).<br><b>Erzählte Zeit</b> = Welche Zeitspanne vergeht in der Geschichte (z. B. 10 Minuten am Abend oder 3 Jahre).</td>
+                                <td>Das Verhältnis beider Zeiten steuert das Erzähltempo und lenkt den Fokus auf die psychologisch entscheidenden Momente.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight">Zeitdeckung</span></td>
+                                <td>Erzählzeit ≈ erzählte Zeit (z. B. in wörtlichen Dialogen oder sekundengenauen Handgriffen).</td>
+                                <td>Erzeugt <span class="highlight">Unmittelbarkeit</span>; man erlebt die quälende Stille oder die angespannte Situation in Echtzeit mit.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight">Zeitdehnung</span></td>
+                                <td>Erzählzeit ist länger als die erzählte Zeit (z. B. schießen der Figur in 2 Sekunden 20 Zeilen Gedanken durch den Kopf).</td>
+                                <td>Zeigt <span class="highlight">psychischen Hochdruck, Schock</span> oder intensives Grübeln (Innensicht!).</td>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight">Zeitraffung / Zeitsprung</span></td>
+                                <td>Erzählzeit ist kürzer als die erzählte Zeit (z. B. „Zwei Stunden später…“ oder Auslassung = Ellipse auf Zeitebene).</td>
+                                <td>Überspringt Belangloses oder zeigt, wie <span class="highlight">ereignislos und monoton</span> die Zeit verstreicht.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight">Rückblende (Analepse) / Vorausdeutung (Prolepse)</span></td>
+                                <td>Die Chronologie wird durchbrochen, weil sich die Figur erinnert oder etwas Böses vorausahnt.</td>
+                                <td>Offenbart unbewältigte Konflikte der Vergangenheit (Analepse) bzw. eine drohende Eskalation oder Ausweglosigkeit (Prolepse).</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 id="sec-wk-b">B. Werkzeugkasten: Erzähltechnik &amp; Perspektive (Perfekt für Block 2 &amp; 3)</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 26%;">Kategorie / Fachbegriff</th>
+                                <th style="width: 37%;">Erklärung &amp; Erkennungsmerkmal</th>
+                                <th style="width: 37%;">Typische Deutung / Funktion im Aufsatz</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="highlight">Erzählform</span></td>
+                                <td><b>Ich-Erzähler</b> (identisch mit einer Figur) vs. <b>Er-/Sie-Erzähler</b> (nicht Teil der Geschichte).</td>
+                                <td>Ich-Erzähler betont unmittelbare Betroffenheit und hohe Subjektivität; Er-/Sie-Erzähler erlaubt flexible Wechsel zwischen Innen- und Außensicht.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight">Personales Erzählverhalten</span></td>
+                                <td>Der Erzähler schlüpft in den Kopf einer Figur (Filter). Wir wissen nur, was diese Figur weiß und sieht.</td>
+                                <td>Erzeugt <span class="highlight">Nähe/Mitleid</span>, zeigt aber auch die begrenzte, subjektive Wahrnehmung der Figur.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight">Neutrales Erzählverhalten</span></td>
+                                <td>Wie eine Überwachungskamera im Raum – nur sichtbare Handlungen und gesprochene Worte, keine Gedanken.</td>
+                                <td>Erzeugt <span class="highlight">Kälte, Distanz, Fremdheit</span> zwischen den Figuren; der Leser muss Leerstellen selbst deuten.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight">Auktoriales Erzählverhalten</span></td>
+                                <td>Ein allwissender Erzähler, der kommentiert, in alle Köpfe schaut und in die Zukunft blickt.</td>
+                                <td>Schafft Überblick und Distanz (in modernen Kurzgeschichten <span class="highlight">extrem selten!</span>).</td>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight">Innerer Monolog</span><br><small>(Gedankenwiedergabe)</small></td>
+                                <td>Ich-Form + Präsens, keine Anführungszeichen (wir hören die Figur direkt denken).</td>
+                                <td>Ungefilterter Einblick in Ängste, Wünsche und die innere Zerrissenheit der Figur.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight">Erlebte Rede</span><br><small>(Gedankenwiedergabe)</small></td>
+                                <td>3. Person (Er/Sie) + Präteritum, aber in der Wortwahl/Stimmung der Figur (oft mit Fragen: <i>„Warum sah er sie so an? War es schon zu spät?“</i>).</td>
+                                <td><span class="highlight">15-Punkte-Joker, wenn du sie im Text findest!</span> Verschmilzt Erzählerbericht und Figurengedanken und macht den inneren Zwiespalt unmittelbar spürbar.</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -405,142 +676,125 @@
             </div>
         </div>
 
-        <!-- SEITE 5: Best Practices & Transfer -->
+        <!-- ============================================================
+             SEITE 5: Teil 2 – Werkzeugkasten C + Schnell-Flashcards
+             ============================================================ -->
         <div class="page">
-            <div class="card" id="teil-4">
-                <h2 id="sec-4">4. Best Practices &amp; Transfer</h2>
-                <p><em>(„Aha-Momente“ aus den Textbeispielen)</em></p>
+            <div class="card" id="teil-2c">
+                <h3 id="sec-wk-c">C. Werkzeugkasten: Bildsprache, Wortwahl &amp; Syntax (Für ALLE Blöcke)</h3>
+
                 <div class="table-wrapper">
                     <table>
-                        <tr><th>Erkenntnis</th><th>Erklärung</th></tr>
-                        <tr><td><span class="highlight">Der Titel ist oft ein ironischer Code</span></td><td>Moderne oder scheinbar positive Titel („Happy End“, „Tanzen gehen“) stehen in der Kurzprosa meist im krassen Kontrast zur trostlosen Realität der Figuren.</td></tr>
-                        <tr><td><span class="highlight">Syntax ahmt Handlung nach</span><br>(Form = Inhalt)</td><td>Wenn eine Paarbeziehung stagniert, ist der Satzbau repetitiv (Parataxen, Anaphern). Bricht eine Figur aus dieser Routine aus (z. B. ein spontaner Tanz), werden die Sätze plötzlich weich, lang und fließend (Hypotaxen).</td></tr>
-                        <tr><td><span class="highlight">Das Kommunikations-Paradox</span><br>(Schulz von Thun)</td><td>In Kurzgeschichten scheitert Kommunikation fast immer. Eine emotionale/verzweifelte Geste wird oft mit einer rein pragmatischen Antwort (Sach-Ohr) abgetan. Der wahre Konflikt findet im Kopf statt (Diskrepanz Dialog vs. Innerer Monolog).</td></tr>
-                        <tr><td><span class="highlight">Körpersprache verrät Machtverhältnisse</span></td><td>Achte auf asymmetrische Bewegungen. Geht einer stumm voraus, während der andere keuchend hinterherläuft? Das definiert die psychologische Abhängigkeit und Dominanz der Figuren besser als jedes gesprochene Wort.</td></tr>
-                        <tr><td><span class="highlight">Kreisstruktur bedeutet Stagnation</span></td><td>Wenn eine Geschichte mit demselben Bild endet, mit dem sie begann (z. B. der Blick in den Spiegel, die Farbe Silber), zeigt das: Der Ausbruchsversuch ist gescheitert. Das Hamsterrad des Alltags dreht sich unverändert weiter.</td></tr>
-                        <tr><td><span class="highlight">Tempuswechsel verraten Emotionen</span></td><td>Springt der Text kurzzeitig vom Präteritum ins Präsens (z. B. bei einer Erinnerung), zeigt dies, dass das Vergangene für die Psyche der Figur extrem real und unbewältigt ist.</td></tr>
+                        <thead>
+                            <tr>
+                                <th style="width: 20%;">Bereich</th>
+                                <th style="width: 24%;">Fachbegriff</th>
+                                <th style="width: 56%;">Definition, Beispiel &amp; Deutung in der Kurzprosa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Bildsprache & Motive -->
+                            <tr>
+                                <td rowspan="4"><span class="highlight">Bildsprache &amp; Motive</span></td>
+                                <td><span class="highlight">Metapher</span></td>
+                                <td>Sprachliches Bild ohne „wie“ (<i>„diese kleine Turnübung“</i> für das Lächeln) → macht Unsichtbares (Gefühle, innere Anstrengung) sichtbar.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight">Vergleich</span></td>
+                                <td>Verknüpfung mit „wie“ oder „als“ (<i>„lächeln, wie man einem Geisteskranken zulächelt“</i>) → verdeutlicht und wertet oft drastisch ab oder auf.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight">Dingsymbol / Leitmotiv</span></td>
+                                <td>Ein realer Gegenstand im Text, der immer wieder auftaucht und für den inneren Zustand steht:<br>
+                                    • <b>Spiegel</b> = Selbsttäuschung / Zerrissenheit · <b>Uhr</b> = Vergänglichkeit / Druck<br>
+                                    • <b>Kälte / Winter</b> = emotionale Erstarrung · <b>Fenster / Tür</b> = Schwelle zur Freiheit vs. Gefangensein.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight">Personifikation</span></td>
+                                <td>Vermenschlichung von Dingen (<i>„Die Stille drückte auf den Raum“</i>) → zeigt, wie übermächtig und bedrohlich die Umgebung auf die Figur wirkt.</td>
+                            </tr>
+
+                            <!-- Wortwahl (Lexik) & Tonfall -->
+                            <tr>
+                                <td rowspan="3"><span class="highlight">Wortwahl (Lexik) &amp; Tonfall</span></td>
+                                <td><span class="highlight">Wortfeld</span></td>
+                                <td>Häufung von Wörtern aus demselben Bereich (z. B. Wortfeld der Kälte, der Mechanik, des Krieges, der Krankheit).</td>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight">Ironie / Sarkasmus</span></td>
+                                <td>Das Gegenteil von dem sagen, was man meint (<i>„mein richtiges Gesicht weiter brav lächelt“</i>) → dient als Schutzschild oder heimliche Abwertung aus einer Position der Schwäche.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight">Euphemismus</span></td>
+                                <td>Beschönigung (<i>„nur immer hübsch ruhig bleiben“</i>) → entlarvt Verdrängung und falsche Harmonie.</td>
+                            </tr>
+
+                            <!-- Syntax (Satzbau) -->
+                            <tr>
+                                <td rowspan="4"><span class="highlight">Syntax (Satzbau)</span></td>
+                                <td><span class="highlight">Parataxe vs. Hypotaxe</span></td>
+                                <td><b>Parataxe</b> (kurze Hauptsätze = Monotonie, Kälte, Distanz) vs. <b>Hypotaxe</b> (Schachtelsätze = Grübeln, innere Verstrickung).</td>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight">Asyndeton vs. Polysyndeton</span></td>
+                                <td><b>Asyndeton</b> (Aufzählung ohne „und“ = Hektik, Mechanik) vs. <b>Polysyndeton</b> (viele „und“ = zähe Endlosigkeit).</td>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight">Ellipse &amp; Aposiopese</span></td>
+                                <td><b>Ellipse</b> (unvollständiger Satz = Gedankenfetzen, Sprachlosigkeit) · <b>Aposiopese</b> (Satzabbruch durch Gedankenstrich = Verschweigen, Kapitulation).</td>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight">Parallelismus &amp; Anapher</span></td>
+                                <td><b>Parallelismus</b> (gleicher Satzbau = Routine, Nebeneinanderher-Leben) &amp; <b>Anapher</b> (gleiche Satzanfänge = Eindringlichkeit).</td>
+                            </tr>
+                        </tbody>
                     </table>
+                </div>
+
+                <h3 id="sec-flashcards">🧠 Schnell-Check: 15-Punkte-Joker (Kärtchen zum Umdrehen)</h3>
+                <div class="flashcards-container">
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>Die 7 Klausur-Bausteine</span></div>
+                            <div class="flashcard-back"><span>1. Einleitung + Hypothese · 2. Strukturierte Inhaltsangabe · <span class="highlight">Block 1:</span> Rahmen/Einstieg · <span class="highlight">Block 2:</span> Hauptfigur/Innenwelt · <span class="highlight">Block 3:</span> Konstellation/Dialog · <span class="highlight">Block 4:</span> Wendepunkt/Titel/Schluss · 7. Fazit.</span></div>
+                        </div>
+                    </div>
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>Erlebte Rede (15-P-Joker)</span></div>
+                            <div class="flashcard-back"><span><span class="highlight">3. Person (Er/Sie) + Präteritum</span>, aber in Wortwahl &amp; Stimmung der Figur (oft innere Fragen). Zeigt unmittelbaren psychischen Zwiespalt!</span></div>
+                        </div>
+                    </div>
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>Zeitdeckung vs. Zeitdehnung</span></div>
+                            <div class="flashcard-back"><span><span class="highlight">Zeitdeckung (≈):</span> Echtzeit, quälende Stille/Dialoge. <span class="highlight">Zeitdehnung (&gt;):</span> Sekundenlange Gedanken werden breit erzählt → psychischer Hochdruck/Grübeln.</span></div>
+                        </div>
+                    </div>
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>Sachebene vs. Beziehungsebene</span></div>
+                            <div class="flashcard-back"><span>Auf der <span class="highlight">Sachebene</span> reden Figuren über Belangloses (z. B. Füller-Preis), auf der <span class="highlight">Beziehungsebene</span> offenbaren Tonfall &amp; Schweigen Kontrolle oder Entfremdung.</span></div>
+                        </div>
+                    </div>
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>Dingsymbol / Leitmotiv</span></div>
+                            <div class="flashcard-back"><span>Realer Gegenstand für inneren Zustand: <span class="highlight">Spiegel</span> = Selbsttäuschung, <span class="highlight">Uhr</span> = Druck, <span class="highlight">Kälte/Schnee</span> = Erstarrung, <span class="highlight">Fenster/Tür</span> = Schwelle zur Freiheit.</span></div>
+                        </div>
+                    </div>
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>Syntax-Deutung im Dreischritt</span></div>
+                            <div class="flashcard-back"><span><span class="highlight">Parataxe:</span> Kälte/Monotonie · <span class="highlight">Hypotaxe:</span> Grübeln · <span class="highlight">Asyndeton:</span> Mechanik · <span class="highlight">Ellipse/Aposiopese:</span> Sprachlosigkeit/Satzabbruch.</span></div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="page-footer">
                 <span>Interpretation von Kurzprosa</span>
                 <span>Olga V.</span>
                 <span>Seite 5</span>
-            </div>
-        </div>
-
-        <!-- SEITE 6: 15-Punkte-Vokabular -->
-        <div class="page">
-            <div class="card" id="teil-5">
-                <h2 id="sec-5">5. 15-Punkte-Vokabular (Formulierungshilfen)</h2>
-                <div class="tip-box">
-                    <strong>Tipp:</strong> Streiche simple Wörter wie „schön“, „zeigen“ oder „sagen“. Nutze <span class="highlight">analytische Distanzsprache</span>, um den Korrektor zu beeindrucken!
-                </div>
-
-                <h3 id="sec-5-1">Einleitung &amp; Strukturierung (roter Faden)</h3>
-                <ul>
-                    <li><em>„Diese existenzielle Thematik hat sich in der vorliegenden Kurzgeschichte offenbar niedergeschlagen …“</em></li>
-                    <li><em>„Der Text beleuchtet das Phänomen [X] kritisch und kann verstanden werden als Kommentar zu …“</em></li>
-                    <li><em>„Zur Verifizierung dieser Hypothese wird der Text im Folgenden einer aspektorientierten Analyse unterzogen.“</em></li>
-                    <li><em>„Nach der Betrachtung der äußeren Handlungsstruktur rückt nun die psychologische Disposition der Figuren in den Fokus.“</em></li>
-                </ul>
-
-                <h3 id="sec-5-2">Form und Inhalt absolut verketten (Analyse-Vokabular)</h3>
-                <ul>
-                    <li><em>„Diese formale Eigenheit des Textes <span class="highlight">korrespondiert</span> auf der inhaltlichen Ebene mit …“</em></li>
-                    <li><em>„Die parataktische Syntax <span class="highlight">ahmt</span> die innere Zerrissenheit / Distanz der Figuren <span class="highlight">nach</span> …“</em></li>
-                    <li><em>„Das Ausbleiben einer verbalen Reaktion <span class="highlight">entlarvt / offenbart / impliziert</span> …“</em></li>
-                    <li><em>„Die [rhetorische Figur] <span class="highlight">visualisiert / veranschaulicht / evoziert</span> die Resignation der Protagonistin.“</em></li>
-                    <li><em>„Die Beschränkung auf monotone Alltagssprache offenbart das Unvermögen der Figuren, ihren Konflikt differenziert zu verbalisieren.“</em></li>
-                    <li><em>„Die Kopfstellung des Adjektivs <span class="highlight">akzentuiert / rückt in den Fokus</span> …“</em></li>
-                    <li><em>„Diese Formulierung kann im Textzusammenhang als unbewusster Hinweis auf […] verstanden werden.“</em></li>
-                </ul>
-
-                <h3 id="sec-5-3">Schluss &amp; Fazit</h3>
-                <ul>
-                    <li><em>„Als Resümee der aspektorientierten Textanalyse ergibt sich <span class="highlight">konklusiv</span>, dass …“</em></li>
-                    <li><em>„Zusammenfassend hat die Untersuchung dargelegt, dass die äußere Banalität im extremen Kontrast zur inneren Tragödie der Figuren steht.“</em></li>
-                    <li><em>„Im Rückblick auf die eingangs aufgestellte Interpretationshypothese lässt sich abschließend <span class="highlight">verifizieren / modifizieren</span>, dass …“</em></li>
-                </ul>
-            </div>
-            <div class="page-footer">
-                <span>Interpretation von Kurzprosa</span>
-                <span>Olga V.</span>
-                <span>Seite 6</span>
-            </div>
-        </div>
-
-        <!-- SEITE 7: Herzstück – Analysestern (1–4) -->
-        <div class="page">
-            <div class="card" id="teil-6a">
-                <h2 id="sec-6">Das Herzstück der Analyse: Der analytische Werkzeugkasten</h2>
-                <div class="table-wrapper">
-                    <table>
-                        <tr><th>Aspekt (nach Analysestern)</th><th>Fokus &amp; Leitfragen</th><th>🧠 Merkhilfe &amp; typische Deutung (für 15 Punkte)</th></tr>
-                        <tr>
-                            <td><span class="highlight">1. Titel</span></td>
-                            <td>Gibt es einen Zusammenhang zwischen Titel und Text? Weckt er Erwartungen?</td>
-                            <td><span class="highlight">Der Titel ist oft ein ironischer Code.</span> Ein scheinbar positiver Titel (z. B. „Happy End“) steht in Kurzgeschichten fast immer im krassen Kontrast zur trostlosen Beziehungsrealität. Erwartungsbrüche unbedingt benennen!</td>
-                        </tr>
-                        <tr>
-                            <td><span class="highlight">2. Handlung</span><br>(Innen vs. Außen)</td>
-                            <td><b>Äußere Handlung:</b> Was tun die Figuren faktisch? (Ereignisse)<br><b>Innere Handlung:</b> Was denken/fühlen sie dabei?</td>
-                            <td><span class="highlight">Suche den Kontrast.</span> Die äußere Handlung ist in Kurzgeschichten extrem banal (z. B. auf offener Straße laufen, Zeitung lesen). Die innere Handlung ist oft hochgradig dramatisch. Diesen Kontrast aus äußerer Banalität und innerer Tragödie musst du aufzeigen.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="highlight">3. Kommunikation</span></td>
-                            <td>Verbale vs. non-verbale Kommunikation. Liegen Kommunikationsstörungen vor? (Modell von Schulz von Thun / 4 Ohren)</td>
-                            <td><span class="highlight">Kommunikation scheitert fast immer.</span> Eine emotionale Aussage (Selbstoffenbarung) wird oft mit einer rein pragmatischen Antwort (Sach-Ohr) abgetan. Achte zwingend auf nonverbale Signale (Gesten) und das Schweigen oder abgebrochene Sätze (Aposiopese), da hier die wahren Konflikte liegen.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="highlight">4. Figuren &amp; Konstellation</span></td>
-                            <td>Wie charakterisiert der Erzähler die Figuren (direkt/indirekt)? Wie stehen sie zueinander (Symmetrie vs. Asymmetrie)?</td>
-                            <td><span class="highlight">Achte auf Machtverhältnisse &amp; Körpersprache.</span> Wer geht voran, wer läuft (keuchend) hinterher? Wer bricht Dialoge ab? Physische Positionen im Raum spiegeln psychologische Abhängigkeiten und Dominanz wider.</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-            <div class="page-footer">
-                <span>Interpretation von Kurzprosa</span>
-                <span>Olga V.</span>
-                <span>Seite 7</span>
-            </div>
-        </div>
-
-        <!-- SEITE 8: Herzstück – Analysestern (5–7) + Ding-Symbole -->
-        <div class="page">
-            <div class="card" id="teil-6b">
-                <div class="table-wrapper">
-                    <table>
-                        <tr><th>Aspekt (nach Analysestern)</th><th>Fokus &amp; Leitfragen</th><th>🧠 Merkhilfe &amp; typische Deutung (für 15 Punkte)</th></tr>
-                        <tr>
-                            <td><span class="highlight">5. Raum &amp; Ort</span></td>
-                            <td>Welche Funktion hat der Schauplatz? (Soziales Milieu, Stimmungsraum, symbolischer Raum)</td>
-                            <td><span class="highlight">Räume spiegeln die Seele.</span> Ein Stimmungsraum (z. B. Nacht, Kälte, Regen) visualisiert Isolation oder Trauer. Kontrast-Räume (z. B. Kino = warme Scheinwelt vs. Straße = harte Realität) betonen ungelebte Sehnsüchte.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="highlight">6. Zeitgestaltung</span></td>
-                            <td>Stimmen Erzählzeit und erzählte Zeit überein? Gibt es Rückblenden oder Zeitsprünge?</td>
-                            <td><span class="highlight">Tempuswechsel verraten Traumata.</span> Wenn ein Text im Präteritum steht, aber plötzlich für eine Erinnerung ins Präsens wechselt, zeigt das: Dieses Erlebnis ist psychologisch noch nicht verarbeitet und absolut präsent. Zeitraffung betont hingegen einen monotonen Alltag.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="highlight">7. Erzähler &amp; Perspektive</span></td>
-                            <td>Wer erzählt (auktorial, personal, neutral)?<br>Aus wessen Sicht (Außensicht vs. Innensicht)?</td>
-                            <td><span class="highlight">Innensicht lenkt Sympathie.</span> Wenn wir nur die Innensicht (z. B. innerer Monolog) einer Person kennen, macht uns der Autor bewusst parteiisch. Ein Wechsel zur Außensicht oder eine fehlende Innensicht der zweiten Person erzeugt Entfremdung und zeigt, dass sich das Paar gegenseitig nicht mehr versteht.</td>
-                        </tr>
-                    </table>
-                </div>
-
-                <h3 id="sec-6-1">💡 Extra-Tipp für die Interpretation: Die „Ding-Symbole“</h3>
-                <p>Wenn in einer Kurzgeschichte ein unscheinbarer Gegenstand auffällig oft erwähnt wird oder sogar den Titel prägt (z. B. ein Brautkleid, ein rotes Spielzeugauto, ein Streifen Silberpapier, eine Narbe), handelt es sich fast immer um ein <span class="highlight">Leitmotiv oder Ding-Symbol</span>.</p>
-                <div class="tip-box">
-                    <strong>Dein Deutungsauftrag:</strong> Solche Gegenstände dienen als <span class="highlight">stumme Zeugen und Projektionsflächen</span> für das, was die Figuren nicht aussprechen können (verlorenes Glück, Verletzlichkeit, verdrängte Traumata). Identifiziere sie im Hauptteil und erkläre zwingend, <span class="highlight">wofür sie stellvertretend stehen</span>.
-                </div>
-            </div>
-            <div class="page-footer">
-                <span>Interpretation von Kurzprosa</span>
-                <span>Olga V.</span>
-                <span>Seite 8</span>
             </div>
         </div>
 
