@@ -1865,7 +1865,7 @@
 
   function toolsHtml(x) {
     var h = '', k = ' data-fach="' + esc(x.fk) + '" data-key="' + esc(x.key) + '"';
-    var lz = x.link ? '<a class="lp-tool" href="' + esc(x.link) + '" target="_blank" rel="noopener">Lernzettel</a>' : '';
+    var lz = x.link ? '<a class="lp-tool" href="' + esc(x.link) + '" target="_blank" rel="noopener">Lernzettel</a><a class="lp-tool" href="' + esc(x.link) + '?pdf=1" target="_blank" rel="noopener" title="Lernzettel direkt als PDF speichern">📄 PDF</a>' : '';
     var anki = x.link ? '<a class="lp-tool" href="' + esc(deepLink('anki', x)) + '" target="_blank" rel="noopener">Anki-Karten</a>' : '';
     var isDe = x.fk === 'deutsch';
     function quiz(afb, label) {

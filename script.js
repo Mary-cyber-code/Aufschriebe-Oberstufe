@@ -222,6 +222,9 @@
               '<a href="' + t.link + '" class="topic-link" style="--topic-accent:' + accent + '">' +
                 t.title +
               '</a>' +
+              '<a href="' + t.link + '?pdf=1" class="topic-pdf-btn" title="Lernzettel direkt als PDF speichern">' +
+                '📄 Als PDF' +
+              '</a>' +
             '</li>'
           );
         }).join('');
@@ -851,9 +854,21 @@
     var topicSelect = document.getElementById('notebook-topic');
     
     var downloadBtn = document.getElementById('download-notebook-txt');
+    var downloadPdfBtn = document.getElementById('download-notebook-pdf');
     var successBox = document.getElementById('notebook-success');
 
     if (!openBtn || !modal) return;
+
+    if (downloadPdfBtn) {
+      downloadPdfBtn.addEventListener('click', function() {
+        var link = topicSelect.value;
+        if (!link) {
+          alert("Bitte wähle zuerst ein Fach und einen Lernzettel aus!");
+          return;
+        }
+        window.open(link + '?pdf=1', '_blank');
+      });
+    }
 
     // 1. Dropdown 1 (Fächer) befüllen
     Object.keys(subjectData).forEach(function(key) {
