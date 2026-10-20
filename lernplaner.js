@@ -1407,19 +1407,19 @@
   function buildCopyBoxHtml(promptText, title, hintText, closeable) {
     var h = '<div class="lp-copy-box lp-inline-copy-box">';
     h += '<div class="lp-copy-box-head">';
-    h += '<span>📋 ' + esc(title || 'Fertiger KI-Prompt (im Kasten auf einmal kopieren)') + '</span>';
+    h += '<span>📋 ' + esc(title || 'KI-Prompt') + '</span>';
     h += '<div class="lp-copy-box-btns">';
-    h += '<button type="button" class="lp-copy-btn" data-copy-box-btn="1">📋 Auf einmal kopieren</button>';
+    h += '<button type="button" class="lp-copy-btn" data-copy-box-btn="1">📋 Kopieren</button>';
     h += '<a href="' + GEMINI_URL + '" target="_blank" rel="noopener noreferrer" class="lp-copy-btn lp-copy-btn--gold">🚀 Gemini öffnen ↗</a>';
     if (closeable !== false) {
       h += '<button type="button" class="lp-copy-btn" data-copy-box-close="1" title="Kasten schließen" style="background:transparent;color:var(--text-secondary);">✕</button>';
     }
     h += '</div></div>';
-    h += '<textarea class="lp-copy-textarea" rows="6" readonly aria-label="KI-Prompt zum Kopieren">' + esc(promptText) + '</textarea>';
-    h += '<div class="lp-copy-steps">';
-    h += '<span>💡 <b>Empfehlung:</b> Wähle in Gemini <b>„Deep Think“ / „2.5 Pro“</b> (oder das beste Modell) für 15-Punkte-Qualität.</span>';
-    if (hintText) h += '<span>' + hintText + '</span>';
-    h += '</div></div>';
+    h += '<textarea class="lp-copy-textarea" rows="5" readonly aria-label="KI-Prompt zum Kopieren">' + esc(promptText) + '</textarea>';
+    if (hintText) {
+      h += '<div class="lp-copy-steps"><span>' + hintText + '</span></div>';
+    }
+    h += '</div>';
     return h;
   }
 
@@ -1429,6 +1429,15 @@
     if (!container) return;
     var existing = container.querySelector('.lp-inline-copy-box');
     if (existing && existing.parentNode) existing.parentNode.removeChild(existing);
+    Array.prototype.forEach.call(container.querySelectorAll('[data-hidden-by-box]'), function (b) {
+      b.style.display = '';
+      b.removeAttribute('data-hidden-by-box');
+    });
+    var actType = anchorEl.getAttribute('data-act');
+    if (anchorEl.closest('.lp-s-tools') && (actType === 'quiz' || actType === 'fehler')) {
+      anchorEl.setAttribute('data-hidden-by-box', '1');
+      anchorEl.style.display = 'none';
+    }
     var wrap = document.createElement('div');
     wrap.innerHTML = buildCopyBoxHtml(promptText, title, hintText, true);
     var boxEl = wrap.firstChild;
@@ -1453,7 +1462,7 @@
             var orig = copyBtn.textContent;
             copyBtn.textContent = '✓ Kopiert!';
             setTimeout(function () { copyBtn.textContent = orig; }, 2200);
-            toast('Prompt auf einmal kopiert! Jetzt in Gemini einfügen (Strg+V).', true);
+            toast('Prompt in die Zwischenablage kopiert ✓');
           }
         });
         return;
@@ -1461,7 +1470,14 @@
       var closeBtn = e.target.closest('[data-copy-box-close]');
       if (closeBtn) {
         var cBox = closeBtn.closest('.lp-inline-copy-box');
-        if (cBox && cBox.parentNode) cBox.parentNode.removeChild(cBox);
+        if (cBox && cBox.parentNode) {
+          var parent = cBox.parentNode;
+          parent.removeChild(cBox);
+          Array.prototype.forEach.call(parent.querySelectorAll('[data-hidden-by-box]'), function (b) {
+            b.style.display = '';
+            b.removeAttribute('data-hidden-by-box');
+          });
+        }
       }
     });
   }
@@ -2238,15 +2254,16 @@
     var lz = x.link ? '<a class="lp-tool" href="' + esc(x.link) + '" target="_blank" rel="noopener">Lernzettel</a><a class="lp-tool" href="' + esc(x.link) + '?pdf=1" target="_blank" rel="noopener" title="Als PDF speichern">📄 PDF</a>' : '';
     var anki = x.link ? '<a class="lp-tool" href="' + esc(deepLink('anki', x)) + '" target="_blank" rel="noopener">Anki-Karten</a>' : '';
     var isDe = x.fk === 'deutsch';
+    var hasAiBox = !!(x.aiPrompt && x.aiPrompt.trim());
     function quiz(afb, label) {
+      if (hasAiBox) return '';
       return '<button type="button" class="lp-tool lp-tool-gold" data-act="quiz" data-afb="' + afb + '"' + k + '>📋 ' + label + '</button>';
     }
     if (x.type === 'U' && x.afb === 'FILE' && x.key && x.key.indexOf('file:') === 0) {
       var fid = esc(x.key.slice(5));
       var fkAttr = ' data-fach="' + esc(x.fk) + '" data-fid="' + fid + '"';
       h = '<button type="button" class="lp-tool lp-tool-gold" data-act="file-solve"' + fkAttr + '>' + (isDe ? '📋 Musteraufsatz (Prompt)' : '📋 Musterlösung (Prompt)') + '</button>' +
-          '<button type="button" class="lp-tool lp-tool-gold" data-act="file-twin"' + fkAttr + '>' + (isDe ? '🔁 Neue Kurzgeschichte' : '🔁 Parallelaufgaben') + '</button>' +
-          GEMINI_LINK;
+          '<button type="button" class="lp-tool lp-tool-gold" data-act="file-twin"' + fkAttr + '>' + (isDe ? '🔁 Neue Kurzgeschichte' : '🔁 Parallelaufgaben') + '</button>';
       return '<div class="lp-s-tools">' + h + '</div>';
     }
     switch (x.type) {
@@ -2268,12 +2285,15 @@
       case 'R': h = anki + quiz('MIX', isDe ? 'Aufsatz-Training (Prompt)' : 'Mini-Test (Prompt)') + lz; break;
       case 'V': h = quiz('III', isDe ? 'Tiefendeutung (Prompt)' : '15-P-Aufgaben AFB III (Prompt)') + lz; break;
       case 'SIM': h = quiz('SIM', isDe ? 'Deutsch-Klausur (Prompt)' : 'Klausur-Simulation (Prompt)'); break;
-      case 'FEHLER': h = '<button type="button" class="lp-tool lp-tool-gold" data-act="fehler"' + k + '>📋 ' + (isDe ? 'Aufsatz-Korrektur (Prompt)' : 'Fehleranalyse (Prompt)') + '</button>'; break;
+      case 'FEHLER':
+        if (!hasAiBox) {
+          h = '<button type="button" class="lp-tool lp-tool-gold" data-act="fehler"' + k + '>📋 ' + (isDe ? 'Aufsatz-Korrektur (Prompt)' : 'Fehleranalyse (Prompt)') + '</button>';
+        }
+        break;
       case 'FINAL': h = '<a class="lp-tool" href="index.html?tool=anki&fach=' + encodeURIComponent(x.fk) + '" target="_blank" rel="noopener">Anki</a>'; break;
     }
-    if (x.type !== 'FINAL') h += GEMINI_LINK;
     var out = h ? '<div class="lp-s-tools">' + h + '</div>' : '';
-    if (x.aiPrompt && x.aiPrompt.trim()) {
+    if (hasAiBox) {
       out += buildCopyBoxHtml(
         x.aiPrompt.trim(),
         'KI-Prompt / Aufgaben (' + fachName(x.fk) + ')',
@@ -2368,10 +2388,7 @@
     if (inRange) h += '<button type="button" class="btn btn-gold" data-act="today">Zu heute</button>';
     h += '<button type="button" class="btn btn-gold" data-act="export">📤 Export / Backup</button>';
     h += '<button type="button" class="btn btn-outline" data-act="print">🖨️ PDF / Drucken</button>';
-    h += '<button type="button" class="btn btn-outline" data-act="ics">📅 Kalender (.ics)</button>';
     h += '<button type="button" class="btn btn-outline" data-act="coach">📋 KI-Coach</button>';
-    h += '<a class="btn btn-outline" href="' + GEMINI_URL + '" target="_blank" rel="noopener">🚀 Gemini ↗</a>';
-    h += '<button type="button" class="btn btn-outline" data-act="replan">🔄 Neu planen</button>';
     h += '<button type="button" class="btn btn-outline" data-act="edit">⚙️ Einstellungen</button>';
     h += '<button type="button" class="btn btn-danger" data-act="delete">🗑️ Löschen</button>';
     h += '</div></section>';
@@ -2441,8 +2458,8 @@
     var el = $('lp-stale');
     if (!el || !state.plan) return;
     if (state.plan.sig !== settingsSig()) {
-      el.innerHTML = '<div class="lp-box"><strong>Einstellungen geändert.</strong> Dein Plan berücksichtigt das noch nicht. ' +
-        '<button type="button" class="lp-tool lp-tool-gold" data-act="replan">Jetzt neu planen</button></div>';
+      el.innerHTML = '<div class="lp-box"><strong>Einstellungen geändert.</strong> ' +
+        '<button type="button" class="lp-tool lp-tool-gold" data-act="edit">In den Einstellungen aktualisieren</button></div>';
     } else {
       el.innerHTML = '';
     }
@@ -2580,18 +2597,22 @@
         p += '   - Nenne in den Lerneinheiten **konkret, welche meiner Aufgaben (z. B. Nr. 1a, 2, 4)** ich an welchem Tag rechnen/bearbeiten soll, und ergänze (je nach gewählter Strategie) **neue, maßgeschneiderte 15-Punkte-Aufgaben**.\n';
         p += '2. **Wissenschaftliche Lernstruktur:**\n';
         p += '   - Plane Erarbeitungs-Einheiten (`E`), aufbauende Übungs-Einheiten (`U` mit `I`, `II`, `III`, `MIX`), kurze Wiederholungen (`R` nach Spaced Repetition), eine echte Klausur-Simulation (`SIM` ca. 3–5 Tage vor der Klausur), eine Fehleranalyse (`FEHLER`) und am Vortag der Klausur nur einen leichten letzten Check (`FINAL`, 30 Min.).\n';
-        p += '3. **Alle Folge-Prompts & Aufgaben in einen Kopier-Kasten setzen:**\n';
-        p += '   - Schreibe für jede Lerneinheit zwischen `PROMPT_START` und `PROMPT_ENDE` einen **sofort kopierbaren KI-Prompt (inkl. der konkreten heutigen Übungsaufgaben mit Steigerung)**, damit meine Website ihn direkt in einem **1-Klick-Kopier-Kasten** anzeigt!\n';
-        p += '4. **EXAKTES EXPORT-FORMAT FÜR MEINE WEBSITE (PFLICHT):**\n';
-        p += '   Gib mir deine Antwort so aus, dass ganz am Ende (oder direkt nach einer kurzen Übersicht zur Aufgaben-Sortierung) der komplette Lernplan exakt zwischen `===LERNPLAN_START===` und `===LERNPLAN_ENDE===` in folgendem Format steht (bitte exakt diese Schlüsselwörter am Zeilenanfang nutzen, damit meine Website den Plan interaktiv mit Abhak-Kästchen darstellen kann):\n\n';
+        p += '3. **Alle Folge-Prompts & Aufgaben für meine Website vorbereiten:**\n';
+        p += '   - Schreibe für jede Lerneinheit zwischen `PROMPT_START` und `PROMPT_ENDE` einen **sofort kopierbaren KI-Prompt (inkl. der konkreten heutigen Übungsaufgaben mit Steigerung)**.\n';
+        p += '4. **WICHTIG – GESAMTE ANTWORT IN EINEM EINZIGEN KOPIER-TEXTFELD (CODEBLOCK) AUSGEBEN (PFLICHT):**\n';
+        p += '   - Schreibe den gesamten Lernplan (von `===LERNPLAN_START===` bis `===LERNPLAN_ENDE===`) **in EINEN EINZIGEN Markdown-Codeblock (` ```text ... ``` `)**!\n';
+        p += '   - **Ganz wichtig für Gemini:** Verwende innerhalb dieses Codeblocks **KEINE** weiteren dreifachen Backticks (```` ``` ````), damit das Textfeld nicht unterbrochen wird und ich in Gemini oben rechts mit **einem einzigen Klick auf „Kopieren“** die komplette Antwort auf einmal kopieren kann!\n\n';
+        p += 'Nutze für deinen Codeblock exakt diese Vorlage:\n\n';
+        p += '```text\n';
         p += '===LERNPLAN_START===\n';
         p += 'TAG: YYYY-MM-DD\n';
         p += 'EINHEIT: [Typ: E oder U oder R oder SIM oder FEHLER oder FINAL] | [Fach-Kürzel, z.B. ' + c.subs[0].fk + '] | [Dauer in Min, z.B. ' + s.block + '] | [AFB: I oder II oder III oder MIX] | [Kurzer Titel der Einheit]\n';
         p += 'AUFGABEN: [Konkrete Schritt-für-Schritt-Anleitung für diese Einheit: Welche eigenen Aufgaben (in gesteigerter Reihenfolge!) + welche Methodik heute dran sind]\n';
         p += 'PROMPT_START\n';
-        p += '[Schreibe hier den kompletten Kopier-Prompt für einen neuen KI-Chat ODER die konkreten Übungsaufgaben des Tages (Stufe AFB I → II → III) hinein, damit ich diesen Kasten auf meiner Website mit 1 Klick kopieren kann!]\n';
+        p += '[Schreibe hier den kompletten Kopier-Prompt für einen neuen KI-Chat ODER die konkreten Übungsaufgaben des Tages (Stufe AFB I → II → III) hinein – OHNE Backticks!]\n';
         p += 'PROMPT_ENDE\n';
         p += '===LERNPLAN_ENDE===\n';
+        p += '```\n';
 
         if (loadedLzText && loadedLzText.trim()) {
           p += '\n============================================================\n';
@@ -2613,7 +2634,7 @@
         if (ok) {
           toast('15-Punkte-Master-Prompt im Kasten erstellt & kopiert! Jetzt in Gemini (Deep Think / Pro) einfügen.', true);
         } else {
-          toast('Master-Prompt im Kasten erstellt! Klicke auf „Auf einmal kopieren“.');
+          toast('Master-Prompt im Kasten erstellt! Klicke auf „Kopieren“.');
         }
       })
       .then(function () {
@@ -2640,7 +2661,7 @@
     var inp = $('lp-ai-import-text');
     var raw = (inp && inp.value ? inp.value : '').trim();
     if (!raw) {
-      if (err) err.textContent = 'Bitte füge zuerst die Antwort der KI in das Textfeld unter „2. Fertigen Plan von der KI hier einfügen“ ein.';
+      if (err) err.textContent = 'Bitte füge zuerst die Antwort der KI in das Textfeld unter „2. KI-Antwort hier einfügen“ ein.';
       if (inp) inp.focus();
       return;
     }
@@ -2654,7 +2675,6 @@
     var curDate = null;
     var curSession = null;
     var inPrompt = false;
-    var inCodeBlock = false;
     var promptBuf = [];
     var sessionCounter = 0;
 
@@ -2673,6 +2693,11 @@
       var trimmed = line.trim();
       var cleanLine = trimmed.replace(/^[\-*•>\s]+/, '').replace(/^\*\*|\*\*$/g, '').replace(/\*\*/g, '');
 
+      /* Äußere Markdown-Codeblock-Zeilen (```text ... ```) aus Gemini ignorieren */
+      if (/^```/.test(trimmed)) {
+        continue;
+      }
+
       if (/^PROMPT_START\b/i.test(cleanLine)) {
         inPrompt = true;
         promptBuf = [];
@@ -2684,22 +2709,6 @@
         continue;
       }
       if (inPrompt) {
-        if (!/^```\w*$/.test(trimmed)) promptBuf.push(line);
-        continue;
-      }
-
-      /* Falls die KI statt PROMPT_START einen Markdown-Codeblock ``` nutzt */
-      if (/^```/.test(trimmed)) {
-        if (!inCodeBlock) {
-          inCodeBlock = true;
-          promptBuf = [];
-        } else {
-          inCodeBlock = false;
-          flushPrompt();
-        }
-        continue;
-      }
-      if (inCodeBlock) {
         promptBuf.push(line);
         continue;
       }
@@ -3132,10 +3141,6 @@
               '<div><b>🖨️ Als PDF speichern / Drucken</b><span>Sauberes A4-Layout zum Ausdrucken oder im Druckmenü „Als PDF speichern“.</span></div>' +
               '<span class="lp-exp-badge">PDF / Druck</span>' +
             '</button>' +
-            '<button type="button" class="lp-exp-card" data-exp="ics">' +
-              '<div><b>📅 In Kalender importieren (.ics)</b><span>Für Apple Kalender (iPhone/iPad/Mac), Google Kalender oder Outlook.</span></div>' +
-              '<span class="lp-exp-badge">.ics</span>' +
-            '</button>' +
             '<button type="button" class="lp-exp-card" data-exp="copy-md">' +
               '<div><b>📋 Als Text / Checkliste kopieren</b><span>Kopiert den gesamten Plan mit Abhak-Kästchen für WhatsApp, Notion, GoodNotes oder Notizen.</span></div>' +
               '<span class="lp-exp-badge">Zwischenablage</span>' +
@@ -3148,7 +3153,7 @@
               '<div><b>📊 Als Excel- / Google-Sheets-Tabelle (.csv)</b><span>Alle Lerntage, Fächer, Themen, Dauer und Status als Tabelle.</span></div>' +
               '<span class="lp-exp-badge">.csv</span>' +
             '</button>'
-          ) : '<p class="lp-hint" style="margin:4px 0;"><i>Hinweis: Erstelle zuerst deinen Lernplan, um auch PDF-, Kalender-, Text- und Excel-Exporte zu nutzen.</i></p>') +
+          ) : '<p class="lp-hint" style="margin:4px 0;"><i>Hinweis: Erstelle zuerst deinen Lernplan, um auch PDF-, Text- und Tabellen-Exporte zu nutzen.</i></p>') +
           '<button type="button" class="lp-exp-card" data-exp="json-out">' +
             '<div><b>💾 Komplettes Backup herunterladen (.json)</b><span>Sichert alle deine Lernplan-Projekte, Häkchen, Übungsblätter &amp; Zusatzwissen in einer Datei.</span></div>' +
             '<span class="lp-exp-badge">Backup ↓</span>' +
