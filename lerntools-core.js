@@ -67,10 +67,16 @@
     if (Array.isArray(sub.files) && sub.files.length) {
       sub.files.forEach(function (f) {
         if (!f || !f.name) return;
+        if (Array.isArray(f.extractedTasks) && f.extractedTasks.length) {
+          var extLines = f.extractedTasks.map(function (tk) {
+            return '  • [' + (AFB_LABELS[tk.afb] || ('AFB ' + tk.afb)) + '] ' + tk.title + ': ' + tk.text;
+          }).join('\n');
+          parts.push('--- EXTRAHIERTE AUFGABEN AUS SEITE/BLATT (' + f.name + ') ---\n' + extLines);
+        }
         if (f.text && f.text.trim()) {
-          parts.push('--- HOCHGELADENES ÜBUNGSBLATT (' + f.name + ') ---\n' + f.text.trim());
+          parts.push('--- VOLLSTÄNDIGER SEITENTEXT (' + f.name + ' – bitte daraus eigenständig alle Übungsaufgaben extrahieren) ---\n' + f.text.trim());
         } else {
-          parts.push('--- HOCHGELADENES ÜBUNGSBLATT (' + f.name + ' – als Bild/Scan vorhanden, bitte Aufgabenstil daran orientieren bzw. angehängte Datei beachten) ---');
+          parts.push('--- HOCHGELADENE SEITE / ÜBUNGSBLATT (' + f.name + ' – als Bild/Scan vorhanden, bitte aus der angehängten Seite eigenständig alle Aufgaben extrahieren) ---');
         }
       });
     }
