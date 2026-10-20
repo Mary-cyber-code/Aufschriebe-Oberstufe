@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>15-Punkte-Lernplaner · Oberstufen-Aufschriebe (BW)</title>
-  <meta name="description" content="Persönlicher 15-Punkte-Lernplaner für das Gymnasium in Baden-Württemberg – mit Aufgaben-Steigerung (AFB I–III), KI-Masterplan, Spaced Repetition und Klausursimulation.">
+  <title>Lernplaner · Oberstufen-Aufschriebe (BW)</title>
+  <meta name="description" content="Persönlicher 15-Punkte-Lernplaner für das Gymnasium in Baden-Württemberg.">
   <meta name="author" content="Olga V.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none' stroke='%233A5A3F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='5' y='6' width='22' height='21' rx='2'/><path d='M5 12h22M11 3v6M21 3v6'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,75 +35,69 @@
       <span class="subject-icon" style="color: var(--gold);" aria-hidden="true">
         <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="6" width="22" height="21" rx="2"/><path d="M5 12h22M11 3v6M21 3v6"/><path d="M10 18l3 3 6-6"/></svg>
       </span>
-      <h1 class="subject-title">15-Punkte-Lernplaner</h1>
-      <span class="subject-badge">Gymnasium Baden-Württemberg · AFB I – III</span>
+      <h1 class="subject-title">Lernplaner</h1>
+      <span class="subject-badge">Gymnasium Baden-Württemberg · Ziel: 15 Punkte</span>
     </header>
 
-    <!-- ================= PROJEKTE / MEHRERE LERNPLÄNE ================= -->
+    <!-- ================= PROJEKT-LEISTE ================= -->
     <div id="lp-projects" class="lp-projects lp-noprint"></div>
 
-    <!-- ================= EINSTELLUNGEN (ÜBERSICHTLICHER 3-SCHRITT-ASSISTENT) ================= -->
+    <!-- ================= EINSTELLUNGEN (3 SCHRITTE) ================= -->
     <div id="lp-setup" class="lp-noprint">
 
-      <!-- Schritt-Navigation (Stepper) -->
+      <!-- Schritt-Navigation -->
       <div class="lp-stepper-bar" role="tablist" aria-label="Schritte zur Lernplan-Erstellung">
         <div class="lp-stepper-tabs">
           <button type="button" class="lp-stepper-tab lp-step-active" data-step-go="1" role="tab" aria-selected="true">
             <span class="lp-stepper-num">1</span>
             <span class="lp-stepper-txt">
-              <b>Fächer, Themen &amp; Aufgaben</b>
-              <small id="lp-step1-badge">Themen &amp; Übungsaufgaben wählen</small>
+              <b>Fächer &amp; Themen</b>
+              <small id="lp-step1-badge">Auswählen</small>
             </span>
           </button>
           <button type="button" class="lp-stepper-tab" data-step-go="2" role="tab" aria-selected="false">
             <span class="lp-stepper-num">2</span>
             <span class="lp-stepper-txt">
-              <b>Klausurtermine &amp; Lernzeit</b>
-              <small id="lp-step2-badge">Termine &amp; Wochentage festlegen</small>
+              <b>Termine &amp; Lernzeit</b>
+              <small id="lp-step2-badge">Festlegen</small>
             </span>
           </button>
           <button type="button" class="lp-stepper-tab" data-step-go="3" role="tab" aria-selected="false">
             <span class="lp-stepper-num">3</span>
             <span class="lp-stepper-txt">
-              <b>Plan erstellen (KI &amp; Sofort)</b>
-              <small>Master-Prompt, Import &amp; Sofort-Plan</small>
+              <b>Plan erstellen</b>
+              <small>Mit KI oder sofort</small>
             </span>
           </button>
         </div>
-        <button type="button" id="lp-toggle-all-steps" class="lp-stepper-all-btn" title="Alle 3 Schritte gleichzeitig untereinander anzeigen">
+        <button type="button" id="lp-toggle-all-steps" class="lp-stepper-all-btn">
           Alle Schritte zeigen
         </button>
       </div>
 
-      <!-- ================= SCHRITT 1: FÄCHER, THEMEN & AUFGABEN ================= -->
+      <!-- ================= SCHRITT 1: FÄCHER & THEMEN ================= -->
       <section class="lp-step" id="lp-step-panel-1" data-step-panel="1">
         <div class="lp-step-head">
           <span class="lp-step-num">1</span>
           <div>
-            <h2 class="lp-step-title">Fächer, Themen &amp; Übungsaufgaben auswählen</h2>
-            <p class="lp-step-desc">
-              Klicke zuerst deine Fächer an, für die du lernen möchtest – so siehst du nur das, was du wirklich brauchst.
-              Gib deinen Könnensstand an (oder nutze <b>„🎯 Einstufung testen“</b>) und lege fest, wie <b>Übungsaufgaben</b> (eigene Arbeitsblätter/Buchseiten, KI-Aufgaben oder beides mit gezielter Steigerung) einfließen sollen.
-            </p>
+            <h2 class="lp-step-title">Fächer, Themen &amp; Aufgaben wählen</h2>
           </div>
         </div>
 
-        <!-- Übersichts-Auswahl der Fächer (Pills), damit nicht alle 12 Fächer gleichzeitig den Bildschirm füllen -->
         <div class="lp-picker-box">
           <div class="lp-picker-head">
-            <span class="lp-picker-label">📚 Welche Fächer möchtest du planen? (Antippen zum Öffnen):</span>
-            <button type="button" id="lp-show-all-subjects" class="lp-link-btn">Alle 12 Fächer aufklappen</button>
+            <span class="lp-picker-label">Fächer antippen:</span>
+            <button type="button" id="lp-show-all-subjects" class="lp-link-btn">Alle Fächer zeigen</button>
           </div>
           <div id="lp-subject-chips" class="lp-subject-chips"></div>
         </div>
 
-        <!-- Geöffnete / aktive Fächer -->
         <div id="lp-subjects"></div>
 
         <div class="lp-step-nav">
           <span></span>
           <button type="button" class="btn btn-gold lp-next-btn" data-step-go="2">
-            Weiter zu Schritt 2: Klausurtermine &amp; Lernzeit →
+            Weiter zu Schritt 2: Termine &amp; Lernzeit →
           </button>
         </div>
       </section>
@@ -113,35 +107,31 @@
         <div class="lp-step-head">
           <span class="lp-step-num">2</span>
           <div>
-            <h2 class="lp-step-title">Klausurtermine &amp; deine Lernzeit</h2>
-            <p class="lp-step-desc">
-              Trage hier deine Klausurtermine und deine realistische Lernzeit pro Wochentag ein. Plane lieber etwas Puffer ein – ein Plan, den du durchhältst, bringt dir am sichersten 15 Punkte.
-            </p>
+            <h2 class="lp-step-title">Klausurtermine &amp; Lernzeit</h2>
           </div>
         </div>
 
-        <!-- Zentrale Übersicht der Klausurtermine für alle ausgewählten Fächer -->
+        <!-- Klausurtermine (nur hier, keine Dopplung in Schritt 1) -->
         <div id="lp-exams-overview" class="lp-exams-overview"></div>
 
         <div class="lp-time-grid">
           <div class="form-group">
-            <label for="lp-start">Start des Lernplans</label>
+            <label for="lp-start">Startdatum</label>
             <input type="date" id="lp-start" class="form-control">
           </div>
           <div class="form-group">
-            <label for="lp-block">Länge einer Lerneinheit</label>
+            <label for="lp-block">Dauer pro Lerneinheit</label>
             <select id="lp-block" class="form-control">
-              <option value="25">25 Min. + 5 Min. Pause (Pomodoro)</option>
-              <option value="45">45 Min. + 10 Min. Pause (Standard)</option>
-              <option value="60">60 Min. + 15 Min. Pause (Fokus-Block)</option>
+              <option value="25">25 Min. (Pomodoro)</option>
+              <option value="45">45 Min. (Standard)</option>
+              <option value="60">60 Min. (Fokus-Block)</option>
             </select>
           </div>
         </div>
 
         <div class="lp-weekday-header">
-          <label class="lp-sublabel" style="margin:0;">Lernzeit pro Wochentag (in Minuten)</label>
+          <label class="lp-sublabel" style="margin:0;">Lernzeit pro Wochentag (Minuten)</label>
           <div class="lp-time-presets">
-            <span>Schnellwahl:</span>
             <button type="button" class="lp-preset-btn" data-preset="normal">⚡ Normal (Mo–Fr 60, Sa 90)</button>
             <button type="button" class="lp-preset-btn" data-preset="intensiv">🔥 Intensiv (Mo–Fr 90, WE 120)</button>
             <button type="button" class="lp-preset-btn" data-preset="kompakt">🧘 Kompakt (45 Min.)</button>
@@ -152,132 +142,103 @@
 
         <div class="lp-step-nav">
           <button type="button" class="btn btn-outline lp-prev-btn" data-step-go="1">
-            ← Zurück zu Schritt 1 (Fächer &amp; Aufgaben)
+            ← Zurück
           </button>
           <button type="button" class="btn btn-gold lp-next-btn" data-step-go="3">
-            Weiter zu Schritt 3: Lernplan erstellen →
+            Weiter zu Schritt 3: Plan erstellen →
           </button>
         </div>
       </section>
 
-      <!-- ================= SCHRITT 3: LERNPLAN ERSTELLEN (KI-MASTERPLAN ODER SOFORT-PLAN) ================= -->
+      <!-- ================= SCHRITT 3: PLAN ERSTELLEN ================= -->
       <section class="lp-step lp-step-hidden" id="lp-step-panel-3" data-step-panel="3">
         <div class="lp-step-head">
           <span class="lp-step-num">3</span>
           <div>
-            <h2 class="lp-step-title">Deinen 15-Punkte-Lernplan erstellen</h2>
-            <p class="lp-step-desc">
-              Wähle, wie dein Plan erstellt werden soll: Entweder über den <b>KI-Master-Prompt</b> (ideal, wenn die KI deine eigenen Aufgabenblätter sichten, nach Schwierigkeit sortieren und mit neuen Aufgaben kombinieren soll) oder als <b>Sofort-Plan direkt im Browser</b>. Beides wird danach interaktiv hier auf der Website angezeigt!
-            </p>
+            <h2 class="lp-step-title">Lernplan erstellen</h2>
           </div>
         </div>
 
         <p id="lp-error" class="lp-error" role="alert"></p>
 
         <div class="lp-create-grid">
-          <!-- OPTION A: KI-MASTER-LERNPLAN (MIT AUFGABEN-STEIGERUNG & RE-IMPORT) -->
+          <!-- OPTION A: MIT KI ERSTELLEN -->
           <div class="lp-create-card lp-create-card--ai">
-            <div class="lp-create-badge">🌟 Empfohlen für Mathe, Naturwissenschaften &amp; eigene Aufgaben</div>
-            <h3 class="lp-create-title">Option A: Maßgeschneiderter KI-Lernplan (mit Aufgaben-Steigerung)</h3>
+            <div class="lp-create-badge">🌟 Empfohlen für eigene Aufgaben &amp; Mathe/NaWi</div>
+            <h3 class="lp-create-title">Mit KI erstellen</h3>
             <p class="lp-create-desc">
-              Die Website erstellt dir einen <b>kompletten 15-Punkte-Master-Prompt</b> (inkl. deiner Lernzettel, Termine, BW-Operatoren und Aufgaben-Wünsche).
-              Die KI sichtet deine mitgegebenen Aufgaben, <b>sortiert sie didaktisch vom Leichten zum Schweren (AFB I → II → III)</b>, ergänzt eigene Abitur-Aufgaben und gibt dir den fertigen Plan zurück – den du mit einem Klick <b>wieder hier auf der Website importierst</b>!
+              Erstellt einen Prompt für Gemini/ChatGPT (inkl. Aufgaben-Steigerung AFB I → III). Den fertigen Plan fügst du danach direkt hier wieder ein.
             </p>
 
-            <!-- Modell-Empfehlung Box -->
             <div class="lp-model-tip">
-              <strong>💡 Modell-Empfehlung für 15 Punkte:</strong>
-              Wähle in Google Gemini unbedingt <b>„Deep Think“</b> bzw. <b>„2.5 Pro“</b> (oder in ChatGPT/Claude das stärkste Reasoning-/Denk-Modell) aus!
-              Wenn du eigene Aufgaben (Arbeitsblatt, Buchseite, Altklausur) hast, hänge sie im Chat einfach über <b>+</b> als PDF oder Foto mit an.
+              💡 <b>Tipp:</b> Wähle in der KI <b>„Deep Think“ / „Pro“</b> (bestes Modell) und hänge eigene Aufgaben per <b>+</b> an.
             </div>
 
-            <div class="lp-ai-actions">
-              <button type="button" id="lp-btn-master-prompt" class="btn btn-gold" style="width:100%;">
-                ✨ 1. KI-Master-Prompt generieren (im Kopier-Kasten)
-              </button>
-            </div>
+            <button type="button" id="lp-btn-master-prompt" class="btn btn-gold" style="width:100%;">
+              ✨ 1. KI-Prompt erstellen
+            </button>
 
             <!-- KOPIER-KASTEN FÜR DEN MASTER-PROMPT -->
             <div id="lp-master-prompt-wrap" class="lp-copy-box" style="display:none;">
               <div class="lp-copy-box-head">
-                <span>📋 Dein fertiger 15-Punkte-Master-Prompt (alles in einem Kasten)</span>
+                <span>📋 Prompt zum Kopieren</span>
                 <div class="lp-copy-box-btns">
-                  <button type="button" id="lp-copy-master-btn" class="lp-copy-btn">📋 Auf einmal kopieren</button>
+                  <button type="button" id="lp-copy-master-btn" class="lp-copy-btn">📋 Kopieren</button>
                   <a href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer" class="lp-copy-btn lp-copy-btn--gold">🚀 Gemini öffnen ↗</a>
                 </div>
               </div>
-              <textarea id="lp-master-prompt-text" class="lp-copy-textarea" rows="7" readonly aria-label="Generierter KI-Master-Prompt"></textarea>
-              <div class="lp-copy-steps">
-                <span><b>1.</b> Prompt kopieren &amp; in Gemini einfügen (<b>Deep Think / Pro</b> aktivieren)</span>
-                <span><b>2.</b> Eigene Aufgabenblätter/Fotos (falls vorhanden) per <b>+</b> im Chat dazulegen &amp; absenden</span>
-                <span><b>3.</b> Antwort der KI kopieren und direkt hier unten in Schritt 2 einfügen:</span>
-              </div>
+              <textarea id="lp-master-prompt-text" class="lp-copy-textarea" rows="5" readonly aria-label="Generierter KI-Master-Prompt"></textarea>
             </div>
 
-            <!-- IMPORT-BEREICH: KI-PLAN WIEDER AUF DER WEBSITE ANZEIGEN -->
+            <!-- IMPORT-BEREICH -->
             <div class="lp-import-box">
-              <label for="lp-ai-import-text" class="lp-import-label">📥 2. Fertigen Plan von der KI hier einfügen &amp; auf der Website anzeigen:</label>
-              <textarea id="lp-ai-import-text" class="form-control" rows="4" placeholder="Kopiere die komplette Antwort von Gemini und füge sie hier ein – die Website wandelt sie sofort in deinen interaktiven Kalender-Plan (mit Abhak-Kästchen, Kopier-Kästen &amp; PDF-Export) um!"></textarea>
+              <label for="lp-ai-import-text" class="lp-import-label">📥 2. KI-Antwort hier einfügen:</label>
+              <textarea id="lp-ai-import-text" class="form-control" rows="3" placeholder="Antwort von Gemini/ChatGPT hier einfügen …"></textarea>
               <button type="button" id="lp-btn-import-ai-plan" class="btn btn-outline" style="width:100%;margin-top:8px;">
-                📊 KI-Lernplan jetzt auf der Website anzeigen &amp; speichern
+                📊 Plan auf der Website anzeigen
               </button>
             </div>
           </div>
 
-          <!-- OPTION B: SOFORT-PLAN IM BROWSER -->
+          <!-- OPTION B: SOFORT-PLAN -->
           <div class="lp-create-card">
-            <div class="lp-create-badge lp-create-badge--sage">⚡ Ohne Wartezeit · Direkt im Browser</div>
-            <h3 class="lp-create-title">Option B: Sofort-Lernplan direkt berechnen</h3>
+            <div class="lp-create-badge lp-create-badge--sage">⚡ Direkt im Browser</div>
+            <h3 class="lp-create-title">Sofort-Plan (ohne KI)</h3>
             <p class="lp-create-desc">
-              Berechnet deinen kompletten Lernplan <b>sofort hier auf der Website</b> mit Spaced Repetition (1–3–7–14 Tage), Fach-Profilen und Klausur-Simulation.
-              Zu jeder einzelnen Lerneinheit kannst du dir per Klick den passenden <b>Übungs- oder Aufsatz-Prompt in einem Kopier-Kasten</b> ausgeben lassen!
+              Berechnet deinen Zeitplan sofort hier auf der Website. Übungs-Prompts kannst du dir danach bei jedem Tag einzeln ausgeben lassen.
             </p>
-            <ul class="lp-create-bullets">
-              <li>✓ Sofort startklar mit interaktiven Abhak-Kästchen</li>
-              <li>✓ Fachspezifische Einheiten (Mathe-Rechnen, Deutsch-Aufsatz-Blöcke 1–4, Chemie, GK …)</li>
-              <li>✓ Jeder Übungs-Prompt öffnet sich in einem übersichtlichen <b>1-Klick-Kopier-Kasten</b></li>
-            </ul>
             <button id="lp-generate" type="button" class="btn btn-gold lp-generate" style="width:100%;margin-top:auto;">
               <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-              <span>Sofort-Lernplan auf der Website erstellen</span>
+              <span>Sofort-Plan erstellen</span>
             </button>
           </div>
         </div>
 
-        <div class="lp-step-nav" style="margin-top:18px;">
+        <div class="lp-step-nav" style="margin-top:16px;">
           <button type="button" class="btn btn-outline lp-prev-btn" data-step-go="2">
-            ← Zurück zu Schritt 2 (Termine &amp; Lernzeit)
+            ← Zurück
           </button>
           <div class="lp-setup-bottom-actions">
             <button id="lp-export-setup" type="button" class="btn btn-outline lp-reset-btn">
-              📤 Exportieren / Backup laden
+              📤 Export / Backup
             </button>
             <button id="lp-reset" type="button" class="btn btn-danger lp-reset-btn">
-              🗑️ Eingaben / Plan löschen
+              🗑️ Zurücksetzen
             </button>
           </div>
         </div>
-
-        <p class="lp-hint" style="text-align:center;margin-top:12px;">
-          🔒 <b>Datenschutz:</b> Dein Plan, deine Einschätzungen, Aufgaben-Einstellungen und dein Zusatzwissen werden automatisch <b>nur lokal in deinem Browser</b> gespeichert – niemand sonst kann sie sehen.
-        </p>
       </section>
     </div>
 
     <!-- ================= FERTIGER LERNPLAN (WEBSITE-ANSICHT) ================= -->
     <div id="lp-result"></div>
 
-    <!-- ================= RECHTLICHER HINWEIS / DISCLAIMER ================= -->
-    <aside class="lp-disclaimer" aria-label="Rechtlicher Hinweis zur Vollständigkeit">
-      <strong>⚖️ Hinweis zu den 15-Punkte-Anforderungen (Gymnasium BW) &amp; Haftungsausschluss:</strong>
-      Dieser Lernplaner sowie alle Lernzettel und KI-Prompts sind nach den Anforderungen des allgemeinbildenden Gymnasiums in Baden-Württemberg (Bildungsplan 2016, Anforderungsbereiche I–III und offizielle Operatoren) konzipiert, um dich bestmöglich auf <b>15 Notenpunkte</b> vorzubereiten.
-      Bitte beachte jedoch: Das Angebot dient ausschließlich als unverbindliche Lernhilfe und <b>garantiert rechtlich keine Vollständigkeit, Aktualität, Fehlerfreiheit oder eine bestimmte Prüfungsnote</b>.
-      Maßgeblich für Klausuren und das Abitur sind stets die im Unterricht behandelten Inhalte, Hefteinträge, Aufgabenstellungen und Hinweise deiner Lehrkräfte sowie die amtlichen Vorgaben des Kultusministeriums Baden-Württemberg.
-    </aside>
-
     <footer class="site-footer lp-noprint">
       <span class="footer-line" aria-hidden="true"></span>
       <p>Website erstellt von Olga V.</p>
+      <p style="font-size:0.74rem;color:var(--text-light);max-width:680px;margin:6px auto 0;line-height:1.45;">
+        Unverbindliche Lernhilfe (ausgerichtet auf 15 Punkte am Gymnasium BW) – ohne Gewähr auf Vollständigkeit; maßgeblich sind die Vorgaben deiner Lehrkräfte.
+      </p>
     </footer>
   </div>
 
