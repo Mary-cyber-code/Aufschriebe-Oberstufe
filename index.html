@@ -178,6 +178,12 @@
       <!-- Dynamisch befüllt von script.js -->
     </div>
 
+    <!-- ======================== RECHTLICHER HINWEIS ======================== -->
+    <aside style="max-width: 900px; margin: 3rem auto 0; padding: 12px 16px; border-radius: 10px; background: rgba(250, 248, 245, 0.85); border: 1px dashed var(--border); font-size: 0.78rem; color: var(--text-secondary); line-height: 1.55;">
+      <strong>⚖️ Hinweis zu den 15-Punkte-Anforderungen (Gymnasium BW) &amp; Haftungsausschluss:</strong>
+      Alle Lernzettel, der Lernplaner und die KI-Prompts sind nach den Anforderungen des allgemeinbildenden Gymnasiums in Baden-Württemberg (Bildungsplan 2016, AFB I–III, offizielle Operatoren) gestaltet, um dich bestmöglich auf <b>15 Notenpunkte</b> vorzubereiten. Das Angebot dient als unverbindliche Lernhilfe und <b>garantiert rechtlich keine Vollständigkeit, Fehlerfreiheit oder eine bestimmte Prüfungsnote</b>. Maßgeblich sind stets der Unterricht und die Vorgaben deiner Lehrkräfte.
+    </aside>
+
     <!-- ======================== FOOTER ======================== -->
     <footer class="site-footer">
       <span class="footer-line" aria-hidden="true"></span>
@@ -190,8 +196,8 @@
   <div id="quiz-modal" class="modal" aria-hidden="true">
     <div class="modal-content">
       <button id="close-quiz-modal" class="modal-close" aria-label="Schließen">&times;</button>
-      <h2 class="modal-title">KI-Quiz Generator</h2>
-      <p class="modal-desc">Wähle einen Lernzettel und erstelle automatisch einen perfekten Prompt für KI-Modelle (wie Gemini oder ChatGPT), um Übungsaufgaben auf Abitur-Niveau zu generieren.</p>
+      <h2 class="modal-title">KI-Quiz &amp; 15-Punkte-Aufgaben Generator</h2>
+      <p class="modal-desc">Wähle einen Lernzettel und erstelle automatisch einen maßgeschneiderten 15-Punkte-Prompt (mit Aufgaben-Steigerung AFB I → II → III) im übersichtlichen <b>1-Klick-Kopier-Kasten</b>.</p>
 
       <div class="form-group">
         <label for="quiz-subject">Fach auswählen:</label>
@@ -221,24 +227,32 @@
       </div>
 
       <div class="form-group" id="quiz-zusatz-group" style="display:none;">
-        <label class="radio-label" style="font-weight: 500;"><input type="checkbox" id="quiz-zusatz" checked> Mein Zusatzwissen aus dem Lernplaner mit abfragen</label>
+        <label class="radio-label" style="font-weight: 500;"><input type="checkbox" id="quiz-zusatz" checked> Mein Zusatzwissen &amp; meine Aufgaben aus dem Lernplaner mit einbeziehen</label>
       </div>
 
 
       <div class="form-group">
-        <label for="quiz-custom">Eigene Wünsche (Optional):</label>
-        <textarea id="quiz-custom" class="form-control" rows="3" placeholder="z.B. Erstelle ein Multiple-Choice-Quiz... oder: Frage mich ab wie in einer mündlichen Prüfung..."></textarea>
+        <label for="quiz-custom">Eigene Wünsche / Eigene Aufgaben (Optional):</label>
+        <textarea id="quiz-custom" class="form-control" rows="3" placeholder="z.B. Ich hänge im Chat noch mein Arbeitsblatt an – sortiere die Aufgaben nach Schwierigkeit (AFB I → III) und ergänze passende 15-Punkte-Aufgaben..."></textarea>
       </div>
 
       <button id="generate-quiz-prompt" class="btn btn-gold">
         <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="M8 17.929H6c-1.105 0-2-.912-2-2.036V5.036C4 3.91 4.895 3 6 3h8c1.105 0 2 .911 2 2.036v1.866m-6 .17h8c1.105 0 2 .91 2 2.035v10.857C20 21.09 19.105 22 18 22h-8c-1.105 0-2-.911-2-2.036V9.107c0-1.124.895-2.036 2-2.036z"/></svg>
-        Prompt generieren & kopieren
+        Prompt im Kopier-Kasten erstellen &amp; kopieren
       </button>
       
-      <div id="quiz-success" class="quiz-success" style="display:none;">
-        <p>✅ Prompt erfolgreich kopiert!</p>
-        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 15px;">Öffne Gemini und füge den Text mit Strg+V ein – am besten in einem <b>neuen Chat</b> pro Prompt. Du musst nichts weiter dazugeben: Lernzettel, Operatoren und dein Zusatzwissen stecken schon im Prompt. Lösungen erst nach dem Bearbeiten anschauen!</p>
-        <a href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Google Gemini öffnen</a>
+      <div id="quiz-success" class="quiz-success" style="display:none; text-align:left;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+          <span style="font-weight:700; color:var(--forest);">📋 Fertiger 15-Punkte-Prompt (alles in einem Kasten)</span>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button type="button" id="copy-quiz-box-btn" class="btn btn-gold" style="width:auto; padding:6px 14px; font-size:0.84rem;">📋 Auf einmal kopieren</button>
+            <a href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="width:auto; padding:6px 14px; font-size:0.84rem;">🚀 Gemini öffnen ↗</a>
+          </div>
+        </div>
+        <textarea id="quiz-prompt-box" class="form-control" rows="6" readonly style="font-family:monospace; font-size:0.8rem; background:#fff; margin-bottom:10px;"></textarea>
+        <p style="font-size: 0.83rem; color: var(--text-secondary); margin: 0;">
+          💡 <b>Empfehlung:</b> Wähle in Gemini <b>„Deep Think“ / „2.5 Pro“</b> (oder das beste Modell) und starte einen <b>neuen Chat</b>. Eigene Aufgabenblätter kannst du im Chat einfach über <b>+</b> dazulegen!
+        </p>
       </div>
     </div>
   </div>
@@ -273,15 +287,21 @@
 
       <button id="generate-anki-prompt" class="btn btn-gold">
         <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="M8 17.929H6c-1.105 0-2-.912-2-2.036V5.036C4 3.91 4.895 3 6 3h8c1.105 0 2 .911 2 2.036v1.866m-6 .17h8c1.105 0 2 .91 2 2.035v10.857C20 21.09 19.105 22 18 22h-8c-1.105 0-2-.911-2-2.036V9.107c0-1.124.895-2.036 2-2.036z"/></svg>
-        Prompt generieren & kopieren
+        Prompt im Kopier-Kasten erstellen &amp; kopieren
       </button>
       
       <div id="anki-success" class="quiz-success" style="display:none; margin-top: 20px; text-align: left;">
-        <p style="color: var(--forest); font-weight: bold; margin-bottom: 10px;">✅ 1. Prompt kopiert!</p>
-        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 15px;">Öffne Gemini und füge den Text ein. Kopiere danach einfach die Antwort von Gemini und füge sie hier unten ein:</p>
-        <a href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="margin-bottom: 20px;">Google Gemini öffnen</a>
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+          <span style="color: var(--forest); font-weight: bold;">📋 1. Dein Anki-Prompt (im Kasten auf einmal kopieren)</span>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button type="button" id="copy-anki-box-btn" class="btn btn-gold" style="width:auto; padding:6px 14px; font-size:0.84rem;">📋 Auf einmal kopieren</button>
+            <a href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="width:auto; padding:6px 14px; font-size:0.84rem;">🚀 Gemini öffnen ↗</a>
+          </div>
+        </div>
+        <textarea id="anki-prompt-box" class="form-control" rows="5" readonly style="font-family:monospace; font-size:0.8rem; background:#fff; margin-bottom:10px;"></textarea>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px;">Öffne Gemini, füge den Prompt ein und kopiere danach die Antwort von Gemini hier unten in Schritt 2:</p>
         
-        <hr style="border: 0; border-top: 1px solid rgba(0,0,0,0.1); margin: 20px 0;">
+        <hr style="border: 0; border-top: 1px solid rgba(0,0,0,0.1); margin: 16px 0;">
         
         <p style="color: var(--forest); font-weight: bold; margin-bottom: 10px;">📥 2. Zur Datei machen</p>
         <textarea id="anki-paste-area" class="form-control" rows="4" placeholder="Füge hier die fertigen Karteikarten von Gemini ein..."></textarea>

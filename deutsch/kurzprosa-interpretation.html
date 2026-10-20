@@ -143,19 +143,19 @@
         td li:last-child { margin-bottom: 0; }
 
         /* Flashcards */
-        .flashcards-container { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 12px; margin-bottom: 1rem; }
-        .flashcard { perspective: 1000px; width: 200px; height: 230px; cursor: pointer; flex: 1 1 200px; }
+        .flashcards-container { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 14px; margin-bottom: 1rem; }
+        .flashcard { perspective: 1000px; width: 300px; height: 270px; cursor: pointer; flex: 1 1 300px; }
         .flashcard-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; }
         .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
         .flashcard-front, .flashcard-back {
-            position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 8px; padding: 15px;
-            display: flex; align-items: center; justify-content: center; border: 1px solid var(--gold);
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 8px; padding: 18px 20px;
+            display: flex; align-items: flex-start; justify-content: center; border: 1px solid var(--gold);
             background-color: var(--paper-cream); box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            overflow-y: auto; scrollbar-width: none;
+            overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(201, 169, 110, 0.6) transparent;
         }
-        .flashcard-front { color: var(--forest); font-family: 'Playfair Display', serif; font-weight: 600; font-size: 1.02rem; }
-        .flashcard-back { transform: rotateY(180deg); background-color: var(--forest); color: var(--paper-white); border-color: var(--forest); font-size: 0.88rem; }
-        .flashcard span, .flashcard p { display: block; width: 100%; }
+        .flashcard-front { color: var(--forest); font-family: 'Playfair Display', serif; font-weight: 600; font-size: 1.05rem; }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--forest); color: var(--paper-white); border-color: var(--forest); font-size: 0.92rem; line-height: 1.55; }
+        .flashcard span, .flashcard p { display: block; width: 100%; margin: auto 0; }
 
         /* Druck Modus - KOMPAKTERES LAYOUT */
         body.print-mode { background-color: #E2E2E2; padding-top: 90px; font-size: 0.8rem; line-height: 1.35; }
@@ -238,10 +238,10 @@
             body:not(.print-mode) table { font-size: 0.96rem; }
             body:not(.print-mode) th, body:not(.print-mode) td { border-bottom-color: rgba(45, 58, 46, 0.18); }
             body:not(.print-mode) th { font-weight: 700; }
-            body:not(.print-mode) .flashcard { height: 260px; }
-            body:not(.print-mode) .flashcard-front, body:not(.print-mode) .flashcard-back { border-width: 1.5px; padding: 18px; }
-            body:not(.print-mode) .flashcard-front { font-size: 1.1rem; font-weight: 700; }
-            body:not(.print-mode) .flashcard-back { font-size: 0.95rem; font-weight: 500; }
+            body:not(.print-mode) .flashcard { flex: 1 1 360px; height: 300px; }
+            body:not(.print-mode) .flashcard-front, body:not(.print-mode) .flashcard-back { border-width: 1.5px; padding: 22px 24px; }
+            body:not(.print-mode) .flashcard-front { font-size: 1.15rem; font-weight: 700; }
+            body:not(.print-mode) .flashcard-back { font-size: 0.98rem; font-weight: 500; line-height: 1.6; }
             body:not(.print-mode) .nav-btn { font-size: 0.95rem; font-weight: 600; border-width: 1.5px; }
             body:not(.print-mode) .dropdown-item { font-size: 0.95rem; font-weight: 500; }
             body:not(.print-mode) nav { border-bottom-width: 1.5px; }
@@ -249,6 +249,7 @@
         @media screen and (min-width: 1700px) {
             html:not(:has(body.print-mode)) { font-size: 19px; }
             body:not(.print-mode) .content-wrapper { max-width: 1800px; }
+            body:not(.print-mode) .flashcard { flex: 1 1 420px; height: 320px; }
         }
     </style>
 </head>

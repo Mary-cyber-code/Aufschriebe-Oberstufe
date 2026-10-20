@@ -257,6 +257,15 @@
     }
   }
 
+  /* UI-Zustand für 3-Schritt-Assistent, Fächer-Pills & Plan-Filter */
+  var uiState = {
+    step: 1,
+    allSteps: false,
+    openSubjects: {},
+    showAllSubjects: false,
+    planFilter: 'all' /* 'all' | 'focus' | 'open' | 'future' */
+  };
+
   /** Klonen der Einschätzungen, eigenen Themen, Übungsblätter & Zusatzwissen für ein neues Projekt */
   function cloneKnowledgeFromCurrent() {
     var out = {};
@@ -282,7 +291,10 @@
         files: filesCopy,
         exam: '',
         simMinutes: s.simMinutes || 90,
-        zusatz: s.zusatz || ''
+        zusatz: s.zusatz || '',
+        taskMode: s.taskMode || 'both',
+        attachInAi: s.attachInAi !== false,
+        taskNote: s.taskNote || ''
       };
     });
     return out;
@@ -302,6 +314,7 @@
         Object.keys(st.topics).forEach(function (k) { if (st.topics[k] && st.topics[k].selected) hasSel = true; });
       }
       if ((st.custom || []).some(function (c) { return c.selected !== false; })) hasSel = true;
+      if ((st.files || []).length) hasSel = true;
       if (hasSel) active.push(fachName(fk) + (st.exam ? ' (' + fmtShort(st.exam) + ')' : ''));
     });
     return active.length ? active.join(', ') + ' · Entwurf' : 'Noch keine Themen gewählt';
@@ -336,9 +349,11 @@
     if (!target || target.id === state.id) return;
     state = target;
     store.activeId = state.id;
+    syncOpenSubjectsWithSelection();
     save();
     renderSubjects();
     renderTime();
+    renderExamsOverview();
     renderPlan();
     setupVisible(!state.plan);
     $('lp-error').textContent = '';
@@ -381,9 +396,12 @@
       store.projects.push(np);
       state = np;
       store.activeId = np.id;
+      syncOpenSubjectsWithSelection();
+      goToStep(1);
       save();
       renderSubjects();
       renderTime();
+      renderExamsOverview();
       renderPlan();
       setupVisible(true);
       $('lp-error').textContent = '';
@@ -457,9 +475,11 @@
     store.projects = store.projects.filter(function (p) { return p.id !== id; });
     if (state.id === id) state = store.projects[0];
     store.activeId = state.id;
+    syncOpenSubjectsWithSelection();
     save();
     renderSubjects();
     renderTime();
+    renderExamsOverview();
     renderPlan();
     setupVisible(!state.plan);
     $('lp-error').textContent = '';
@@ -497,6 +517,9 @@
     if (st.exam == null) st.exam = '';
     if (!st.simMinutes) st.simMinutes = defaultSimMin(fk);
     if (st.zusatz == null) st.zusatz = '';
+    if (!st.taskMode) st.taskMode = 'both'; /* 'both' | 'own' | 'ai' */
+    if (st.attachInAi == null) st.attachInAi = true;
+    if (st.taskNote == null) st.taskNote = '';
     return st;
   }
 
@@ -540,6 +563,29 @@
     save();
   }
 
+  function isSubjectActive(fk) {
+    var st = getSub(fk);
+    var sel = subjTopics(fk).some(function (t) { return t.selected; });
+    var fc = st.files && st.files.length > 0;
+    var tn = st.taskNote && st.taskNote.trim().length > 0;
+    return sel || fc || tn;
+  }
+
+  function syncOpenSubjectsWithSelection() {
+    uiState.openSubjects = {};
+    var anyActive = false;
+    Object.keys(subjectData).forEach(function (fk) {
+      if (isSubjectActive(fk)) {
+        uiState.openSubjects[fk] = true;
+        anyActive = true;
+      }
+    });
+    if (!anyActive) {
+      /* Standardmäßig Mathe aufklappen, damit man sofort sieht, wie ein Fach aussieht */
+      uiState.openSubjects.mathe = true;
+    }
+  }
+
   /** Signatur der planungsrelevanten Einstellungen (ohne Zusatzwissen/Start) */
   function settingsSig() {
     var s = state.settings, subs = {};
@@ -548,7 +594,7 @@
       var st = getSub(fk);
       if (!sel.length && !(st.files && st.files.length)) return;
       subs[fk] = {
-        exam: st.exam, sim: st.simMinutes,
+        exam: st.exam, sim: st.simMinutes, tm: st.taskMode,
         t: sel.map(function (t) { return t.key + ':' + t.level + ':' + (t.important ? 1 : 0); }),
         f: (st.files || []).map(function (fl) { return fl.id; })
       };
@@ -557,7 +603,67 @@
   }
 
   /* ──────────────────────────────────────────────────────────
-     SCHRITT 1 – Fächer & Themen
+     3-SCHRITT-ASSISTENT (STEPPER) & ÜBERSICHTS-BADGES
+     ────────────────────────────────────────────────────────── */
+  function goToStep(stepNum, doScroll) {
+    uiState.step = stepNum;
+    [1, 2, 3].forEach(function (n) {
+      var panel = $('lp-step-panel-' + n);
+      if (panel) {
+        panel.classList.toggle('lp-step-hidden', !uiState.allSteps && n !== stepNum);
+      }
+    });
+    var tabs = document.querySelectorAll('.lp-stepper-tab');
+    Array.prototype.forEach.call(tabs, function (tab) {
+      var tStep = +tab.getAttribute('data-step-go');
+      var active = uiState.allSteps || tStep === stepNum;
+      tab.classList.toggle('lp-step-active', tStep === stepNum);
+      tab.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    if (stepNum === 2 || uiState.allSteps) {
+      renderExamsOverview();
+    }
+    renderStepBadges();
+    if (doScroll) {
+      var target = $('lp-step-panel-' + stepNum) || $('lp-setup');
+      if (target && target.scrollIntoView) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  function renderStepBadges() {
+    var b1 = $('lp-step1-badge'), b2 = $('lp-step2-badge');
+    var activeFks = [];
+    var totalTopics = 0;
+    var missingExams = 0;
+    Object.keys(subjectData).forEach(function (fk) {
+      var sel = subjTopics(fk).filter(function (t) { return t.selected; }).length;
+      var st = getSub(fk);
+      var fc = (st.files || []).length;
+      if (sel || fc) {
+        activeFks.push(fachName(fk));
+        totalTopics += sel + fc;
+        if (!validDate(st.exam)) missingExams++;
+      }
+    });
+    if (b1) {
+      b1.textContent = activeFks.length
+        ? activeFks.length + (activeFks.length === 1 ? ' Fach' : ' Fächer') + ' · ' + totalTopics + ' Themen/Blätter gewählt'
+        : 'Themen & Übungsaufgaben wählen';
+    }
+    if (b2) {
+      var wkMin = (state.settings.minutes || []).reduce(function (a, b) { return a + b; }, 0);
+      if (!activeFks.length) {
+        b2.textContent = fmtMin(wkMin) + '/Woche eingestellt';
+      } else if (missingExams > 0) {
+        b2.textContent = '⚠️ Noch ' + missingExams + ' Klausurtermin(e) offen · ' + fmtMin(wkMin) + '/Wo.';
+      } else {
+        b2.textContent = '✓ Alle Termine gesetzt · ' + fmtMin(wkMin) + '/Wo.';
+      }
+    }
+  }
+
+  /* ──────────────────────────────────────────────────────────
+     SCHRITT 1 – Fächer-Pills, Themen & Aufgaben-Strategie
      ────────────────────────────────────────────────────────── */
   function subjectSummary(fk) {
     var sel = subjTopics(fk).filter(function (t) { return t.selected; }).length;
@@ -572,11 +678,38 @@
     return { cls: '', text: txt };
   }
 
+  function renderSubjectChips() {
+    var box = $('lp-subject-chips');
+    if (!box) return;
+    var h = '';
+    Object.keys(subjectData).forEach(function (fk) {
+      var f = subjectData[fk];
+      var sel = subjTopics(fk).filter(function (t) { return t.selected; }).length;
+      var st = getSub(fk);
+      var fc = (st.files || []).length;
+      var count = sel + fc;
+      var hasData = count > 0 || !!(st.taskNote && st.taskNote.trim());
+      var isOpen = !!uiState.openSubjects[fk] || uiState.showAllSubjects || hasData;
+      var cls = 'lp-subj-chip' + (isOpen ? ' lp-chip-open' : '') + (hasData ? ' lp-chip-has-data' : '');
+      var badge = count > 0 ? ('✓ ' + count) : (isOpen ? 'offen' : '+');
+      h += '<button type="button" class="' + cls + '" data-chip-fach="' + esc(fk) + '" aria-pressed="' + (isOpen ? 'true' : 'false') + '">';
+      h += '<span>' + esc(f.name) + '</span>';
+      h += '<span class="lp-chip-count">' + esc(badge) + '</span>';
+      h += '</button>';
+    });
+    box.innerHTML = h;
+    var allBtn = $('lp-show-all-subjects');
+    if (allBtn) {
+      allBtn.textContent = uiState.showAllSubjects ? 'Nur gewählte Fächer zeigen' : 'Alle 12 Fächer aufklappen';
+    }
+  }
+
   function renderSubject(fk, open) {
     var f = subjectData[fk], st = getSub(fk), topics = subjTopics(fk);
     var sum = subjectSummary(fk);
     var anySel = topics.some(function (t) { return t.selected; }) || (st.files && st.files.length > 0);
     var prof = getProfile(fk);
+    var tm = st.taskMode || 'both';
 
     var h = '<details class="lp-subject" data-fach="' + esc(fk) + '"' + (open ? ' open' : '') + '>';
     h += '<summary>' + esc(f.name) + ' <span class="lp-sum-type">' + esc(f.type || '') + '</span>';
@@ -623,24 +756,51 @@
     h += '<button type="button" class="btn btn-outline" data-act="add">+ Thema</button>';
     h += '</div>';
 
+    /* --- AUFGABEN-STRATEGIE & STEIGERUNG (AFB I -> II -> III) --- */
+    h += '<div class="lp-task-strategy-box">';
+    h += '<div class="lp-task-strategy-title">🏋️ Übungsaufgaben &amp; Schwierigkeits-Steigerung (AFB I → II → III) in ' + esc(f.name) + '</div>';
+    h += '<p class="lp-task-strategy-sub">Vor allem in Fächern wie Mathe, Chemie oder Bio sind echte Übungsaufgaben zentral für 15 Punkte. Wähle aus, wie Aufgaben in deinen Lernplan einfließen sollen:</p>';
+    h += '<div class="lp-task-modes">';
+    var modes = [
+      { v: 'both', title: '🌟 Eigene + KI-Aufgaben kombinieren (Empfohlen)', desc: 'Die KI sichtet deine mitgegebenen Aufgaben, sortiert sie von leicht nach schwer (Steigerung!) und ergänzt passende 15-Punkte-Aufgaben.' },
+      { v: 'own',  title: '📎 Fokus auf meine eigenen Aufgaben', desc: 'Du legst deine Arbeitsblätter/Buchseiten im KI-Chat (oder unten als PDF) dazu – die KI bringt sie in die optimale Reihenfolge mit Musterlösungen.' },
+      { v: 'ai',   title: '🤖 Neue 15-Punkte-Aufgaben von der KI', desc: 'Du brauchst keine eigenen Aufgaben mitzugeben: Die KI erstellt dir aufbauende Übungs- &amp; Abituraufgaben (AFB I → II → III).' }
+    ];
+    modes.forEach(function (m) {
+      var chk = tm === m.v;
+      h += '<label class="lp-task-mode-card' + (chk ? ' lp-mode-active' : '') + '">';
+      h += '<input type="radio" name="tm-' + esc(fk) + '" value="' + m.v + '" data-act="task-mode"' + (chk ? ' checked' : '') + '>';
+      h += '<div><b>' + m.title + '</b><span>' + m.desc + '</span></div>';
+      h += '</label>';
+    });
+    h += '</div>';
+    h += '<div class="lp-task-extra">';
+    h += '<label class="lp-task-attach-chk"><input type="checkbox" data-act="attach-ai"' + (st.attachInAi !== false ? ' checked' : '') + '>';
+    h += '<span>📎 <b>Ich lege meine Aufgaben im KI-Chat dazu (Foto / PDF / Buchseite)</b> – der generierte Master-Prompt weist die KI automatisch an, deine Aufgaben zu analysieren und mit klarer Steigerung (Einstieg → Routine → 15-P-Transfer) in die Lerntage einzubauen!</span></label>';
+    h += '<input type="text" class="form-control" data-act="task-note" value="' + esc(st.taskNote || '') + '" placeholder="Optional: Welche Aufgaben hast du? (z. B. Arbeitsblatt Extremwerte, Mathebuch S. 74 Nr. 1–8, Altklausur)">';
+    h += '</div></div>';
+
+    /* --- Klausurtermin & Dauer direkt im Fach (und synchron in Schritt 2) --- */
     h += '<div class="lp-subject-opts' + (anySel ? '' : ' lp-hidden') + '">';
-    h += '<div class="form-group"><label>Klausur- / Prüfungstermin</label>';
+    h += '<div class="form-group"><label>📅 Klausur- / Prüfungstermin</label>';
     h += '<input type="date" class="form-control" data-act="exam" value="' + esc(st.exam) + '"></div>';
-    h += '<div class="form-group"><label>Dauer der Klausur (für die Simulation)</label><select class="form-control" data-act="sim">';
+    h += '<div class="form-group"><label>⏱️ Dauer der Klausur (für die Simulation)</label><select class="form-control" data-act="sim">';
     [45, 60, 90, 135, 180, 210, 240, 270, 300, 315].forEach(function (m) {
       h += '<option value="' + m + '"' + (+st.simMinutes === m ? ' selected' : '') + '>' + fmtMin(m) + '</option>';
     });
     h += '</select></div></div>';
 
-    /* --- Eigene Übungsaufgaben / Arbeitsblätter (PDF / TXT / Bild) --- */
-    h += '<div class="lp-subject-opts"><div class="form-group lp-full">';
-    h += '<div class="lp-files-box">';
+    /* --- Einklappbare Schublade 1: Eigene Übungsblätter direkt hier hochladen --- */
+    var hasFiles = !!(st.files && st.files.length);
+    h += '<details class="lp-sub-drawer"' + (hasFiles ? ' open' : '') + '>';
+    h += '<summary>📄 Optional: Übungsblätter / Altklausuren direkt hier als PDF oder Text hinterlegen' + (hasFiles ? ' (' + st.files.length + ' gespeichert)' : '') + '</summary>';
+    h += '<div class="lp-sub-drawer-body">';
+    h += '<div class="lp-files-box" style="border:none;padding:0;background:transparent;">';
     h += '<div class="lp-files-head">';
-    h += '<div><label style="margin:0;color:var(--forest);font-family:var(--font-heading);">📄 Eigene Übungsaufgaben / Arbeitsblätter (PDF, Text, Foto)</label>';
-    h += '<p class="lp-hint" style="margin:2px 0 0;">Lade Übungsblätter oder Altklausuren hoch: Sie werden als eigene Übungseinheit im Lernplan eingeplant und in deine KI-Prompts einbezogen.</p></div>';
+    h += '<div><p class="lp-hint" style="margin:0;">Wenn du PDFs oder Textdateien schon hier hochlädst, liest die Website den Text direkt aus und baut ihn automatisch in deinen Lernplan und alle KI-Prompts ein (Scans/Fotos kannst du alternativ einfach im KI-Chat per <b>+</b> anhängen).</p></div>';
     h += '<label class="lp-upload-btn">📎 Übungsblatt hochladen<input type="file" accept=".pdf,.txt,.md,.png,.jpg,.jpeg,.webp" multiple data-act="file-upload" style="display:none;"></label>';
     h += '</div>';
-    if (st.files && st.files.length) {
+    if (hasFiles) {
       h += '<div class="lp-file-list">';
       st.files.forEach(function (fl) {
         var fid = esc(fl.id);
@@ -650,39 +810,55 @@
         h += '<div class="lp-file-item">';
         h += '<div class="lp-file-info"><span>📄</span><div><div class="lp-file-name">' + esc(fl.name) + '</div><div class="lp-file-meta">' + meta + '</div></div></div>';
         h += '<div class="lp-file-actions">';
-        h += '<button type="button" class="lp-tool lp-tool-gold" data-act="file-solve" data-fid="' + fid + '" title="Prompt kopieren: Musterlösung &amp; Schritt-für-Schritt-Erklärung zu diesem Blatt">Musterlösung (KI)</button>';
-        h += '<button type="button" class="lp-tool" data-act="file-twin" data-fid="' + fid + '" title="Prompt kopieren: Neue Parallelaufgaben im exakt gleichen Stil erstellen">Parallelaufgaben</button>';
+        h += '<button type="button" class="lp-tool lp-tool-gold" data-act="file-solve" data-fid="' + fid + '" title="Prompt im Kopier-Kasten öffnen: Musterlösung &amp; Schritt-für-Schritt-Erklärung">Musterlösung (KI)</button>';
+        h += '<button type="button" class="lp-tool" data-act="file-twin" data-fid="' + fid + '" title="Prompt im Kopier-Kasten öffnen: Neue Parallelaufgaben im exakt gleichen Stil">Parallelaufgaben</button>';
         h += '<button type="button" class="lp-tool" data-act="file-edit" data-fid="' + fid + '" title="Ausgelesenen Text ansehen oder bearbeiten">✏️ Text</button>';
         h += '<button type="button" class="lp-del" data-act="file-del" data-fid="' + fid + '" title="Übungsblatt entfernen">&times;</button>';
         h += '</div></div>';
       });
       h += '</div>';
     }
-    h += '</div></div></div>';
+    h += '</div></div></details>';
 
-    h += '<div class="lp-subject-opts"><div class="form-group lp-full">';
-    h += '<label>Zusatzwissen – muss ich können, steht aber auf keinem Lernzettel</label>';
-    h += '<textarea class="form-control" rows="4" data-act="zusatz" placeholder="z. B. Definitionen aus dem Heft, Formeln vom Arbeitsblatt, Fachbegriffe, Lektüre-Details, Hinweise der Lehrkraft …">' + esc(st.zusatz) + '</textarea>';
-    h += '<p class="lp-hint">Wird automatisch in deine Quiz- und Simulations-Prompts eingebaut – hier im Lernplaner und im KI-Quiz-Generator auf der Startseite.</p>';
-    if (anySel || st.custom.length || (st.files && st.files.length) || st.exam || (st.zusatz && st.zusatz.trim())) {
+    /* --- Einklappbare Schublade 2: Zusatzwissen --- */
+    var hasZusatz = !!(st.zusatz && st.zusatz.trim());
+    h += '<details class="lp-sub-drawer"' + (hasZusatz ? ' open' : '') + '>';
+    h += '<summary>📝 Optional: Zusatzwissen &amp; Hinweise der Lehrkraft eintragen' + (hasZusatz ? ' (✓ eingetragen)' : '') + '</summary>';
+    h += '<div class="lp-sub-drawer-body">';
+    h += '<textarea class="form-control" rows="3" data-act="zusatz" placeholder="z. B. Definitionen aus dem Heft, Formeln vom Arbeitsblatt, Schwerpunkte oder Hinweise der Lehrkraft …">' + esc(st.zusatz) + '</textarea>';
+    h += '<p class="lp-hint" style="margin-top:4px;">Wird automatisch in den KI-Master-Prompt, alle Übungs-Prompts und die Klausur-Simulation eingebaut.</p>';
+    h += '</div></details>';
+
+    if (anySel || st.custom.length || hasFiles || st.exam || hasZusatz || (st.taskNote && st.taskNote.trim())) {
+      h += '<div style="margin-top:10px;display:flex;justify-content:flex-end;">';
       h += '<button type="button" class="lp-fach-reset" data-act="reset-fach">🗑️ Eingaben für ' + esc(f.name) + ' zurücksetzen</button>';
+      h += '</div>';
     }
-    h += '</div></div>';
 
     h += '</div></details>';
     return h;
   }
 
   function renderSubjects() {
+    renderSubjectChips();
+    renderStepBadges();
     var box = $('lp-subjects');
-    var open = {};
-    Array.prototype.forEach.call(box.querySelectorAll('details.lp-subject[open]'), function (d) {
-      open[d.getAttribute('data-fach')] = true;
+    if (!box) return;
+    var visibleFks = Object.keys(subjectData).filter(function (fk) {
+      return uiState.showAllSubjects || uiState.openSubjects[fk] || isSubjectActive(fk);
     });
-    box.innerHTML = Object.keys(subjectData).map(function (fk) { return renderSubject(fk, open[fk]); }).join('');
+    if (!visibleFks.length) {
+      box.innerHTML = '<div class="lp-box" style="text-align:center;padding:18px;">👆 Tippe oben auf eines oder mehrere Fächer (z. B. <b>Mathematik</b>, <b>Deutsch</b>, <b>Chemie</b>), um deine Themen und Übungsaufgaben auszuwählen!</div>';
+      return;
+    }
+    box.innerHTML = visibleFks.map(function (fk) {
+      return renderSubject(fk, true);
+    }).join('');
   }
 
   function rerenderSubject(fk) {
+    renderSubjectChips();
+    renderStepBadges();
     var box = $('lp-subjects');
     var old = box.querySelector('details.lp-subject[data-fach="' + fk + '"]');
     if (!old) { renderSubjects(); return; }
@@ -692,6 +868,8 @@
   }
 
   function updateSummary(fk) {
+    renderSubjectChips();
+    renderStepBadges();
     var d = $('lp-subjects').querySelector('details.lp-subject[data-fach="' + fk + '"] .lp-sum-count');
     if (!d) return;
     var s = subjectSummary(fk);
@@ -705,6 +883,7 @@
     if (!title) { inp.focus(); return; }
     var st = getSub(fk);
     st.custom.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 5), title: title, note: '', level: 2, important: false, selected: true });
+    uiState.openSubjects[fk] = true;
     save();
     rerenderSubject(fk);
     var again = $('lp-subjects').querySelector('details.lp-subject[data-fach="' + fk + '"] [data-act="newtitle"]');
@@ -1252,7 +1431,72 @@
     document.body.appendChild(overlay);
   }
 
-  function copyFilePrompt(fk, fid, mode) {
+  /* ──────────────────────────────────────────────────────────
+     1-KLICK-KOPIER-KASTEN FÜR ALLE KI-PROMPTS
+     ────────────────────────────────────────────────────────── */
+  function buildCopyBoxHtml(promptText, title, hintText, closeable) {
+    var h = '<div class="lp-copy-box lp-inline-copy-box">';
+    h += '<div class="lp-copy-box-head">';
+    h += '<span>📋 ' + esc(title || 'Fertiger KI-Prompt (im Kasten auf einmal kopieren)') + '</span>';
+    h += '<div class="lp-copy-box-btns">';
+    h += '<button type="button" class="lp-copy-btn" data-copy-box-btn="1">📋 Auf einmal kopieren</button>';
+    h += '<a href="' + GEMINI_URL + '" target="_blank" rel="noopener noreferrer" class="lp-copy-btn lp-copy-btn--gold">🚀 Gemini öffnen ↗</a>';
+    if (closeable !== false) {
+      h += '<button type="button" class="lp-copy-btn" data-copy-box-close="1" title="Kasten schließen" style="background:transparent;color:var(--text-secondary);">✕</button>';
+    }
+    h += '</div></div>';
+    h += '<textarea class="lp-copy-textarea" rows="6" readonly aria-label="KI-Prompt zum Kopieren">' + esc(promptText) + '</textarea>';
+    h += '<div class="lp-copy-steps">';
+    h += '<span>💡 <b>Empfehlung:</b> Wähle in Gemini <b>„Deep Think“ / „2.5 Pro“</b> (oder das beste Modell) für 15-Punkte-Qualität.</span>';
+    if (hintText) h += '<span>' + hintText + '</span>';
+    h += '</div></div>';
+    return h;
+  }
+
+  function showInlinePromptBox(anchorEl, promptText, title, hintText) {
+    if (!anchorEl) return;
+    var container = anchorEl.closest('.lp-s-main, .lp-file-item, .lp-summary, .lp-diag-card, .lp-subject-body') || anchorEl.parentNode;
+    if (!container) return;
+    var existing = container.querySelector('.lp-inline-copy-box');
+    if (existing && existing.parentNode) existing.parentNode.removeChild(existing);
+    var wrap = document.createElement('div');
+    wrap.innerHTML = buildCopyBoxHtml(promptText, title, hintText, true);
+    var boxEl = wrap.firstChild;
+    container.appendChild(boxEl);
+    if (boxEl.scrollIntoView) {
+      boxEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+
+  function initGlobalCopyBoxEvents() {
+    document.addEventListener('click', function (e) {
+      var copyBtn = e.target.closest('[data-copy-box-btn]');
+      if (copyBtn) {
+        var box = copyBtn.closest('.lp-copy-box');
+        var ta = box ? box.querySelector('.lp-copy-textarea') : null;
+        if (!ta) return;
+        var txt = ta.value || '';
+        ta.focus();
+        ta.select();
+        LT.copyToClipboard(txt).then(function (ok) {
+          if (ok) {
+            var orig = copyBtn.textContent;
+            copyBtn.textContent = '✓ Kopiert!';
+            setTimeout(function () { copyBtn.textContent = orig; }, 2200);
+            toast('Prompt auf einmal kopiert! Jetzt in Gemini einfügen (Strg+V).', true);
+          }
+        });
+        return;
+      }
+      var closeBtn = e.target.closest('[data-copy-box-close]');
+      if (closeBtn) {
+        var cBox = closeBtn.closest('.lp-inline-copy-box');
+        if (cBox && cBox.parentNode) cBox.parentNode.removeChild(cBox);
+      }
+    });
+  }
+
+  function copyFilePrompt(fk, fid, mode, triggerBtn) {
     var fl = findFile(fk, fid);
     if (!fl) { toast('Übungsblatt nicht gefunden.'); return; }
     var st = getSub(fk);
@@ -1264,20 +1508,21 @@
       if (mode === 'twin') {
         p += 'AUFGABE (DEUTSCH-AUFSATZTRAINING): Erstelle mir passend zu meinem hochgeladenen Text/Arbeitsblatt „' + fl.name + '“ eine NEUE, vergleichbare Übungs-Kurzgeschichte (bzw. einen Primärtext im gleichen Stil & Schwierigkeitsgrad, durchgehend alle 5 Zeilen mit [Z. 5], [Z. 10] … nummeriert) sowie EINE authentische baden-württembergische Aufsatz-Aufgabenstellung.\n';
         p += '• Gib zuerst nur den neuen Text (mit Zeilennummern) und die Aufsatz-Aufgabenstellung an.\n';
-        p += '• Gib darunter (hinter einer deutlichen Trennlinie) einen strukturierten Erwartungshorizont UND einen vollständig ausformulierten 15-Punkte-Musteraufsatz (Einleitung mit TATTE & Deutungshypothese → Inhaltsangabe im Konjunktiv I → aspektorientierter Hauptteil im 15-Punkte-Dreischritt → Schluss) an.\n';
+        p += '• Gib darunter (hinter einer deutlichen Trennlinie) einen strukturierten Erwartungshorizont UND einen vollständig ausformulierten 15-Punkte-Musteraufsatz nach dem 7-Schritte-Bauplan (Einleitung mit Hypothese → Inhaltsangabe im Konjunktiv I → Hauptteil Block 1–4 im 15-Punkte-Dreischritt → Fazit) an.\n';
       } else {
         p += 'AUFGABE (DEUTSCH-MUSTERAUFSATZ & INTERPRETATIONSHILFE): Hilf mir beim Interpretieren meines hochgeladenen Textes/Übungsblatts „' + fl.name + '“.\n';
-        p += '• Erstelle zuerst einen übersichtlichen Schreibplan (Sinnabschnitte, zentrale Deutungshypothese, Analysestern zu Erzähltechnik, Figuren/Kommunikation & Sprache/Symbolik).\n';
-        p += '• Schreibe danach einen vollständig ausformulierten **15-Punkte-Musteraufsatz im Fließtext** (Einleitung mit Aufhänger, TATTE & Deutungshypothese → Inhaltsangabe im Präsens & Konjunktiv I → aspektorientierter Hauptteil im 15-Punkte-Dreischritt [Form → Zitat + Zeile → Deutung] → abiturreifer Schluss).\n';
+        p += '• Erstelle zuerst einen übersichtlichen Schreibplan (Sinnabschnitte, zentrale Deutungshypothese, Analysestern für Block 1–4).\n';
+        p += '• Schreibe danach einen vollständig ausformulierten **15-Punkte-Musteraufsatz im Fließtext** (1. Einleitung & Deutungshypothese → 2. Strukturierte Inhaltsangabe im Präsens & Konjunktiv I → 3.–6. Hauptteil Block 1–4 im 15-Punkte-Dreischritt [Form → Zitat + Zeile → Deutung] → 7. Schluss/Fazit).\n';
         p += '• Wenn ich dir gleich meinen eigenen Aufsatz mitschicke, korrigiere ihn Satz für Satz nach BW-Maßstab (0–15 Punkte).\n';
       }
     } else if (mode === 'twin') {
-      p += 'AUFGABE: Erstelle mir zu meinem Übungsblatt „' + fl.name + '“ neue PARALLELAUFGABEN (Zwillingsaufgaben) auf exakt demselben Niveau, im selben Aufgabenstil und mit denselben Operatoren.\n';
-      p += '• Gib zuerst nur die neuen Aufgabenstellungen (mit Punktzahl/AFB) an.\n';
+      p += 'AUFGABE: Erstelle mir zu meinem Übungsblatt „' + fl.name + '“ neue PARALLELAUFGABEN (Zwillingsaufgaben) mit gezielter Schwierigkeits-Steigerung (AFB I Einstieg → AFB II Routine → AFB III 15-Punkte-Transfer) und denselben Operatoren.\n';
+      p += '• Gib zuerst nur die neuen Aufgabenstellungen (sortiert nach Schwierigkeit, mit Punktzahl/AFB) an.\n';
       p += '• Gib erst ganz am Ende (deutlich abgetrennt) einen vollständigen, kleinschrittigen Erwartungshorizont auf 15-Punkte-Niveau an.\n';
     } else {
       p += 'AUFGABE: Hilf mir beim Bearbeiten meines Übungsblatts „' + fl.name + '“.\n';
-      p += '• Erstelle zu jeder Aufgabe auf dem Blatt eine vollständige, kleinschrittige 15-Punkte-Musterlösung (inkl. Lösungsweg, Fachbegriffen und Erklärung typischer Klausurfallen).\n';
+      p += '• Sortiere die Aufgaben auf dem Blatt zuerst kurz nach Schwierigkeit (vom leichten Einstieg bis zum 15-Punkte-Transfer), damit ich die beste Bearbeitungsreihenfolge kenne.\n';
+      p += '• Erstelle danach zu jeder Aufgabe auf dem Blatt eine vollständige, kleinschrittige 15-Punkte-Musterlösung (inkl. Lösungsweg, Fachbegriffen und Erklärung typischer Klausurfallen).\n';
       p += '• Wenn ich dir gleich meine eigenen Lösungen mitschicke, korrigiere sie streng nach BW-Maßstab und erkläre mir jeden Fehler.\n';
     }
 
@@ -1293,18 +1538,57 @@
       p += '\n=== HINWEIS ZUM ÜBUNGSBLATT (' + fl.name + ') ===\nIch hänge das Übungsblatt „' + fl.name + '“ als PDF oder Bild direkt an diese Nachricht an. Bitte lies alle Aufgaben/Texte daraus ab!\n';
     }
 
+    var boxTitle = (mode === 'twin' ? 'Parallelaufgaben-Prompt: ' : 'Musterlösungs-Prompt: ') + fl.name;
+    var boxHint = hasTxt
+      ? '✓ Der Text deines Übungsblatts ist bereits komplett im Prompt enthalten.'
+      : '📎 Vergiss nicht, die Datei „' + esc(fl.name) + '“ im KI-Chat über + anzuhängen!';
+    if (triggerBtn) {
+      showInlinePromptBox(triggerBtn, p, boxTitle, boxHint);
+    }
+
     LT.copyToClipboard(p).then(function (ok) {
       if (!ok) return;
       if (hasTxt) {
-        toast('Prompt inkl. Übungsblatt-Text kopiert! Neuer Gemini-Chat → Strg+V.', true);
+        toast('Prompt im Kopier-Kasten geöffnet & kopiert! Neuer Gemini-Chat → Strg+V.', true);
       } else {
-        toast('Prompt kopiert! Neuer Gemini-Chat → Strg+V + Datei „' + fl.name + '“ über + anhängen.', true);
+        toast('Prompt geöffnet & kopiert! Neuer Gemini-Chat → Strg+V + Datei „' + fl.name + '“ anhängen.', true);
       }
     });
   }
 
   function initSubjectEvents() {
     var box = $('lp-subjects');
+    var chipBox = $('lp-subject-chips');
+    var showAllBtn = $('lp-show-all-subjects');
+
+    if (chipBox) {
+      chipBox.addEventListener('click', function (e) {
+        var chip = e.target.closest('[data-chip-fach]');
+        if (!chip) return;
+        var fk = chip.getAttribute('data-chip-fach');
+        if (!fk) return;
+        if (uiState.showAllSubjects) {
+          uiState.showAllSubjects = false;
+        }
+        if (uiState.openSubjects[fk] && !isSubjectActive(fk)) {
+          delete uiState.openSubjects[fk];
+        } else {
+          uiState.openSubjects[fk] = true;
+        }
+        renderSubjects();
+        var det = box.querySelector('details.lp-subject[data-fach="' + fk + '"]');
+        if (det && det.scrollIntoView) {
+          det.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      });
+    }
+
+    if (showAllBtn) {
+      showAllBtn.addEventListener('click', function () {
+        uiState.showAllSubjects = !uiState.showAllSubjects;
+        renderSubjects();
+      });
+    }
 
     box.addEventListener('change', function (e) {
       var t = e.target, act = t.getAttribute('data-act');
@@ -1312,21 +1596,56 @@
       var det = t.closest('details.lp-subject');
       if (!det) return;
       var fk = det.getAttribute('data-fach'), key = t.getAttribute('data-key'), st = getSub(fk);
-      if (act === 'sel') { setTopic(fk, key, 'selected', t.checked); rerenderSubject(fk); }
-      else if (act === 'lvl') { setTopic(fk, key, 'level', +t.value); }
-      else if (act === 'exam') { st.exam = t.value; save(); updateSummary(fk); }
-      else if (act === 'sim') { st.simMinutes = +t.value; save(); }
-      else if (act === 'file-upload') { handleFilesUpload(fk, t.files); t.value = ''; return; }
-      else return;
+      if (act === 'sel') {
+        uiState.openSubjects[fk] = true;
+        setTopic(fk, key, 'selected', t.checked);
+        rerenderSubject(fk);
+        renderExamsOverview();
+      } else if (act === 'lvl') {
+        setTopic(fk, key, 'level', +t.value);
+      } else if (act === 'task-mode') {
+        st.taskMode = t.value;
+        save();
+        Array.prototype.forEach.call(det.querySelectorAll('.lp-task-mode-card'), function (card) {
+          var inp = card.querySelector('input[data-act="task-mode"]');
+          card.classList.toggle('lp-mode-active', !!(inp && inp.checked));
+        });
+      } else if (act === 'attach-ai') {
+        st.attachInAi = !!t.checked;
+        save();
+      } else if (act === 'exam') {
+        st.exam = t.value;
+        save();
+        updateSummary(fk);
+        renderExamsOverview();
+      } else if (act === 'sim') {
+        st.simMinutes = +t.value;
+        save();
+        renderExamsOverview();
+      } else if (act === 'file-upload') {
+        uiState.openSubjects[fk] = true;
+        handleFilesUpload(fk, t.files);
+        t.value = '';
+        return;
+      } else return;
       markStale();
     });
 
     box.addEventListener('input', function (e) {
       var t = e.target;
-      if (t.getAttribute('data-act') !== 'zusatz') return;
-      var fk = t.closest('details.lp-subject').getAttribute('data-fach');
-      getSub(fk).zusatz = t.value;
-      save();
+      var act = t.getAttribute('data-act');
+      var det = t.closest('details.lp-subject');
+      if (!det) return;
+      var fk = det.getAttribute('data-fach');
+      if (act === 'zusatz') {
+        getSub(fk).zusatz = t.value;
+        save();
+      } else if (act === 'task-note') {
+        getSub(fk).taskNote = t.value;
+        save();
+        renderSubjectChips();
+        renderStepBadges();
+      }
     });
 
     box.addEventListener('click', function (e) {
@@ -1352,9 +1671,9 @@
         var selT = allT.filter(function (x) { return x.selected; });
         openDiagnosticModal(fk, selT.length ? selT : allT);
       } else if (act === 'file-solve') {
-        copyFilePrompt(fk, fid, 'solve');
+        copyFilePrompt(fk, fid, 'solve', b);
       } else if (act === 'file-twin') {
-        copyFilePrompt(fk, fid, 'twin');
+        copyFilePrompt(fk, fid, 'twin', b);
       } else if (act === 'file-edit') {
         openFileEditModal(fk, fid);
       } else if (act === 'file-del') {
@@ -1362,6 +1681,7 @@
         stf.files = (stf.files || []).filter(function (fl) { return fl.id !== fid; });
         save();
         rerenderSubject(fk);
+        renderExamsOverview();
         markStale();
         toast('Übungsblatt entfernt.');
       } else if (act === 'del') {
@@ -1369,13 +1689,15 @@
         st.custom = st.custom.filter(function (c) { return String(c.id) !== id; });
         save();
         rerenderSubject(fk);
+        renderExamsOverview();
         markStale();
       } else if (act === 'add') {
         addCustom(fk, det);
       } else if (act === 'reset-fach') {
-        state.settings.subjects[fk] = { topics: {}, custom: [], files: [], exam: '', simMinutes: defaultSimMin(fk), zusatz: '' };
+        state.settings.subjects[fk] = { topics: {}, custom: [], files: [], exam: '', simMinutes: defaultSimMin(fk), zusatz: '', taskMode: 'both', attachInAi: true, taskNote: '' };
         save();
         rerenderSubject(fk);
+        renderExamsOverview();
         markStale();
         toast(fachName(fk) + ' zurückgesetzt.');
       }
@@ -1391,8 +1713,41 @@
   }
 
   /* ──────────────────────────────────────────────────────────
-     SCHRITT 2 – Lernzeit
+     SCHRITT 2 – Klausurtermine-Übersicht & Lernzeit
      ────────────────────────────────────────────────────────── */
+  function renderExamsOverview() {
+    var box = $('lp-exams-overview');
+    if (!box) return;
+    var activeFks = Object.keys(subjectData).filter(function (fk) {
+      return isSubjectActive(fk);
+    });
+    if (!activeFks.length) {
+      box.innerHTML = '<div class="lp-box" style="margin-bottom:14px;">⚠️ <b>Noch keine Themen ausgewählt:</b> Wähle zuerst in <button type="button" class="lp-link-btn" data-step-go="1">Schritt 1 (Fächer &amp; Aufgaben)</button> mindestens ein Thema oder Übungsblatt aus, damit du hier die Klausurtermine eintragen kannst.</div>';
+      return;
+    }
+    var h = '<div class="lp-picker-label" style="margin-bottom:8px;">📅 Klausurtermine für deine ausgewählten Fächer:</div>';
+    h += '<div class="lp-exam-cards">';
+    activeFks.forEach(function (fk) {
+      var st = getSub(fk);
+      var selCount = subjTopics(fk).filter(function (t) { return t.selected; }).length;
+      var fileCount = (st.files || []).length;
+      var missing = !validDate(st.exam);
+      h += '<div class="lp-exam-card' + (missing ? ' lp-exam-missing' : '') + '">';
+      h += '<div class="lp-exam-card-head"><b>' + esc(fachName(fk)) + '</b>';
+      h += '<span>' + selCount + ' Themen' + (fileCount ? ' · ' + fileCount + ' Blatt' : '') + '</span></div>';
+      h += '<div class="form-group" style="margin:0;"><label style="font-size:0.78rem;">Klausurtermin ' + (missing ? '<span style="color:#B03A2E;">(Pflichtfeld)</span>' : '✓') + '</label>';
+      h += '<input type="date" class="form-control" data-act="exam-ov" data-fach="' + esc(fk) + '" value="' + esc(st.exam) + '"></div>';
+      h += '<div class="form-group" style="margin:0;"><label style="font-size:0.78rem;">Klausurdauer (Simulation)</label>';
+      h += '<select class="form-control" data-act="sim-ov" data-fach="' + esc(fk) + '">';
+      [45, 60, 90, 135, 180, 210, 240, 270, 300, 315].forEach(function (m) {
+        h += '<option value="' + m + '"' + (+st.simMinutes === m ? ' selected' : '') + '>' + fmtMin(m) + '</option>';
+      });
+      h += '</select></div></div>';
+    });
+    h += '</div>';
+    box.innerHTML = h;
+  }
+
   function renderTime() {
     var s = state.settings;
     $('lp-start').value = s.start;
@@ -1401,6 +1756,8 @@
       return '<label>' + w + '<input type="number" class="form-control" min="0" max="720" step="15" data-wd="' + i + '" value="' + (s.minutes[i] || 0) + '" aria-label="Minuten am ' + w + '"></label>';
     }).join('');
     updateWeekSum();
+    renderExamsOverview();
+    renderStepBadges();
   }
 
   function updateWeekSum() {
@@ -1410,6 +1767,7 @@
     $('lp-week-sum').textContent = total
       ? 'Zusammen ' + fmtMin(total) + ' pro Woche ≈ ' + blocks + ' Lerneinheiten à ' + s.block + ' Min.'
       : 'Trage mindestens an einem Tag Lernzeit ein.';
+    renderStepBadges();
   }
 
   function initTimeEvents() {
@@ -1426,6 +1784,65 @@
       state.settings.minutes[+i] = v;
       save(); updateWeekSum(); markStale();
     });
+
+    /* Zentrale Klausurtermin-Karten in Schritt 2 */
+    var ov = $('lp-exams-overview');
+    if (ov) {
+      ov.addEventListener('change', function (e) {
+        var t = e.target;
+        var act = t.getAttribute('data-act');
+        var fk = t.getAttribute('data-fach');
+        if (!act || !fk) return;
+        var st = getSub(fk);
+        if (act === 'exam-ov') {
+          st.exam = t.value;
+          save();
+          rerenderSubject(fk);
+          renderExamsOverview();
+          markStale();
+        } else if (act === 'sim-ov') {
+          st.simMinutes = +t.value;
+          save();
+          rerenderSubject(fk);
+          markStale();
+        }
+      });
+    }
+
+    /* Schnellwahl-Presets für Wochentage */
+    var setupEl = $('lp-setup');
+    if (setupEl) {
+      setupEl.addEventListener('click', function (e) {
+        var stepBtn = e.target.closest('[data-step-go]');
+        if (stepBtn) {
+          var targetStep = +stepBtn.getAttribute('data-step-go');
+          if (targetStep >= 1 && targetStep <= 3) {
+            goToStep(targetStep, true);
+          }
+          return;
+        }
+        var presetBtn = e.target.closest('[data-preset]');
+        if (presetBtn) {
+          var p = presetBtn.getAttribute('data-preset');
+          if (p === 'normal') state.settings.minutes = [60, 60, 60, 60, 60, 90, 0];
+          else if (p === 'intensiv') state.settings.minutes = [90, 90, 90, 90, 90, 120, 120];
+          else if (p === 'kompakt') state.settings.minutes = [45, 45, 45, 45, 45, 60, 0];
+          save();
+          renderTime();
+          markStale();
+          toast('Lernzeit-Vorlage übernommen ✓');
+        }
+      });
+    }
+
+    var toggleAllBtn = $('lp-toggle-all-steps');
+    if (toggleAllBtn) {
+      toggleAllBtn.addEventListener('click', function () {
+        uiState.allSteps = !uiState.allSteps;
+        toggleAllBtn.textContent = uiState.allSteps ? 'Schritt-Ansicht (1–2–3)' : 'Alle Schritte zeigen';
+        goToStep(uiState.step, false);
+      });
+    }
   }
 
   /* ──────────────────────────────────────────────────────────
@@ -1788,9 +2205,27 @@
   }
 
   function methodText(x) {
+    if (x.customMethod && x.customMethod.trim()) {
+      return '<b>📌 KI-Lernplan &amp; Aufgaben-Steigerung:</b> ' + esc(x.customMethod.trim()).replace(/\n+/g, '<br>');
+    }
     var prof = getProfile(x.fk);
+    var st = getSub(x.fk);
     var tip = FACH_TIPS[x.fk] ? ' ' + FACH_TIPS[x.fk] : '';
-    var z = getSub(x.fk).zusatz.trim() ? ' Denk auch an dein Zusatzwissen.' : '';
+    var z = st.zusatz.trim() ? ' Denk auch an dein Zusatzwissen.' : '';
+    var ownHint = '';
+    if (x.type === 'U' && x.afb !== 'FILE') {
+      var tn = (st.taskNote || '').trim();
+      var stepAdvice = x.afb === 'I'
+        ? 'Starte mit den <b>leichten Einstiegsaufgaben (AFB I)</b> aus deinen Unterlagen zum sicheren Reinkommen.'
+        : x.afb === 'II'
+        ? 'Bearbeite jetzt die <b>mittelschweren Anwendungs- &amp; Klausuraufgaben (AFB II)</b>.'
+        : 'Nimm dir jetzt die <b>schwierigsten Transfer- &amp; Begründungsaufgaben (AFB III – 15-Punkte-Niveau)</b> vor!';
+      if (tn) {
+        ownHint = '<br>📎 <b>Deine eigenen Aufgaben (' + esc(tn) + '):</b> ' + stepAdvice + (st.taskMode === 'both' ? ' Kombiniere sie danach mit den KI-Übungsaufgaben unten!' : '');
+      } else if (st.taskMode === 'own' || st.attachInAi) {
+        ownHint = '<br>📎 <b>Aufgaben-Steigerung (' + (x.afb === 'MIX' ? 'Klausur-Mix' : ('Stufe ' + x.afb)) + '):</b> ' + stepAdvice + ' Wenn du eigene Aufgabenblätter im KI-Chat dazulegst, sortiert die KI sie dir passend nach Schwierigkeit.';
+      }
+    }
     switch (x.type) {
       case 'E':
         return (x.n === 1 ? prof.e1 : prof.e2) + z;
@@ -1799,11 +2234,11 @@
           if (x.fk === 'deutsch') {
             return '<b>Eigenen Text / eigenes Arbeitsblatt interpretieren:</b> Lies deinen hochgeladenen Text gründlich, markiere Sinnabschnitte &amp; Stilmittel und schreibe deine Interpretation (oder Gliederung + Hauptteil-Absätze) zuerst selbst. Nutze danach die Buttons unten für den <b>15-Punkte-Musteraufsatz</b> oder eine <b>neue Übungs-Kurzgeschichte</b>.';
           }
-          return '<b>Eigenes Übungsblatt bearbeiten:</b> Löse die Aufgaben deines hochgeladenen Übungsblatts zuerst komplett selbstständig ohne Spicken (wie in der Klausur). Nutze danach die Buttons unten, um dir von Gemini die 15-Punkte-Musterlösung erklären zu lassen oder neue Parallelaufgaben im gleichen Stil zu generieren.';
+          return '<b>Eigenes Übungsblatt bearbeiten (mit Steigerung):</b> Löse die Aufgaben deines hochgeladenen Übungsblatts vom leichten Einstieg bis zum schweren Transfer selbstständig ohne Spicken. Nutze danach die Buttons unten, um dir im Kopier-Kasten den Prompt für die 15-Punkte-Musterlösung oder neue Parallelaufgaben ausgeben zu lassen.';
         }
         var uSpec = prof['u' + x.afb] || prof.uMIX || '';
         if (x.fk === 'deutsch') {
-          return uSpec + '<br><b>Kontrolle:</b> Vergleiche deinen geschriebenen Text danach mit dem <b>15-Punkte-Musteraufsatz</b> von Gemini (oder schick deinen Text direkt in den Chat, damit Gemini ihn Satz für Satz korrigiert!).';
+          return uSpec + ownHint + '<br><b>Kontrolle:</b> Vergleiche deinen geschriebenen Text danach mit dem <b>15-Punkte-Musteraufsatz</b> von Gemini (oder schick deinen Text direkt in den Chat, damit Gemini ihn Satz für Satz korrigiert!).';
         }
         var a = '';
         if (x.afb === 'MIX') {
@@ -1814,29 +2249,29 @@
           if (ops) a += ' · <i>Operatoren: ' + esc(ops) + '</i>';
           a += '</span>';
         }
-        return a + '<br><b>Kontrolle:</b> Erst ohne Hilfsmittel lösen, dann mit dem Erwartungshorizont abgleichen und jeden Fehler im Fehlerprotokoll notieren.' + esc(tip);
+        return a + ownHint + '<br><b>Kontrolle:</b> Erst ohne Hilfsmittel lösen, dann mit dem Erwartungshorizont abgleichen und jeden Fehler im Fehlerprotokoll notieren.' + esc(tip);
       case 'R':
         return prof.r + z;
       case 'SIM':
         if (x.fk === 'deutsch') {
           return '<b>Generalprobe – Einen ganzen Aufsatz unter Klausurbedingungen schreiben (' + fmtMin(x.min) + ' am Stück):</b> Handy weg, nur Stift, Papier &amp; die Kurzgeschichte aus dem KI-Prompt!<br>' +
-            '1. <b>Vorarbeit (ca. 15–20 Min.):</b> Kurzgeschichte 2× lesen, Sinnabschnitte, Wendepunkt &amp; Sprachbilder am Rand markieren, Schreibplan (Analysestern) + zentrale Deutungshypothese notieren.<br>' +
-            '2. <b>Ganzen Aufsatz im Fließtext schreiben:</b> Einleitung (Aufhänger + TATTE + Deutungshypothese) → Inhaltsangabe (Präsens &amp; Konjunktiv I) → aspektorientierter Hauptteil im <b>15-Punkte-Dreischritt (Form → Zitat mit Zeile → Deutung)</b> → Schluss (Fazit, Rückbezug zur Hypothese, Ausblick) + 10 Min. Sprach- &amp; Komma-Check am Ende!';
+            '1. <b>Vorarbeit (ca. 15–20 Min.):</b> Kurzgeschichte 2× lesen, Sinnabschnitte, Wendepunkt &amp; Sprachbilder am Rand markieren, Schreibplan + zentrale Deutungshypothese notieren.<br>' +
+            '2. <b>Ganzen Aufsatz nach dem 7-Schritte-Bauplan schreiben:</b> 1. Einleitung &amp; Deutungshypothese → 2. Strukturierte Inhaltsangabe (Präsens &amp; Konjunktiv I) → 3.–6. Hauptteil Block 1–4 im <b>15-Punkte-Dreischritt (Form → Zitat mit Zeile → Deutung)</b> → 7. Schluss/Fazit + 10 Min. Sprach- &amp; Komma-Check!';
         }
         return '<b>Wie im Ernstfall:</b> ' + fmtMin(x.min) + ' am Stück, nur erlaubte Hilfsmittel, Handy in einen anderen Raum. Erst danach die Lösungen ansehen und dich ehrlich mit Notenpunkten bewerten. Notiere, wo dir Zeit gefehlt hat.';
       case 'FEHLER':
         if (x.fk === 'deutsch') {
-          return '<b>Aufsatz-Lektorat &amp; 15-Punkte-Feinschliff:</b> Lass deinen Probe-Aufsatz von Gemini nach BW-Abiturmaßstab (60 % Inhalt / 40 % Sprache &amp; Ausdruck) korrigieren. Prüfe gezielt: Sitzt der TATTE-Basissatz + Deutungshypothese? Ist die Inhaltsangabe strikt im Präsens &amp; Konjunktiv I? Hast du im Hauptteil wirklich überall den <b>Dreischritt (Form → Zitat + Zeile → Deutung)</b> eingehalten statt nachzuerzählen? Formuliere deine 2–3 schwächsten Absätze mit deinen starken Analyse-Verben noch einmal neu!';
+          return '<b>Aufsatz-Lektorat &amp; 15-Punkte-Feinschliff:</b> Lass deinen Probe-Aufsatz von Gemini nach BW-Abiturmaßstab (60 % Inhalt / 40 % Sprache &amp; Ausdruck) korrigieren. Prüfe gezielt: Sitzt der Basissatz + Deutungshypothese? Ist die Inhaltsangabe strikt im Präsens &amp; Konjunktiv I? Hast du in Block 1–4 überall den <b>Dreischritt (Form → Zitat + Zeile → Deutung)</b> eingehalten? Formuliere deine 2–3 schwächsten Absätze mit deinen 15-Punkte-Satzschablonen neu!';
         }
         return '<b>Aus Fehlern Punkte machen:</b> Gehe Simulation und Fehlerprotokoll durch und sortiere jeden Fehler: Wissenslücke · Operator nicht erfüllt · Flüchtigkeit · Zeitproblem. Für jede Wissenslücke eine Anki-Karte, dann die 1–2 schwächsten Themen gezielt nachüben.';
       case 'FINAL':
         if (x.fk === 'deutsch') {
-          return '<b>Letzter Check vor dem Aufsatz:</b> Überfliege noch einmal deinen Aufsatz-Bauplan (TATTE, Konjunktiv-I-Formen, 15-Punkte-Dreischritt, Schulz von Thun / Watzlawick) und deine besten Formulierungshilfen/Analyse-Verben. Kein neuer Stoff mehr – Stifte &amp; Textmarker einpacken und früh schlafen!';
+          return '<b>Letzter Check vor dem Aufsatz:</b> Überfliege noch einmal deinen 7-Schritte-Klausur-Bauplan, deine 15-Punkte-Satzschablonen und das Fachbegriffs-Lexikon (Zeitgestaltung, Erlebte Rede, Dingsymbol, Syntax). Kein neuer Stoff mehr – Stifte &amp; Textmarker einpacken und früh schlafen!';
         }
         return '<b>Nur noch leicht wiederholen:</b> Lernzettel überfliegen, Fehlerprotokoll und Anki-Karten durchgehen. Kein neuer Stoff! Materialien packen, etwas Schönes machen und früh schlafen – im Schlaf festigt sich das Gelernte.';
       case 'V':
         if (x.fk === 'deutsch') {
-          return '<b>Puffer / 15-Punkte-Schreibtraining:</b> Hast du eine Einheit verpasst? Hol sie jetzt nach. Ist alles erledigt: Übe an einer anspruchsvollen Kurzgeschichte das Entschlüsseln von Leerstellen (Eisberg-Modell) und Dingsymbolen im Dreischritt – genau diese Tiefendeutung bringt 14–15 Punkte!';
+          return '<b>Puffer / 15-Punkte-Schreibtraining:</b> Hast du eine Einheit verpasst? Hol sie jetzt nach. Ist alles erledigt: Übe an einer anspruchsvollen Kurzgeschichte das Entschlüsseln von Leerstellen, Erlebter Rede und Dingsymbolen im Dreischritt – genau diese Tiefendeutung bringt 14–15 Punkte!';
         }
         return '<b>Puffer:</b> Hast du eine Einheit verpasst? Hol sie jetzt nach. Ist alles erledigt: AFB-III-Aufgaben zu diesem Thema – genau dort entscheidet sich der Unterschied zwischen 12 und 15 Punkten.';
     }
@@ -1849,9 +2284,9 @@
     if (x.type === 'U') {
       if (x.afb === 'FILE') p.push(x.fk === 'deutsch' ? 'Eigener Übungstext / Arbeitsblatt' : 'Eigenes Übungsblatt');
       else if (x.fk === 'deutsch' && DEUTSCH_BAUSTEIN_LABELS[x.afb]) p.push(DEUTSCH_BAUSTEIN_LABELS[x.afb]);
-      else p.push(x.afb === 'MIX' ? 'Klausur-Mix' : LT.AFB_LABELS[x.afb]);
+      else p.push(x.afb === 'MIX' ? 'Klausur-Mix' : (LT.AFB_LABELS[x.afb] || x.afb));
     }
-    if (x.type === 'R') p.push(x.n + '. Wiederholung (Spaced Repetition)');
+    if (x.type === 'R' && x.n) p.push(x.n + '. Wiederholung (Spaced Repetition)');
     if (x.optional) p.push('optional');
     return p.join(' · ');
   }
@@ -1869,60 +2304,69 @@
     var anki = x.link ? '<a class="lp-tool" href="' + esc(deepLink('anki', x)) + '" target="_blank" rel="noopener">Anki-Karten</a>' : '';
     var isDe = x.fk === 'deutsch';
     function quiz(afb, label) {
-      return '<button type="button" class="lp-tool lp-tool-gold" data-act="quiz" data-afb="' + afb + '"' + k + '>' + label + '</button>';
+      return '<button type="button" class="lp-tool lp-tool-gold" data-act="quiz" data-afb="' + afb + '"' + k + '>📋 ' + label + '</button>';
     }
     if (x.type === 'U' && x.afb === 'FILE' && x.key && x.key.indexOf('file:') === 0) {
       var fid = esc(x.key.slice(5));
       var fkAttr = ' data-fach="' + esc(x.fk) + '" data-fid="' + fid + '"';
-      h = '<button type="button" class="lp-tool lp-tool-gold" data-act="file-solve"' + fkAttr + '>' + (isDe ? '📄 15-P-Musteraufsatz &amp; Schreibplan (KI)' : '📄 Musterlösung &amp; Erklärung (KI)') + '</button>' +
-          '<button type="button" class="lp-tool lp-tool-gold" data-act="file-twin"' + fkAttr + '>' + (isDe ? '🔁 Neue Übungs-Kurzgeschichte generieren' : '🔁 Parallelaufgaben generieren') + '</button>' +
+      h = '<button type="button" class="lp-tool lp-tool-gold" data-act="file-solve"' + fkAttr + '>' + (isDe ? '📋 15-P-Musteraufsatz &amp; Schreibplan (im Kasten)' : '📋 Musterlösung &amp; Erklärung (im Kasten)') + '</button>' +
+          '<button type="button" class="lp-tool lp-tool-gold" data-act="file-twin"' + fkAttr + '>' + (isDe ? '🔁 Neue Übungs-Kurzgeschichte (im Kasten)' : '🔁 Parallelaufgaben mit Steigerung (im Kasten)') + '</button>' +
           GEMINI_LINK;
-      return '<div class="lp-s-tools">' + h + '</div><div class="lp-s-hint">💬 Neuer Chat → Prompt einfügen (bei einem Scan/Foto die Datei in Gemini über + anhängen).</div>';
+      return '<div class="lp-s-tools">' + h + '</div><div class="lp-s-hint">💬 Klicke auf einen Button → der fertige Prompt öffnet sich direkt darunter in einem <b>1-Klick-Kopier-Kasten</b> (eigene Aufgaben bei Bedarf im Chat per + anhängen).</div>';
     }
     switch (x.type) {
       case 'E':
-        h = lz + quiz('I', isDe ? '✍️ Übungs-Kurzgeschichte + Einstieg kopieren' : 'Verständnis-Quiz kopieren') + anki;
+        h = lz + quiz('I', isDe ? 'Übungs-Kurzgeschichte + Einstieg (Prompt-Kasten)' : 'Verständnis-Quiz &amp; Einstiegsaufgaben (Prompt-Kasten)') + anki;
         if (x.n === 1 && x.link) h += '<a class="lp-tool" href="' + esc(deepLink('notebook', x)) + '" target="_blank" rel="noopener">NotebookLM</a>';
         break;
       case 'U':
         if (isDe) {
-          var deBtnLbl = x.afb === 'I'   ? '✍️ Kurzgeschichte + Training: Einleitung &amp; Inhaltsangabe kopieren'
-                       : x.afb === 'II'  ? '✍️ Kurzgeschichte + Training: Hauptteil im Dreischritt kopieren'
-                       : x.afb === 'III' ? '✍️ Kurzgeschichte + Training: Tiefendeutung &amp; Schluss kopieren'
-                       : '📝 Übungs-Kurzgeschichte + kompletter Aufsatz-Auftrag kopieren';
+          var deBtnLbl = x.afb === 'I'   ? 'Kurzgeschichte + Baustein 1–3 (Prompt-Kasten)'
+                       : x.afb === 'II'  ? 'Kurzgeschichte + Block 2 &amp; 3 im Dreischritt (Prompt-Kasten)'
+                       : x.afb === 'III' ? 'Kurzgeschichte + Block 4 &amp; Fazit (Prompt-Kasten)'
+                       : 'Übungs-Kurzgeschichte + kompletter Aufsatz (Prompt-Kasten)';
           h = quiz(x.afb, deBtnLbl) + lz;
         } else {
-          h = quiz(x.afb, (x.afb === 'MIX' ? 'Klausur-Mix' : LT.AFB_LABELS[x.afb]) + '-Aufgaben kopieren') + lz;
+          h = quiz(x.afb, (x.afb === 'MIX' ? 'Klausur-Mix' : (LT.AFB_LABELS[x.afb] || x.afb)) + '-Aufgaben (Prompt-Kasten)') + lz;
         }
         break;
-      case 'R': h = anki + quiz('MIX', isDe ? '📝 Kurzgeschichte + Aufsatz-Training kopieren' : 'Mini-Test kopieren') + lz; break;
-      case 'V': h = quiz('III', isDe ? '✍️ Kurzgeschichte + Tiefendeutungs-Training kopieren' : 'AFB-III-Aufgaben kopieren') + lz; break;
-      case 'SIM': h = quiz('SIM', isDe ? '📝 Deutsch-Klausur (Kurzgeschichte + Aufsatz-Auftrag) kopieren' : 'Klausur-Prompt kopieren'); break;
-      case 'FEHLER': h = '<button type="button" class="lp-tool lp-tool-gold" data-act="fehler"' + k + '>' + (isDe ? '🔍 Aufsatz-Korrektur &amp; 15-Punkte-Lektorat kopieren' : 'Fehleranalyse-Prompt kopieren') + '</button>'; break;
+      case 'R': h = anki + quiz('MIX', isDe ? 'Kurzgeschichte + Aufsatz-Training (Prompt-Kasten)' : 'Mini-Test &amp; Aufgaben (Prompt-Kasten)') + lz; break;
+      case 'V': h = quiz('III', isDe ? 'Kurzgeschichte + Tiefendeutung (Prompt-Kasten)' : '15-Punkte-Transferaufgaben AFB III (Prompt-Kasten)') + lz; break;
+      case 'SIM': h = quiz('SIM', isDe ? 'Deutsch-Klausur (Kurzgeschichte + Aufsatz) im Kasten' : 'Klausur-Simulation im Kopier-Kasten öffnen'); break;
+      case 'FEHLER': h = '<button type="button" class="lp-tool lp-tool-gold" data-act="fehler"' + k + '>📋 ' + (isDe ? 'Aufsatz-Korrektur &amp; 15-Punkte-Lektorat (Prompt-Kasten)' : 'Fehleranalyse-Prompt im Kopier-Kasten öffnen') + '</button>'; break;
       case 'FINAL': h = '<a class="lp-tool" href="index.html?tool=anki&fach=' + encodeURIComponent(x.fk) + '" target="_blank" rel="noopener">Anki</a>'; break;
     }
     var hint = AI_HINTS[x.type];
     if (isDe && x.type === 'SIM') {
-      hint = '💬 Neuer Chat → Prompt einfügen. Gemini gibt dir eine Kurzgeschichte mit Zeilennummern + 1 Aufsatz-Auftrag (und darunter den 15-P-Musteraufsatz). Chat für die Aufsatz-Korrektur offen lassen!';
+      hint = '💬 Neuer Chat (Empfehlung: Deep Think / Pro) → Prompt aus dem Kasten kopieren &amp; einfügen. Chat für die Aufsatz-Korrektur offen lassen!';
     } else if (isDe && x.type === 'FEHLER') {
-      hint = '💬 Im Chat deines Probe-Aufsatzes weiterschreiben → Prompt einfügen + deinen geschriebenen Aufsatz anhängen (abgetippt oder als Foto deiner Handschrift).';
+      hint = '💬 Im Chat deines Probe-Aufsatzes weiterschreiben → Prompt aus dem Kasten einfügen + deinen geschriebenen Aufsatz anhängen.';
     }
     if (hint) h += GEMINI_LINK;
-    return h ? '<div class="lp-s-tools">' + h + '</div>' + (hint ? '<div class="lp-s-hint">' + hint + '</div>' : '') : '';
+    var out = h ? '<div class="lp-s-tools">' + h + '</div>' + (hint ? '<div class="lp-s-hint">' + hint + '</div>' : '') : '';
+    if (x.aiPrompt && x.aiPrompt.trim()) {
+      out += buildCopyBoxHtml(
+        x.aiPrompt.trim(),
+        'Vom KI-Lernplan erstellter Prompt / Aufgabenblock (' + fachName(x.fk) + ')',
+        '📎 Falls eigene Aufgaben dazugehören, lege sie im Chat per + dazu.',
+        false
+      );
+    }
+    return out;
   }
 
   /* Kurz-Anleitung pro KI-Prompt: neuer Chat? Was muss ich dazugeben? */
   var AI_HINTS = {
-    E: '💬 Neuer Chat → Prompt einfügen. Mehr musst du nicht dazugeben. Schick deine Antworten in denselben Chat, dann korrigiert Gemini sie.',
-    U: '💬 Neuer Chat → Prompt einfügen. Mehr musst du nicht dazugeben (Lernzettel, hochgeladene Übungsblätter & Zusatzwissen sind schon drin).',
-    R: '💬 Neuer Chat → Prompt einfügen. Mehr musst du nicht dazugeben.',
-    V: '💬 Neuer Chat → Prompt einfügen. Mehr musst du nicht dazugeben.',
-    SIM: '💬 Neuer Chat → Prompt einfügen. Aufgaben auf Papier lösen, erst danach Lösungen lesen. Chat offen lassen – du brauchst ihn für die Fehleranalyse!',
-    FEHLER: '💬 Im Chat der Klausur-Simulation weiterschreiben → Prompt einfügen + deine Lösungen anhängen (abgetippt oder als Foto).'
+    E: '💬 Klicke auf den goldenen Button → der Prompt erscheint im Kopier-Kasten (alles auf einmal kopieren → neuer Gemini-Chat mit Deep Think / Pro).',
+    U: '💬 Klicke auf den goldenen Button → der Prompt erscheint im Kopier-Kasten. Eigene Aufgabenblätter kannst du im Chat einfach per + dazulegen, damit die KI sie nach Schwierigkeit sortiert einbaut!',
+    R: '💬 Neuer Chat → Prompt aus dem Kopier-Kasten einfügen.',
+    V: '💬 Neuer Chat → Prompt aus dem Kopier-Kasten einfügen.',
+    SIM: '💬 Neuer Chat (Deep Think / Pro) → Prompt aus dem Kasten einfügen. Aufgaben auf Papier lösen, erst danach Lösungen lesen. Chat offen lassen!',
+    FEHLER: '💬 Im Chat der Klausur-Simulation weiterschreiben → Prompt aus dem Kasten einfügen + deine Lösungen anhängen (abgetippt oder als Foto).'
   };
 
   /* ──────────────────────────────────────────────────────────
-     PLAN-ANSICHT
+     PLAN-ANSICHT (MIT FILTER-LEISTE & KOPIER-KÄSTEN)
      ────────────────────────────────────────────────────────── */
   function countable(x) { return !x.optional && !x.missed; }
 
@@ -1949,10 +2393,10 @@
     var done = !!state.done[x.id];
     var subTitle = (x.type === 'SIM' || x.type === 'FEHLER' || x.type === 'FINAL')
       ? (x.fk === 'deutsch'
-          ? (x.type === 'SIM' ? 'Ganzen Aufsatz schreiben (z. B. Kurzgeschichte interpretieren)'
+          ? (x.type === 'SIM' ? 'Ganzen Aufsatz schreiben (Kurzgeschichte interpretieren)'
              : x.type === 'FEHLER' ? 'Aufsatz-Korrektur & 15-Punkte-Feinschliff'
-             : 'Aufsatz-Checkliste & Formulierungshilfen')
-          : 'alle Themen')
+             : '7-Schritte-Bauplan & Satzschablonen-Check')
+          : (x.title ? esc(x.title) : 'alle Themen'))
       : esc(x.title);
     var title = esc(fachName(x.fk)) + ' · ' + subTitle;
     var h = '<div class="lp-session' + (done ? ' lp-done' : '') + '" data-id="' + esc(x.id) + '">';
@@ -1982,17 +2426,17 @@
     p.days.forEach(function (d) { d.sessions.forEach(function (x) { if (countable(x)) { sessions++; minutes += x.min; } }); });
     var nextExam = (p.exams || []).filter(function (e) { return e.date >= today; })[0];
     var topicCount = {};
-    p.days.forEach(function (d) { d.sessions.forEach(function (x) { if (x.key) topicCount[x.fk + '|' + x.key] = 1; }); });
+    p.days.forEach(function (d) { d.sessions.forEach(function (x) { if (x.key || x.title) topicCount[x.fk + '|' + (x.key || x.title)] = 1; }); });
     var fks = (p.exams || []).map(function (e) { return fachName(e.fk); });
     var lastDate = p.days[p.days.length - 1].date;
     var inRange = today >= p.days[0].date && today <= lastDate;
 
     var h = '<section class="lp-summary">';
-    h += '<h2>Dein Lernplan: ' + esc(state.name || 'Lernplan') + '</h2>';
-    h += '<p class="lp-step-desc">' + fmtDay(p.days[0].date) + ' – ' + fmtDay(lastDate) + ' · ' + esc(fks.join(', ')) + '</p>';
+    h += '<h2>Dein 15-Punkte-Lernplan: ' + esc(state.name || 'Lernplan') + (p.isAiPlan ? ' <span class="lp-badge lp-gold" style="vertical-align:middle;margin-left:6px;">🤖 KI-Masterplan</span>' : '') + '</h2>';
+    h += '<p class="lp-step-desc">' + fmtDay(p.days[0].date) + ' – ' + fmtDay(lastDate) + (fks.length ? ' · ' + esc(fks.join(', ')) : '') + '</p>';
     h += '<div class="lp-stats">';
     h += '<div class="lp-stat"><b>' + sessions + '</b><span>Einheiten</span></div>';
-    h += '<div class="lp-stat"><b>' + Math.round(minutes / 60) + '</b><span>Lernstunden</span></div>';
+    h += '<div class="lp-stat"><b>' + Math.round(minutes / 60 * 10) / 10 + '</b><span>Lernstunden</span></div>';
     h += '<div class="lp-stat"><b>' + Object.keys(topicCount).length + '</b><span>Themen / Blätter</span></div>';
     if (nextExam) h += '<div class="lp-stat"><b>' + diff(today, nextExam.date) + '</b><span>Tage bis ' + esc(fachName(nextExam.fk)) + '</span></div>';
     h += '</div>';
@@ -2001,51 +2445,62 @@
 
     (p.warnings || []).forEach(function (w) { h += '<div class="lp-box lp-warn">' + esc(w) + '</div>'; });
 
-    h += '<details class="lp-strategy"><summary>⚙️ Wie wurde dieser Lernplan erstellt (ohne lokale KI)?</summary><ul>';
-    h += '<li><b>Mathematischer Planungs-Algorithmus:</b> Dein Kalender wird direkt im Browser von einem fest programmierten Algorithmus berechnet – ganz ohne externe KI.</li>';
-    h += '<li><b>Fachspezifisch angepasst:</b> In <b>Mathe</b> plant er mehr Rechen- &amp; Anwendungs-Einheiten, in <b>Deutsch</b> ein aufbauendes <b>Aufsatz-Schreibtraining</b> (TATTE-Einleitung → Inhaltsangabe → Hauptteil im 15-P-Dreischritt → ganzer Probe-Aufsatz zu einer Kurzgeschichte), in <b>Chemie</b> Teilchenebene + Gleichungen + Rechnungen und in <b>GK/Geschichte/Bio</b> aktives Auswendiglernen + Materialanalyse &amp; Urteilsbildung.</li>';
-    h += '<li><b>Eigene Übungsblätter inklusive:</b> Hochgeladene PDFs/Arbeitsblätter werden als eigene Übungseinheiten eingeplant und automatisch in deine KI-Prompts integriert.</li>';
+    h += '<details class="lp-strategy"><summary>💡 Modell-Empfehlung (Deep Think / Pro) &amp; wie du 15 Punkte erreichst</summary><ul>';
+    h += '<li><b>Bestes KI-Modell wählen:</b> Aktiviere in Google Gemini <b>„Deep Think“</b> bzw. <b>„2.5 Pro“</b> (oder das beste Reasoning-Modell). Gerade in Mathe, Chemie und beim Deutsch-Aufsatz liefert dir das deutlich präzisere 15-Punkte-Lösungen und eine viel bessere Schwierigkeits-Steigerung!</li>';
+    h += '<li><b>Alle Prompts im 1-Klick-Kasten:</b> Sobald du bei einer Lerneinheit auf einen goldenen Prompt-Button klickst, öffnet sich direkt darunter ein übersichtlicher <b>Kopier-Kasten</b>, aus dem du den gesamten Prompt auf einmal kopieren kannst.</li>';
+    h += '<li><b>Eigene Aufgaben mit Steigerung (AFB I → II → III):</b> Wenn du eigene Aufgabenblätter hast, hänge sie im KI-Chat einfach über <b>+</b> mit an – die KI sortiert sie von leicht nach schwer und ergänzt passende Abitur-Aufgaben.</li>';
     h += '</ul></details>';
 
-    h += '<details class="lp-strategy"><summary>Wer sieht meinen Plan? Wird er gespeichert?</summary><ul>';
-    h += '<li><b>Nur du.</b> Der Plan wird nur in <i>diesem</i> Browser auf <i>diesem</i> Gerät gespeichert (Browser-Speicher) – nicht auf GitHub und auf keinem Server. Wer deine Website öffnet, sieht nur einen eigenen, leeren Planer.</li>';
-    h += '<li><b>Bleibt gespeichert</b>, auch wenn du die Seite schließt. <b>Weg ist er</b>, wenn du die Browserdaten löschst oder im Inkognito-Modus bist. Auf Handy und PC hast du jeweils einen eigenen Plan.</li>';
-    h += '<li><b>Tipp:</b> Über <b>„📤 Plan exportieren / Backup“</b> kannst du ihn jederzeit als PDF, Kalender, Text/Checkliste, Excel-Tabelle oder Backup-Datei (zum Übertragen aufs Handy/Tablet) speichern.</li>';
-    h += '<li><b>KI:</b> Was du in Gemini einfügst (Lernzettel, Übungsblätter, Zusatzwissen), geht an Google und landet in deinem Gemini-Verlauf – schreib also nichts Privates hinein.</li>';
-    h += '</ul></details>';
-
-    h += '<details class="lp-strategy"><summary>So nutzt du die KI-Prompts</summary><ul>';
-    h += '<li><b>Quiz, Übungsaufgaben, Klausur-Simulation:</b> Für jeden Prompt einen <b>neuen Chat</b> – sonst vermischt Gemini alte Themen. Du musst nichts dazugeben: Lernzettel, Operatoren, hochgeladene PDF-Texte und dein Zusatzwissen stecken schon im Prompt.</li>';
-    h += '<li><b>Fehleranalyse:</b> Im <b>gleichen Chat</b> wie die Simulation weiterschreiben und deine Lösungen dazugeben (abgetippt oder als Foto).</li>';
-    h += '<li><b>KI-Coach:</b> Lege dafür <b>einen eigenen Chat</b> an und behalte ihn. Kopiere einmal pro Woche den aktuellen Coach-Prompt neu hinein. Danach schreibst du z. B. „Start: Chemische Energetik“ und wirst abgefragt.</li>';
-    h += '<li>Der Kopieren-Button legt den Prompt in die Zwischenablage → „Gemini öffnen“ → <b>Strg+V</b> (Handy: lange tippen → Einfügen).</li>';
-    h += '</ul></details>';
-
-    h += '<details class="lp-strategy"><summary>Warum ist der Plan so aufgebaut? (Lernstrategien)</summary><ul>';
-    h += '<li><b>Spaced Repetition:</b> Jedes Thema wird nach 1, 3, 7, 14 … Tagen wiederholt – kurz bevor du es vergessen würdest. So landet es im Langzeitgedächtnis.</li>';
-    h += '<li><b>Active Recall:</b> Abrufen statt Lesen (Blurting, Quiz, Anki). Sich-erinnern-Müssen ist anstrengend – und genau deshalb wirksam.</li>';
-    h += '<li><b>Interleaving:</b> Themen und Fächer wechseln sich ab, maximal 2 Einheiten pro Thema und Tag. Das trainiert, die richtige Methode selbst zu erkennen – wie in der Klausur.</li>';
-    h += '<li><b>Vom Einfachen zum Schweren:</b> Erst verstehen (Feynman-Methode), dann AFB I → II → III → Klausur-Mix. Für 15 Punkte musst du vor allem AFB III sicher können.</li>';
-    h += '<li><b>Operatoren:</b> Alle Übungs-Prompts verwenden die BW-Operatoren deines Fachs – du lernst, was „erläutern“, „beurteilen“ oder „erörtern“ genau verlangt.</li>';
-    h += '<li><b>Testing-Effekt:</b> 3–6 Tage vor der Klausur eine echte Simulation, danach eine Fehleranalyse – so bleibt Zeit, Lücken zu schließen.</li>';
-    h += '<li><b>Fehlerprotokoll:</b> Jeder Fehler wird notiert und erklärt. Das ist die schnellste Abkürzung zu mehr Punkten.</li>';
-    h += '<li><b>Pausen & Schlaf:</b> Nach jeder Einheit Pause, ein lernfreier Tag pro Woche und am Vortag kein neuer Stoff. Schlaf ist Teil des Lernens!</li>';
+    h += '<details class="lp-strategy"><summary>🔒 Wer sieht meinen Plan? Wird er gespeichert?</summary><ul>';
+    h += '<li><b>Nur du.</b> Der Plan wird ausschließlich lokal in <i>diesem</i> Browser auf <i>diesem</i> Gerät gespeichert – nicht auf GitHub und auf keinem Server.</li>';
+    h += '<li><b>Tipp zum Übertragen aufs iPad/Handy:</b> Über <b>„📤 Plan exportieren / Backup“</b> kannst du ihn jederzeit als PDF, Kalender (.ics), Checkliste, Excel-Tabelle oder Backup-Datei (.json) speichern.</li>';
     h += '</ul></details>';
 
     h += '<div class="lp-toolbar">';
     if (inRange) h += '<button type="button" class="btn btn-gold" data-act="today">Zu heute springen</button>';
     h += '<button type="button" class="btn btn-gold" data-act="export">📤 Plan exportieren / Backup</button>';
-    h += '<button type="button" class="btn btn-outline" data-act="print">Drucken / PDF</button>';
-    h += '<button type="button" class="btn btn-outline" data-act="ics">Kalender (.ics)</button>';
-    h += '<button type="button" class="btn btn-outline" data-act="coach">KI-Coach-Prompt kopieren</button>';
-    h += '<a class="btn btn-outline" href="' + GEMINI_URL + '" target="_blank" rel="noopener">Gemini öffnen ↗</a>';
-    h += '<button type="button" class="btn btn-outline" data-act="replan">Neu planen ab heute</button>';
-    h += '<button type="button" class="btn btn-outline" data-act="edit">Einstellungen bearbeiten</button>';
-    h += '<button type="button" class="btn btn-danger" data-act="delete">🗑️ Plan löschen / Zurücksetzen</button>';
+    h += '<button type="button" class="btn btn-outline" data-act="print">🖨️ Drucken / PDF</button>';
+    h += '<button type="button" class="btn btn-outline" data-act="ics">📅 Kalender (.ics)</button>';
+    h += '<button type="button" class="btn btn-outline" data-act="coach">📋 KI-Coach-Prompt (im Kasten)</button>';
+    h += '<a class="btn btn-outline" href="' + GEMINI_URL + '" target="_blank" rel="noopener">🚀 Gemini öffnen ↗</a>';
+    h += '<button type="button" class="btn btn-outline" data-act="replan">🔄 Neu planen ab heute</button>';
+    h += '<button type="button" class="btn btn-outline" data-act="edit">⚙️ Einstellungen / KI-Import</button>';
+    h += '<button type="button" class="btn btn-danger" data-act="delete">🗑️ Plan löschen</button>';
     h += '</div></section>';
 
+    /* --- Filter-Leiste für deutlich bessere Übersicht auf allen Geräten --- */
+    h += '<div class="lp-filter-bar lp-noprint">';
+    h += '<span class="lp-filter-label">🔍 Ansicht:</span>';
+    var filters = [
+      { id: 'all',    label: '📅 Alle Tage (' + p.days.length + ')' },
+      { id: 'focus',  label: '🎯 Fokus: Heute &amp; 3 Tage' },
+      { id: 'open',   label: '⏳ Nur offene Einheiten' },
+      { id: 'future', label: '⏭️ Vergangene ausblenden' }
+    ];
+    filters.forEach(function (f) {
+      h += '<button type="button" class="lp-filter-chip' + (uiState.planFilter === f.id ? ' lp-filter-active' : '') + '" data-act="filter-plan" data-filter="' + f.id + '">' + f.label + '</button>';
+    });
+    h += '</div>';
+
+    var filteredDays = p.days.filter(function (d) {
+      if (uiState.planFilter === 'future') return d.date >= today;
+      if (uiState.planFilter === 'focus') {
+        var delta = diff(today, d.date);
+        return delta >= 0 && delta <= 3;
+      }
+      if (uiState.planFilter === 'open') {
+        if (examsByDate[d.date]) return true;
+        return d.sessions.some(function (x) { return !state.done[x.id] && !x.missed; });
+      }
+      return true;
+    });
+
+    if (!filteredDays.length) {
+      h += '<div class="lp-box" style="text-align:center;padding:20px;">Für diesen Filter sind aktuell keine Tage sichtbar. <button type="button" class="lp-tool lp-tool-gold" data-act="filter-plan" data-filter="all" style="margin-left:8px;">Alle Tage anzeigen</button></div>';
+    }
+
     var curWeek = null, weekNo = 0;
-    p.days.forEach(function (d) {
+    filteredDays.forEach(function (d) {
       var ws = addDays(d.date, -wdIdx(d.date));
       if (ws !== curWeek) {
         curWeek = ws; weekNo++;
@@ -2088,7 +2543,369 @@
   function setupVisible(show) {
     $('lp-setup').style.display = show ? '' : 'none';
     var b = $('lp-generate');
-    if (b) b.lastChild.textContent = state.plan ? ' Lernplan neu berechnen' : ' Lernplan erstellen';
+    if (b) b.lastChild.textContent = state.plan ? ' Sofort-Lernplan neu berechnen' : ' Sofort-Lernplan auf der Website erstellen';
+  }
+
+  /* ──────────────────────────────────────────────────────────
+     SCHRITT 3 – OPTION A: KI-MASTER-PROMPT & KI-PLAN-IMPORT
+     ────────────────────────────────────────────────────────── */
+  function buildTaskInstructionForPrompt(fk) {
+    var st = getSub(fk);
+    var tm = st.taskMode || 'both';
+    var tn = (st.taskNote || '').trim();
+    var hasFiles = !!(st.files && st.files.length);
+    var lines = [];
+    if (tm === 'both') {
+      lines.push('• AUFGABEN-STRATEGIE: **Kombination aus meinen eigenen Aufgaben + neuen KI-Aufgaben mit gezielter Schwierigkeits-Steigerung (AFB I → AFB II → AFB III)**.');
+    } else if (tm === 'own') {
+      lines.push('• AUFGABEN-STRATEGIE: **Fokus auf meine eigenen Aufgaben (sortiert nach Schwierigkeit: AFB I Einstieg → AFB II Routine → AFB III 15-Punkte-Transfer)**.');
+    } else {
+      lines.push('• AUFGABEN-STRATEGIE: **Erstelle mir neue, abiturreife 15-Punkte-Übungsaufgaben mit klarer Schwierigkeits-Steigerung (AFB I → AFB II → AFB III)**.');
+    }
+    if (st.attachInAi !== false && (tm === 'both' || tm === 'own')) {
+      lines.push('• HINWEIS ZU MEINEN ANGEHÄNGTEN AUFGABEN: Ich lege dir meine eigenen Übungsaufgaben (Arbeitsblatt / Buchseite / Altklausur) in diesem Chat als PDF, Bild oder Text dazu. Bitte sichte alle Aufgaben, ordne sie nach Schwierigkeit (vom leichten Einstieg bis zur schweren 15-Punkte-Transferaufgabe) und verteile sie konkret (mit Aufgabennummer!) auf die passenden Lerntage!');
+    }
+    if (tn) {
+      lines.push('• MEINE VORHANDENEN AUFGABEN / MATERIALIEN: ' + tn);
+    }
+    if (hasFiles) {
+      st.files.forEach(function (fl) {
+        if (fl.text && fl.text.trim()) {
+          lines.push('• HOCHGELADENES ÜBUNGSBLATT „' + fl.name + '“ (Auszug):\n' + fl.text.trim().slice(0, 6000));
+        } else {
+          lines.push('• HOCHGELADENES ÜBUNGSBLATT „' + fl.name + '“ (wird als Bild/PDF im Chat angehängt).');
+        }
+      });
+    }
+    return lines.join('\n');
+  }
+
+  function generateMasterPrompt() {
+    var err = $('lp-error');
+    if (err) err.textContent = '';
+    var s = state.settings;
+    var today = todayStr();
+    var start = s.start > today ? s.start : today;
+
+    if (!s.minutes.some(function (m) { return m >= s.block; })) {
+      if (err) err.textContent = 'Trage in Schritt 2 an mindestens einem Wochentag genug Lernzeit für eine Lerneinheit (' + s.block + ' Min.) ein.';
+      return;
+    }
+    var c = collectSubjects(start);
+    if (c.errors.length) {
+      if (err) err.textContent = c.errors.join(' ');
+      return;
+    }
+    if (!c.subs.length) {
+      if (err) err.textContent = 'Wähle in Schritt 1 zuerst mindestens ein Thema oder lade ein Übungsblatt hoch.';
+      return;
+    }
+
+    var btn = $('lp-btn-master-prompt');
+    var origText = btn ? btn.textContent : '';
+    if (btn) { btn.disabled = true; btn.textContent = '⏳ Lade Lernzettel & erstelle 15-Punkte-Master-Prompt …'; }
+
+    var allSelectedTopics = [];
+    c.subs.forEach(function (sub) {
+      subjTopics(sub.fk).filter(function (t) { return t.selected; }).forEach(function (t) {
+        allSelectedTopics.push({ fk: sub.fk, title: t.title, link: t.link, note: t.note, level: t.level, important: t.important });
+      });
+    });
+
+    LT.loadTopicsText(allSelectedTopics.map(function (t) { return { title: fachName(t.fk) + ' – ' + t.title, link: t.link, note: t.note }; }))
+      .catch(function () { return ''; })
+      .then(function (loadedLzText) {
+        var lastExam = c.subs.reduce(function (m, x) { return x.exam > m ? x.exam : m; }, start);
+        var totalDays = Math.min(60, diff(start, lastExam) + 1);
+        var calLines = [];
+        for (var i = 0; i < totalDays; i++) {
+          var dStr = addDays(start, i);
+          var cap = s.minutes[wdIdx(dStr)] || 0;
+          var exFks = c.subs.filter(function (sub) { return sub.exam === dStr; }).map(function (sub) { return fachName(sub.fk); });
+          calLines.push('  - ' + dStr + ' (' + WD[wdIdx(dStr)] + '): ' + cap + ' Min. Lernzeit verfügbar' + (exFks.length ? ' [🔥 KLAUSURTAG: ' + exFks.join(', ') + ']' : ''));
+        }
+
+        var p = 'Du bist mein persönlicher 15-Punkte-Oberstufen-Tutor und Abitur-Prüfer an einem allgemeinbildenden Gymnasium in Baden-Württemberg (Bildungsplan 2016).\n';
+        p += 'Mein Ziel sind **15 Notenpunkte (sehr gut plus)** – also volle Punktzahl in AFB I (Reproduktion), AFB II (Reorganisation/Anwendung) und insbesondere **AFB III (Transfer, Problemlösen, Begründung & Urteil)**.\n\n';
+
+        p += '============================================================\n';
+        p += '1. MEINE FÄCHER, THEMEN, KÖNNENSSTAND & AUFGABEN-STRATEGIE\n';
+        p += '============================================================\n';
+        c.subs.forEach(function (sub) {
+          var fk = sub.fk;
+          var st = sub.st;
+          p += '\n### FACH: ' + fachName(fk).toUpperCase() + ' (Fach-Kürzel für den Export: `' + fk + '`)\n';
+          p += '• Klausurtermin: ' + sub.exam + ' (' + fmtDay(sub.exam) + ') · Dauer der Klausur-Simulation: ' + st.simMinutes + ' Min.\n';
+          if (fk === 'mathe') {
+            p += '• Fach-Anforderung (BW): Ca. 20 % Regeln/Kochrezept verstehen, **80 % aktives Rechnen, Anwenden und Begründen** (Hilfsmittelfreier Pflichtteil + Wahlteil, „Begründen Sie“ / „Entscheiden Sie“ / Parameter / grafisches Ableiten).\n';
+          } else if (fk === 'deutsch') {
+            p += '• Fach-Anforderung (BW): **Einen durchgehenden Aufsatz im Fließtext schreiben** nach dem **7-Schritte-Klausur-Bauplan** (1. Einleitung & Deutungshypothese → 2. Strukturierte Inhaltsangabe im Präsens/Konjunktiv I → 3. Block 1: Rahmen/Einstieg/Grundstimmung → 4. Block 2: Hauptfigur & innerer Konflikt/Erlebte Rede → 5. Block 3: Figurenkonstellation & Kommunikation → 6. Block 4: Wendepunkt/Dingsymbol/Titel/offener Schluss → 7. Fazit) im 15-Punkte-Dreischritt (Form → Zitat + Zeile → Deutung).\n';
+          }
+          var selT = subjTopics(fk).filter(function (t) { return t.selected; });
+          if (selT.length) {
+            p += '• Ausgewählte Themen & mein aktueller Stand (1 = Neu, 2 = Unsicher, 3 = Grundlagen sitzen, 4 = Sicher):\n';
+            selT.forEach(function (t) {
+              p += '  - „' + t.title + '“ → Stufe ' + t.level + '/4 (' + LEVELS[t.level - 1].label + ')' + (t.important ? ' [★ BESONDERS KLAUSURRELEVANT]' : '') + '\n';
+            });
+          }
+          var ops = ['I', 'II', 'III'].map(function (a) { return '  - ' + LT.AFB_LABELS[a] + ': ' + LT.getOperatorNames(fk, a, 8); }).join('\n');
+          if (ops.trim()) {
+            p += '• Offizielle BW-Operatoren:\n' + ops + '\n';
+          }
+          p += buildTaskInstructionForPrompt(fk) + '\n';
+          if (st.zusatz && st.zusatz.trim()) {
+            p += '• Zusatzwissen / Hinweise meiner Lehrkraft:\n  ' + st.zusatz.trim().replace(/\n+/g, '\n  ') + '\n';
+          }
+        });
+
+        p += '\n============================================================\n';
+        p += '2. MEIN VERFÜGBARER ZEITRAHMEN & KALENDER\n';
+        p += '============================================================\n';
+        p += '• Bevorzugte Länge einer Lerneinheit: ' + s.block + ' Minuten (+ Pause danach)\n';
+        p += '• Verfügbare Lerntage von ' + start + ' bis ' + lastExam + ':\n' + calLines.join('\n') + '\n';
+
+        p += '\n============================================================\n';
+        p += '3. DEIN AUFTRAG FÜR MEINEN 15-PUNKTE-LERNPLAN (INKL. AUFGABEN-STEIGERUNG)\n';
+        p += '============================================================\n';
+        p += '1. **Aufgaben analysieren & Schwierigkeits-Steigerung gewährleisten (AFB I → II → III):**\n';
+        p += '   - Wenn ich eigene Aufgaben (als Bild, PDF oder Liste) mitgegeben habe: Sichte sie komplett, bewerte ihren Schwierigkeitsgrad und **sortiere sie für meinen Lernplan vom Leichten zum Schweren** (erst Einstieg AFB I, dann Routine AFB II, dann 15-Punkte-Transfer AFB III).\n';
+        p += '   - Nenne in den Lerneinheiten **konkret, welche meiner Aufgaben (z. B. Nr. 1a, 2, 4)** ich an welchem Tag rechnen/bearbeiten soll, und ergänze (je nach gewählter Strategie) **neue, maßgeschneiderte 15-Punkte-Aufgaben**.\n';
+        p += '2. **Wissenschaftliche Lernstruktur:**\n';
+        p += '   - Plane Erarbeitungs-Einheiten (`E`), aufbauende Übungs-Einheiten (`U` mit `I`, `II`, `III`, `MIX`), kurze Wiederholungen (`R` nach Spaced Repetition), eine echte Klausur-Simulation (`SIM` ca. 3–5 Tage vor der Klausur), eine Fehleranalyse (`FEHLER`) und am Vortag der Klausur nur einen leichten letzten Check (`FINAL`, 30 Min.).\n';
+        p += '3. **Alle Folge-Prompts & Aufgaben in einen Kopier-Kasten setzen:**\n';
+        p += '   - Schreibe für jede Lerneinheit zwischen `PROMPT_START` und `PROMPT_ENDE` einen **sofort kopierbaren KI-Prompt (inkl. der konkreten heutigen Übungsaufgaben mit Steigerung)**, damit meine Website ihn direkt in einem **1-Klick-Kopier-Kasten** anzeigt!\n';
+        p += '4. **EXAKTES EXPORT-FORMAT FÜR MEINE WEBSITE (PFLICHT):**\n';
+        p += '   Gib mir deine Antwort so aus, dass ganz am Ende (oder direkt nach einer kurzen Übersicht zur Aufgaben-Sortierung) der komplette Lernplan exakt zwischen `===LERNPLAN_START===` und `===LERNPLAN_ENDE===` in folgendem Format steht (bitte exakt diese Schlüsselwörter am Zeilenanfang nutzen, damit meine Website den Plan interaktiv mit Abhak-Kästchen darstellen kann):\n\n';
+        p += '===LERNPLAN_START===\n';
+        p += 'TAG: YYYY-MM-DD\n';
+        p += 'EINHEIT: [Typ: E oder U oder R oder SIM oder FEHLER oder FINAL] | [Fach-Kürzel, z.B. ' + c.subs[0].fk + '] | [Dauer in Min, z.B. ' + s.block + '] | [AFB: I oder II oder III oder MIX] | [Kurzer Titel der Einheit]\n';
+        p += 'AUFGABEN: [Konkrete Schritt-für-Schritt-Anleitung für diese Einheit: Welche eigenen Aufgaben (in gesteigerter Reihenfolge!) + welche Methodik heute dran sind]\n';
+        p += 'PROMPT_START\n';
+        p += '[Schreibe hier den kompletten Kopier-Prompt für einen neuen KI-Chat ODER die konkreten Übungsaufgaben des Tages (Stufe AFB I → II → III) hinein, damit ich diesen Kasten auf meiner Website mit 1 Klick kopieren kann!]\n';
+        p += 'PROMPT_ENDE\n';
+        p += '===LERNPLAN_ENDE===\n';
+
+        if (loadedLzText && loadedLzText.trim()) {
+          p += '\n============================================================\n';
+          p += '4. INHALT MEINER AUSGEWÄHLTEN LERNZETTEL (ALS GRUNDLAGE)\n';
+          p += '============================================================\n';
+          p += loadedLzText.slice(0, 28000) + '\n';
+        }
+
+        var wrap = $('lp-master-prompt-wrap');
+        var ta = $('lp-master-prompt-text');
+        if (ta) ta.value = p;
+        if (wrap) {
+          wrap.style.display = '';
+          if (wrap.scrollIntoView) wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        return LT.copyToClipboard(p);
+      })
+      .then(function (ok) {
+        if (ok) {
+          toast('15-Punkte-Master-Prompt im Kasten erstellt & kopiert! Jetzt in Gemini (Deep Think / Pro) einfügen.', true);
+        } else {
+          toast('Master-Prompt im Kasten erstellt! Klicke auf „Auf einmal kopieren“.');
+        }
+      })
+      .then(function () {
+        if (btn) { btn.disabled = false; btn.textContent = origText; }
+      });
+  }
+
+  function resolveFachKey(rawFk) {
+    var clean = String(rawFk || '').toLowerCase().replace(/[^a-zäöüß]/g, '').trim();
+    if (subjectData[clean]) return clean;
+    var found = null;
+    Object.keys(subjectData).forEach(function (k) {
+      var n = (subjectData[k].name || '').toLowerCase();
+      if (clean === k || n.indexOf(clean) >= 0 || clean.indexOf(k) >= 0) found = k;
+    });
+    if (found) return found;
+    var active = Object.keys(subjectData).filter(isSubjectActive);
+    return active[0] || 'mathe';
+  }
+
+  function importAiPlan() {
+    var err = $('lp-error');
+    if (err) err.textContent = '';
+    var inp = $('lp-ai-import-text');
+    var raw = (inp && inp.value ? inp.value : '').trim();
+    if (!raw) {
+      if (err) err.textContent = 'Bitte füge zuerst die Antwort der KI in das Textfeld unter „2. Fertigen Plan von der KI hier einfügen“ ein.';
+      if (inp) inp.focus();
+      return;
+    }
+
+    /* Extrahiere Bereich zwischen ===LERNPLAN_START=== und ===LERNPLAN_ENDE===, falls vorhanden */
+    var blockMatch = /===\s*LERNPLAN_START\s*===([\s\S]*?)(?:===\s*LERNPLAN_ENDE\s*===|$)/i.exec(raw);
+    var body = blockMatch ? blockMatch[1] : raw;
+
+    var lines = body.split(/\r?\n/);
+    var daysMap = {};
+    var curDate = null;
+    var curSession = null;
+    var inPrompt = false;
+    var inCodeBlock = false;
+    var promptBuf = [];
+    var sessionCounter = 0;
+
+    function flushPrompt() {
+      if (curSession && promptBuf.length) {
+        var joined = promptBuf.join('\n').trim();
+        if (joined) {
+          curSession.aiPrompt = (curSession.aiPrompt ? curSession.aiPrompt + '\n\n' : '') + joined;
+        }
+      }
+      promptBuf = [];
+    }
+
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
+      var trimmed = line.trim();
+      var cleanLine = trimmed.replace(/^[\-*•>\s]+/, '').replace(/^\*\*|\*\*$/g, '').replace(/\*\*/g, '');
+
+      if (/^PROMPT_START\b/i.test(cleanLine)) {
+        inPrompt = true;
+        promptBuf = [];
+        continue;
+      }
+      if (/^PROMPT_ENDE\b/i.test(cleanLine)) {
+        inPrompt = false;
+        flushPrompt();
+        continue;
+      }
+      if (inPrompt) {
+        if (!/^```\w*$/.test(trimmed)) promptBuf.push(line);
+        continue;
+      }
+
+      /* Falls die KI statt PROMPT_START einen Markdown-Codeblock ``` nutzt */
+      if (/^```/.test(trimmed)) {
+        if (!inCodeBlock) {
+          inCodeBlock = true;
+          promptBuf = [];
+        } else {
+          inCodeBlock = false;
+          flushPrompt();
+        }
+        continue;
+      }
+      if (inCodeBlock) {
+        promptBuf.push(line);
+        continue;
+      }
+
+      /* TAG: YYYY-MM-DD (oder Überschrift mit YYYY-MM-DD) */
+      var tagMatch = /^(?:TAG|DATUM|LERntag)\s*:\s*(\d{4}-\d{2}-\d{2})/i.exec(cleanLine) ||
+                     /^(?:#+\s*)?(\d{4}-\d{2}-\d{2})\b/.exec(cleanLine);
+      if (tagMatch && validDate(tagMatch[1])) {
+        curDate = tagMatch[1];
+        if (!daysMap[curDate]) daysMap[curDate] = [];
+        curSession = null;
+        continue;
+      }
+
+      /* EINHEIT: Typ | Fach | Dauer | AFB | Titel */
+      var einheitMatch = /^EINHEIT\s*:\s*(.+)$/i.exec(cleanLine);
+      if (einheitMatch && curDate) {
+        var parts = einheitMatch[1].split('|').map(function (s) { return s.trim().replace(/^\[|\]$/g, ''); });
+        var rawType = (parts[0] || 'U').toUpperCase().replace(/[^A-Z]/g, '');
+        if (['E', 'U', 'R', 'SIM', 'FEHLER', 'FINAL', 'V'].indexOf(rawType) < 0) rawType = 'U';
+        var fk = resolveFachKey(parts[1] || '');
+        var dur = parseInt(parts[2], 10) || state.settings.block || 45;
+        var afbRaw = (parts[3] || 'II').toUpperCase().replace(/^AFB\s*/i, '').trim();
+        if (['I', 'II', 'III', 'MIX', 'FILE'].indexOf(afbRaw) < 0) afbRaw = 'II';
+        var title = parts.slice(4).join(' | ').trim() || (parts[3] && ['I', 'II', 'III', 'MIX'].indexOf(afbRaw) < 0 ? parts[3] : 'Lerneinheit');
+        sessionCounter++;
+        curSession = {
+          id: 'AI|' + curDate + '|' + sessionCounter,
+          type: rawType,
+          fk: fk,
+          key: 'ai_' + sessionCounter,
+          title: title,
+          link: '',
+          note: '',
+          afb: afbRaw,
+          min: dur,
+          n: 1,
+          of: 1,
+          optional: false,
+          customMethod: '',
+          aiPrompt: ''
+        };
+        /* Falls der Titel zu einem bekannten Lernzettel passt, Link automatisch verknüpfen! */
+        var knownTopics = subjTopics(fk);
+        for (var kt = 0; kt < knownTopics.length; kt++) {
+          if (knownTopics[kt].link && title.toLowerCase().indexOf(knownTopics[kt].title.toLowerCase().slice(0, 12)) >= 0) {
+            curSession.link = knownTopics[kt].link;
+            curSession.key = knownTopics[kt].key;
+            break;
+          }
+        }
+        daysMap[curDate].push(curSession);
+        continue;
+      }
+
+      /* AUFGABEN: ... */
+      var aufgMatch = /^(?:AUFGABEN|METHODIK|INHALT|BESCHREIBUNG)\s*:\s*(.+)$/i.exec(cleanLine);
+      if (aufgMatch && curSession) {
+        curSession.customMethod = (curSession.customMethod ? curSession.customMethod + '\n' : '') + aufgMatch[1].trim();
+        continue;
+      }
+
+      /* Mehrzeilige Fortsetzung von AUFGABEN */
+      if (curSession && trimmed && !/^===/.test(trimmed)) {
+        curSession.customMethod = (curSession.customMethod ? curSession.customMethod + '\n' : '') + trimmed;
+      }
+    }
+
+    var dates = Object.keys(daysMap).sort();
+    if (!dates.length || !sessionCounter) {
+      if (err) {
+        err.textContent = 'Der KI-Text enthielt noch keine erkennbaren Lerntage im Format „TAG: JJJJ-MM-TT“ und „EINHEIT: …“. Bitte nutze den generierten Master-Prompt aus Schritt 1 und kopiere die vollständige Antwort der KI.';
+      }
+      return;
+    }
+
+    var firstDate = dates[0];
+    var lastDate = dates[dates.length - 1];
+    var activeExams = [];
+    Object.keys(subjectData).forEach(function (fk) {
+      var st = getSub(fk);
+      if (validDate(st.exam) && (isSubjectActive(fk) || raw.toLowerCase().indexOf(fk) >= 0)) {
+        activeExams.push({ fk: fk, date: st.exam });
+        if (st.exam > lastDate) lastDate = st.exam;
+      }
+    });
+    activeExams.sort(function (a, b) { return a.date < b.date ? -1 : 1; });
+
+    var spanDays = Math.min(90, Math.max(1, diff(firstDate, lastDate) + 1));
+    var fullDays = [];
+    for (var dIdx = 0; dIdx < spanDays; dIdx++) {
+      var dStr = addDays(firstDate, dIdx);
+      fullDays.push({
+        date: dStr,
+        cap: state.settings.minutes[wdIdx(dStr)] || 0,
+        sessions: daysMap[dStr] || []
+      });
+    }
+
+    state.plan = {
+      created: todayStr(),
+      start: firstDate,
+      days: fullDays,
+      exams: activeExams,
+      warnings: [],
+      sig: settingsSig(),
+      isAiPlan: true
+    };
+    save();
+    setupVisible(false);
+    renderPlan();
+    var r = $('lp-result');
+    if (r && r.scrollIntoView) r.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    toast('KI-Lernplan erfolgreich importiert & auf der Website angezeigt! 🎉');
   }
 
   /* ──────────────────────────────────────────────────────────
@@ -2099,7 +2916,7 @@
       return subjTopics(fk).filter(function (t) { return t.selected; });
     }
     var t = findTopic(fk, key);
-    return t ? [t] : [];
+    return t ? [t] : subjTopics(fk).filter(function (tp) { return tp.selected; });
   }
 
   function copyQuiz(btn) {
@@ -2113,14 +2930,26 @@
       .then(function (text) {
         var st = getSub(fk);
         var fullZusatz = LT.getZusatzwissen ? LT.getZusatzwissen(fk) : st.zusatz.trim();
+        var taskInfo = buildTaskInstructionForPrompt(fk);
+        var combinedZusatz = [fullZusatz, taskInfo].filter(Boolean).join('\n\n');
         var prompt = LT.buildQuizPrompt({
           fachKey: fk,
           topicTitles: topics.map(function (t) { return t.title; }),
-          text: text, afb: afb, zusatz: fullZusatz, simMinutes: st.simMinutes
+          text: text, afb: afb, zusatz: combinedZusatz, simMinutes: st.simMinutes
         });
+        showInlinePromptBox(
+          btn,
+          prompt,
+          (afb === 'SIM' ? 'Klausur-Simulations-Prompt' : ('Übungs-Prompt (' + (afb === 'MIX' ? 'Klausur-Mix' : ('AFB ' + afb)) + ')')) + ' – ' + fachName(fk),
+          (st.attachInAi && (st.taskMode === 'both' || st.taskMode === 'own'))
+            ? '📎 Tipp: Falls du eigene Aufgabenblätter hast, hänge sie in Gemini einfach per + an – der Prompt berücksichtigt deine Aufgaben-Strategie!'
+            : '✓ Lernzettel, BW-Operatoren & Zusatzwissen sind bereits komplett im Kasten enthalten.'
+        );
         return LT.copyToClipboard(prompt);
       })
-      .then(function (ok) { if (ok) toast(afb === 'SIM' ? 'Kopiert! Neuer Gemini-Chat → Strg+V. Chat für die Fehleranalyse offen lassen.' : 'Kopiert! Neuer Gemini-Chat → Strg+V.', true); })
+      .then(function (ok) {
+        if (ok) toast(afb === 'SIM' ? 'Im Kopier-Kasten geöffnet & kopiert! Neuer Gemini-Chat (Deep Think / Pro) → Strg+V.' : 'Im Kopier-Kasten geöffnet & kopiert! Neuer Gemini-Chat → Strg+V.', true);
+      })
       .catch(function (e) {
         toast('Lernzettel konnten nicht geladen werden. Öffne die Website über GitHub Pages (nicht als Datei).');
         console.error(e);
@@ -2138,17 +2967,18 @@
       pd += 'Ich habe einen Probe-Aufsatz (Klausur-Simulation) zum Thema „' + topics.join(', ') + '“ geschrieben.\n';
       pd += 'Unten füge ich meinen geschriebenen Aufsatz (abgetippt oder als Foto) ein. Bitte korrigiere und bewerte ihn streng nach dem BW-Abiturmaßstab:\n\n';
       pd += '1. GESAMTBEWERTUNG (0–15 Notenpunkte): Bewerte getrennt nach **Inhaltlicher Leistung (60 %)** und **Darstellungsleistung / Sprache / Ausdruck (40 %)**.\n';
-      pd += '2. DETAILLIERTER AUFSATZ-CHECK:\n';
-      pd += '   • **Einleitung:** Sitzt der Aufhänger, der vollständige **TATTE-Basissatz** und eine präzise **zentrale Interpretationshypothese**?\n';
-      pd += '   • **Inhaltsangabe:** Sind die Sinnabschnitte logisch, ist das Tempus durchgehend **Präsens** und wurde bei Figurenäußerungen sauber der **Konjunktiv I** (ohne Zitate!) genutzt?\n';
-      pd += '   • **Hauptteil (Analyse & Interpretation):** Wurde aspektorientiert gegliedert (statt linearer Nacherzählung) und überall der **15-Punkte-Dreischritt (1. Form/Aspekt → 2. Zitat mit Zeile → 3. funktionale Deutung)** eingehalten? Wurden Erzähltechnik, Sprache/Symbolik und Kommunikationsmodelle (z. B. Schulz von Thun / Watzlawick) tiefgründig auf den Text angewendet?\n';
-      pd += '   • **Schluss:** Gibt es ein komprimiertes Fazit, den Rückbezug zur Eingangshypothese und einen gelungenen Ausblick?\n';
-      pd += '3. VORHER → NACHHER (15-PUNKTE-UPGRADE): Nimm meine **3 schwächsten Absätze oder Sätze** aus meinem Aufsatz und schreibe sie mir direkt in einer **perfekten 15-Punkte-Version** (mit gehobenen Analyse-Verben und sauberem Dreischritt) um!\n';
+      pd += '2. DETAILLIERTER AUFSATZ-CHECK NACH DEM 7-SCHRITTE-BAUPLAN:\n';
+      pd += '   • **1. Einleitung & Deutungshypothese:** Sitzt der Basissatz und eine präzise psychologische/zwischenmenschliche Deutungshypothese?\n';
+      pd += '   • **2. Strukturierte Inhaltsangabe:** Sind die Sinnabschnitte logisch, Tempus strikt **Präsens** und indirekte Rede im **Konjunktiv I** (ohne Zitate)?\n';
+      pd += '   • **3.–6. Hauptteil (Block 1–4):** Wurde in allen 4 Blöcken (Rahmen/Einstieg, Hauptfigur/Innenwelt mit Erlebter Rede, Figurenkonstellation/Kommunikation, Wendepunkt/Dingsymbol/Titel/offener Schluss) konsequent der **15-Punkte-Dreischritt (1. Form → 2. Zitat + Zeile → 3. funktionale Deutung)** eingehalten?\n';
+      pd += '   • **7. Schluss / Fazit:** Gibt es den Rückbezug zur Hypothese, die Synthese von Inhalt & Form sowie den impliziten Appell?\n';
+      pd += '3. VORHER → NACHHER (15-PUNKTE-UPGRADE): Nimm meine **3 schwächsten Absätze oder Sätze** aus meinem Aufsatz und schreibe sie mir direkt in einer **perfekten 15-Punkte-Version** um!\n';
       pd += '4. Nenne mir meine 3 wichtigsten Schreib-Tipps für die echte Klausur.\n';
       if (z) pd += '\nZusatzwissen / Vorgaben meiner Lehrkraft:\n' + z + '\n';
       pd += '\nTEXTGRUNDLAGE & AUFGABENSTELLUNG: stehen weiter oben in diesem Chat (falls das ein neuer Chat ist, füge ich sie hier ein).\n';
       pd += '\nMEIN GESCHRIEBENER AUFSATZ (abgetippt oder als Foto angehängt):\n(hier einfügen)\n';
-      LT.copyToClipboard(pd).then(function (ok) { if (ok) toast('Aufsatz-Korrektur-Prompt kopiert! Im Chat der Simulation einfügen + deinen Aufsatz anhängen.', true); });
+      showInlinePromptBox(btn, pd, 'Aufsatz-Korrektur & 15-Punkte-Lektorat (Deutsch)', '💬 Im selben Chat wie deine Klausur-Simulation einfügen + deinen Aufsatz anhängen.');
+      LT.copyToClipboard(pd).then(function (ok) { if (ok) toast('Aufsatz-Korrektur-Prompt im Kasten geöffnet & kopiert!', true); });
       return;
     }
 
@@ -2158,17 +2988,18 @@
     p += '1. Bewerte meine Lösung streng nach Abitur-Maßstab in Notenpunkten (0–15) und begründe kurz.\n';
     p += '2. Ordne jeden Fehler einer Kategorie zu: Wissenslücke · Operator nicht erfüllt · Flüchtigkeitsfehler · Zeitproblem · Darstellung/Fachsprache.\n';
     p += '3. Nenne meine 3 wichtigsten Baustellen auf dem Weg zu 15 Punkten.\n';
-    p += '4. Erstelle zu jeder Wissenslücke 2 gezielte Übungsaufgaben (mit Lösung darunter, deutlich abgetrennt).\n';
+    p += '4. Erstelle zu jeder Wissenslücke 3 aufbauende Übungsaufgaben mit Schwierigkeits-Steigerung (AFB I → AFB II → AFB III, mit Lösung darunter).\n';
     p += '5. Formuliere zu jeder Wissenslücke eine Karteikarte (Vorderseite | Rückseite).\n';
     var ops = ['I', 'II', 'III'].map(function (a) { return LT.AFB_LABELS[a] + ': ' + LT.getOperatorNames(fk, a); }).join('\n');
     if (ops.replace(/AFB I+: /g, '').trim()) p += '\nPrüfe besonders, ob ich die Operatoren richtig umgesetzt habe:\n' + ops + '\n';
     if (z) p += '\nZusatzwissen / Übungsblätter, die ich ebenfalls können muss:\n' + z + '\n';
     p += '\nAUFGABEN & ERWARTUNGSHORIZONT: stehen weiter oben in diesem Chat (falls das ein neuer Chat ist, füge ich sie hier ein).\n';
     p += '\nMEINE LÖSUNGEN (abgetippt oder als Foto angehängt):\n(hier einfügen)\n';
-    LT.copyToClipboard(p).then(function (ok) { if (ok) toast('Kopiert! Im Chat der Simulation einfügen + deine Lösungen anhängen.', true); });
+    showInlinePromptBox(btn, p, 'Fehleranalyse-Prompt (' + fachName(fk) + ')', '💬 Im Chat der Klausur-Simulation einfügen + deine Lösungen anhängen.');
+    LT.copyToClipboard(p).then(function (ok) { if (ok) toast('Fehleranalyse-Prompt im Kasten geöffnet & kopiert!', true); });
   }
 
-  function copyCoach() {
+  function copyCoach(triggerBtn) {
     var p = state.plan, today = todayStr();
     var t = 'Du bist mein persönlicher Lerncoach für die Oberstufe in Baden-Württemberg. Mein Ziel: 15 Notenpunkte.\n\n';
     t += 'MEINE FÄCHER, THEMEN & SELBSTEINSCHÄTZUNG (1 = neu … 4 = sicher, ★ = besonders wichtig):\n';
@@ -2181,6 +3012,8 @@
       files.forEach(function (fl) {
         t += '  • Eigenes Übungsblatt: ' + fl.name + '\n';
       });
+      var tn = (getSub(e.fk).taskNote || '').trim();
+      if (tn) t += '  • Eigene Übungsaufgaben: ' + tn + '\n';
       var z = getSub(e.fk).zusatz.trim();
       if (z) t += '  Zusatzwissen: ' + z.replace(/\n+/g, ' | ') + '\n';
     });
@@ -2188,17 +3021,21 @@
     p.days.filter(function (d) { return d.date >= today && diff(today, d.date) < 7; }).forEach(function (d) {
       if (!d.sessions.length) return;
       t += fmtDay(d.date) + ': ' + d.sessions.map(function (x) {
-        return TYPE_LABEL[x.type] + ' ' + fachName(x.fk) + (x.title ? ' – ' + x.title : '') + (x.afb && x.type === 'U' ? ' (' + x.afb + ')' : '') + (state.done[x.id] ? ' ✓' : '');
+        return (TYPE_LABEL[x.type] || x.type) + ' ' + fachName(x.fk) + (x.title ? ' – ' + x.title : '') + (x.afb && x.type === 'U' ? ' (' + x.afb + ')' : '') + (state.done[x.id] ? ' ✓' : '');
       }).join('; ') + '\n';
     });
     var pr = progress();
     t += '\nFortschritt bisher: ' + pr.done + ' von ' + pr.total + ' Einheiten erledigt.\n\n';
     t += 'DEINE AUFGABE:\n';
     t += '1. Gib mir ein kurzes, ehrliches Feedback zu meinem Plan (Risiken, Prioritäten).\n';
-    t += '2. Wenn ich dir schreibe „Start: [Thema]“, stellst du mir 5 Active-Recall-Fragen nacheinander (eine pro Nachricht), wartest auf meine Antwort und korrigierst sie knapp.\n';
+    t += '2. Wenn ich dir schreibe „Start: [Thema]“, stellst du mir 5 aufbauende Fragen/Aufgaben mit Schwierigkeits-Steigerung (von AFB I bis AFB III) nacheinander (eine pro Nachricht), wartest auf meine Antwort und korrigierst sie knapp.\n';
     t += '3. Verwende bei Aufgaben immer die offiziellen BW-Operatoren des jeweiligen Fachs.\n';
-    t += '4. Motiviere mich, aber bleib ehrlich, wenn etwas noch nicht für 15 Punkte reicht.\n';
-    LT.copyToClipboard(t).then(function (ok) { if (ok) toast('KI-Coach-Prompt kopiert! Eigener Gemini-Chat → Strg+V (dann z. B. „Start: [Thema]“ schreiben).', true); });
+    t += '4. Wenn du mir einen Prompt zum Kopieren schreibst, setze ihn immer in einen Codeblock-Kasten (```text ... ```).\n';
+    t += '5. Motiviere mich, aber bleib ehrlich, wenn etwas noch nicht für 15 Punkte reicht.\n';
+    if (triggerBtn) {
+      showInlinePromptBox(triggerBtn, t, 'Persönlicher 15-Punkte-KI-Coach-Prompt', '💬 Lege dir dafür einen eigenen Chat in Gemini an und schreibe danach z. B. „Start: [Thema]“.');
+    }
+    LT.copyToClipboard(t).then(function (ok) { if (ok) toast('KI-Coach-Prompt im Kasten geöffnet & kopiert!', true); });
   }
 
   function downloadBlob(content, mime, filename) {
@@ -2246,7 +3083,7 @@
       var fs = [];
       d.sessions.forEach(function (x) { var n = fachName(x.fk); if (fs.indexOf(n) < 0) fs.push(n); });
       var desc = d.sessions.map(function (x) {
-        return '• ' + TYPE_LABEL[x.type] + ': ' + fachName(x.fk) + (x.title ? ' – ' + x.title : '') + ' (' + metaText(x) + ')';
+        return '• ' + (TYPE_LABEL[x.type] || x.type) + ': ' + fachName(x.fk) + (x.title ? ' – ' + x.title : '') + ' (' + metaText(x) + ')';
       }).join('\n');
       ev(d.date, 'lp-' + state.id + '-' + d.date, 'Lernen ' + fmtMin(mins) + ' (' + fs.join(', ') + ')', desc);
     });
@@ -2282,8 +3119,9 @@
       lines.push('### ' + fmtDay(d.date));
       d.sessions.forEach(function (x) {
         var chk = state.done[x.id] ? '[x]' : '[ ]';
-        var label = TYPE_LABEL[x.type] + ' · ' + fachName(x.fk) + ' – ' + (x.title || 'Alle Themen') + ' (' + metaText(x) + ')';
+        var label = (TYPE_LABEL[x.type] || x.type) + ' · ' + fachName(x.fk) + ' – ' + (x.title || 'Alle Themen') + ' (' + metaText(x) + ')';
         lines.push('- ' + chk + ' **' + label + '**');
+        if (x.customMethod) lines.push('  - _Aufgaben:_ ' + x.customMethod.replace(/\r?\n/g, ' '));
       });
       lines.push('');
     });
@@ -2355,6 +3193,7 @@
         localStorage.setItem(KEY, JSON.stringify(raw));
         store = loadStore();
         state = store.projects.filter(function (p) { return p.id === store.activeId; })[0] || store.projects[0];
+        syncOpenSubjectsWithSelection();
         save();
         renderProjects();
         renderSubjects();
@@ -2500,6 +3339,8 @@
         state.settings = fresh.settings;
         state.plan = null;
         state.done = {};
+        syncOpenSubjectsWithSelection();
+        goToStep(1);
         save();
         renderSubjects();
         renderTime();
@@ -2517,6 +3358,8 @@
         store = { activeId: first.id, projects: [first] };
         state = first;
         try { localStorage.removeItem(KEY); } catch (err) { /* ignore */ }
+        syncOpenSubjectsWithSelection();
+        goToStep(1);
         renderProjects();
         renderSubjects();
         renderTime();
@@ -2557,19 +3400,26 @@
       var act = b.getAttribute('data-act');
       if (act === 'quiz') copyQuiz(b);
       else if (act === 'fehler') copyFehler(b);
-      else if (act === 'file-solve') copyFilePrompt(b.getAttribute('data-fach'), b.getAttribute('data-fid'), 'solve');
-      else if (act === 'file-twin') copyFilePrompt(b.getAttribute('data-fach'), b.getAttribute('data-fid'), 'twin');
+      else if (act === 'file-solve') copyFilePrompt(b.getAttribute('data-fach'), b.getAttribute('data-fid'), 'solve', b);
+      else if (act === 'file-twin') copyFilePrompt(b.getAttribute('data-fach'), b.getAttribute('data-fid'), 'twin', b);
       else if (act === 'export') openExportModal();
       else if (act === 'print') window.print();
       else if (act === 'ics') exportIcs();
-      else if (act === 'coach') copyCoach();
+      else if (act === 'coach') copyCoach(b);
       else if (act === 'replan') generate();
-      else if (act === 'edit') {
+      else if (act === 'filter-plan') {
+        uiState.planFilter = b.getAttribute('data-filter') || 'all';
+        renderPlan();
+      } else if (act === 'edit') {
         setupVisible(true);
         $('lp-setup').scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else if (act === 'delete') {
         openDeleteModal();
       } else if (act === 'today') {
+        if (uiState.planFilter !== 'all') {
+          uiState.planFilter = 'all';
+          renderPlan();
+        }
         var el = $('lp-day-' + todayStr());
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
@@ -2580,25 +3430,54 @@
      Start
      ────────────────────────────────────────────────────────── */
   function init() {
-    renderProjects();
-    renderSubjects();
-    renderTime();
-    initProjectEvents();
-    initSubjectEvents();
-    initTimeEvents();
-    initPlanEvents();
-    $('lp-generate').addEventListener('click', generate);
-    var resetBtn = $('lp-reset');
-    if (resetBtn) resetBtn.addEventListener('click', openDeleteModal);
-    var expSetupBtn = $('lp-export-setup');
-    if (expSetupBtn) expSetupBtn.addEventListener('click', openExportModal);
+    syncOpenSubjectsWithSelection();
 
     /* Fach per URL öffnen: lernplaner.html?fach=mathe */
     var m = /[?&]fach=([^&]+)/.exec(location.search);
     if (m) {
-      var det = $('lp-subjects').querySelector('details.lp-subject[data-fach="' + decodeURIComponent(m[1]) + '"]');
-      if (det) det.open = true;
+      var urlFk = decodeURIComponent(m[1]);
+      if (subjectData[urlFk]) {
+        uiState.openSubjects[urlFk] = true;
+      }
     }
+
+    renderProjects();
+    renderSubjects();
+    renderTime();
+    goToStep(1, false);
+
+    initGlobalCopyBoxEvents();
+    initProjectEvents();
+    initSubjectEvents();
+    initTimeEvents();
+    initPlanEvents();
+
+    $('lp-generate').addEventListener('click', generate);
+    var masterBtn = $('lp-btn-master-prompt');
+    if (masterBtn) masterBtn.addEventListener('click', generateMasterPrompt);
+    var copyMasterBtn = $('lp-copy-master-btn');
+    if (copyMasterBtn) {
+      copyMasterBtn.addEventListener('click', function () {
+        var ta = $('lp-master-prompt-text');
+        if (!ta || !ta.value) return;
+        ta.focus();
+        ta.select();
+        LT.copyToClipboard(ta.value).then(function (ok) {
+          if (ok) {
+            copyMasterBtn.textContent = '✓ Kopiert!';
+            setTimeout(function () { copyMasterBtn.textContent = '📋 Auf einmal kopieren'; }, 2200);
+            toast('Master-Prompt auf einmal kopiert! Jetzt in Gemini (Deep Think / Pro) einfügen.', true);
+          }
+        });
+      });
+    }
+    var importAiBtn = $('lp-btn-import-ai-plan');
+    if (importAiBtn) importAiBtn.addEventListener('click', importAiPlan);
+
+    var resetBtn = $('lp-reset');
+    if (resetBtn) resetBtn.addEventListener('click', openDeleteModal);
+    var expSetupBtn = $('lp-export-setup');
+    if (expSetupBtn) expSetupBtn.addEventListener('click', openExportModal);
 
     renderPlan();
     setupVisible(!state.plan);
@@ -2607,3 +3486,4 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 })();
+

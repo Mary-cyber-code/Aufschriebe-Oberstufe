@@ -20,6 +20,10 @@
     var style = document.createElement('style');
     style.id = 'lz-pdf-styles';
     style.textContent =
+      /* Im Plakat-Modus sicheres vertikales Zentrieren + vollständiges Hoch-/Runterscrollen bei langen Kärtchen */
+      'body:not(.print-mode) .flashcard-front, body:not(.print-mode) .flashcard-back { align-items: flex-start !important; overflow-y: auto !important; scrollbar-width: thin !important; scrollbar-color: rgba(201, 169, 110, 0.6) transparent !important; }' +
+      'body:not(.print-mode) .flashcard span, body:not(.print-mode) .flashcard p { margin: auto 0 !important; }' +
+
       /* Lesbarkeit auf gedruckten Karteikarten-Rückseiten */
       'body.print-mode .flashcard-back .highlight { color: var(--forest) !important; }' +
       'body.print-mode .flashcard-front, body.print-mode .flashcard-back { backface-visibility: visible !important; overflow: visible !important; }' +

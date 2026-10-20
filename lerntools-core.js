@@ -273,16 +273,18 @@
     }
 
     if (afb === 'SIM') {
-      p += 'AUFTRAG: Erstelle eine vollständige KLAUSUR-SIMULATION mit einer Bearbeitungszeit von ca. ' + (opts.simMinutes || 90) + ' Minuten.\n';
-      p += '- Mische alle drei Anforderungsbereiche ungefähr im Abitur-Verhältnis (AFB I ca. 30 %, AFB II ca. 40 %, AFB III ca. 30 %).\n';
+      p += 'AUFTRAG: Erstelle eine vollständige KLAUSUR-SIMULATION auf 15-Punkte-Niveau (Gymnasium Baden-Württemberg) mit einer Bearbeitungszeit von ca. ' + (opts.simMinutes || 90) + ' Minuten.\n';
+      p += '- Mische alle drei Anforderungsbereiche im Abitur-Verhältnis (AFB I ca. 30 %, AFB II ca. 40 %, AFB III ca. 30 %) und baue eine klare **Schwierigkeits-Steigerung (vom leichten Einstieg bis zum anspruchsvollen 15-Punkte-Transfer)** ein.\n';
       p += '- Decke ALLE genannten Themen ab und verknüpfe sie, wo sinnvoll, miteinander (wie in einer echten Klausur).\n';
       p += '- Gib für jede Teilaufgabe Bewertungseinheiten (BE) an und am Ende eine Notenskala (BE → Notenpunkte 0–15).\n';
     } else if (afb === 'MIX') {
-      p += 'AUFTRAG: Erstelle Übungsaufgaben als Klausur-Mix über alle Anforderungsbereiche (AFB I ca. 30 %, AFB II ca. 40 %, AFB III ca. 30 %).\n';
+      p += 'AUFTRAG: Erstelle aufbauende Übungsaufgaben als Klausur-Mix über alle Anforderungsbereiche (AFB I ca. 30 %, AFB II ca. 40 %, AFB III ca. 30 %) mit gezielter **Steigerung vom Einfachen zum Schweren (Ziel: 15 Notenpunkte)**.\n';
+      p += '- Falls ich in diesem Chat eigene Aufgaben (als Foto/PDF/Text) dazulege: Sichte sie, sortiere sie nach Schwierigkeit (AFB I → II → III) und kombiniere sie sinnvoll mit deinen neuen Aufgaben!\n';
       p += '- Kennzeichne bei jeder Aufgabe den AFB und die Bewertungseinheiten (BE).\n';
     } else {
-      p += 'AUFTRAG: Erstelle Übungsaufgaben mit Schwerpunkt ' + AFB_LABELS[afb] + '.\n';
+      p += 'AUFTRAG: Erstelle gezielte Übungsaufgaben mit Schwerpunkt ' + AFB_LABELS[afb] + ' (mit klarer Steigerung innerhalb der Teilaufgaben, ausgerichtet auf 15 Notenpunkte am Gymnasium BW).\n';
       p += 'Bedeutung im Fach ' + fach.name + ': ' + getAfbDescription(opts.fachKey, afb) + '\n';
+      p += '- Falls ich in diesem Chat eigene Aufgaben (als Foto/PDF/Text) dazulege: Wähle daraus die passenden Aufgaben für diese Stufe aus, bringe sie in eine aufbauende Reihenfolge und ergänze passende Zusatzaufgaben.\n';
       p += '- Kennzeichne bei jeder Aufgabe den AFB und die Bewertungseinheiten (BE).\n';
     }
 
@@ -299,16 +301,17 @@
     }
 
     p += '\nAUFBAU DEINER ANTWORT:\n';
-    p += '1. Zuerst NUR die Aufgaben (inkl. Material/Kontext, nummeriert, Operator fett, AFB und BE angegeben). Noch keine Lösungen!\n';
-    p += '2. Dann eine deutliche Trennlinie mit dem Hinweis "▼ LÖSUNGEN – erst nach dem Bearbeiten lesen ▼".\n';
-    p += '3. Darunter ein Erwartungshorizont je Aufgabe: Musterlösung + was für die volle Punktzahl (15 Notenpunkte-Niveau) zwingend enthalten sein muss + typische Fehler, die Punkte kosten.\n';
+    p += '1. Zuerst NUR die Aufgaben (inkl. Material/Kontext, nummeriert, klar nach Schwierigkeit geordnet, Operator fett, AFB und BE angegeben). Noch keine Lösungen!\n';
+    p += '2. Dann eine deutliche Trennlinie mit dem Hinweis "▼ LÖSUNGEN & 15-PUNKTE-ERWARTUNGSHORIZONT – erst nach dem Bearbeiten lesen ▼".\n';
+    p += '3. Darunter ein Erwartungshorizont je Aufgabe: vollständige Musterlösung + was für die volle Punktzahl (15 Notenpunkte-Niveau) zwingend enthalten sein muss + typische Klausurfallen.\n';
+    p += '4. WICHTIG: Falls du mir am Ende einen Folge-Prompt (z. B. für die Korrektur meiner Lösung oder weitere Aufgaben) vorschlägst, schreibe ihn komplett in einen eigenen Codeblock-Kasten (```text ... ```), damit ich ihn auf einmal kopieren kann.\n';
 
     if (opts.extra) {
       p += '\nZUSÄTZLICHE WÜNSCHE DER SCHÜLERIN:\n' + opts.extra + '\n';
     }
 
     p += '\nINHALTLICHE GRUNDLAGE: Stütze die fachlichen Anforderungen, Begriffe, Formeln und Modelle auf meine Lernzettel';
-    p += opts.zusatz ? ' sowie das unten angegebene Zusatzwissen' : '';
+    p += opts.zusatz ? ' sowie das unten angegebene Zusatzwissen / meine Aufgaben-Strategie' : '';
     p += '. Du darfst realistische Anwendungs-Kontexte, Rechenwerte, Experimente oder Quellentexte passend zu diesen Themen entwerfen, solange sie mit dem Wissen meiner Lernzettel lösbar sind.\n';
 
     if (opts.zusatz) {

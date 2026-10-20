@@ -536,6 +536,26 @@
       if (e.target === modal) modal.classList.remove('show');
     });
 
+    var copyQuizBoxBtn = document.getElementById('copy-quiz-box-btn');
+    var quizPromptBox = document.getElementById('quiz-prompt-box');
+    if (copyQuizBoxBtn && quizPromptBox) {
+      copyQuizBoxBtn.addEventListener('click', function() {
+        var val = quizPromptBox.value || '';
+        if (!val) return;
+        var orig = copyQuizBoxBtn.textContent;
+        if (window.LernTools && LernTools.copyToClipboard) {
+          LernTools.copyToClipboard(val).then(function() {
+            copyQuizBoxBtn.textContent = '✓ Kopiert!';
+            setTimeout(function() { copyQuizBoxBtn.textContent = orig; }, 1800);
+          });
+        } else if (navigator.clipboard) {
+          navigator.clipboard.writeText(val);
+          copyQuizBoxBtn.textContent = '✓ Kopiert!';
+          setTimeout(function() { copyQuizBoxBtn.textContent = orig; }, 1800);
+        }
+      });
+    }
+
     // 4. Prompt generieren (fachspezifische BW-Operatoren via LernTools)
     generateBtn.addEventListener('click', function() {
       var link = topicSelect.value;
@@ -569,11 +589,12 @@
             extra: extra,
             zusatz: zusatz
           });
+          if (quizPromptBox) quizPromptBox.value = prompt;
           return LernTools.copyToClipboard(prompt);
         })
-        .then(function(ok) {
+        .then(function() {
           generateBtn.style.display = 'none';
-          if (ok) successBox.style.display = 'block';
+          successBox.style.display = 'block';
         })
         .catch(function(err) {
           alert("Fehler beim Laden des Lernzettels: " + err.message);
@@ -600,10 +621,10 @@
         }
       }
       var radioLabels = {
-        I:   isDe ? 'Aufsatz-Baustein 1: Einleitung (TATTE) & Inhaltsangabe (an einer Kurzgeschichte)' : 'AFB I (Reproduktion)',
-        II:  isDe ? 'Aufsatz-Baustein 2: Hauptteil-Analyse im 15-P-Dreischritt (an einer Kurzgeschichte)' : 'AFB II (Reorganisation & Transfer)',
-        III: isDe ? 'Aufsatz-Baustein 3: Tiefendeutung (Eisberg) & Schluss (an einer Kurzgeschichte)' : 'AFB III (Reflexion & Problemlösung)',
-        MIX: isDe ? '✍️ Ganzer Aufsatz / Klausur (Vollständige Kurzgeschichte + 1 Aufsatz-Auftrag + 15-P-Musteraufsatz)' : 'Klausur-Mix (AFB I – III)'
+        I:   isDe ? 'Bauplan-Baustein 1–3: Einleitung & Hypothese, Sinnabschnitte & Block 1 (Rahmen)' : 'AFB I (Reproduktion)',
+        II:  isDe ? 'Bauplan-Baustein 4–5: Block 2 (Hauptfigur) & Block 3 (Kommunikation) im 15-P-Dreischritt' : 'AFB II (Reorganisation & Transfer)',
+        III: isDe ? 'Bauplan-Baustein 6–7: Block 4 (Leitmotiv/Wendepunkt) & Abiturreifer Schluss' : 'AFB III (Reflexion & Problemlösung)',
+        MIX: isDe ? '✍️ Ganzer Aufsatz / Klausur im 7-Schritte-Bauplan (Kurzgeschichte + 15-P-Musteraufsatz)' : 'Klausur-Mix (AFB I – III)'
       };
       Array.prototype.forEach.call(document.querySelectorAll('input[name="quiz-afb"]'), function(r) {
         var lbl = r.parentNode;
@@ -621,17 +642,17 @@
       var html = '';
       if (isDe) {
         if (afb === 'MIX') {
-          html = '<b>✍️ Echte Deutsch-Klausur (Aufsatz im Fließtext statt Einzel-Fragen!):</b><br>' +
-                 'Gemini gibt dir <b>1) eine komplette Übungs-Kurzgeschichte mit Zeilennummern [Z. 5], [Z. 10] …</b>, darunter <b>2) EINE authentische BW-Aufsatz-Aufgabenstellung</b> (z. B. <i>„Interpretieren Sie die Kurzgeschichte …“</i>) und unter der Trennlinie <b>3) den Erwartungshorizont + einen komplett ausformulierten 15-Punkte-Musteraufsatz</b>!';
+          html = '<b>✍️ Echte Deutsch-Klausur im 7-Schritte-Bauplan (Aufsatz im Fließtext statt Einzel-Fragen!):</b><br>' +
+                 'Gemini gibt dir <b>1) eine komplette Übungs-Kurzgeschichte mit Zeilennummern [Z. 5], [Z. 10] …</b>, darunter <b>2) EINE authentische BW-Aufsatz-Aufgabenstellung</b> (z. B. <i>„Interpretieren Sie die Kurzgeschichte …“</i>) und unter der Trennlinie <b>3) den Erwartungshorizont + einen komplett ausformulierten 15-Punkte-Musteraufsatz mit allen 7 Bauplan-Schritten &amp; Satzschablonen</b>!';
         } else if (afb === 'I') {
-          html = '<b>✍️ Aufsatz-Baustein 1 (Einleitung &amp; Inhaltsangabe):</b><br>Du bekommst eine kurze Übungs-Kurzgeschichte (mit Zeilennummern) und trainierst die <b>Einleitung (Aufhänger + TATTE + Deutungshypothese)</b> sowie die <b>Inhaltsangabe im Präsens &amp; Konjunktiv I</b> (inkl. 15-Punkte-Musterlösung).';
+          html = '<b>✍️ Bauplan-Bausteine 1–3 (Einleitung, Sinnabschnitte &amp; Block 1):</b><br>Du bekommst eine kurze Übungs-Kurzgeschichte (mit Zeilennummern) und trainierst <b>1. Basissatz + Deutungshypothese</b>, <b>2. Strukturierte Inhaltsangabe (Präsens &amp; Konjunktiv I)</b> sowie <b>3. Block 1 (Rahmen, Einstieg in medias res &amp; Grundstimmung)</b>.';
         } else if (afb === 'II') {
-          html = '<b>✍️ Aufsatz-Baustein 2 (Hauptteil im 15-Punkte-Dreischritt):</b><br>Du bekommst eine dichte Übungs-Kurzgeschichte und trainierst 2–3 <b>aspektorientierte Hauptteil-Absätze</b> (Erzähltechnik, Kommunikation nach Schulz von Thun / Watzlawick, Sprache/Symbolik) im Dreischritt: <b>Form → Zitat + Zeile → Deutung</b>.';
+          html = '<b>✍️ Bauplan-Bausteine 4–5 (Block 2 &amp; Block 3 im 15-Punkte-Dreischritt):</b><br>Du bekommst eine dichte Übungs-Kurzgeschichte und trainierst <b>4. Block 2 (Hauptfigur, Innensicht, erlebte Rede)</b> sowie <b>5. Block 3 (Figurenkonstellation &amp; scheiternde Kommunikation)</b> mit Scharnier-Sätzen und Dreischritt.';
         } else {
-          html = '<b>✍️ Aufsatz-Baustein 3 (Tiefendeutung &amp; Schluss):</b><br>Du bekommst eine Übungs-Kurzgeschichte mit offenem Schluss und trainierst die <b>Deutung der Leerstellen (Eisberg-Modell)</b> sowie einen abiturreifen <b>Schlussabsatz</b> (Fazit, Hypothesen-Rückbezug, Ausblick).';
+          html = '<b>✍️ Bauplan-Bausteine 6–7 (Block 4: Leitmotiv/Wendepunkt &amp; Schluss):</b><br>Du bekommst eine Übungs-Kurzgeschichte mit Dingsymbol und offenem Schluss und trainierst <b>6. Block 4 (Leitmotiv, Dingsymbol &amp; Peripetie)</b> sowie <b>7. Fazit, Rückbezug zur Hypothese &amp; Ausblick</b>.';
         }
       } else if (afb === 'MIX') {
-        html = '<b>Klausur-Mix in ' + esc(subjectData[fachKey].name) + ':</b> AFB I ca. 30 %, AFB II ca. 40 %, AFB III ca. 30 % – wie im Abitur.';
+        html = '<b>Klausur-Mix in ' + esc(subjectData[fachKey].name) + ':</b> AFB I ca. 30 %, AFB II ca. 40 %, AFB III ca. 30 % – wie im Abitur (15-Punkte-Maßstab).';
         ['I', 'II', 'III'].forEach(function(a) {
           var ops = LernTools.getOperatorNames(fachKey, a, 6);
           if (ops) html += '<br><b>AFB ' + a + ':</b> <i>' + esc(ops) + '</i>';
@@ -734,6 +755,26 @@
       if (e.target === modal) modal.classList.remove('show');
     });
 
+    var copyAnkiBoxBtn = document.getElementById('copy-anki-box-btn');
+    var ankiPromptBox = document.getElementById('anki-prompt-box');
+    if (copyAnkiBoxBtn && ankiPromptBox) {
+      copyAnkiBoxBtn.addEventListener('click', function() {
+        var val = ankiPromptBox.value || '';
+        if (!val) return;
+        var orig = copyAnkiBoxBtn.textContent;
+        if (window.LernTools && LernTools.copyToClipboard) {
+          LernTools.copyToClipboard(val).then(function() {
+            copyAnkiBoxBtn.textContent = '✓ Kopiert!';
+            setTimeout(function() { copyAnkiBoxBtn.textContent = orig; }, 1800);
+          });
+        } else if (navigator.clipboard) {
+          navigator.clipboard.writeText(val);
+          copyAnkiBoxBtn.textContent = '✓ Kopiert!';
+          setTimeout(function() { copyAnkiBoxBtn.textContent = orig; }, 1800);
+        }
+      });
+    }
+
     // 4. Prompt generieren
     generateBtn.addEventListener('click', function() {
       var link = topicSelect.value;
@@ -795,7 +836,11 @@
           prompt += textContent + "\n";
           prompt += "----------------------------------------\n";
 
-          return navigator.clipboard.writeText(prompt);
+          if (ankiPromptBox) ankiPromptBox.value = prompt;
+          if (window.LernTools && LernTools.copyToClipboard) {
+            return LernTools.copyToClipboard(prompt);
+          }
+          return navigator.clipboard ? navigator.clipboard.writeText(prompt).catch(function() {}) : Promise.resolve();
         })
         .then(function() {
           successBox.style.display = 'block';
