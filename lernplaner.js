@@ -896,10 +896,10 @@
 
   var FALLBACK_CARDS = {
     'mathe/analysis_j1_formelsammlung.html': [
-      { tag: 'AFB I · Lernzettel-Check', q: 'Was gibt der Differenzenquotient (f(b) − f(a)) / (b − a) geometrisch an – und was die Ableitung f\'(x₀)?', a: 'Differenzenquotient = mittlere Änderungsrate (Sekantensteigung). Ableitung f\'(x₀) = momentane Änderungsrate (Tangentensteigung im Punkt P(x₀|f(x₀))).' },
-      { tag: 'AFB I · Ableitungsregeln', q: 'Wie lauten Potenzregel, Faktorregel und die Ableitungen von sin(x) und cos(x)?', a: 'f(x) = xⁿ → f\'(x) = n·xⁿ⁻¹ · Konstanter Faktor bleibt erhalten · (sin x)\' = cos x · (cos x)\' = −sin x.' },
-      { tag: 'AFB I–II · Tangente & Normale', q: 'Wie lautet die allgemeine Tangentengleichung und Normalengleichung an der Stelle u?', a: 'Tangente: y = f\'(u)·(x − u) + f(u) · Normale (senkrecht dazu): y = (−1/f\'(u))·(x − u) + f(u) mit m_t · m_n = −1.' },
-      { tag: 'AFB II · Grafisches Ableiten (NEW-Regel)', q: 'Was passiert beim grafischen Ableiten (NEW-Regel) aus einem Extrempunkt (Hoch-/Tiefpunkt) und einem Wendepunkt von f im Graphen von f\'?', a: 'Extrempunkt von f → Nullstelle mit Vorzeichenwechsel bei f\' · Wendepunkt von f → Extrempunkt (lokales Maximum/Minimum der Steigung) bei f\'.' }
+      { tag: 'AFB I · Ableitungsregeln & Umschreiben', q: 'Wie schreibst du Wurzeln (√x, √(e^x)) und Brüche (a/xⁿ, 5/e^x) vor dem Ableiten um – und wie lauten Ketten- und Produktregel?', a: '√x = x^(1/2), √(e^x) = e^(0,5x), a/xⁿ = a·x⁻ⁿ, 5/e^x = 5·e⁻ˣ · Kettenregel: f\'(x) = u\'(v(x))·v\'(x) · Produktregel: f\'(x) = u\'(x)·v(x) + u(x)·v\'(x).' },
+      { tag: 'AFB II · Tangente von außen & Normale', q: 'Wie lauten Normalengleichung und das 4-Schritte-Kochrezept für die „Tangente von außen“ durch Q(q₁|q₂)?', a: 'Normale: n(x) = (−1/f\'(u))·(x − u) + f(u). Tangente von außen: 1) ATG y = f\'(u)·(x − u) + f(u) aufstellen · 2) Punktprobe mit Q(q₁|q₂) einsetzen · 3) Nach Berührstelle u auflösen · 4) u in ATG einsetzen.' },
+      { tag: 'AFB II · Optimierung (5-Schritte-Plan)', q: 'Welche 5 Schritte gehören im BW-Abitur zwingend zu jedem Extremwertproblem mit Nebenbedingungen?', a: '1) Hauptbedingung (HB) · 2) Nebenbedingung (NB) · 3) Zielfunktion (ZF) + Definitionsmenge angeben · 4) Extremum berechnen (ZF\' = 0, ZF\'\' prüfen) · 5) Randwerte des Definitionsbereichs prüfen & Antwortsatz.' },
+      { tag: 'AFB II–III · e-Funktion & 15-Punkte-Fallen', q: 'Wie leitest du f(x) = (x² − x)·e^x ab und wie löst du (x² − 4)·e^x = 0 mit dem BW-Pflichtsatz?', a: 'Produktregel + Ausklammer-Pflicht: f\'(x) = [(2x − 1) + (x² − x)]·e^x = (x² + x − 1)·e^x. Nullstellen: „Nach dem Satz vom Nullprodukt und da e^x > 0 für alle x ∈ ℝ gilt, muss lediglich die Klammer null werden: x² − 4 = 0 ⇒ x = ±2.“' }
     ],
     'chemie/chemische-energetik.html': [
       { tag: 'AFB I · Reaktionsarten', q: 'Was bedeutet exotherm (ΔH < 0) und endotherm (ΔH > 0) für Wärmeabgabe und das Energiediagramm?', a: 'Exotherm (ΔH < 0): gibt Wärme an die Umgebung ab, Produkte liegen energetisch tiefer als Edukte. Endotherm (ΔH > 0): nimmt Wärme auf, Produkte liegen höher als Edukte.' },
@@ -1289,7 +1289,7 @@
         ensurePdfJs()
           .then(function (pdfjs) { return pdfjs.getDocument({ data: buf }).promise; })
           .then(function (pdf) {
-            var maxP = Math.min(pdf.numPages, 25);
+            var maxP = Math.min(pdf.numPages, 80);
             var chain = Promise.resolve('');
             for (var p = 1; p <= maxP; p++) {
               (function (pageNo) {
@@ -1327,7 +1327,7 @@
               })(p);
             }
             return chain.then(function (full) {
-              var trimmed = full.slice(0, 25000).trim();
+              var trimmed = full.slice(0, 120000).trim();
               resolve({ text: trimmed, pages: pdf.numPages, isScan: trimmed.length < 20 });
             });
           })
@@ -1344,7 +1344,7 @@
     return new Promise(function (resolve) {
       var reader = new FileReader();
       reader.onload = function () {
-        var txt = String(reader.result || '').slice(0, 25000).trim();
+        var txt = String(reader.result || '').slice(0, 120000).trim();
         resolve({ text: txt, pages: 1, isScan: !txt });
       };
       reader.onerror = function () { resolve({ text: '', pages: 0, isScan: true }); };
@@ -1353,7 +1353,7 @@
   }
 
   /* ──────────────────────────────────────────────────────────
-     EIGENSTÄNDIGE AUFGABEN-EXTRAKTION AUS GANZEN SEITEN / TEXTEN
+     EIGENSTÄNDIGE AUFGABEN-EXTRAKTION AUS GANZEN SEITEN / KAPITELN
      ────────────────────────────────────────────────────────── */
   function estimateTaskAfb(text) {
     var lower = String(text || '').toLowerCase();
@@ -1376,23 +1376,31 @@
     var rawLines = text.split('\n');
     var tasks = [];
     var cur = null;
+    var curPage = '';
+    var hasMultiplePages = /\[Seite\s*\d+\]|\bSeite\s+\d+/i.test(text);
 
-    var startExplicitRe = /^(?:Aufgabe|Aufg\.|Übung|Nr\.|Nummer|Pflichtteil|Wahlteil|Teilaufgabe)\s*([A-Z]?\d+[a-z]?|\b[IVX]+\b)\s*[:.\-)–]?\s*(.*)$/i;
+    var pageMarkerRe = /^(?:\[Seite\s*(\d+)\]|Seite\s+(\d+)(?:\s+von\s+\d+)?|S\.\s*(\d+))$/i;
+    var startExplicitRe = /^(?:Aufgabe|Aufg\.|Übung|Nr\.|Nummer|Pflichtteil|Wahlteil|Teilaufgabe)\s*([A-Z]?\d+(?:\.\d+)?[a-z]?|\b[IVX]+\b)\s*[:.\-)–]?\s*(.*)$/i;
     var startCodeRe = /^([ABPW]\s*\d+(?:\.\d+)?)\s*[:.)\-–]\s+(.+)$/;
     var startNumRe = /^(\d{1,2})\s*[.)]\s+([A-ZÄÖÜa-zäöüß„"'(].*)$/;
-    var subTaskRe = /^(?:[a-h]\)|[a-h]\.|[(][a-h1-6][)]|\d+\.\d+\b)\s+.+/i;
+    var subTaskRe = /^(?:[a-z]\)|[a-z]\.|[(][a-z1-9][)]|\d+\.\d+\b)\s+.+/i;
     var operatorStartRe = /^(?:Berechnen|Bestimmen|Untersuchen|Zeigen|Begründen|Erläutern|Beschreiben|Erklären|Skizzieren|Ermitteln|Geben|Nennen|Lösen|Prüfen|Entscheiden|Beurteilen|Diskutieren|Erörtern|Analysieren|Interpretieren|Vergleichen|Charakterisieren|Stellen|Weisen)\s+Sie\b/i;
     var operatorImpRe = /^(?:Berechne|Bestimme|Untersuche|Zeige|Begründe|Erläutere|Beschreibe|Erkläre|Skizziere|Ermittle|Gib\b|Nenne|Löse|Prüfe|Entscheide|Beurteile|Diskutiere|Erörtere|Analysiere|Interpretiere|Vergleiche)\b/i;
-    var noiseLineRe = /^(?:\[Seite\s*\d+\]|Seite\s+\d+(?:\s+von\s+\d+)?|Kapitel\s+\d+|Merksatz\b|Merke\b|Definition\b| Satz\b| Infobox\b|©|Alle Rechte vorbehalten)/i;
+    var noiseLineRe = /^(?:Kapitel\s+\d+|Merksatz\b|Merke\b|Definition\b|Satz\b|Infobox\b|©|Alle Rechte vorbehalten)/i;
     var theoryStopRe = /^(?:Merksatz|Merke|Definition|Theorie|Hintergrundwissen|Zusammenfassung|Lösungen\s+zu\b|Erwartungshorizont)\s*[:.\-]?$/i;
 
     function flushCurrent() {
       if (!cur) return;
       var body = cur.lines.join('\n').replace(/\n{3,}/g, '\n\n').trim();
-      if (body.length >= 6) {
-        var fullText = (cur.title ? cur.title + ': ' : '') + body;
+      if (body.length >= 5) {
+        var pagePrefix = (hasMultiplePages && cur.page) ? ('S. ' + cur.page + ' · ') : '';
+        var baseTitle = cur.title || ('Aufgabe ' + (tasks.length + 1));
+        var fullTitle = (pagePrefix && baseTitle.indexOf('S. ') !== 0) ? (pagePrefix + baseTitle) : baseTitle;
+        var fullText = fullTitle + ': ' + body;
         tasks.push({
-          title: cur.title || ('Aufgabe ' + (tasks.length + 1)),
+          title: fullTitle,
+          page: cur.page ? (+cur.page || 0) : 0,
+          seq: tasks.length,
           text: body,
           afb: estimateTaskAfb(fullText)
         });
@@ -1403,6 +1411,14 @@
     for (var i = 0; i < rawLines.length; i++) {
       var line = rawLines[i].trim();
       if (!line) continue;
+
+      var mPage = pageMarkerRe.exec(line);
+      if (mPage) {
+        flushCurrent();
+        curPage = mPage[1] || mPage[2] || mPage[3] || curPage;
+        continue;
+      }
+
       if (noiseLineRe.test(line)) continue;
       if (theoryStopRe.test(line)) {
         flushCurrent();
@@ -1413,6 +1429,7 @@
       if (mExp) {
         flushCurrent();
         cur = {
+          page: curPage,
           title: 'Aufgabe ' + mExp[1].trim(),
           lines: mExp[2] && mExp[2].trim() ? [mExp[2].trim()] : []
         };
@@ -1423,6 +1440,7 @@
       if (mCode) {
         flushCurrent();
         cur = {
+          page: curPage,
           title: 'Aufgabe ' + mCode[1].replace(/\s+/g, ''),
           lines: [mCode[2].trim()]
         };
@@ -1432,11 +1450,12 @@
       var mNum = startNumRe.exec(line);
       if (mNum) {
         var rest = mNum[2].trim();
-        /* Kein Datum wie „12. Oktober“ oder reine Überschrift ohne Aufgabencharakter */
+        /* Kein Datum wie „12. Oktober“ */
         var isDate = /^(?:Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember|\d{4})\b/i.test(rest);
         if (!isDate && rest.length >= 4) {
           flushCurrent();
           cur = {
+            page: curPage,
             title: 'Aufgabe ' + mNum[1],
             lines: [rest]
           };
@@ -1445,9 +1464,9 @@
       }
 
       if (cur) {
-        /* Wenn wir in einer Aufgabe sind: Teilaufgaben a), b) oder Folgezeilen anhängen (max. 900 Zeichen pro Aufgabe, damit kein ganzer Buch-Fließtext verschluckt wird) */
+        /* Wenn wir in einer Aufgabe sind: alle Teilaufgaben a)–z) und Folgezeilen vollständig behalten */
         var curLen = cur.lines.join('\n').length;
-        if (subTaskRe.test(line) || curLen < 750) {
+        if (subTaskRe.test(line) || curLen < 1800) {
           cur.lines.push(line);
           continue;
         } else {
@@ -1459,6 +1478,7 @@
       if (operatorStartRe.test(line) || operatorImpRe.test(line)) {
         flushCurrent();
         cur = {
+          page: curPage,
           title: 'Aufgabe ' + (tasks.length + 1),
           lines: [line]
         };
@@ -1472,10 +1492,12 @@
       var paras = rawText.replace(/\r\n?/g, '\n').split(/\n\s*\n/);
       paras.forEach(function (p) {
         var cleanP = p.replace(/^\[Seite\s*\d+\]\s*/i, '').trim();
-        if (cleanP.length >= 12 && cleanP.length <= 900) {
+        if (cleanP.length >= 10 && cleanP.length <= 1800) {
           if (/[?=]/.test(cleanP) || operatorStartRe.test(cleanP) || operatorImpRe.test(cleanP) || /\b(?:f\s*\(\s*x\s*\)|Bestimmen|Berechnen|Untersuchen|Begründen|Erläutern|Erklären|Beschreiben|Aufgabe)\b/i.test(cleanP)) {
             tasks.push({
               title: 'Aufgabe ' + (tasks.length + 1),
+              page: 0,
+              seq: tasks.length,
               text: cleanP,
               afb: estimateTaskAfb(cleanP)
             });
@@ -1484,10 +1506,14 @@
       });
     }
 
-    /* Nach Schwierigkeit sortieren: AFB I → AFB II → AFB III */
+    /* Innerhalb derselben Buchseite nach Schwierigkeit (AFB I → II → III) sortieren,
+       aber die Seitenreihenfolge des Buchkapitels beibehalten, damit Unterkapitel aufeinander aufbauen! */
     var afbOrder = { I: 1, II: 2, III: 3 };
     tasks.sort(function (a, b) {
-      return (afbOrder[a.afb] || 2) - (afbOrder[b.afb] || 2);
+      if (a.page !== b.page) return a.page - b.page;
+      var da = (afbOrder[a.afb] || 2) - (afbOrder[b.afb] || 2);
+      if (da !== 0) return da;
+      return a.seq - b.seq;
     });
     return tasks;
   }
@@ -2121,11 +2147,16 @@
   /* ──────────────────────────────────────────────────────────
      PLANUNG (Fachspezifisch + Hochgeladene Übungsblätter)
      ────────────────────────────────────────────────────────── */
-  function buildQueue(t, fk) {
+  function buildQueue(t, fk, availBlocksHint) {
     if (t.isFile) {
       var ext = t.extractedTasks || [];
       if (ext.length > 0) {
-        var chunkSize = Math.max(2, Math.ceil(ext.length / 4));
+        /* Alle Aufgaben des Kapitels/Blatts vollständig aufteilen:
+           Standardmäßig ca. 3 Aufgaben pro Lerneinheit (oder passend zur verfügbaren Zeit gebündelt),
+           sodass JEDE einzelne Aufgabe im Lernplan ihren festen Platz bekommt! */
+        var maxUnits = availBlocksHint && availBlocksHint > 0 ? Math.max(1, availBlocksHint) : 20;
+        var idealUnits = Math.min(maxUnits, Math.max(1, Math.ceil(ext.length / 3)));
+        var chunkSize = Math.max(1, Math.ceil(ext.length / idealUnits));
         var chunks = [];
         for (var c = 0; c < ext.length; c += chunkSize) {
           chunks.push(ext.slice(c, c + chunkSize));
@@ -2135,6 +2166,7 @@
           var unitNo = idx + 1;
           var fid = 'U|' + fk + '|' + t.key + '|' + unitNo;
           if (!state.done[fid]) {
+            var shortList = ch.map(function (tk) { return tk.title; }).join(', ');
             var taskLines = ch.map(function (tk) {
               return '• [' + (LT.AFB_LABELS[tk.afb] || ('AFB ' + tk.afb)) + '] ' + tk.title + ': ' + tk.text;
             }).join('\n');
@@ -2143,7 +2175,9 @@
               n: unitNo,
               of: chunks.length,
               afb: 'FILE',
-              customMethod: '📋 Eigenständig extrahierte Aufgaben aus „' + t.rawFileName + '“' + (chunks.length > 1 ? (' (Teil ' + unitNo + '/' + chunks.length + ')') : '') + ':\n' + taskLines
+              customMethod: '📘 Heute zu erledigende Aufgaben aus „' + t.rawFileName + '“' +
+                (chunks.length > 1 ? (' (Paket ' + unitNo + '/' + chunks.length + ': ' + shortList + ')') : (' (' + shortList + ')')) +
+                ':\n' + taskLines
             });
           }
         });
@@ -2184,20 +2218,32 @@
         sub.remaining += t.queue.length;
         sub.topics.push(t);
       });
-      /* Hochgeladene Seiten / Übungsblätter inkl. eigenständig extrahierter Aufgaben einplanen */
-      files.forEach(function (fl) {
-        var ext = ensureFileTasksExtracted(fl);
-        var fKey = 'file:' + fl.id;
-        var ft = {
-          uid: fk + '|' + fKey, key: fKey, fileId: fl.id, rawFileName: fl.name,
-          title: '📄 ' + fl.name + (ext.length ? (' (' + ext.length + ' Aufgaben)') : ''),
-          extractedTasks: ext,
-          link: '', note: '', level: 2, important: true, sub: sub, ptr: 0, anchor: null, isFile: true
-        };
-        ft.queue = buildQueue(ft, fk);
-        sub.remaining += ft.queue.length;
-        sub.topics.push(ft);
-      });
+      /* Hochgeladene Seiten / ganze Buchkapitel inkl. ALLER extrahierten Aufgaben sinnvoll auf die verfügbaren Lerntage aufteilen */
+      if (files.length) {
+        var spanD = Math.max(1, diff(start, st.exam) - 2);
+        var totalBlocksBeforeExam = 0;
+        for (var di = 0; di < spanD; di++) {
+          var dDate = addDays(start, di);
+          var dCap = state.settings.minutes[wdIdx(dDate)] || 0;
+          totalBlocksBeforeExam += Math.floor(dCap / (state.settings.block || 45));
+        }
+        var freeBlocksForFiles = Math.max(files.length, totalBlocksBeforeExam - sub.remaining - 2);
+        var perFileBlocks = Math.max(1, Math.floor(freeBlocksForFiles / files.length));
+
+        files.forEach(function (fl) {
+          var ext = ensureFileTasksExtracted(fl);
+          var fKey = 'file:' + fl.id;
+          var ft = {
+            uid: fk + '|' + fKey, key: fKey, fileId: fl.id, rawFileName: fl.name,
+            title: '📄 ' + fl.name + (ext.length ? (' (' + ext.length + ' Aufgaben)') : ''),
+            extractedTasks: ext,
+            link: '', note: '', level: 2, important: true, sub: sub, ptr: 0, anchor: null, isFile: true
+          };
+          ft.queue = buildQueue(ft, fk, perFileBlocks);
+          sub.remaining += ft.queue.length;
+          sub.topics.push(ft);
+        });
+      }
       subs.push(sub);
     });
     return { subs: subs, errors: errors };
@@ -2570,7 +2616,7 @@
 
   function toolsHtml(x) {
     var h = '', k = ' data-fach="' + esc(x.fk) + '" data-key="' + esc(x.key) + '"';
-    var lz = x.link ? '<a class="lp-tool" href="' + esc(x.link) + '" target="_blank" rel="noopener">Lernzettel</a><a class="lp-tool" href="' + esc(x.link) + '?pdf=1" target="_blank" rel="noopener" title="Als PDF speichern">📄 PDF</a>' : '';
+    var lz = x.link ? '<a class="lp-tool" href="' + esc(x.link) + '" target="_blank" rel="noopener">Lernzettel</a>' : '';
     var anki = x.link ? '<a class="lp-tool" href="' + esc(deepLink('anki', x)) + '" target="_blank" rel="noopener">Anki-Karten</a>' : '';
     var isDe = x.fk === 'deutsch';
     var hasAiBox = !!(x.aiPrompt && x.aiPrompt.trim());
@@ -2787,7 +2833,8 @@
   function setupVisible(show) {
     $('lp-setup').style.display = show ? '' : 'none';
     var b = $('lp-generate');
-    if (b) b.lastChild.textContent = state.plan ? ' Sofort-Lernplan neu berechnen' : ' Sofort-Lernplan auf der Website erstellen';
+    var sp = b ? b.querySelector('span') : null;
+    if (sp) sp.textContent = state.plan ? 'Sofort-Plan neu berechnen' : 'Sofort-Plan erstellen';
   }
 
   /* ──────────────────────────────────────────────────────────
@@ -2799,15 +2846,15 @@
     var tn = (st.taskNote || '').trim();
     var hasFiles = !!(st.files && st.files.length);
     var lines = [];
-    if (tm === 'both') {
-      lines.push('• AUFGABEN-STRATEGIE: **Kombination aus meinen eigenen Aufgaben + neuen KI-Aufgaben mit gezielter Schwierigkeits-Steigerung (AFB I → AFB II → AFB III)**.');
-    } else if (tm === 'own') {
-      lines.push('• AUFGABEN-STRATEGIE: **Fokus auf meine eigenen Aufgaben (sortiert nach Schwierigkeit: AFB I Einstieg → AFB II Routine → AFB III 15-Punkte-Transfer)**.');
+    if (tm === 'own') {
+      lines.push('• AUFGABEN-STRATEGIE: **Fokus auf meine eigenen Aufgaben / mein Buchkapitel – ALLE vorhandenen Aufgaben müssen vollständig im Lernplan untergebracht und sinnvoll auf die Lerntage aufgeteilt werden (sortiert nach Unterthema & Schwierigkeit AFB I → AFB II → AFB III)**.');
+    } else if (tm === 'both') {
+      lines.push('• AUFGABEN-STRATEGIE: **ALLE meine eigenen Aufgaben (aus meinem Buchkapitel / Übungsblatt) vollständig einplanen & sinnvoll auf die Lerntage aufteilen + wo nötig gezielte KI-Zusatzaufgaben ergänzen (AFB I → AFB II → AFB III)**.');
     } else {
       lines.push('• AUFGABEN-STRATEGIE: **Erstelle mir neue, abiturreife 15-Punkte-Übungsaufgaben mit klarer Schwierigkeits-Steigerung (AFB I → AFB II → AFB III)**.');
     }
     if (st.attachInAi !== false && (tm === 'both' || tm === 'own')) {
-      lines.push('• EIGENSTÄNDIGE AUFGABEN-EXTRAKTION AUS GANZEN SEITEN / DATEIEN: Falls ich ganze Buchseiten, PDF-Seiten, Fotos oder Arbeitsblätter anhänge/einfüge (auf denen auch Erklärtexte, Beispiele oder Kopfzeilen stehen), **extrahiere daraus zuerst eigenständig alle einzelnen Übungsaufgaben (inkl. Teilaufgaben a, b, c …)**, ordne sie nach Schwierigkeit (vom leichten Einstieg AFB I bis zum 15-Punkte-Transfer AFB III) und schreibe den **kompletten Wortlaut der jeweiligen Aufgaben** direkt in die passenden Lerntage!');
+      lines.push('• PFLICHT BEI GANZEN BUCHKAPITELN / SEITEN: Wenn ich ein ganzes Kapitel aus dem Buch (oder mehrere Seiten/Arbeitsblätter) reinstelle bzw. anhänge, **extrahiere daraus eigenständig ausnahmslos ALLE Aufgaben (inkl. Teilaufgaben a, b, c …)**! Lass keine Aufgabe weg, sondern übernimm für mich die **sinnvolle Aufteilung auf meine Lerntage**, sodass ich an jedem Tag genau weiß, **welche Aufgaben (mit Seite, Nummer & vollem Wortlaut)** ich an diesem Tag zu tun habe!');
     }
     if (tn) {
       lines.push('• MEINE VORHANDENEN AUFGABEN / MATERIALIEN: ' + tn);
@@ -2816,15 +2863,15 @@
       st.files.forEach(function (fl) {
         var ext = ensureFileTasksExtracted(fl);
         if (ext.length) {
-          lines.push('• AUTOMATISCH EXTRAHIERTE AUFGABEN AUS „' + fl.name + '“ (' + ext.length + ' Aufgaben, vorsortiert AFB I → III):');
-          ext.forEach(function (tk) {
-            lines.push('  - [' + (LT.AFB_LABELS[tk.afb] || ('AFB ' + tk.afb)) + '] ' + tk.title + ': ' + tk.text.replace(/\n+/g, ' / '));
+          lines.push('• BEREITS EXTRAHIERTE AUFGABEN AUS „' + fl.name + '“ (insgesamt ' + ext.length + ' Aufgaben – bitte ALLE ' + ext.length + ' Aufgaben sinnvoll auf die Lerntage verteilen!):');
+          ext.forEach(function (tk, idx) {
+            lines.push('  ' + (idx + 1) + '. [' + (LT.AFB_LABELS[tk.afb] || ('AFB ' + tk.afb)) + '] ' + tk.title + ': ' + tk.text.replace(/\n+/g, ' / '));
           });
         }
         if (fl.text && fl.text.trim()) {
-          lines.push('• VOLLSTÄNDIGER SEITENTEXT VON „' + fl.name + '“ (bitte alle darin enthaltenen Übungsaufgaben eigenständig extrahieren & einplanen):\n' + fl.text.trim().slice(0, 6000));
+          lines.push('• VOLLSTÄNDIGER TEXT DES KAPITELS / DER SEITEN „' + fl.name + '“ (bitte sicherstellen, dass wirklich ALLE darin vorkommenden Aufgaben im Lernplan aufgeteilt sind):\n' + fl.text.trim().slice(0, 50000));
         } else {
-          lines.push('• HOCHGELADENE SEITE / BLATT „' + fl.name + '“ (wird als Bild/PDF im Chat angehängt – bitte alle Aufgaben eigenständig daraus extrahieren!).');
+          lines.push('• HOCHGELADENES KAPITEL / SEITEN „' + fl.name + '“ (wird als PDF/Bild im Chat angehängt – bitte ALLE Aufgaben daraus eigenständig extrahieren und komplett auf die Lerntage aufteilen!).');
         }
       });
     }
@@ -2916,16 +2963,17 @@
         p += '• Verfügbare Lerntage von ' + start + ' bis ' + lastExam + ':\n' + calLines.join('\n') + '\n';
 
         p += '\n============================================================\n';
-        p += '3. DEIN AUFTRAG FÜR MEINEN 15-PUNKTE-LERNPLAN (INKL. AUFGABEN-STEIGERUNG)\n';
+        p += '3. DEIN AUFTRAG FÜR MEINEN 15-PUNKTE-LERNPLAN (ALLE AUFGABEN SINNVOLL AUFTEILEN)\n';
         p += '============================================================\n';
-        p += '1. **Aufgaben aus ganzen Seiten eigenständig extrahieren & Schwierigkeits-Steigerung gewährleisten (AFB I → II → III):**\n';
-        p += '   - Wenn ich ganze Buchseiten, PDF-Seiten, Fotos oder Arbeitsblätter mitgegeben habe: **Extrahiere daraus eigenständig alle einzelnen Übungsaufgaben (inkl. Teilaufgaben a, b, c …)** und filtere allgemeinen Erklärtext/Theorie der Seite heraus.\n';
-        p += '   - Bewerte den Schwierigkeitsgrad jeder extrahierten Aufgabe und **sortiere sie für meinen Lernplan vom Leichten zum Schweren** (erst Einstieg AFB I, dann Routine AFB II, dann 15-Punkte-Transfer AFB III).\n';
-        p += '   - Schreibe die **extrahierten Aufgaben im vollständigen Wortlaut** (nicht nur die Nummer!) direkt in die jeweilige Lerneinheit (`AUFGABEN:` bzw. zwischen `PROMPT_START` und `PROMPT_ENDE`), damit ich auf meiner Website sofort die fertige Aufgabe vor mir habe, und ergänze (je nach gewählter Strategie) **neue, maßgeschneiderte 15-Punkte-Aufgaben**.\n';
+        p += '1. **ALLE Aufgaben aus meinem Buchkapitel / meinen Seiten vollständig einplanen & sinnvoll aufteilen (PFLICHT):**\n';
+        p += '   - Wenn ich ein ganzes Kapitel aus dem Buch, PDF-Seiten oder Arbeitsblätter mitgegeben habe: **Extrahiere daraus eigenständig ausnahmslos ALLE Übungsaufgaben (inkl. Teilaufgaben a, b, c …)** und filtere bloßen Erklärtext heraus.\n';
+        p += '   - **Keine Aufgabe weglassen:** Im fertigen Lernplan müssen **ALLE Aufgaben des Kapitels** untergebracht sein!\n';
+        p += '   - **Deine Hauptaufgabe ist die sinnvolle Aufteilung:** Teile mir für jeden Lerntag und jede Lerneinheit genau zu, **wann ich welche Aufgaben (mit Seitenzahl, Aufgabennummer, Teilaufgaben & vollständigem Aufgabenwortlaut)** bearbeiten soll – didaktisch klug geordnet nach den Unterthemen des Kapitels und mit klarer Schwierigkeits-Steigerung (**vom leichten Einstieg AFB I über Routine AFB II bis zum 15-Punkte-Transfer AFB III**).\n';
+        p += '   - Schreibe die für den jeweiligen Tag eingeteilten **Aufgaben im vollständigen Wortlaut** sowohl in `AUFGABEN:` (Übersicht, welche Nummern heute dran sind) als auch komplett zwischen `PROMPT_START` und `PROMPT_ENDE`.\n';
         p += '2. **Wissenschaftliche Lernstruktur:**\n';
-        p += '   - Plane Erarbeitungs-Einheiten (`E`), aufbauende Übungs-Einheiten (`U` mit `I`, `II`, `III`, `MIX`), kurze Wiederholungen (`R` nach Spaced Repetition), eine echte Klausur-Simulation (`SIM` ca. 3–5 Tage vor der Klausur), eine Fehleranalyse (`FEHLER`) und am Vortag der Klausur nur einen leichten letzten Check (`FINAL`, 30 Min.).\n';
-        p += '3. **Alle Folge-Prompts & extrahierten Aufgaben für meine Website vorbereiten:**\n';
-        p += '   - Schreibe für jede Lerneinheit zwischen `PROMPT_START` und `PROMPT_ENDE` einen **sofort kopierbaren KI-Prompt (inkl. der aus meinen Seiten extrahierten heutigen Übungsaufgaben im vollen Wortlaut + Steigerung)**.\n';
+        p += '   - Plane kurze Erarbeitungs-Einheiten (`E`), die aufeinander aufbauenden Aufgaben-Pakete aus meinem Kapitel (`U` mit `I`, `II`, `III`, `MIX`), kurze Wiederholungen (`R` nach Spaced Repetition), eine echte Klausur-Simulation (`SIM` ca. 3–5 Tage vor der Klausur), eine Fehleranalyse (`FEHLER`) und am Vortag der Klausur nur einen leichten letzten Check (`FINAL`, 30 Min.).\n';
+        p += '3. **Alle Folge-Prompts & Tages-Aufgaben für meine Website vorbereiten:**\n';
+        p += '   - Schreibe für jede Lerneinheit zwischen `PROMPT_START` und `PROMPT_ENDE` die **heute zu bearbeitenden Aufgaben aus meinem Buchkapitel im vollen Wortlaut** + einen **sofort kopierbaren KI-Prompt** (damit mir die KI bei Bedarf Musterlösungen auf 15-Punkte-Niveau oder Hilfestellungen zu genau diesen Aufgaben gibt).\n';
         p += '4. **WICHTIG – GESAMTE ANTWORT IN EINEM EINZIGEN KOPIER-TEXTFELD (CODEBLOCK) AUSGEBEN (PFLICHT):**\n';
         p += '   - Schreibe den gesamten Lernplan (von `===LERNPLAN_START===` bis `===LERNPLAN_ENDE===`) **in EINEN EINZIGEN Markdown-Codeblock (` ```text ... ``` `)**!\n';
         p += '   - **Ganz wichtig für Gemini:** Verwende innerhalb dieses Codeblocks **KEINE** weiteren dreifachen Backticks (```` ``` ````), damit das Textfeld nicht unterbrochen wird und ich in Gemini oben rechts mit **einem einzigen Klick auf „Kopieren“** die komplette Antwort auf einmal kopieren kann!\n\n';

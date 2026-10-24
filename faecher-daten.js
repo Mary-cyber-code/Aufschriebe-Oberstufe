@@ -53,7 +53,7 @@ const subjectData = {
       {
         name: "J1 – Analysis",
         topics: [
-          { title: "Grundlagen der Differenzialrechnung", link: "mathe/analysis_j1_formelsammlung.html" }
+          { title: "Differenzialrechnung, Optimierung & e-Funktion", link: "mathe/analysis_j1_formelsammlung.html" }
         ]
       }
     ]

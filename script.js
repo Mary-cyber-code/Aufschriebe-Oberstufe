@@ -222,9 +222,6 @@
               '<a href="' + t.link + '" class="topic-link" style="--topic-accent:' + accent + '">' +
                 t.title +
               '</a>' +
-              '<a href="' + t.link + '?pdf=1" class="topic-pdf-btn" title="Lernzettel direkt als PDF speichern">' +
-                '📄 Als PDF' +
-              '</a>' +
             '</li>'
           );
         }).join('');
