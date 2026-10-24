@@ -393,6 +393,33 @@
                         </tr>
                     </table>
                 </div>
+
+                <h3 id="sec-surv-defmenge">D) Definitionsmenge ($D_f$: „Was darf für $x$ rein?“) &amp; Wertemenge ($W_f$: „Welche $y$-Werte kommen raus?“)</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <tr><th>Funktionstyp / Fall</th><th>Regel („Mathe-Verbot“)</th><th>Maximale Definitionsmenge $D_f$ &amp; Schreibweise</th></tr>
+                        <tr>
+                            <td><span class="highlight">Ganzrationale Funktion, $\sin(x)$, $\cos(x)$, $e^x$</span></td>
+                            <td>Keine Einschränkung – jedes $x$ ist erlaubt!</td>
+                            <td>$D_f = \mathbb{R}$ &nbsp;<em>(Wichtig bei $e^x$: $W_f = \mathbb{R}^+ = \left]0; \infty\right[$, bei $\sin/\cos$: $W_f = [-1; 1]$)</em></td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">1. Verbot: Brüche</span> ($\frac{u(x)}{v(x)}$)</td>
+                            <td><strong>Durch $0$ teilen ist verboten!</strong> Ansatz: $\text{Nenner} = 0$ lösen und ausschließen.</td>
+                            <td>Bsp. $f(x) = \frac{1}{x - 2} \implies D_f = \mathbb{R} \setminus \{2\}$ &nbsp;|&nbsp; Bei $\frac{1}{x}$: $D_f = \mathbb{R} \setminus \{0\} = \mathbb{R}^*$</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">2. Verbot: Wurzeln</span> ($\sqrt{\text{Term}}$)</td>
+                            <td><strong>Unter der Wurzel nie negativ!</strong> Ansatz: $\text{Term} \ge 0$ (steht die Wurzel im Nenner: $&gt; 0$!).</td>
+                            <td>Bsp. $f(x) = \sqrt{x} \implies D_f = \mathbb{R}_0^+ = [0; \infty[$ &nbsp;|&nbsp; Bei $f'(x) = \frac{1}{2\sqrt{x}} \implies D_{f'} = \mathbb{R}^+ = \left]0; \infty\right[$</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">3. Verbot: Logarithmus</span> ($\ln(\text{Term})$)</td>
+                            <td><strong>Im $\ln$ nur echt positive Zahlen!</strong> Ansatz: $\text{Term} &gt; 0$ ($0$ und Negatives verboten!).</td>
+                            <td>Bsp. $f(x) = \ln(x) \implies D_f = \mathbb{R}^+ = \left]0; \infty\right[$</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
             <div class="page-footer">
                 <span>15-Punkte-Lernzettel: Analysis (J1)</span>
