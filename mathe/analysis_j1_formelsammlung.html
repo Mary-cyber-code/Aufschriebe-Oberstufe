@@ -471,11 +471,17 @@
                     Negative Steigungen liefern negative Winkel (z. B. $-63{,}4^\circ$) – das bedeutet einfach, dass die Tangente fällt.
                 </div>
 
-                <h3 id="sec-mod-1-2">Modul 1.2: Verkettung &amp; Die Kettenregel</h3>
-                <p><span class="highlight">Konzept:</span> Wird angewendet, wenn eine Funktion in einer anderen verschachtelt ist: $f(x) = u(v(x))$ mit <span class="highlight">$u$ = äußere Funktion</span> und <span class="highlight">$v$ = innere Funktion</span>.</p>
+                <h3 id="sec-mod-1-2">Modul 1.2: Verkettung ($u \circ v$) &amp; Die Kettenregel</h3>
+                <div class="recipe-box">
+                    <span class="recipe-title">📘 Definition: Verkettung von Funktionen ($f = u \circ v$)</span>
+                    <p style="margin-bottom:4px;">Gegeben sind die Funktionen $u$ und $v$. Die Funktion <span class="highlight">$f = u \circ v$</span> mit</p>
+                    <p style="text-align:center; margin-bottom:4px;">$$\mathbf{f(x) = (u \circ v)(x) = u(v(x))}$$</p>
+                    <p style="margin-bottom:0;">heißt <span class="highlight">Verkettung</span> der <span class="highlight">äußeren Funktion $u$</span> und der <span class="highlight">inneren Funktion $v$</span>.<br>
+                    <strong>Sprechweise &amp; Reihenfolge-Falle:</strong> Man liest $u \circ v$ als <em>„$u$ nach $v$“</em> – $x$ wird <strong>zuerst</strong> in die innere Funktion $v$ eingesetzt und das Ergebnis <strong>danach</strong> in $u$. Achtung: Reihenfolge nicht vertauschen, im Allgemeinen gilt $\mathbf{u \circ v \neq v \circ u}$!</p>
+                </div>
                 <div class="formula-box">
                     <span class="formula-label">Kettenregel</span>
-                    $$f(x) = u(v(x)) \;\implies\; f'(x) = u'(v(x)) \cdot v'(x)$$
+                    $$f(x) = (u \circ v)(x) = u(v(x)) \;\implies\; f'(x) = u'(v(x)) \cdot v'(x)$$
                 </div>
                 <div class="tip-box">
                     <strong>💡 In süß &amp; simpel (Die Matroschka-Regel): „Äußere Ableitung MAL innere Ableitung!“</strong><br>
@@ -483,7 +489,7 @@
                 </div>
                 <div class="formula-box">
                     <span class="formula-label">Musterbeispiel (Klausur-Schreibweise)</span>
-                    $$f(x) = \sin(3x^2 + 1) \quad\Big|\quad \text{Äußere Abl.: } \cos(\dots) \;\cdot\; \text{Innere Abl.: } 6x$$
+                    $$f(x) = (u \circ v)(x) = \sin(3x^2 + 1) \quad\text{mit}\quad u(x) = \sin(x) \;(\text{außen}),\; v(x) = 3x^2 + 1 \;(\text{innen})$$
                     $$\implies f'(x) = \cos(3x^2 + 1) \cdot \mathbf{6x} = \mathbf{6x \cdot \cos(3x^2 + 1)}$$
                 </div>
             </div>
