@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mathe LK (J1): Analysis 15-Punkte-Master (Interaktiv)</title>
+    <!-- MathJax für LaTeX-Formeln -->
+    <script>
+        MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+          }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --paper-white: #F8F6F1;
+            --paper-cream: #FDFCF8;
+            --text-primary: #2D3A2E;
+            --text-secondary: #5A6B5C;
+            --gold: #C9A96E;
+            --forest: #3A5A3F;
+            --forest-soft: rgba(58, 90, 63, 0.06);
+            --gold-soft: rgba(201, 169, 110, 0.13);
+            --crimson: #9E3B2E;
+            --nav-bg: rgba(248, 246, 241, 0.96);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--paper-white);
+            color: var(--text-primary);
+            font-family: 'Raleway', sans-serif;
+            line-height: 1.58;
+            padding-top: 72px;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--forest); margin-bottom: 0.45rem; }
+        h1 { font-size: 2.05rem; text-align: center; margin-bottom: 1rem; border-bottom: 2px solid var(--gold); padding-bottom: 0.8rem; }
+        h2 { font-size: 1.58rem; margin-top: 0.4rem; border-bottom: 1.5px solid rgba(201, 169, 110, 0.4); padding-bottom: 0.3rem; }
+        h3 { font-size: 1.2rem; margin-top: 0.85rem; color: var(--text-primary); }
+
+        p { margin-bottom: 0.7rem; }
+        ul, ol { margin-bottom: 0.75rem; padding-left: 1.65rem; }
+        li { margin-bottom: 0.32rem; }
+
+        .highlight { color: var(--forest); font-weight: 600; }
+        .flashcard-back .highlight { color: var(--gold); }
+
+        sub, sup { line-height: 0; vertical-align: baseline; font-size: 0.8em; }
+        sub { position: relative; top: 0.3em; }
+        sup { position: relative; top: -0.3em; }
+
+        mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width: 100%; margin: 0.35em 0 !important; }
+
+        /* Navigation */
+        nav {
+            position: fixed; top: 0; left: 0; width: 100%; background-color: var(--nav-bg); backdrop-filter: blur(10px);
+            z-index: 1000; display: flex; justify-content: center; align-items: center; padding: 12px 18px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05); border-bottom: 1px solid var(--gold);
+        }
+        .nav-group { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: center; }
+        .nav-btn {
+            background: transparent; border: 1px solid var(--forest); color: var(--forest); padding: 7px 14px;
+            font-family: 'Raleway', sans-serif; font-weight: 600; font-size: 0.88rem; cursor: pointer; border-radius: 4px;
+            transition: all 0.25s ease; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;
+        }
+        .nav-btn:hover, .nav-btn.active { background: var(--forest); color: var(--paper-white); }
+        .nav-btn.gold { border-color: var(--gold); color: var(--text-primary); }
+        .nav-btn.gold:hover { background: var(--gold); color: #fff; }
+
+        /* Dropdown */
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content {
+            display: none; position: absolute; background-color: var(--paper-cream); min-width: 280px;
+            box-shadow: 0px 8px 18px rgba(0,0,0,0.12); border: 1px solid var(--gold); border-radius: 6px;
+            z-index: 10; top: 100%; left: 0; margin-top: 5px; max-height: 72vh; overflow-y: auto;
+        }
+        .dropdown.show .dropdown-content { display: block; }
+        .dropdown-item {
+            color: var(--text-primary); padding: 10px 15px; text-decoration: none; display: block; cursor: pointer;
+            font-family: 'Raleway', sans-serif; font-size: 0.88rem; border-bottom: 1px solid rgba(201, 169, 110, 0.14); transition: background 0.2s;
+        }
+        .dropdown-item:hover { background-color: rgba(201, 169, 110, 0.12); color: var(--forest); }
+        .dropdown-item:last-child { border-bottom: none; }
+
+        /* ============================================================
+           INTERAKTIVE ANSICHTS-STEUERUNG (Nur im Plakat-Modus)
+           ============================================================ */
+        .plakat-toolbar {
+            width: 100%; background: var(--paper-cream); border: 1.5px solid var(--gold); border-radius: 10px;
+            padding: 14px 18px; margin-bottom: 6px; box-shadow: 0 4px 14px rgba(45, 58, 46, 0.05);
+        }
+        .toolbar-top {
+            display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between;
+            margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px dashed rgba(201, 169, 110, 0.45);
+        }
+        .toolbar-label {
+            font-family: 'Playfair Display', serif; font-weight: 700; color: var(--forest); font-size: 1.02rem;
+        }
+        .toolbar-sub { font-size: 0.83rem; color: var(--text-secondary); display: block; font-family: 'Raleway', sans-serif; font-weight: 400; }
+        .filter-pills { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+        .filter-pill {
+            background: #fff; border: 1px solid rgba(58, 90, 63, 0.35); color: var(--text-primary);
+            padding: 6px 13px; border-radius: 999px; font-family: 'Raleway', sans-serif; font-size: 0.84rem; font-weight: 600;
+            cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 6px;
+        }
+        .filter-pill:hover { border-color: var(--forest); color: var(--forest); background: var(--forest-soft); }
+        .filter-pill.active { background: var(--forest); color: var(--paper-white); border-color: var(--forest); }
+        .filter-pill.preset-gold { border-color: var(--gold); background: var(--gold-soft); }
+        .filter-pill.preset-gold.active { background: var(--gold); color: #fff; border-color: var(--gold); }
+
+        .quick-jump-row { display: flex; flex-wrap: wrap; gap: 7px; align-items: center; }
+        .quick-chip {
+            display: inline-flex; align-items: center; gap: 4px; padding: 4px 11px; border-radius: 16px;
+            font-size: 0.81rem; font-weight: 600; color: var(--forest); background: rgba(58, 90, 63, 0.06);
+            border: 1px solid rgba(58, 90, 63, 0.18); text-decoration: none; transition: all 0.2s ease;
+        }
+        .quick-chip:hover { background: var(--forest); color: #fff; }
+
+        /* Aufklapp-Leiste unten in jeder Kern-Karte */
+        .drawer-bar {
+            display: flex; flex-wrap: wrap; gap: 9px; margin-top: 16px; padding-top: 14px;
+            border-top: 1.5px dashed rgba(201, 169, 110, 0.5); align-items: center;
+        }
+        .drawer-bar-label {
+            font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;
+            color: var(--text-secondary); margin-right: 4px;
+        }
+        .drawer-btn {
+            background: #fff; border: 1.5px solid var(--gold); color: var(--forest);
+            padding: 7px 14px; border-radius: 999px; font-family: 'Raleway', sans-serif; font-size: 0.86rem; font-weight: 600;
+            cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+        .drawer-btn:hover { background: var(--gold-soft); border-color: var(--forest); transform: translateY(-1px); }
+        .drawer-btn.open { background: var(--forest); color: #fff; border-color: var(--forest); }
+        .drawer-btn .state-icon { font-weight: 700; font-size: 0.95rem; }
+
+        /* Einklappbare Detail-Container im Plakat-Modus */
+        body:not(.print-mode) .collapsible-inline { display: none; margin-top: 10px; }
+        body:not(.print-mode) .collapsible-inline.is-open { display: block; }
+
+        body:not(.print-mode) .detail-page.is-closed .card { display: none !important; }
+        body:not(.print-mode) .detail-section { display: none; }
+        body:not(.print-mode) .detail-section.is-open { display: block; }
+        body:not(.print-mode) .card.detail-card {
+            margin-top: -12px; border-top: 3px solid var(--forest);
+            background: #FAF8F3;
+        }
+        .detail-close-row {
+            display: flex; justify-content: flex-end; margin-top: 10px;
+        }
+        .detail-close-btn {
+            background: transparent; border: 1px solid rgba(58, 90, 63, 0.35); color: var(--text-secondary);
+            padding: 4px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 600; cursor: pointer;
+        }
+        .detail-close-btn:hover { background: var(--forest); color: #fff; border-color: var(--forest); }
+
+        /* Container & Plakat-Modus */
+        .content-wrapper { margin: 0 auto; transition: all 0.3s ease; }
+        body:not(.print-mode) .content-wrapper { max-width: 1440px; padding: 18px 20px 50px; display: flex; flex-wrap: wrap; gap: 22px; align-items: flex-start; }
+        body:not(.print-mode) .page { display: contents; }
+        body:not(.print-mode) .page-footer { display: none !important; }
+        body:not(.print-mode) .card {
+            background: var(--paper-cream); border: 1px solid var(--gold); border-radius: 10px; padding: 26px 30px;
+            box-shadow: 0 4px 16px rgba(45, 58, 46, 0.04); flex: 1 1 100%; max-width: 100%;
+        }
+
+        /* Zone 1 + Zone 2 Grid (Kern + Skizzen links/oben, Formeln rechts/darunter) */
+        .core-banner {
+            background: linear-gradient(135deg, rgba(58, 90, 63, 0.07) 0%, rgba(201, 169, 110, 0.11) 100%);
+            border-left: 4px solid var(--forest); border-radius: 6px; padding: 11px 16px; margin: 0.65rem 0 1rem;
+        }
+        .core-banner strong { font-family: 'Playfair Display', serif; color: var(--forest); font-size: 1.02rem; }
+
+        .sketches-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 14px; margin: 0.7rem 0 1rem;
+        }
+        .sketch-card {
+            background: #fff; border: 1px solid rgba(201, 169, 110, 0.45); border-radius: 8px; padding: 12px 14px;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .sketch-title {
+            font-family: 'Playfair Display', serif; font-weight: 700; color: var(--forest); font-size: 0.96rem;
+            margin-bottom: 6px; text-align: center; width: 100%;
+        }
+        .sketch-svg { width: 100%; max-width: 440px; height: auto; display: block; }
+        .sketch-legend {
+            display: flex; flex-wrap: wrap; gap: 8px 12px; justify-content: center; font-size: 0.78rem;
+            margin-top: 6px; color: var(--text-secondary);
+        }
+        .legend-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
+
+        .zones-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; margin-top: 0.5rem;
+        }
+        .zone-panel {
+            background: #fff; border: 1px solid rgba(201, 169, 110, 0.38); border-radius: 7px; padding: 13px 16px;
+        }
+        .zone-panel h3 { margin-top: 0; font-size: 1.08rem; color: var(--forest); border-bottom: 1px solid rgba(201, 169, 110, 0.28); padding-bottom: 4px; margin-bottom: 8px; }
+
+        /* Boxen */
+        .formula-box {
+            background: #fff; border: 1px solid rgba(201, 169, 110, 0.48); border-radius: 6px;
+            padding: 8px 14px; margin: 0.45rem 0 0.75rem; text-align: center; overflow-x: auto;
+        }
+        .formula-box .formula-label {
+            display: block; font-size: 0.73rem; letter-spacing: 1.3px; text-transform: uppercase;
+            color: var(--text-secondary); margin-bottom: 2px; font-weight: 700;
+        }
+        .tip-box {
+            background: var(--gold-soft); border-left: 4px solid var(--gold); border-radius: 5px;
+            padding: 9px 13px; margin: 0.55rem 0; font-size: 0.92rem;
+        }
+        .tip-box strong { color: var(--forest); font-family: 'Playfair Display', serif; }
+
+        .trap-box {
+            background: #fff; border: 1px solid rgba(201, 169, 110, 0.42); border-left: 4px solid var(--crimson);
+            border-radius: 6px; padding: 10px 14px; margin: 0.6rem 0;
+        }
+        .trap-title {
+            display: block; font-family: 'Playfair Display', serif; font-weight: 700;
+            color: var(--crimson); font-size: 1rem; margin-bottom: 4px;
+        }
+
+        /* 2-Spalten-Kochrezept (Responsive!) */
+        .task-prompt-box {
+            background: rgba(58, 90, 63, 0.06); border: 1px solid rgba(58, 90, 63, 0.25); border-radius: 6px;
+            padding: 10px 14px; margin-bottom: 12px; font-size: 0.93rem;
+        }
+        .two-col-recipe { display: flex; flex-direction: column; gap: 8px; margin-bottom: 0.6rem; }
+        .two-col-head {
+            display: grid; grid-template-columns: 1.25fr 1fr; gap: 12px;
+            background: rgba(58, 90, 63, 0.09); border: 1px solid rgba(58, 90, 63, 0.2); border-radius: 6px;
+            padding: 8px 14px; font-family: 'Playfair Display', serif; font-weight: 700; color: var(--forest); font-size: 0.96rem;
+        }
+        .two-col-row {
+            display: grid; grid-template-columns: 1.25fr 1fr; gap: 12px;
+            background: #fff; border: 1px solid rgba(201, 169, 110, 0.35); border-radius: 6px; padding: 10px 14px;
+            align-items: start;
+        }
+        .col-calc { border-right: 1px dashed rgba(201, 169, 110, 0.5); padding-right: 12px; overflow-x: auto; }
+        .col-think { font-size: 0.9rem; color: var(--text-primary); background: rgba(201, 169, 110, 0.07); padding: 8px 11px; border-radius: 5px; }
+        .step-badge {
+            display: inline-block; background: var(--forest); color: #fff; font-size: 0.74rem; font-weight: 700;
+            padding: 1px 8px; border-radius: 10px; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+
+        /* Tabellen */
+        .table-wrapper { overflow-x: auto; margin-bottom: 0.85rem; border-radius: 5px; background: #fff; border: 1px solid rgba(201, 169, 110, 0.32); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.91rem; }
+        th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid rgba(45, 58, 46, 0.1); vertical-align: top; }
+        th { background-color: rgba(58, 90, 63, 0.06); color: var(--forest); font-family: 'Playfair Display', serif; font-weight: 700; }
+        tr:last-child td { border-bottom: none; }
+
+        /* Flashcards */
+        .flashcards-container { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 12px; margin-bottom: 0.8rem; }
+        .flashcard { perspective: 1000px; width: 300px; height: 265px; cursor: pointer; flex: 1 1 300px; }
+        .flashcard-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; }
+        .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+        .flashcard-front, .flashcard-back {
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 8px; padding: 18px 20px;
+            display: flex; align-items: flex-start; justify-content: center; border: 1px solid var(--gold);
+            background-color: var(--paper-cream); box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(201, 169, 110, 0.6) transparent;
+        }
+        .flashcard-front { color: var(--forest); font-family: 'Playfair Display', serif; font-weight: 600; font-size: 1.02rem; }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--forest); color: var(--paper-white); border-color: var(--forest); font-size: 0.9rem; line-height: 1.52; }
+        .flashcard span, .flashcard p { display: block; width: 100%; margin: auto 0; }
+
+        /* Mobile / Tablet Anpassungen */
+        @media (max-width: 860px) {
+            .two-col-head { display: none; }
+            .two-col-row { grid-template-columns: 1fr; gap: 8px; }
+            .col-calc { border-right: none; padding-right: 0; border-bottom: 1px dashed rgba(201, 169, 110, 0.45); padding-bottom: 8px; }
+        }
+        @media (max-width: 768px) {
+            #btn-fullscreen { display: none !important; }
+            body { padding-top: 86px; }
+            nav { padding: 8px 10px; }
+            .nav-group { gap: 6px; }
+            .nav-btn { padding: 5px 9px; font-size: 0.78rem; }
+            body:not(.print-mode) .card { padding: 18px 16px; }
+            h1 { font-size: 1.55rem; }
+            h2 { font-size: 1.3rem; }
+        }
+
+        /* ============================================================
+           DRUCK-MODUS (A4) & PDF-EXPORT (Alle Details sauber aufgeklappt)
+           ============================================================ */
+        body.print-mode { background-color: #E2E2E2; padding-top: 86px; font-size: 0.76rem; line-height: 1.32; }
+        body.print-mode .plakat-toolbar,
+        body.print-mode .drawer-bar,
+        body.print-mode .detail-close-row { display: none !important; }
+        body.print-mode .collapsible-inline,
+        body.print-mode .detail-section { display: block !important; }
+        body.print-mode .detail-page .card { display: block !important; margin-top: 0 !important; border-top: none !important; }
+
+        body.print-mode h1 { font-size: 1.38rem; margin-bottom: 0.45rem; padding-bottom: 0.3rem; }
+        body.print-mode h2 { font-size: 1.12rem; margin-top: 0.25rem; padding-bottom: 0.15rem; }
+        body.print-mode h3 { font-size: 0.94rem; margin-top: 0.35rem; margin-bottom: 0.18rem; }
+        body.print-mode p, body.print-mode ul, body.print-mode ol { margin-bottom: 0.32rem; }
+        body.print-mode li { margin-bottom: 0.12rem; }
+        body.print-mode table { font-size: 0.73rem; }
+        body.print-mode th, body.print-mode td { padding: 4px 7px; }
+        body.print-mode .core-banner { padding: 6px 10px; margin: 0.3rem 0 0.5rem; }
+        body.print-mode .sketch-card { padding: 6px 8px; }
+        body.print-mode .sketch-svg { max-width: 260px; max-height: 135px; }
+        body.print-mode .zones-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+        body.print-mode .zone-panel { padding: 7px 10px; }
+        body.print-mode .formula-box { padding: 4px 8px; margin: 0.2rem 0 0.35rem; }
+        body.print-mode .tip-box, body.print-mode .trap-box, body.print-mode .task-prompt-box { padding: 5px 9px; margin: 0.28rem 0; font-size: 0.73rem; }
+        body.print-mode .two-col-head { display: grid !important; grid-template-columns: 1.3fr 1fr; padding: 4px 8px; font-size: 0.78rem; }
+        body.print-mode .two-col-row { display: grid !important; grid-template-columns: 1.3fr 1fr; gap: 8px; padding: 5px 8px; }
+        body.print-mode .col-calc { border-right: 1px dashed rgba(201,169,110,0.5); border-bottom: none; padding-right: 8px; padding-bottom: 0; }
+        body.print-mode .col-think { padding: 4px 7px; font-size: 0.71rem; }
+
+        body.print-mode .content-wrapper { max-width: none; padding: 0; display: block; }
+        body.print-mode .page {
+            width: 210mm; min-height: 297mm; height: auto; padding: 10mm 12mm; margin: 0 auto 18mm auto; background: #fff;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: visible; break-after: page;
+        }
+        body.print-mode .card { background: transparent; border: none; padding: 0; box-shadow: none; }
+        body.print-mode .flashcards-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3.5mm; }
+        body.print-mode .flashcard { width: auto; height: auto; border: 1px solid var(--text-primary); border-radius: 2px; page-break-inside: avoid; }
+        body.print-mode .flashcard-inner { transform: none !important; display: flex; flex-direction: column; }
+        body.print-mode .flashcard-front, body.print-mode .flashcard-back {
+            position: static; height: auto; border: none; box-shadow: none; background: transparent; color: var(--text-primary); transform: none; padding: 4px 7px;
+        }
+        body.print-mode .flashcard-front { border-bottom: 1px dashed #aaa; font-size: 0.8rem; }
+        body.print-mode .flashcard-back { font-size: 0.71rem; }
+
+        .page-footer {
+            margin-top: auto; border-top: 1px solid var(--gold); padding-top: 6px;
+            display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-secondary); font-family: 'Playfair Display', serif;
+        }
+
+        @media print {
+            @page { size: A4; margin: 0; }
+            .plakat-toolbar, .drawer-bar, .detail-close-row, nav { display: none !important; }
+            .collapsible-inline, .detail-section { display: block !important; }
+            .detail-page .card { display: block !important; }
+        }
+
+        /* Große Bildschirme im Plakat-Modus */
+        @media screen and (min-width: 1250px) {
+            html:not(:has(body.print-mode)) { font-size: 17px; }
+            body:not(.print-mode) .card { padding: 30px 36px; border-width: 1.5px; }
+            body:not(.print-mode) .flashcard { flex: 1 1 350px; height: 285px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-group">
+            <a href="../index.html" class="nav-btn">← Journal</a>
+            <div class="dropdown">
+                <button type="button" class="nav-btn" id="btn-inhalt">Inhalt ▼</button>
+                <div class="dropdown-content" id="toc-dropdown"></div>
+            </div>
+            <button type="button" class="nav-btn" id="btn-fullscreen">Vollbild</button>
+            <button type="button" class="nav-btn active" id="btn-plakat">Plakat-Modus</button>
+            <button type="button" class="nav-btn" id="btn-druck">Druck-Modus (A4)</button>
+            <button type="button" class="nav-btn gold" id="btn-save-pdf">📄 Als PDF speichern</button>
+            <button type="button" class="nav-btn" id="btn-print">🖨️ Drucken</button>
+        </div>
+    </nav>
+
+    <div class="content-wrapper" id="content">
+
+        <!-- INTERAKTIVE ANSICHTS-LEISTE (NUR PLAKAT-MODUS) -->
+        <div class="plakat-toolbar" id="plakat-toolbar">
+            <div class="toolbar-top">
+                <div>
+                    <span class="toolbar-label">🎯 Plakat-Fokus wählen</span>
+                    <span class="toolbar-sub">Auf den ersten Blick siehst du nur das Zentrale – klappe Beispiele, Übersetzer &amp; Fallen gezielt pro Thema oder hier für alle auf:</span>
+                </div>
+                <div class="filter-pills">
+                    <button type="button" class="filter-pill preset-gold active" id="btn-preset-compact">✨ Nur Kernwissen (Kompakt)</button>
+                    <button type="button" class="filter-pill" data-global-layer="skizze">📝 Skizzen-Anleitungen</button>
+                    <button type="button" class="filter-pill" data-global-layer="rezept">🧮 Musteraufgaben &amp; WTR</button>
+                    <button type="button" class="filter-pill" data-global-layer="uebersetzer">🕵️‍♀️ Klausur-Übersetzer</button>
+                    <button type="button" class="filter-pill" data-global-layer="fallen">🏆 15-Punkte-Fallen</button>
+                    <button type="button" class="filter-pill preset-gold" id="btn-preset-all">📖 Alles ausklappen</button>
+                </div>
+            </div>
+            <div class="quick-jump-row">
+                <span style="font-size:0.8rem; font-weight:700; color:var(--text-secondary);">Springen zu:</span>
+                <a href="#sec-t0" class="quick-chip">🛠 0. Vorwissen &amp; $D_f$</a>
+                <a href="#sec-t1" class="quick-chip">📐 1. Ableitung, Verkettung &amp; Regeln</a>
+                <a href="#sec-t2" class="quick-chip">📈 2. Monotonie, Krümmung &amp; NEW</a>
+                <a href="#sec-t3" class="quick-chip">📏 3. Tangente &amp; Normale (auch außen)</a>
+                <a href="#sec-t4" class="quick-chip">🛠️ 4. Extremwertprobleme</a>
+                <a href="#sec-t5" class="quick-chip">🚀 5. Die $e$-Funktion</a>
+                <a href="#sec-t6" class="quick-chip">🃏 6. Lernkarten</a>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 1: BLOCK 0 – SURVIVAL-KIT & VORWISSEN
+             ============================================================ -->
+        <div class="page">
+            <div class="card" id="block-0-card">
+                <h1 id="sec-titel">🥇 15-Punkte-Master: Differenzialrechnung, Optimierung &amp; $e$-Funktion<br><small style="font-size: 0.54em; font-weight: normal;">(Mathe-LK Baden-Württemberg · Interaktiver Abitur-Aufschrieb mit Skizzen, 2-Spalten-Kochrezepten &amp; WTR-Checks)</small></h1>
+
+                <h2 id="sec-t0">0. 🛠 Survival-Kit: Unverzichtbares Vorwissen &amp; Definitionsmengen</h2>
+                <div class="core-banner">
+                    <strong>Mathematischer Kern:</strong> Die meisten Punktverluste im Pflichtteil passieren nicht beim neuen LK-Stoff, sondern beim Umschreiben von Wurzeln/Brüchen, beim Bestimmen der Definitionsmenge $D_f$ und beim Lösen von Gleichungen ($f'(x) = 0$).
+                </div>
+
+                <div class="zones-grid">
+                    <div class="zone-panel">
+                        <h3>1. Umschreibe-Zwang &amp; Potenzgesetze</h3>
+                        <p><strong>Eiserne Regel vor dem Ableiten:</strong> Niemals Wurzeln oder Brüche mit Konstante im Zähler direkt ableiten – erst als Potenz schreiben!</p>
+                        <ul>
+                            <li><span class="highlight">Wurzeln:</span> $\sqrt{x} = x^{\frac{1}{2}}$, allgemein $\sqrt[n]{x^m} = x^{\frac{m}{n}}$ &nbsp;(z. B. $\sqrt{e^x} = e^{0,5x}$)</li>
+                            <li><span class="highlight">Brüche:</span> $\frac{1}{x} = x^{-1}$, allgemein $\frac{a}{x^n} = a \cdot x^{-n}$ &nbsp;(z. B. $\frac{5}{e^x} = 5 \cdot e^{-x}$)</li>
+                            <li><span class="highlight">Potenzgesetze:</span> $x^a \cdot x^b = x^{a+b}$ &nbsp;|&nbsp; $\frac{x^a}{x^b} = x^{a-b}$ &nbsp;|&nbsp; $(x^a)^b = x^{a \cdot b}$</li>
+                            <li><span class="highlight">Logarithmus ($\ln$):</span> Hebt $e$ auf! $e^{2x} = 5 \iff 2x = \ln(5) \iff x = \frac{\ln(5)}{2}$.<br><strong>Pflichtwerte ohne WTR:</strong> $e^0 = 1$ und $\ln(1) = 0$!</li>
+                        </ul>
+                    </div>
+
+                    <div class="zone-panel">
+                        <h3>2. Gleichungen lösen &amp; Binomische Formeln</h3>
+                        <ul>
+                            <li><span class="highlight">Satz vom Nullprodukt (SVNP):</span> $A \cdot B = 0 \iff A = 0 \lor B = 0$. Steckt in jedem Summanden $x$ (oder $e^x$), <strong>sofort ausklammern</strong>: $x^3 - 4x = x(x^2 - 4) = 0 \implies x_1 = 0,\; x_{2,3} = \pm 2$.</li>
+                            <li><span class="highlight">Mitternachtsformel:</span> $ax^2 + bx + c = 0 \implies x_{1,2} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$ (Diskriminante $D = b^2 - 4ac &lt; 0 \implies$ keine reelle Lösung).</li>
+                            <li><span class="highlight">Substitution (biquadratisch):</span> Bei $au^4 + bu^2 + c = 0$ setze $z = u^2$, löse nach $z$ auf und ziehe am Ende $u = \pm\sqrt{z}$ (nur für $z \ge 0$!).</li>
+                            <li><span class="highlight">Binome:</span> $(a \pm b)^2 = a^2 \pm 2ab + b^2$ &nbsp;|&nbsp; $(a+b)(a-b) = a^2 - b^2$.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="table-wrapper" style="margin-top: 10px;">
+                    <table>
+                        <tr><th>Maximale Definitionsmenge $D_f$ („Die 3 Mathe-Verbote“)</th><th>Bedingung</th><th>Beispiel &amp; Wertemenge $W_f$</th></tr>
+                        <tr>
+                            <td><span class="highlight">Ganzrationale Fkt., $\sin(x)$, $\cos(x)$, $e^x$</span></td>
+                            <td>Keine Einschränkung</td>
+                            <td>$D_f = \mathbb{R}$ &nbsp;|&nbsp; Bei $e^x$: $W_f = \mathbb{R}^+ = \left]0; \infty\right[$, bei $\sin/\cos$: $W_f = [-1; 1]$</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">1. Verbot: Bruch</span> $\frac{u(x)}{v(x)}$</td>
+                            <td>Nenner $v(x) \neq 0$</td>
+                            <td>$f(x) = \frac{1}{x - 2} \implies D_f = \mathbb{R} \setminus \{2\}$</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">2. Verbot: Wurzel</span> $\sqrt{g(x)}$</td>
+                            <td>Radikand $g(x) \ge 0$ <em>(im Nenner: $&gt; 0$!)</em></td>
+                            <td>$f(x) = \sqrt{x} \implies D_f = \mathbb{R}_0^+ = [0; \infty[$, aber $f'(x) = \frac{1}{2\sqrt{x}} \implies D_{f'} = \mathbb{R}^+$!</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">3. Verbot: Logarithmus</span> $\ln(g(x))$</td>
+                            <td>Argument $g(x) &gt; 0$</td>
+                            <td>$f(x) = \ln(x) \implies D_f = \mathbb{R}^+ = \left]0; \infty\right[$</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>15-Punkte-Master: Analysis (Mathe-LK BW)</span>
+                <span>Olga V.</span>
+                <span>Seite 1</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 2: BLOCK 1 (KERN) – ABLEITUNG, VERKETTUNG, KETTEN- & PRODUKTREGEL
+             ============================================================ -->
+        <div class="page">
+            <div class="card" id="block-1-core">
+                <h2 id="sec-t1">1. 📐 Ableitung, Verkettung, Ketten-, Produkt- &amp; Quotientenregel</h2>
+
+                <div class="core-banner">
+                    <strong>Mathematischer Kern:</strong> Die Ableitung $f'(a)$ beschreibt lokal die <strong>momentane Änderungsrate (Tangentensteigung)</strong> als Grenzwert der <strong>mittleren Änderungsrate (Sekantensteigung)</strong> für $h \to 0$. Komplexe Funktionsterme werden strukturell entweder als Schachtelung/Verkettung $u(v(x))$ (<strong>Kettenregel:</strong> von außen nach innen) oder als Multiplikation $u(x) \cdot v(x)$ (<strong>Produktregel:</strong> über Kreuz) zerlegt.
+                </div>
+
+                <!-- Programmierte Pflichtteil-Skizzen 1A & 1B -->
+                <div class="sketches-grid">
+                    <div class="sketch-card">
+                        <div class="sketch-title">Skizze A: Sekante $\to$ Tangente &amp; Steigungswinkel $\alpha$</div>
+                        <svg class="sketch-svg" viewBox="0 0 380 215" aria-label="Skizze Sekante Tangente und Steigungswinkel">
+                            <defs>
+                                <marker id="arr1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#2D3A2E"/>
+                                </marker>
+                            </defs>
+                            <!-- Achsen -->
+                            <line x1="28" y1="185" x2="360" y2="185" stroke="#2D3A2E" stroke-width="1.5" marker-end="url(#arr1)"/>
+                            <line x1="42" y1="200" x2="42" y2="16" stroke="#2D3A2E" stroke-width="1.5" marker-end="url(#arr1)"/>
+                            <text x="352" y="202" font-size="11" fill="#2D3A2E" font-weight="bold">x</text>
+                            <text x="26" y="24" font-size="11" fill="#2D3A2E" font-weight="bold">y</text>
+
+                            <!-- Sekanten-Steigungsdreieck (Rot) -->
+                            <line x1="115" y1="142" x2="255" y2="142" stroke="#C0392B" stroke-width="1.4" stroke-dasharray="4,3"/>
+                            <line x1="255" y1="142" x2="255" y2="48" stroke="#C0392B" stroke-width="1.4" stroke-dasharray="4,3"/>
+                            <text x="172" y="156" font-size="10.5" fill="#C0392B" font-weight="bold">Δx = h</text>
+                            <text x="260" y="98" font-size="10" fill="#C0392B" font-weight="bold">Δy = f(a+h)−f(a)</text>
+
+                            <!-- Sekante (Rot) -->
+                            <line x1="65" y1="175.6" x2="285" y2="27.8" stroke="#C0392B" stroke-width="2"/>
+                            <text x="218" y="34" font-size="10.5" fill="#C0392B" font-weight="bold">Sekante (m_s)</text>
+
+                            <!-- Graph G_f (Dunkelgrün/Blau) -->
+                            <path d="M 45 162 Q 155 165 280 20" fill="none" stroke="#2A5C8A" stroke-width="2.6"/>
+                            <text x="284" y="24" font-size="11" fill="#2A5C8A" font-weight="bold">G_f</text>
+
+                            <!-- Tangente (Orange) + Norm-Steigungsdreieck -->
+                            <line x1="55" y1="168" x2="245" y2="85.6" stroke="#D97706" stroke-width="2.2"/>
+                            <line x1="115" y1="142" x2="175" y2="142" stroke="#D97706" stroke-width="1.6"/>
+                            <line x1="175" y1="142" x2="175" y2="116" stroke="#D97706" stroke-width="1.6"/>
+                            <text x="140" y="139" font-size="9.5" fill="#D97706" font-weight="bold">1</text>
+                            <text x="179" y="132" font-size="9.5" fill="#D97706" font-weight="bold">f'(a)</text>
+                            <text x="188" y="82" font-size="10.5" fill="#D97706" font-weight="bold">Tangente t</text>
+
+                            <!-- Steigungswinkel alpha (Grün) -->
+                            <path d="M 147 142 A 32 32 0 0 0 144 129.5" fill="rgba(46, 125, 50, 0.18)" stroke="#2E7D32" stroke-width="2"/>
+                            <text x="150" y="135" font-size="10.5" fill="#2E7D32" font-weight="bold">α</text>
+
+                            <!-- Punkte P und Q -->
+                            <circle cx="115" cy="142" r="4" fill="#2D3A2E"/>
+                            <text x="64" y="135" font-size="10.5" fill="#2D3A2E" font-weight="bold">P(a | f(a))</text>
+                            <circle cx="255" cy="48" r="4" fill="#C0392B"/>
+                            <text x="180" y="54" font-size="10" fill="#C0392B" font-weight="bold">Q(a+h | f(a+h))</text>
+
+                            <!-- x-Markierungen -->
+                            <line x1="115" y1="182" x2="115" y2="188" stroke="#2D3A2E" stroke-width="1.4"/>
+                            <text x="111" y="199" font-size="10" fill="#2D3A2E">a</text>
+                            <line x1="255" y1="182" x2="255" y2="188" stroke="#2D3A2E" stroke-width="1.4"/>
+                            <text x="243" y="199" font-size="10" fill="#2D3A2E">a+h</text>
+                        </svg>
+                        <div class="sketch-legend">
+                            <span><i class="legend-dot" style="background:#C0392B;"></i>Sekante $m_s$</span>
+                            <span><i class="legend-dot" style="background:#D97706;"></i>Tangente $f'(a)$</span>
+                            <span><i class="legend-dot" style="background:#2E7D32;"></i>Winkel $\tan(\alpha)=f'(a)$</span>
+                        </div>
+                    </div>
+
+                    <div class="sketch-card">
+                        <div class="sketch-title">Skizze B: Grafisches Verketten $f(x) = u(v(x))$ über $y = x$</div>
+                        <svg class="sketch-svg" viewBox="0 0 380 215" aria-label="Skizze Grafisches Verketten über Winkelhalbierende">
+                            <defs>
+                                <marker id="arrB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#1D6FA5"/>
+                                </marker>
+                            </defs>
+                            <!-- Achsen -->
+                            <line x1="28" y1="185" x2="355" y2="185" stroke="#2D3A2E" stroke-width="1.5" marker-end="url(#arr1)"/>
+                            <line x1="45" y1="200" x2="45" y2="16" stroke="#2D3A2E" stroke-width="1.5" marker-end="url(#arr1)"/>
+                            <!-- Winkelhalbierende y = x -->
+                            <line x1="45" y1="185" x2="215" y2="15" stroke="#7F8C8D" stroke-width="1.4" stroke-dasharray="5,4"/>
+                            <text x="218" y="25" font-size="10" fill="#5A6B5C" font-style="italic">y = x</text>
+
+                            <!-- Innere Funktion G_v -->
+                            <path d="M 55 155 Q 125 65 215 120 T 320 95" fill="none" stroke="#3A5A3F" stroke-width="2.3"/>
+                            <text x="323" y="98" font-size="10.5" fill="#3A5A3F" font-weight="bold">G_v</text>
+
+                            <!-- Äußere Funktion G_u -->
+                            <path d="M 55 170 C 110 165, 155 42, 235 48 C 280 52, 310 110, 335 140" fill="none" stroke="#8E44AD" stroke-width="2.3"/>
+                            <text x="315" y="152" font-size="10.5" fill="#8E44AD" font-weight="bold">G_u</text>
+
+                            <!-- Blaue Pfeilkette x0 -> v(x0) -> y=x -> x-Achse -> u(v(x0)) -->
+                            <line x1="100" y1="185" x2="100" y2="112" stroke="#1D6FA5" stroke-width="1.8" marker-end="url(#arrB)"/>
+                            <line x1="100" y1="108" x2="118" y2="108" stroke="#1D6FA5" stroke-width="1.8" marker-end="url(#arrB)"/>
+                            <line x1="122" y1="108" x2="122" y2="181" stroke="#1D6FA5" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arrB)"/>
+                            <line x1="122" y1="185" x2="122" y2="122" stroke="#1D6FA5" stroke-width="1.8" marker-end="url(#arrB)"/>
+
+                            <circle cx="100" cy="108" r="3.5" fill="#1D6FA5"/>
+                            <circle cx="122" cy="118" r="4" fill="#8E44AD"/>
+                            <text x="92" y="199" font-size="10" fill="#1D6FA5" font-weight="bold">x₀</text>
+                            <text x="116" y="199" font-size="9.5" fill="#1D6FA5">v(x₀)</text>
+                            <text x="129" y="121" font-size="10" fill="#8E44AD" font-weight="bold">u(v(x₀))</text>
+
+                            <!-- Gelbe Extrempunkt-Markierung (f'(x)=0) -->
+                            <circle cx="132" cy="95" r="5.5" fill="#F59E0B" stroke="#2D3A2E" stroke-width="1"/>
+                            <text x="138" y="88" font-size="9.5" fill="#B45309" font-weight="bold">v'(x)=0 ⇒ f'(x)=0</text>
+                        </svg>
+                        <div class="sketch-legend">
+                            <span><i class="legend-dot" style="background:#1D6FA5;"></i>Pfeilkette $x_0 \to v(x_0) \to u(v(x_0))$</span>
+                            <span><i class="legend-dot" style="background:#F59E0B;"></i>Stellen mit $f'(x)=0$</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aufklappbare Pflichtteil-Zeichenanleitung -->
+                <div class="collapsible-inline" data-topic="1" data-layer="skizze">
+                    <div class="tip-box">
+                        <strong>📝 Pflichtteil-Skizzen selbst zeichnen (Schritt-für-Schritt):</strong>
+                        <ul style="margin-bottom:0; margin-top:4px;">
+                            <li><strong>Skizze A (Sekante $\to$ Tangente):</strong> Gekrümmten Graphen $G_f$ mit $P(a\mid f(a))$ und $Q(a+h\mid f(a+h))$ zeichnen. <strong>Rot:</strong> Sekante durch $P, Q$ mit Dreieck ($\Delta x = h$, $\Delta y = f(a+h)-f(a)$). <strong>Orange:</strong> Tangente in $P$ mit Norm-Dreieck ($1$ nach rechts, $f'(a)$ nach oben). <strong>Grün:</strong> Winkelbogen $\alpha$ zur Horizontalen ($\tan(\alpha) = f'(a)$).</li>
+                            <li><strong>Skizze B (Grafisches Verketten &amp; $f'(x)=0$):</strong> <strong>Blau:</strong> Starte bei $x_0 \xrightarrow{\text{vertikal}}$ lies $y_0 = v(x_0)$ an $G_v$ ab $\xrightarrow{\text{über } y=x}$ übertrage $y_0$ auf die $x$-Achse $\xrightarrow{\text{vertikal}}$ lies $u(y_0) = u(v(x_0))$ an $G_u$ ab. <strong>Gelb ($f'(x)=0$):</strong> Markiere 1.) alle Extremstellen von $G_v$ ($v'(x)=0$) und 2.) alle Stellen $x$, deren Funktionswert $v(x)$ genau die Höhe einer Extremstelle von $G_u$ trifft ($u'(v(x))=0$)!</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Zone 2: Formeln & Bedingungen -->
+                <div class="zones-grid">
+                    <div class="zone-panel">
+                        <h3>1. Differenzierbarkeit &amp; Basis-Ableitungen</h3>
+                        <p><strong>Differenzenquotient</strong> ($a, a+h \in I, h \neq 0$): $m_s = \frac{f(a+h)-f(a)}{h} = \frac{f(x)-f(a)}{x-a}$.</p>
+                        <ul>
+                            <li><span class="highlight">Notwendig für Diff'barkeit in $a$:</span> $f$ ist <strong>stetig</strong> in $a$ (kein Sprung, keine Lücke).</li>
+                            <li><span class="highlight">Hinreichend &amp; notwendig:</span> $\lim_{h \to 0,\, h \neq 0} \frac{f(a+h)-f(a)}{h} = f'(a) \in \mathbb{R}$ existiert (linksseitiger $=$ rechtsseitiger Grenzwert, also kein Knick und keine senkrechte Tangente).</li>
+                        </ul>
+                        <p style="margin-bottom:4px;"><strong>Basis-Ableitungen &amp; $D_{f'}$-Check:</strong></p>
+                        <ul style="margin-bottom:0;">
+                            <li>$(c)' = 0$ &nbsp;|&nbsp; $(x^r)' = r \cdot x^{r-1}$ ($r \in \mathbb{R}\setminus\{0\}$) &nbsp;|&nbsp; $(c\cdot g + h)' = c\cdot g' + h'$</li>
+                            <li>$(\sqrt{x})' = \frac{1}{2\sqrt{x}}$ mit $D_f = \mathbb{R}_0^+$, aber $\mathbf{D_{f'} = \mathbb{R}^+}$ ($0 \notin D_{f'}$!)</li>
+                            <li>$\left(\frac{1}{x}\right)' = -\frac{1}{x^2}$ ($D_f = D_{f'} = \mathbb{R}\setminus\{0\}$) &nbsp;|&nbsp; $(\sin x)' = \cos x$, $(\cos x)' = -\sin x$</li>
+                            <li><strong>$e$-Funktion:</strong> $f(x) = e^{g(x)} \implies f'(x) = g'(x) \cdot e^{g(x)}$</li>
+                        </ul>
+                    </div>
+
+                    <div class="zone-panel">
+                        <h3>2. Verkettung, Ketten-, Produkt- &amp; Quotientenregel</h3>
+                        <ul>
+                            <li><span class="highlight">Verkettung $f = u \circ v$ („$u$ nach $v$“):</span> $f(x) = (u \circ v)(x) = u(v(x))$ ($u$: außen, $v$: innen).<br><strong>Max. Definitionsmenge:</strong> $x \in D_f \iff x \in D_v \land v(x) \in D_u$.</li>
+                            <li><span class="highlight">Kettenregel</span> ($v$ diff'bar in $x$, $u$ diff'bar in $v(x)$):<br>$\mathbf{f'(x) = u'(v(x)) \cdot v'(x)}$ &nbsp;|&nbsp; <em>3-fach:</em> $(u(v(w(x))))' = u'(v(w(x))) \cdot v'(w(x)) \cdot w'(x)$.</li>
+                            <li><span class="highlight">Produktregel</span> ($u, v$ diff'bar): $\mathbf{f'(x) = u'(x) \cdot v(x) + u(x) \cdot v'(x)}$<br><em>3-fach-Produkt:</em> $(u \cdot v \cdot w)' = u'vw + uv'w + uvw'$.</li>
+                            <li><span class="highlight">Quotientenregel</span> ($v(x) \neq 0$): $\mathbf{f'(x) = \frac{u'(x)\cdot v(x) - u(x)\cdot v'(x)}{(v(x))^2}}$.</li>
+                        </ul>
+                        <h3 style="margin-top:8px;">3. Tangente, Winkel &amp; Berührung</h3>
+                        <ul style="margin-bottom:0;">
+                            <li><span class="highlight">Tangente in $P(a\mid f(a))$:</span> $t: y = f'(a) \cdot (x - a) + f(a)$.</li>
+                            <li><span class="highlight">Steigungswinkel $\alpha$</span> ($-90^\circ &lt; \alpha &lt; 90^\circ$): $\tan(\alpha) = f'(a) \iff \alpha = \arctan(f'(a))$.</li>
+                            <li><span class="highlight">Schnittwinkel $\beta$</span> ($0^\circ \le \beta \le 90^\circ$, Vor.: $f(a)=g(a)$): $\tilde{\beta} = |\arctan(f'(a)) - \arctan(g'(a))|$. Falls $\tilde{\beta} &gt; 90^\circ \implies \beta = 180^\circ - \tilde{\beta}$, sonst $\beta = \tilde{\beta}$.</li>
+                            <li><span class="highlight">Berührpunkt von $G_f, G_g$ in $a$:</span> $\mathbf{f(a) = g(a) \land f'(a) = g'(a)}$.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Interaktive Auswahl-Buttons für Block 1 -->
+                <div class="drawer-bar">
+                    <span class="drawer-bar-label">Mehr zu Thema 1:</span>
+                    <button type="button" class="drawer-btn" data-toggle-topic="1" data-toggle-layer="skizze"><span class="state-icon">＋</span> 📝 Skizzen-Anleitung</button>
+                    <button type="button" class="drawer-btn" data-toggle-topic="1" data-toggle-layer="rezept"><span class="state-icon">＋</span> 🧮 2-Spalten-Musteraufgabe &amp; WTR</button>
+                    <button type="button" class="drawer-btn" data-toggle-topic="1" data-toggle-layer="uebersetzer"><span class="state-icon">＋</span> 🕵️‍♀️ Klausur-Übersetzer</button>
+                    <button type="button" class="drawer-btn" data-toggle-topic="1" data-toggle-layer="fallen"><span class="state-icon">＋</span> 🏆 15-Punkte-Fallen &amp; Gegenbeispiele</button>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>15-Punkte-Master: Analysis – Thema 1 (Kern &amp; Formeln)</span>
+                <span>Olga V.</span>
+                <span>Seite 2</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 3: BLOCK 1 (PRAXIS) – 2-SPALTEN-KOCHREZEPT
+             ============================================================ -->
+        <div class="page detail-page is-closed" data-topic="1" data-page-layers="rezept">
+            <div class="card detail-card">
+                <div class="detail-section" data-topic="1" data-layer="rezept">
+                    <h3 id="sec-t1-rezept">🧮 Thema 1 – Das 2-Spalten-Kochrezept (15-Punkte-Mustervorlage)</h3>
+                    <div class="task-prompt-box">
+                        <strong>Musteraufgabe:</strong> Gegeben ist die Funktionenschar $f_a(x) = (2x - a) \cdot \sqrt{x^2 + 3}$ mit $a \in \mathbb{R}$.<br>
+                        1.) <em>(Pflichtteil-Stil):</em> Bestimmen Sie $D_{f_a}$, weisen Sie für $a = 1$ nach, dass $f_1'(x) = \frac{4x^2 - x + 6}{\sqrt{x^2 + 3}}$ gilt, und untersuchen Sie $G_{f_1}$ auf Punkte mit waagerechter Tangente.<br>
+                        2.) <em>(Wahlteil-Stil mit WTR):</em> Bestimmen Sie für $a = 1$ die Gleichung der Tangente $t$ an $G_{f_1}$ in $P(1 \mid f_1(1))$ sowie den Steigungswinkel $\alpha$ (auf eine Nachkommastelle).
+                    </div>
+
+                    <div class="two-col-recipe">
+                        <div class="two-col-head">
+                            <div>Linke Spalte: Klausur-Rechnung (15-Punkte-Vorlage)</div>
+                            <div>Rechte Spalte: Denk-Schritt, Klausur-Check &amp; WTR (CALCOOM IQ-S1)</div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">1. Definitionsmenge</span><br>
+                                Da $x^2 + 3 \ge 3 &gt; 0$ für alle $x \in \mathbb{R}$, gilt $D_{f_a} = \mathbb{R}$ und $D_{f_a'} = \mathbb{R}$.
+                            </div>
+                            <div class="col-think">
+                                <strong>Denk-Schritt:</strong> Radikand unter der Wurzel muss $\ge 0$ für $D_f$ und $&gt; 0$ für $D_{f'}$ sein.<br>
+                                ⚠️ <strong>Falle:</strong> Bei $\sqrt{x^2 - 3}$ müsste man Ränder ausschließen!
+                            </div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">2. Struktur-Zerlegung ($a=1$)</span><br>
+                                Produkt $f_1 = u \cdot v$ mit:<br>
+                                $u(x) = 2x - 1 \implies u'(x) = 2$<br>
+                                $v(x) = \sqrt{x^2 + 3} = (x^2 + 3)^{\frac{1}{2}}$ <em>(Verkettung!)</em>
+                            </div>
+                            <div class="col-think">
+                                <strong>Denk-Schritt:</strong> Erst die übergeordnete Rechenart bestimmen (Malpunkt $\to$ Produktregel). Der zweite Faktor $v(x)$ erfordert in sich die Kettenregel.
+                            </div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">3. Nebenrechnung $v'(x)$ mit Kettenregel</span><br>
+                                Äußere Fkt.: $g(z) = \sqrt{z} \implies g'(z) = \frac{1}{2\sqrt{z}}$ &nbsp;|&nbsp; Innere Fkt.: $h(x) = x^2 + 3 \implies h'(x) = 2x$<br>
+                                $\implies v'(x) = \frac{1}{2\sqrt{x^2 + 3}} \cdot 2x = \frac{x}{\sqrt{x^2 + 3}}$
+                            </div>
+                            <div class="col-think">
+                                ⚠️ <strong>Pflichtteil-Falle:</strong> Sofort die $2$ im Zähler und Nenner kürzen, bevor du in die Produktregel einsetzt (verhindert Folgefehler!).
+                            </div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">4. &amp; 5. Produktregel &amp; Hauptnenner $\sqrt{x^2+3}$</span><br>
+                                $f_1'(x) = 2 \cdot \sqrt{x^2 + 3} + (2x - 1) \cdot \frac{x}{\sqrt{x^2 + 3}}$<br>
+                                $= \frac{2 \cdot \sqrt{x^2 + 3} \cdot \sqrt{x^2 + 3}}{\sqrt{x^2 + 3}} + \frac{(2x - 1) \cdot x}{\sqrt{x^2 + 3}} = \frac{2(x^2 + 3) + 2x^2 - x}{\sqrt{x^2 + 3}} = \mathbf{\frac{4x^2 - x + 6}{\sqrt{x^2 + 3}}} \quad \square$
+                            </div>
+                            <div class="col-think">
+                                ⚠️ <strong>Klammer-Falle:</strong> $(2x - 1)$ immer einklammern!<br>
+                                <strong>Hauptnenner-Trick:</strong> $\sqrt{\text{Term}} \cdot \sqrt{\text{Term}} = \text{Term}$. So verschwindet die Wurzel im Zähler komplett!
+                            </div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">6. Waagerechte Tangente prüfen</span><br>
+                                Bedingung $f_1'(x) = 0 \iff 4x^2 - x + 6 = 0$.<br>
+                                Diskriminante: $D = (-1)^2 - 4 \cdot 4 \cdot 6 = 1 - 96 = -95 &lt; 0$<br>
+                                $\implies$ Keine reelle Lösung; $G_{f_1}$ besitzt keine Punkte mit waagerechter Tangente.
+                            </div>
+                            <div class="col-think">
+                                <strong>Denk-Schritt:</strong> Ein Bruch ist genau dann $0$, wenn $\text{Zähler} = 0$ (und $\text{Nenner} \neq 0$).<br>
+                                ⚠️ <strong>Zeitspar-Tipp:</strong> Niemals den Nenner mit $0$ gleichsetzen!
+                            </div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">7.–9. Tangente &amp; Steigungswinkel in $P(1 \mid f_1(1))$ (Wahlteil)</span><br>
+                                • $f_1(1) = 1 \cdot \sqrt{4} = 2 \implies P(1 \mid 2)$ &nbsp;|&nbsp; $m_t = f_1'(1) = \frac{4 - 1 + 6}{2} = 4{,}5$<br>
+                                • Tangente: $t: y = 4{,}5 \cdot (x - 1) + 2 \iff \mathbf{t: y = 4{,}5x - 2{,}5}$<br>
+                                • Steigungswinkel: $\tan(\alpha) = 4{,}5 \implies \mathbf{\alpha \approx 77{,}5^\circ}$
+                            </div>
+                            <div class="col-think">
+                                <strong>WTR-Check (CALCOOM IQ-S1):</strong> <code>SHIFT</code> $\to$ $\int$ (<code>d/dx</code>) $\to$ Term eingeben, $X=1 \implies 4{,}5$.<br>
+                                ⚠️ <strong>WTR-Modus-Falle:</strong> Für $\sin/\cos$-Terme auf <strong>RAD</strong> stellen; für Winkel $\tan(\alpha)=m$ zwingend auf <strong>DEG</strong> (<code>SHIFT</code> $\to$ <code>SETUP</code> $\to$ <code>Angle Unit</code> $\to$ <code>1: Deg</code>), dann <code>SHIFT</code> $\to$ <code>tan</code> ($4{,}5$) $= 77{,}47^\circ$.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-close-row">
+                        <button type="button" class="detail-close-btn" data-close-topic="1" data-close-layer="rezept">▲ Musteraufgabe einklappen</button>
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>15-Punkte-Master: Analysis – Thema 1 (2-Spalten-Kochrezept)</span>
+                <span>Olga V.</span>
+                <span>Seite 3</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 4: BLOCK 1 (15-PUNKTE-BOX) – ÜBERSETZER & FALLEN
+             ============================================================ -->
+        <div class="page detail-page is-closed" data-topic="1" data-page-layers="uebersetzer fallen">
+            <div class="card detail-card">
+                <div class="detail-section" data-topic="1" data-layer="uebersetzer">
+                    <h3 id="sec-t1-uebersetzer">🕵️‍♀️ Thema 1 – Klausur-Übersetzer (Deutsch $\leftrightarrow$ Mathe)</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <tr><th style="width:45%;">Formulierung in der Aufgabe</th><th>Mathematischer Klausur-Ansatz</th></tr>
+                            <tr><td>„Mittlere Änderungsrate / Durchschnittsgeschwindigkeit in $[a; b]$“</td><td>Differenzenquotient $\frac{f(b)-f(a)}{b-a}$ &nbsp;<em>(Einheit = $\frac{\text{Einheit von } y}{\text{Einheit von } x}$)</em>.</td></tr>
+                            <tr><td>„Momentane Änderungsrate / Geschwindigkeit zum Zeitpunkt $t_0$“</td><td>$f'(t_0)$ berechnen.</td></tr>
+                            <tr><td>„Punkte mit waagerechter Tangente“</td><td>Ansatz $f'(x) = 0$ nach $x$ auflösen, danach zwingend $y$-Koordinate $f(x)$ berechnen!</td></tr>
+                            <tr><td>„Tangente hat Steigungswinkel $\alpha = 45^\circ$ (bzw. $30^\circ$ zum Boden)“</td><td>$f'(x) = \tan(45^\circ) = 1$ &nbsp;(bzw. $f'(x) = \pm\tan(30^\circ)$ je nach Anstieg/Gefälle).</td></tr>
+                            <tr><td>„Tangente in $P$ ist parallel zur Geraden $g: y = mx + c$“</td><td>$f'(x_P) = m$.</td></tr>
+                            <tr><td>„Die Graphen von $f$ und $g$ berühren sich an der Stelle $x_0$“</td><td>Gleichungssystem: $f(x_0) = g(x_0) \land f'(x_0) = g'(x_0)$.</td></tr>
+                            <tr><td>„Graph von $f$ berührt die $x$-Achse in $P(a \mid 0)$“</td><td>$f(a) = 0 \land f'(a) = 0$ (doppelte Nullstelle / Extrempunkt auf der $x$-Achse).</td></tr>
+                            <tr><td>„Tangente in $P(x_0\mid y_0)$ schließt mit den Koordinatenachsen ein Dreieck ein“</td><td>Tangente $t(x)$ aufstellen $\to$ Achsenschnittpunkte $N(x_N\mid 0)$ ($t(x_N)=0$) und $S_y(0\mid c)$ bestimmen $\to$ Fläche $A = \frac{1}{2} \cdot |x_N| \cdot |c|$.</td></tr>
+                            <tr><td>„Verhalten von $f = u \circ v$ für $x \to \pm\infty$“</td><td>Zweistufiger Grenzwert: 1.) Wohin strebt $z = v(x)$ für $x \to \pm\infty$? 2.) Wohin strebt $u(z)$ für dieses $z$?</td></tr>
+                        </table>
+                    </div>
+                    <div class="detail-close-row">
+                        <button type="button" class="detail-close-btn" data-close-topic="1" data-close-layer="uebersetzer">▲ Übersetzer einklappen</button>
+                    </div>
+                </div>
+
+                <div class="detail-section" data-topic="1" data-layer="fallen">
+                    <h3 id="sec-t1-fallen">🏆 Thema 1 – Fallen, Sonderfälle &amp; Gegenbeispiele (Begründungs- &amp; Wahr/Falsch-Aufgaben)</h3>
+                    <div class="trap-box">
+                        <span class="trap-title">⚡ 1. Umkehrschluss-Falle: Stetigkeit vs. Differenzierbarkeit</span>
+                        <p style="margin-bottom:0;"><strong>Merksatz:</strong> Aus Differenzierbarkeit folgt Stetigkeit, aber <strong>nicht umgekehrt</strong>!<br>
+                        • <strong>Gegenbeispiel 1 (Senkrechte Tangente am Rand):</strong> $f(x) = \sqrt{x}$ ist in $x = 0$ definiert ($D_f = \mathbb{R}_0^+$), aber nicht differenzierbar, da $\frac{\sqrt{0+h}-0}{h} = \frac{1}{\sqrt{h}} \xrightarrow{h\to 0^+} +\infty$ keinen endlichen Grenzwert besitzt ($D_{f'} = \mathbb{R}^+$).<br>
+                        • <strong>Gegenbeispiel 2 (Knickstelle):</strong> $f(x) = |x - 1|$ ist bei $x = 1$ stetig, aber linksseitiger Grenzwert ($-1$) $\neq$ rechtsseitiger Grenzwert ($+1$) $\implies$ nicht differenzierbar.</p>
+                    </div>
+
+                    <div class="trap-box">
+                        <span class="trap-title">⚡ 2. Die „Matteo-Falle“ bei Produkten &amp; wann man Produkt-/Quotientenregel umgehen MUSS</span>
+                        <p style="margin-bottom:0;">• <strong>Falschaussage:</strong> $(u(x)\cdot v(x))' = u'(x)\cdot v'(x)$. <strong>Sofort-Gegenbeispiel:</strong> $f(x) = x \cdot x^5 = x^6 \implies f'(x) = 6x^5 \neq 1 \cdot 5x^4 = 5x^4$.<br>
+                        • <strong>Konstante im Zähler:</strong> Bei $f(x) = \frac{3}{2x^2-1}$ niemals Quotientenregel! Als $3\cdot(2x^2-1)^{-1}$ schreiben und per Kettenregel ableiten: $f'(x) = -3(2x^2-1)^{-2}\cdot 4x = -\frac{12x}{(2x^2-1)^2}$.<br>
+                        • <strong>Reine Potenzprodukte vorab ausmultiplizieren:</strong> $f(x) = 2\sqrt{x}(1 - x) = 2x^{\frac{1}{2}} - 2x^{\frac{3}{2}}$ oder $f(x) = \frac{1}{x}(x^4 + 3x^2) = x^3 + 3x$ – spart die komplette Produktregel!</p>
+                    </div>
+
+                    <div class="trap-box">
+                        <span class="trap-title">⚡ 3. Wahr/Falsch-Klassiker &amp; Symmetrie-Vererbung bei Verkettungen $f = u \circ v$</span>
+                        <p style="margin-bottom:0;">• <strong>Reihenfolge:</strong> Nicht kommutativ ($u \circ v \neq v \circ u$, z. B. $\sin(2x-1) \neq 2\sin(x)-1$), aber assoziativ ($u \circ (v \circ w) = (u \circ v) \circ w$).<br>
+                        • <strong>Aussage A:</strong> „$f = u \circ v$ kann nicht mehr Nullstellen haben als $u$.“ $\longrightarrow$ <strong>FALSCH!</strong> Gegenbeispiel: $u(x) = x$ (1 Nullstelle), $v(x) = x^2 - 1 \implies f(x) = x^2 - 1$ hat 2 Nullstellen ($x = \pm 1$).<br>
+                        • <strong>Aussage B:</strong> „Hat die äußere Funktion $u$ keine Nullstellen, so hat auch $f = u \circ v$ keine Nullstellen.“ $\longrightarrow$ <strong>WAHR!</strong> Denn $u(v(x)) = 0$ bräuchte ein $z = v(x)$ mit $u(z) = 0$.<br>
+                        • <strong>Symmetrie-Vererbung:</strong> Ist $G_v$ punktsymmetrisch ($v(-x)=-v(x)$) und $G_u$ achsensymmetrisch ($u(-z)=u(z)$), so gilt $f(-x) = u(v(-x)) = u(-v(x)) = u(v(x)) = f(x) \implies G_f$ ist achsensymmetrisch zur $y$-Achse!<br>
+                        • <strong>Symmetrie beim Ableiten kehrt sich um:</strong> $G_f$ achsensymmetrisch zur $y$-Achse $\implies G_{f'}$ punktsymmetrisch zum Ursprung (und umgekehrt)!</p>
+                    </div>
+                    <div class="detail-close-row">
+                        <button type="button" class="detail-close-btn" data-close-topic="1" data-close-layer="fallen">▲ Fallen einklappen</button>
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>15-Punkte-Master: Analysis – Thema 1 (Übersetzer &amp; Fallen)</span>
+                <span>Olga V.</span>
+                <span>Seite 4</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 5: BLOCK 2 (KERN) – MONOTONIE, KRÜMMUNG, EXTREM- & WENDEPUNKTE
+             ============================================================ -->
+        <div class="page">
+            <div class="card" id="block-2-core">
+                <h2 id="sec-t2">2. 📈 Monotonie, Krümmung, Extrem- &amp; Wendepunkte (NEW-Schema)</h2>
+
+                <div class="core-banner">
+                    <strong>Mathematischer Kern:</strong> Die 1. Ableitung $f'(x)$ steuert die <strong>Steigung/Monotonie</strong> (Seitenansicht: bergauf oder bergab?) und liefert über $f'(x)=0$ die Kandidaten für <strong>Extrempunkte</strong>. Die 2. Ableitung $f''(x) = (f'(x))'$ beschreibt die Änderungsrate der Steigung und steuert damit die <strong>Krümmung</strong> (Vogelperspektive: Lenker nach links oder rechts?) sowie über $f''(x)=0$ die Kandidaten für <strong>Wendepunkte</strong> (Punkte extremaler Steigung).
+                </div>
+
+                <!-- Programmierte SVG-Skizze 2: NEW-Schema untereinander -->
+                <div class="sketches-grid">
+                    <div class="sketch-card" style="grid-column: 1 / -1;">
+                        <div class="sketch-title">Pflichtteil-Skizze: Das „NEW-Schema“ ($G_f$ exakt über $G_{f'}$ mit Krümmungszonen)</div>
+                        <svg class="sketch-svg" style="max-width: 680px;" viewBox="0 0 640 280" aria-label="NEW-Schema Graph f und Ableitungsgraph f Strich">
+                            <!-- Farbzonen Krümmung -->
+                            <rect x="55" y="14" width="145" height="250" fill="rgba(217, 119, 6, 0.08)"/>
+                            <rect x="200" y="14" width="165" height="250" fill="rgba(234, 179, 8, 0.10)"/>
+                            <rect x="365" y="14" width="115" height="250" fill="rgba(217, 119, 6, 0.08)"/>
+                            <rect x="480" y="14" width="120" height="250" fill="rgba(234, 179, 8, 0.10)"/>
+                            <text x="82" y="27" font-size="10" fill="#B45309" font-weight="bold">Rechtskurve ∩ (f''&lt;0)</text>
+                            <text x="232" y="27" font-size="10" fill="#3A5A3F" font-weight="bold">Linkskurve ∪ (f''&gt;0)</text>
+                            <text x="485" y="27" font-size="10" fill="#1D6FA5" font-weight="bold">Sattelpunkt S</text>
+
+                            <!-- Obere Achsen (G_f) -->
+                            <line x1="45" y1="112" x2="615" y2="112" stroke="#2D3A2E" stroke-width="1.4" marker-end="url(#arr1)"/>
+                            <line x1="55" y1="132" x2="55" y2="15" stroke="#2D3A2E" stroke-width="1.4" marker-end="url(#arr1)"/>
+                            <text x="605" y="125" font-size="10.5" fill="#2D3A2E" font-weight="bold">x</text>
+                            <text x="30" y="30" font-size="11" fill="#2A5C8A" font-weight="bold">G_f</text>
+
+                            <!-- Untere Achsen (G_f') -->
+                            <line x1="45" y1="215" x2="615" y2="215" stroke="#2D3A2E" stroke-width="1.4" marker-end="url(#arr1)"/>
+                            <line x1="55" y1="265" x2="55" y2="150" stroke="#2D3A2E" stroke-width="1.4" marker-end="url(#arr1)"/>
+                            <text x="605" y="228" font-size="10.5" fill="#2D3A2E" font-weight="bold">x</text>
+                            <text x="25" y="165" font-size="11" fill="#3A5A3F" font-weight="bold">G_{f'}</text>
+
+                            <!-- Vertikale Hilfslinien bei x1 (H), x2 (W), x3 (T), xS (Sattelpunkt) -->
+                            <line x1="130" y1="42" x2="130" y2="255" stroke="#C0392B" stroke-width="1.4" stroke-dasharray="4,3"/>
+                            <line x1="200" y1="78" x2="200" y2="260" stroke="#2E7D32" stroke-width="1.4" stroke-dasharray="4,3"/>
+                            <line x1="275" y1="115" x2="275" y2="255" stroke="#C0392B" stroke-width="1.4" stroke-dasharray="4,3"/>
+                            <line x1="480" y1="58" x2="480" y2="255" stroke="#1D6FA5" stroke-width="1.4" stroke-dasharray="4,3"/>
+
+                            <!-- Graph G_f oben: H bei 130, W bei 200, T bei 275, W2 bei 365, Sattelpunkt S bei 480 -->
+                            <path d="M 65 98 C 90 55, 110 42, 130 42 C 160 42, 180 62, 200 78 C 225 98, 250 118, 275 118 C 315 118, 340 88, 380 72 C 420 58, 450 58, 480 58 C 515 58, 545 45, 585 22" fill="none" stroke="#2A5C8A" stroke-width="2.6"/>
+
+                            <!-- Waagerechte Tangenten an H, T, S -->
+                            <line x1="108" y1="42" x2="152" y2="42" stroke="#C0392B" stroke-width="1.8"/>
+                            <line x1="253" y1="118" x2="297" y2="118" stroke="#C0392B" stroke-width="1.8"/>
+                            <line x1="456" y1="58" x2="504" y2="58" stroke="#1D6FA5" stroke-width="1.8"/>
+
+                            <!-- Graph G_f' unten: NST(+/-) bei 130, TP bei 200, NST(-/+) bei 275, HP bei 380, Berührpunkt (0/+) bei 480 -->
+                            <path d="M 65 168 C 95 185, 115 203, 130 215 C 155 236, 178 254, 200 254 C 225 254, 252 234, 275 215 C 310 185, 345 168, 380 168 C 425 168, 452 215, 480 215 C 510 215, 545 185, 585 158" fill="none" stroke="#3A5A3F" stroke-width="2.5"/>
+
+                            <!-- Markierungspunkte oben & unten -->
+                            <circle cx="130" cy="42" r="4.5" fill="#C0392B"/><text x="116" y="35" font-size="10.5" fill="#C0392B" font-weight="bold">H(x₁)</text>
+                            <circle cx="130" cy="215" r="4.5" fill="#C0392B"/><text x="92" y="210" font-size="9.5" fill="#C0392B" font-weight="bold">VZW + → −</text>
+
+                            <circle cx="200" cy="78" r="4.5" fill="#2E7D32"/><text x="206" y="76" font-size="10.5" fill="#2E7D32" font-weight="bold">W(x₂)</text>
+                            <circle cx="200" cy="254" r="4.5" fill="#2E7D32"/><text x="172" y="269" font-size="9.5" fill="#2E7D32" font-weight="bold">TP von f'</text>
+
+                            <circle cx="275" cy="118" r="4.5" fill="#C0392B"/><text x="263" y="133" font-size="10.5" fill="#C0392B" font-weight="bold">T(x₃)</text>
+                            <circle cx="275" cy="215" r="4.5" fill="#C0392B"/><text x="281" y="229" font-size="9.5" fill="#C0392B" font-weight="bold">VZW − → +</text>
+
+                            <circle cx="480" cy="58" r="4.5" fill="#1D6FA5"/><text x="466" y="50" font-size="10.5" fill="#1D6FA5" font-weight="bold">S(x_S)</text>
+                            <circle cx="480" cy="215" r="4.5" fill="#1D6FA5"/><text x="442" y="233" font-size="9.5" fill="#1D6FA5" font-weight="bold">berührt (kein VZW!)</text>
+                        </svg>
+                        <div class="sketch-legend">
+                            <span><i class="legend-dot" style="background:#C0392B;"></i>Extrempunkt $H/T \to$ Nullstelle von $f'$ mit VZW</span>
+                            <span><i class="legend-dot" style="background:#2E7D32;"></i>Wendepunkt $W \to$ Extrempunkt von $f'$</span>
+                            <span><i class="legend-dot" style="background:#1D6FA5;"></i>Sattelpunkt $S \to$ Berührpunkt von $G_{f'}$ auf $x$-Achse</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aufklappbare Skizzen-Anleitung -->
+                <div class="collapsible-inline" data-topic="2" data-layer="skizze">
+                    <div class="tip-box">
+                        <strong>📝 NEW-Schema im Pflichtteil fehlerfrei zeichnen:</strong><br>
+                        Zeichne $G_f$ und $G_{f'}$ mit identischer $x$-Achsen-Skalierung exakt untereinander und ziehe gestrichelte Senkrechten bei allen besonderen Stellen:
+                        <strong>Rot:</strong> Hoch-/Tiefpunkte von $G_f$ werden unten zu Nullstellen von $G_{f'}$ mit VZW ($+\to-$ bei $H$, $-\to+$ bei $T$).
+                        <strong>Grün:</strong> Wendepunkte von $G_f$ werden unten zu Hoch-/Tiefpunkten von $G_{f'}$.
+                        <strong>Blau:</strong> Ein Sattelpunkt $S$ wird unten zu einem Berührpunkt von $G_{f'}$ mit der $x$-Achse ($f'(x_S)=0$ ohne VZW!).
+                        <strong>Gelb/Orange:</strong> In einer Linkskurve ($\cup$) steigt $G_{f'}$ streng monoton ($f''&gt;0$); in einer Rechtskurve ($\cap$) fällt $G_{f'}$ streng monoton ($f''&lt;0$).
+                    </div>
+                </div>
+
+                <!-- Zone 2: Formeln & Bedingungen -->
+                <div class="zones-grid">
+                    <div class="zone-panel">
+                        <h3>1. Monotonie &amp; Krümmung auf $I \subseteq D_f$</h3>
+                        <ul>
+                            <li><span class="highlight">Definition ($\forall x_1 &lt; x_2 \in I$):</span> Streng monoton wachsend: $f(x_1) &lt; f(x_2)$ (monoton: $\le$) &nbsp;|&nbsp; Streng monoton fallend: $f(x_1) &gt; f(x_2)$ (monoton: $\ge$).</li>
+                            <li><span class="highlight">Monotoniesatz:</span> $f'(x) &gt; 0 \implies$ streng monoton wachsend; $f'(x) &lt; 0 \implies$ streng monoton fallend.<br>
+                            <strong>Erweiterung für isolierte Flachpunkte:</strong> Gilt $f'(x) \ge 0$ (bzw. $\le 0$) auf $I$ und ist $f'(x) = 0$ nur an <em>einzelnen isolierten Stellen</em>, ist $f$ auf ganz $I$ trotzdem streng monoton!</li>
+                            <li><span class="highlight">Krümmungssatz:</span><br>
+                            • Über $f'$: $f'$ smw in $I \iff G_f$ Linkskurve ($\cup$); $f'$ smf $\iff G_f$ Rechtskurve ($\cap$).<br>
+                            • Über $f''$: $f''(x) &gt; 0 \implies$ linksgekrümmt; $f''(x) &lt; 0 \implies$ rechtsgekrümmt.</li>
+                        </ul>
+                    </div>
+
+                    <div class="zone-panel">
+                        <h3>2. Innere Extremstellen ($H/T$) &amp; Wendestellen ($W/S$)</h3>
+                        <p style="font-size:0.86rem; margin-bottom:5px;"><em>Voraussetzung: $x_0$ ist eine innere Stelle von $I$ (kein Rand!) und $f$ hinreichend oft diff'bar.</em></p>
+                        <ul>
+                            <li><span class="highlight">Lokale Extremstellen</span> (Notwendig: $\mathbf{f'(x_0) = 0}$):<br>
+                            • <strong>$f''$-Kriterium:</strong> $f''(x_0) &lt; 0 \implies H(x_0\mid f(x_0))$; $f''(x_0) &gt; 0 \implies T(x_0\mid f(x_0))$.<br>
+                            • <strong>VZW-Kriterium</strong> (zwingend bei $f''(x_0)=0$!): VZW von $f'$ von $+\to- \implies H$; von $-\to+ \implies T$; kein VZW ($+/+$ oder $-/-$) $\implies$ Sattelstelle $S$.</li>
+                            <li><span class="highlight">Wendestellen</span> (Notwendig: $\mathbf{f''(x_0) = 0}$):<br>
+                            • <strong>$f'''$-Kriterium:</strong> $f'''(x_0) \neq 0 \implies W(x_0\mid f(x_0))$ <em>($f'''&lt;0$: L-R-WP; $f'''&gt;0$: R-L-WP)</em>.<br>
+                            • <strong>Alternativ:</strong> VZW von $f''$ bei $x_0 \implies$ Wendestelle.</li>
+                            <li><span class="highlight">Sattelpunkt:</span> $f'(x_0) = 0 \land f''(x_0) = 0 \land (f'''(x_0) \neq 0 \text{ bzw. VZW von } f'')$.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="drawer-bar">
+                    <span class="drawer-bar-label">Mehr zu Thema 2:</span>
+                    <button type="button" class="drawer-btn" data-toggle-topic="2" data-toggle-layer="skizze"><span class="state-icon">＋</span> 📝 Skizzen-Anleitung</button>
+                    <button type="button" class="drawer-btn" data-toggle-topic="2" data-toggle-layer="rezept"><span class="state-icon">＋</span> 🧮 2-Spalten-Musteraufgabe &amp; WTR</button>
+                    <button type="button" class="drawer-btn" data-toggle-topic="2" data-toggle-layer="uebersetzer"><span class="state-icon">＋</span> 🕵️‍♀️ Klausur-Übersetzer</button>
+                    <button type="button" class="drawer-btn" data-toggle-topic="2" data-toggle-layer="fallen"><span class="state-icon">＋</span> 🏆 15-Punkte-Fallen &amp; Gegenbeispiele</button>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>15-Punkte-Master: Analysis – Thema 2 (Kern &amp; Formeln)</span>
+                <span>Olga V.</span>
+                <span>Seite 5</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 6: BLOCK 2 (PRAXIS) – 2-SPALTEN-KOCHREZEPT
+             ============================================================ -->
+        <div class="page detail-page is-closed" data-topic="2" data-page-layers="rezept">
+            <div class="card detail-card">
+                <div class="detail-section" data-topic="2" data-layer="rezept">
+                    <h3 id="sec-t2-rezept">🧮 Thema 2 – Das 2-Spalten-Kochrezept (Kurvendiskussion mit Ausklammer-Turbo)</h3>
+                    <div class="task-prompt-box">
+                        <strong>Musteraufgabe:</strong> Gegeben ist $f(x) = x \cdot (x + 2)^4$ für $x \in \mathbb{R}$. Bestimmen Sie rechnerisch alle Extrempunkte, die Monotonieintervalle sowie alle Wendepunkte von $G_f$.
+                    </div>
+
+                    <div class="two-col-recipe">
+                        <div class="two-col-head">
+                            <div>Linke Spalte: Klausur-Rechnung (15-Punkte-Vorlage)</div>
+                            <div>Rechte Spalte: Denk-Schritt, Klausur-Check &amp; WTR (CALCOOM IQ-S1)</div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">1. Ableitungen durch Ausklammern bilden</span><br>
+                                $u(x)=x \Rightarrow u'=1$; &nbsp;$v(x)=(x+2)^4 \Rightarrow v'=4(x+2)^3$<br>
+                                $f'(x) = 1\cdot(x+2)^4 + x\cdot 4(x+2)^3 = (x+2)^3 \cdot [(x+2) + 4x] = \mathbf{(5x + 2)(x + 2)^3}$<br>
+                                $f''(x) = 5(x+2)^3 + (5x+2)\cdot 3(x+2)^2 = (x+2)^2 \cdot [5(x+2) + 3(5x+2)] = \mathbf{(20x + 16)(x + 2)^2}$
+                            </div>
+                            <div class="col-think">
+                                <strong>Pflichtteil-Retter:</strong> Niemals $(x+2)^4$ ausmultiplizieren! Sofort die kleinste gemeinsame Klammerpotenz $(x+2)^3$ bzw. $(x+2)^2$ ausklammern – nur so greift gleich der Satz vom Nullprodukt!
+                            </div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">2. Notwendige Bedingung ($f'(x) = 0$)</span><br>
+                                $(5x + 2) \cdot (x + 2)^3 = 0$ (SVNP) $\implies x_1 = -0{,}4$ &nbsp;oder&nbsp; $x_2 = -2$ <em>(3-fache Nullstelle von $f'$)</em>.
+                            </div>
+                            <div class="col-think">
+                                <strong>WTR-Check im Wahlteil:</strong> <code>MODE</code> $\to$ <code>TABLE</code> $\to$ $f(x)$ von $-3$ bis $0$ (Step $0{,}2$) zeigt sofort die Kandidaten bei $-2$ und $-0{,}4$.
+                            </div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">3. Hinreichende Bedingung ($f''$ &amp; VZW kombiniert!)</span><br>
+                                • Für $x_1 = -0{,}4$: $f''(-0{,}4) = 8 \cdot 1{,}6^2 = 20{,}48 &gt; 0 \implies$ lokale Minimumstelle.<br>
+                                • Für $x_2 = -2$: $f''(-2) = (-24)\cdot 0^2 = 0 \implies$ <strong>keine Aussage über $f''$! Wechsel zu VZW von $f'$:</strong><br>
+                                Links ($x=-3$): $f'(-3) = (-13)\cdot(-1)^3 = +13 &gt; 0$ &nbsp;|&nbsp; Rechts ($x=-1$): $f'(-1) = (-3)\cdot 1^3 = -3 &lt; 0$<br>
+                                $\implies$ VZW von $+$ nach $- \implies x_2 = -2$ ist lokale Maximumstelle!
+                            </div>
+                            <div class="col-think">
+                                ⚠️ <strong>Klassische Klausurfalle:</strong> Bei $f''(-2)=0$ niemals vorschnell „Sattelpunkt“ schreiben – das $f''$-Kriterium ist hier blind!<br>
+                                💡 <strong>LK-Turbo (Vielfachheit):</strong> $(x+2)^3$ hat den ungeraden Exponenten $3 \implies$ VZW bei $x=-2$ ist garantiert!
+                            </div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">4. &amp; 5. Punkte &amp; Monotonieintervalle</span><br>
+                                • $f(-0{,}4) = -0{,}4\cdot 1{,}6^4 \approx -2{,}62 \implies \mathbf{T(-0{,}4 \mid -2{,}62)}$; &nbsp;$f(-2) = 0 \implies \mathbf{H(-2 \mid 0)}$.<br>
+                                • Streng monoton wachsend auf $\left]-\infty; -2\right]$ und $[-0{,}4; +\infty[$; streng monoton fallend auf $[-2; -0{,}4]$.
+                            </div>
+                            <div class="col-think">
+                                ⚠️ „Extrem<strong>stelle</strong>“ = nur $x$-Wert; „Extrem<strong>punkt</strong>“ = $(x\mid y)$!<br>
+                                <strong>BW-Konvention:</strong> Bei stetigem $f$ dürfen die Intervallränder mit eckigen Klammern eingeschlossen werden.
+                            </div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">6. Wendepunkte ohne $f'''$ über VZW von $f''$</span><br>
+                                $f''(x) = (20x + 16)\cdot\underbrace{(x+2)^2}_{\ge 0 \text{ (kein VZW!)}} = 0 \implies x_{W1} = -0{,}8 \lor x_{W2} = -2$.<br>
+                                • Bei $x_{W2}=-2$: $(x+2)^2 \ge 0$ hat keinen VZW $\implies$ keine Wendestelle.<br>
+                                • Bei $x_{W1}=-0{,}8$: $(20x+16)$ wechselt von $-$ nach $+$ $\implies$ Wendestelle! $\mathbf{W(-0{,}8 \mid -1{,}66)}$.
+                            </div>
+                            <div class="col-think">
+                                <strong>Zeitspar-Trick:</strong> Statt $f'''(x)$ mühsam mit Produktregel auszurechnen, liest man den Vorzeichenwechsel von $f''(x)$ direkt an den Faktoren ab!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-close-row">
+                        <button type="button" class="detail-close-btn" data-close-topic="2" data-close-layer="rezept">▲ Musteraufgabe einklappen</button>
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>15-Punkte-Master: Analysis – Thema 2 (2-Spalten-Kochrezept)</span>
+                <span>Olga V.</span>
+                <span>Seite 6</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 7: BLOCK 2 (15-PUNKTE-BOX) – ÜBERSETZER & FALLEN
+             ============================================================ -->
+        <div class="page detail-page is-closed" data-topic="2" data-page-layers="uebersetzer fallen">
+            <div class="card detail-card">
+                <div class="detail-section" data-topic="2" data-layer="uebersetzer">
+                    <h3 id="sec-t2-uebersetzer">🕵️‍♀️ Thema 2 – Klausur-Übersetzer (Deutsch $\leftrightarrow$ Mathe)</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <tr><th style="width:45%;">Formulierung in der Aufgabe</th><th>Mathematischer Klausur-Ansatz</th></tr>
+                            <tr><td>„Temperatur / Bestand steigt im Zeitraum $I$“</td><td>$f'(t) \ge 0$ auf $I$ (streng monoton wachsend).</td></tr>
+                            <tr><td>„Zunahme wird immer größer (überproportionales Wachstum)“</td><td>$f'(t) &gt; 0 \land f''(t) &gt; 0$ (steigend + Linkskurve $\cup$).</td></tr>
+                            <tr><td>„Zunahme wird immer kleiner / wächst immer langsamer“</td><td>$f'(t) &gt; 0 \land f''(t) &lt; 0$ (steigend + Rechtskurve $\cap$).</td></tr>
+                            <tr><td>„Wann nimmt der Wasserstand am stärksten zu / ab?“</td><td>Globales Max/Min der Änderungsrate $f'(t)$! Prüfe 1.) Wendestellen ($f''(t)=0$) UND 2.) die Intervallränder durch Einsetzen in $f'(t)$!</td></tr>
+                            <tr><td>„Maximaler Unterschied des Bestands im Zeitraum $[a; b]$“</td><td>Differenz $\text{Globales Max} - \text{Globales Min}$ von $f$ auf $[a; b]$ (lokale Extrema + Randwerte $f(a), f(b)$ vergleichen!).</td></tr>
+                            <tr><td>„Wann ist der Bestand maximal im Intervall $[a; b]$?“</td><td>1.) Innere Maxima ($f'(t)=0 \land f''(t)&lt;0$) berechnen. 2.) Randwerte $f(a), f(b)$ einsetzen und vergleichen!</td></tr>
+                            <tr><td>„Graph besitzt einen Sattelpunkt (Terrassenpunkt) in $x_0$“</td><td>$f'(x_0) = 0 \land f''(x_0) = 0$ (mit $f'''(x_0) \neq 0$ bzw. VZW von $f''$).<br><em>Kubischer Spezialcheck für $x^3 + bx^2 + cx + d$:</em> Sattelpunkt (keine Extrema) $\iff b^2 = 3c$!</td></tr>
+                        </table>
+                    </div>
+                    <div class="detail-close-row">
+                        <button type="button" class="detail-close-btn" data-close-topic="2" data-close-layer="uebersetzer">▲ Übersetzer einklappen</button>
+                    </div>
+                </div>
+
+                <div class="detail-section" data-topic="2" data-layer="fallen">
+                    <h3 id="sec-t2-fallen">🏆 Thema 2 – Fallen, Sonderfälle &amp; Gegenbeispiele</h3>
+                    <div class="trap-box">
+                        <span class="trap-title">⚡ 1.–3. Die drei großen Umkehrschluss-Fallen (Monotonie, Krümmung &amp; $f''$-Kriterium)</span>
+                        <p style="margin-bottom:0;">• <strong>Falle 1 (Monotoniesatz):</strong> „$f$ smw auf $I \implies \forall x\in I: f'(x) &gt; 0$“ ist <strong>FALSCH!</strong> Gegenbeispiel: $f(x) = x^3$ ist auf ganz $\mathbb{R}$ smw, aber $f'(0) = 0$.<br>
+                        • <strong>Falle 2 (Krümmungssatz):</strong> „$G_f$ Rechtskurve auf $I \implies \forall x\in I: f''(x) &lt; 0$“ ist <strong>FALSCH!</strong> Gegenbeispiel: $f(x) = -x^4$ ist auf ganz $\mathbb{R}$ rechtsgekrümmt ($f'(x)=-4x^3$ fällt streng monoton), aber $f''(0) = 0$.<br>
+                        • <strong>Falle 3 ($f''$-Kriterium):</strong> „$f'(x_0)=0 \land f''(x_0)=0 \implies$ Sattelpunkt / kein Extremum“ ist <strong>FALSCH!</strong> Gegenbeispiel: $f(x) = x^4$ (allg. $x^{2n}$ mit $2n \ge 4$) hat bei $x_0 = 0$ wegen VZW von $f'(x)=4x^3$ ($-\to+$) ein lokales Minimum $T(0\mid 0)$!</p>
+                    </div>
+
+                    <div class="trap-box">
+                        <span class="trap-title">⚡ 4. Sonderfall konstante Funktion $f(x) = c$</span>
+                        <p style="margin-bottom:0;"><strong>Fangfrage:</strong> „Wenn $f'$ bei $x_0$ keinen VZW hat, ist $x_0$ sicher keine Extremstelle?“ $\longrightarrow$ <strong>NEIN!</strong> Bei $f(x) = c$ gilt überall $f(x) \le f(x_0)$ und $f(x) \ge f(x_0)$: Nach Definition ist jeder Punkt gleichzeitig Hoch- und Tiefpunkt, obwohl $f'(x) = 0$ nirgends einen VZW hat!</p>
+                    </div>
+
+                    <div class="trap-box">
+                        <span class="trap-title">⚡ 5. Krümmung vs. Monotonie &amp; 6. Tangente als Schranke</span>
+                        <p style="margin-bottom:0;">• <strong>Falschaussage:</strong> „$f'$ streng monoton wachsend $\implies f$ streng monoton wachsend.“ <strong>FALSCH!</strong> „$f'$ smw“ heißt nur Linkskrümmung ($f''&gt;0$). Gegenbeispiel: Für $f(x) = x^2$ ist $f'(x)=2x$ überall smw, aber für $x &lt; 0$ fällt $f$ streng monoton!<br>
+                        • <strong>Tangente als Schranke:</strong> Ist $G_f$ überall rechtsgekrümmt ($f''(x) &lt; 0$), nimmt $f'(x)$ streng monoton ab $\implies G_f$ verläuft überall <strong>unterhalb</strong> (bzw. höchstens auf) jeder seiner Tangenten! (Z. B. folgt aus $f(0)=-a&lt;0$, $f'(0)=1$ und $t(x)=x-a$, dass $f(x) \le x - a &lt; 0$ auf $[0; a[$ keine Nullstelle haben kann!)</p>
+                    </div>
+                    <div class="detail-close-row">
+                        <button type="button" class="detail-close-btn" data-close-topic="2" data-close-layer="fallen">▲ Fallen einklappen</button>
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>15-Punkte-Master: Analysis – Thema 2 (Übersetzer &amp; Fallen)</span>
+                <span>Olga V.</span>
+                <span>Seite 7</span>
+            </div>
+        </div>
