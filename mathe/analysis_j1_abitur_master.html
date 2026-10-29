@@ -1092,3 +1092,1210 @@
                 <span>Seite 7</span>
             </div>
         </div>
+        <!-- ============================================================
+             SEITE 8: BLOCK 3 (KERN) – TANGENTE & NORMALE (IM PUNKT & VON AUSSEN)
+             ============================================================ -->
+        <div class="page">
+            <div class="card" id="block-3-core">
+                <h2 id="sec-t3">3. 📏 Tangente &amp; Normale (im Kurvenpunkt &amp; „von außen“)</h2>
+
+                <div class="core-banner">
+                    <strong>Mathematischer Kern:</strong> Die <strong>Tangente $t$</strong> approximiert $G_f$ in $P(u \mid f(u))$ linear mit der Steigung $m_t = f'(u)$, während die <strong>Normale $n$</strong> im selben Punkt senkrecht (orthogonal) auf $t$ steht ($m_n = -\frac{1}{f'(u)}$) und lokal kürzeste Abstände zu $G_f$ beschreibt. Liegt der gegebene Punkt $Q(q \mid r)$ <strong>nicht</strong> auf $G_f$ („von außen“), ist die Berührstelle $u$ unbekannt und wird bestimmt, indem man $Q$ als Punktprobe in die allgemeine Tangenten- bzw. Normalengleichung einsetzt.
+                </div>
+
+                <!-- Programmierte Pflichtteil-Skizzen 3A & 3B -->
+                <div class="sketches-grid">
+                    <div class="sketch-card">
+                        <div class="sketch-title">Skizze A: Tangente $t \perp$ Normale $n$ im Kurvenpunkt $P(u\mid f(u))$</div>
+                        <svg class="sketch-svg" viewBox="0 0 380 215" aria-label="Skizze Tangente und orthogonale Normale im Punkt P">
+                            <defs>
+                                <marker id="arr3a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#2D3A2E"/>
+                                </marker>
+                            </defs>
+                            <!-- Achsen -->
+                            <line x1="28" y1="185" x2="355" y2="185" stroke="#2D3A2E" stroke-width="1.5" marker-end="url(#arr3a)"/>
+                            <line x1="45" y1="202" x2="45" y2="15" stroke="#2D3A2E" stroke-width="1.5" marker-end="url(#arr3a)"/>
+                            <text x="348" y="201" font-size="11" fill="#2D3A2E" font-weight="bold">x</text>
+                            <text x="30" y="24" font-size="11" fill="#2D3A2E" font-weight="bold">y</text>
+
+                            <!-- Graph G_f (Blau): exakte Steigung -0.5 im Pixelraum bei P(165, 110) -->
+                            <path d="M 65 125 Q 165 145 265 25" fill="none" stroke="#2A5C8A" stroke-width="2.6"/>
+                            <text x="270" y="28" font-size="11" fill="#2A5C8A" font-weight="bold">G_f</text>
+
+                            <!-- Tangente t (Orange) + Steigungsdreieck -->
+                            <line x1="65" y1="160" x2="295" y2="45" stroke="#D97706" stroke-width="2.2"/>
+                            <line x1="165" y1="110" x2="215" y2="110" stroke="#D97706" stroke-width="1.5" stroke-dasharray="3,2"/>
+                            <line x1="215" y1="110" x2="215" y2="85" stroke="#D97706" stroke-width="1.5" stroke-dasharray="3,2"/>
+                            <text x="186" y="122" font-size="9.5" fill="#D97706" font-weight="bold">1</text>
+                            <text x="220" y="102" font-size="9.5" fill="#D97706" font-weight="bold">m_t = f'(u)</text>
+                            <text x="262" y="54" font-size="10.5" fill="#D97706" font-weight="bold">Tangente t</text>
+
+                            <!-- Normale n (Rot): exakt orthogonal im Pixelraum (Vektor (1,2) zu (2,-1)) -->
+                            <line x1="120" y1="20" x2="205" y2="190" stroke="#C0392B" stroke-width="2.2"/>
+                            <text x="72" y="34" font-size="10" fill="#C0392B" font-weight="bold">Normale n (m_n = −1/f'(u))</text>
+
+                            <!-- Rechter-Winkel-Bogen (90°) zwischen t und n -->
+                            <path d="M 181.1 102.0 A 18 18 0 0 1 173.0 126.1" fill="rgba(192, 57, 43, 0.12)" stroke="#2D3A2E" stroke-width="1.5"/>
+                            <circle cx="174.5" cy="113.5" r="1.8" fill="#2D3A2E"/>
+
+                            <!-- Punkt P(u | f(u)) -->
+                            <line x1="165" y1="110" x2="165" y2="185" stroke="#7F8C8D" stroke-width="1.2" stroke-dasharray="3,3"/>
+                            <text x="161" y="198" font-size="10" fill="#2D3A2E" font-weight="bold">u</text>
+                            <circle cx="165" cy="110" r="4.5" fill="#2D3A2E"/>
+                            <text x="95" y="106" font-size="10.5" fill="#2D3A2E" font-weight="bold">P(u | f(u))</text>
+                        </svg>
+                        <div class="sketch-legend">
+                            <span><i class="legend-dot" style="background:#D97706;"></i>Tangente $m_t = f'(u)$</span>
+                            <span><i class="legend-dot" style="background:#C0392B;"></i>Normale $n \perp t$ ($m_t \cdot m_n = -1$)</span>
+                        </div>
+                    </div>
+
+                    <div class="sketch-card">
+                        <div class="sketch-title">Skizze B: Tangenten &amp; Normale „von außen“ durch $Q(q\mid r) \notin G_f$</div>
+                        <svg class="sketch-svg" viewBox="0 0 380 215" aria-label="Skizze Tangenten und Normale von außen durch Punkt Q">
+                            <defs>
+                                <marker id="arr3b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#2D3A2E"/>
+                                </marker>
+                            </defs>
+                            <!-- Achsen -->
+                            <line x1="28" y1="190" x2="355" y2="190" stroke="#2D3A2E" stroke-width="1.5" marker-end="url(#arr3b)"/>
+                            <line x1="45" y1="204" x2="45" y2="15" stroke="#2D3A2E" stroke-width="1.5" marker-end="url(#arr3b)"/>
+                            <text x="348" y="204" font-size="11" fill="#2D3A2E" font-weight="bold">x</text>
+                            <text x="30" y="24" font-size="11" fill="#2D3A2E" font-weight="bold">y</text>
+
+                            <!-- Parabel G_f: y = 125 - 0.008(x-185)^2 -->
+                            <path d="M 75 28.2 Q 185 221.8 295 28.2" fill="none" stroke="#2A5C8A" stroke-width="2.6"/>
+                            <text x="78" y="25" font-size="11" fill="#2A5C8A" font-weight="bold">G_f</text>
+
+                            <!-- Zwei Tangentenstrahlen (Orange) von Q(205, 173) an B1(125, 96.2) und B2(285, 45) -->
+                            <line x1="222" y1="189.3" x2="95" y2="67.4" stroke="#D97706" stroke-width="2" stroke-dasharray="5,3"/>
+                            <line x1="195" y1="189" x2="300" y2="21" stroke="#D97706" stroke-width="2" stroke-dasharray="5,3"/>
+                            <text x="56" y="63" font-size="9.5" fill="#D97706" font-weight="bold">t₁</text>
+                            <text x="304" y="26" font-size="9.5" fill="#D97706" font-weight="bold">t₂</text>
+
+                            <!-- Grüne Lotstrecke (Normale von außen = minimaler Abstand d) zu B_N(196.3, 124) -->
+                            <line x1="205" y1="173" x2="196.3" y2="124" stroke="#2E7D32" stroke-width="2.5"/>
+                            <text x="205" y="151" font-size="9.5" fill="#2E7D32" font-weight="bold">d_min (Normale ⊥)</text>
+
+                            <!-- Unbekannte Berührpunkte B1, B2, B_N und äußerer Punkt Q -->
+                            <circle cx="125" cy="96.2" r="4" fill="#D97706"/>
+                            <text x="56" y="102" font-size="9.5" fill="#B45309" font-weight="bold">B₁(u₁|f(u₁))</text>
+
+                            <circle cx="285" cy="45" r="4" fill="#D97706"/>
+                            <text x="291" y="52" font-size="9.5" fill="#B45309" font-weight="bold">B₂(u₂|f(u₂))</text>
+
+                            <circle cx="196.3" cy="124" r="4" fill="#2E7D32"/>
+                            <text x="150" y="117" font-size="9.5" fill="#2E7D32" font-weight="bold">B_N</text>
+
+                            <circle cx="205" cy="173" r="4.8" fill="#C0392B"/>
+                            <text x="213" y="180" font-size="10.5" fill="#C0392B" font-weight="bold">Q(q | r) ∉ G_f</text>
+                        </svg>
+                        <div class="sketch-legend">
+                            <span><i class="legend-dot" style="background:#D97706;"></i>Tangenten von außen ($B_1, B_2$ gesucht)</span>
+                            <span><i class="legend-dot" style="background:#2E7D32;"></i>Lotstrecke $d_{\min}$ über Normale</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aufklappbare Skizzen-Anleitung -->
+                <div class="collapsible-inline" data-topic="3" data-layer="skizze">
+                    <div class="tip-box">
+                        <strong>📝 Pflichtteil-Skizzen selbst zeichnen:</strong>
+                        <ul style="margin-bottom:0; margin-top:4px;">
+                            <li><strong>Skizze A (Kurvenpunkt $P$):</strong> Zeichne $G_f$ mit Punkt $P(u\mid f(u))$. <strong>Orange:</strong> Tangente $t$ mit Steigung $m_t = f'(u)$. <strong>Rot:</strong> Normale $n$ exakt im $90^\circ$-Winkel (Winkelbogen mit Punkt $\cdot$ einzeichnen!) mit Steigung $m_n = -\frac{1}{f'(u)}$.</li>
+                            <li><strong>Skizze B („Von außen“ durch $Q \notin G_f$):</strong> Zeichne eine nach oben geöffnete Parabel $G_f$ und darunter/seitlich $Q(q\mid r)$. <strong>Orange:</strong> Tangentenstrahlen von $Q$ an $G_f$, die in den <em>unbekannten</em> Berührpunkten $B_1(u_1\mid f(u_1)), B_2(u_2\mid f(u_2))$ streifen. <strong>Grün:</strong> Senkrechte Lotstrecke von $Q$ auf $G_f$ (Normale von außen) zum Lotfußpunkt $B_N$ als kürzester Abstand $d(Q; G_f)$.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Zone 2: Formeln & Bedingungen -->
+                <div class="zones-grid">
+                    <div class="zone-panel">
+                        <h3>1. Tangente &amp; Normale in bekanntem Punkt $P(u\mid f(u)) \in G_f$</h3>
+                        <p style="font-size:0.86rem; margin-bottom:5px;"><em>Voraussetzung: $u \in D_f$ und $f$ differenzierbar in $u$.</em></p>
+                        <ul>
+                            <li><span class="highlight">Tangente $t$:</span> $\mathbf{t: y = f'(u) \cdot (x - u) + f(u)}$</li>
+                            <li><span class="highlight">Orthogonalität:</span> $n \perp t \iff m_t \cdot m_n = -1 \iff \mathbf{m_n = -\frac{1}{f'(u)}}$ &nbsp;<em>(falls $f'(u) \neq 0$)</em>.</li>
+                            <li><span class="highlight">Normale $n$:</span> $\mathbf{n: y = -\frac{1}{f'(u)} \cdot (x - u) + f(u)}$ &nbsp;<em>(für $f'(u) \neq 0$)</em>.</li>
+                            <li><span class="highlight">Sonderfall waagerechte Tangente ($f'(u) = 0$):</span><br>
+                            Tangente ist $y = f(u)$ $\implies$ Normale ist die <strong>vertikale Gerade $x = u$</strong> (keine Funktion!).</li>
+                        </ul>
+                    </div>
+
+                    <div class="zone-panel">
+                        <h3>2. „Von außen“ durch $Q(q\mid r) \notin G_f$ &amp; Minimaler Abstand</h3>
+                        <p style="font-size:0.86rem; margin-bottom:5px;"><em>Gesucht: Unbekannte Berührstelle $u \in D_f$ mit $B(u\mid f(u)) \in G_f$.</em></p>
+                        <ul>
+                            <li><span class="highlight">Tangente von außen (Bestimmungsgleichung für $u$):</span><br>$\mathbf{r = f'(u) \cdot (q - u) + f(u)}$</li>
+                            <li><span class="highlight">Normale von außen</span> ($f'(u) \neq 0$): $\mathbf{r = -\frac{1}{f'(u)} \cdot (q - u) + f(u)}$</li>
+                            <li><span class="highlight">Abstand $d(Q; G_f)$ über Normale:</span> Pythagoras $d(Q; B_i) = \sqrt{(q - u_i)^2 + (r - f(u_i))^2}$. Bei mehreren Lösungen $u_1, u_2, \dots$ (plus evtl. Stellen mit $f'(u)=0$ und senkrechtem Lot $x=u$) <strong>alle</strong> $d(Q; B_i)$ berechnen $\implies$ der <strong>kleinste Wert</strong> ist $d(Q; G_f)$!</li>
+                            <li><span class="highlight">Achsendreieck</span> ($S_x(x_N\mid 0), S_y(0\mid y_N)$): $A = \frac{1}{2} \cdot |x_N| \cdot |y_N|$.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="drawer-bar">
+                    <span class="drawer-bar-label">Mehr zu Thema 3:</span>
+                    <button type="button" class="drawer-btn" data-toggle-topic="3" data-toggle-layer="skizze"><span class="state-icon">＋</span> 📝 Skizzen-Anleitung</button>
+                    <button type="button" class="drawer-btn" data-toggle-topic="3" data-toggle-layer="rezept"><span class="state-icon">＋</span> 🧮 2-Spalten-Musteraufgabe &amp; WTR</button>
+                    <button type="button" class="drawer-btn" data-toggle-topic="3" data-toggle-layer="uebersetzer"><span class="state-icon">＋</span> 🕵️‍♀️ Klausur-Übersetzer</button>
+                    <button type="button" class="drawer-btn" data-toggle-topic="3" data-toggle-layer="fallen"><span class="state-icon">＋</span> 🏆 15-Punkte-Fallen &amp; Gegenbeispiele</button>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>15-Punkte-Master: Analysis – Thema 3 (Kern &amp; Formeln)</span>
+                <span>Olga V.</span>
+                <span>Seite 8</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 9: BLOCK 3 (PRAXIS) – 2-SPALTEN-KOCHREZEPT
+             ============================================================ -->
+        <div class="page detail-page is-closed" data-topic="3" data-page-layers="rezept">
+            <div class="card detail-card">
+                <div class="detail-section" data-topic="3" data-layer="rezept">
+                    <h3 id="sec-t3-rezept">🧮 Thema 3 – Das 2-Spalten-Kochrezept (Normale im Punkt &amp; Tangente von außen)</h3>
+                    <div class="task-prompt-box">
+                        <strong>Musteraufgabe:</strong> Gegeben ist $f(x) = 0{,}5x^4 + x^3 - x + 2$ auf $x \in [-2; 1]$ sowie der Punkt $Q(1 \mid 1)$.<br>
+                        <strong>Teil 1 (Punkt auf $G_f$):</strong> Bestimmen Sie die Gleichung der Normalen $n$ in $P(0 \mid f(0))$, ihre Achsenschnittpunkte, ihren Steigungswinkel $\alpha$ sowie den Flächeninhalt des Achsendreiecks.<br>
+                        <strong>Teil 2 (Punkt außerhalb von $G_f$):</strong> Bestimmen Sie alle Tangenten an $G_f$ im Intervall $[-2; 1]$, die durch $Q(1 \mid 1)$ verlaufen.
+                    </div>
+
+                    <div class="two-col-recipe">
+                        <div class="two-col-head">
+                            <div>Linke Spalte: Klausur-Rechnung (15-Punkte-Vorlage)</div>
+                            <div>Rechte Spalte: Denk-Schritt, Klausur-Check &amp; WTR (CALCOOM IQ-S1)</div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">Teil 1: Normale in $P(0 \mid f(0))$ ($u = 0$ bekannt)</span><br>
+                                • $f'(x) = 2x^3 + 3x^2 - 1$; &nbsp;$f(0) = 2 \implies P(0\mid 2)$<br>
+                                • $m_t = f'(0) = -1 \neq 0 \implies m_n = -\frac{1}{-1} = +1$<br>
+                                • $\mathbf{n: y = 1\cdot(x - 0) + 2 = x + 2}$ &nbsp;|&nbsp; $S_y(0\mid 2)$, $S_x(-2\mid 0)$<br>
+                                • Winkel: $\tan(\alpha) = 1 \implies \mathbf{\alpha = 45^\circ}$ &nbsp;|&nbsp; Dreieck: $A = \frac{1}{2}\cdot|-2|\cdot|2| = \mathbf{2\text{ FE}}$.
+                            </div>
+                            <div class="col-think">
+                                ⚠️ <strong>Vorzeichen-Falle bei $m_n$:</strong> Negativer Kehrwert! Aus $m_t = -1$ wird $m_n = +1$ (aus $m_t = 2$ würde $m_n = -\frac{1}{2}$).<br>
+                                ⚠️ <strong>Betragsstriche</strong> bei negativen Achsenabschnitten ($|-2|=2$) retten Flächenpunkte!
+                            </div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">Teil 2 – Schritt 1 &amp; 2: Allgemeine Tangente in $B(u\mid f(u))$</span><br>
+                                $f(u) = 0{,}5u^4 + u^3 - u + 2$, &nbsp;$f'(u) = 2u^3 + 3u^2 - 1$<br>
+                                $t_u: y = (2u^3 + 3u^2 - 1) \cdot (x - u) + 0{,}5u^4 + u^3 - u + 2$
+                            </div>
+                            <div class="col-think">
+                                <strong>Denk-Schritt:</strong> Probe $f(1) = 2{,}5 \neq 1 \implies Q(1\mid 1) \notin G_f$ („von außen“)!<br>
+                                ⚠️ <strong>Pflichtteil-Falle:</strong> Noch nichts für $u$ einsetzen! $Q$ ist <em>nicht</em> der Berührpunkt!
+                            </div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">Schritt 3: Punktprobe mit $Q(1 \mid 1)$ ($x = 1, y = 1$)</span><br>
+                                $1 = (2u^3 + 3u^2 - 1)(1 - u) + 0{,}5u^4 + u^3 - u + 2$<br>
+                                $\iff 1 = 2u^3 - 2u^4 + 3u^2 - 3u^3 - 1 + u + 0{,}5u^4 + u^3 - u + 2$<br>
+                                $\iff 1 = -1{,}5u^4 + 3u^2 + 1 \iff 0 = -1{,}5u^4 + 3u^2 = u^2(-1{,}5u^2 + 3)$
+                            </div>
+                            <div class="col-think">
+                                💡 <strong>Eingebauter Selbstcheck:</strong> Beim Ausmultiplizieren von $f'(u)\cdot(-u) + f(u)$ heben sich lineare Terme ($+u - u$) fast immer gegenseitig auf!
+                            </div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">Schritt 4: Berührstellen $u$ lösen &amp; Intervall $[-2; 1]$ prüfen</span><br>
+                                SVNP: $u^2 = 0 \implies u_1 = 0 \in [-2; 1]$;<br>
+                                $-1{,}5u^2 + 3 = 0 \iff u^2 = 2 \implies u_2 = -\sqrt{2} \approx -1{,}41 \in [-2; 1]$;<br>
+                                $\left[u_3 = +\sqrt{2} \approx 1{,}41 \notin [-2; 1] \text{ entfällt!}\right]$<br>
+                                Berührpunkte: $B_1(0\mid 2)$ und $B_2(-\sqrt{2} \mid 4 - \sqrt{2}) \approx B_2(-1{,}41 \mid 2{,}59)$.
+                            </div>
+                            <div class="col-think">
+                                ⚠️ <strong>Intervall-Falle:</strong> Unbedingt am Schluss prüfen, ob alle $u_i$ im geforderten Intervall liegen ($+\sqrt{2} &gt; 1$ fliegt raus!).<br>
+                                <strong>WTR-Tipp:</strong> $-\sqrt{2}$ per <code>STO</code> $\to$ <code>A</code> exakt speichern – niemals mit gerundetem $-1{,}41$ weiterrechnen!
+                            </div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">Schritt 5: Tangentengleichungen aufstellen &amp; Endkontrolle</span><br>
+                                • Für $u_1 = 0$: $f'(0) = -1, f(0) = 2 \implies \mathbf{t_1: y = -x + 2}$<br>
+                                • Für $u_2 = -\sqrt{2}$: $f'(-\sqrt{2}) = -4\sqrt{2} + 5 \approx -0{,}66$<br>
+                                $t_2: y = (5 - 4\sqrt{2})(x + \sqrt{2}) + 4 - \sqrt{2} \iff \mathbf{t_2: y = (5 - 4\sqrt{2})x + 4\sqrt{2} - 4}$<br>
+                                <em>($\approx -0{,}66x + 1{,}66$)</em>.
+                            </div>
+                            <div class="col-think">
+                                ✅ <strong>1-Sekunden-Endkontrolle:</strong> Setze $x = 1$ aus $Q(1\mid 1)$ in deine fertigen Tangenten ein:<br>
+                                $t_1(1) = -1 + 2 = 1 \;\checkmark$<br>
+                                $t_2(1) = 5 - 4\sqrt{2} + 4\sqrt{2} - 4 = 1 \;\checkmark$!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-close-row">
+                        <button type="button" class="detail-close-btn" data-close-topic="3" data-close-layer="rezept">▲ Musteraufgabe einklappen</button>
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>15-Punkte-Master: Analysis – Thema 3 (2-Spalten-Kochrezept)</span>
+                <span>Olga V.</span>
+                <span>Seite 9</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 10: BLOCK 3 (15-PUNKTE-BOX) – ÜBERSETZER & FALLEN
+             ============================================================ -->
+        <div class="page detail-page is-closed" data-topic="3" data-page-layers="uebersetzer fallen">
+            <div class="card detail-card">
+                <div class="detail-section" data-topic="3" data-layer="uebersetzer">
+                    <h3 id="sec-t3-uebersetzer">🕵️‍♀️ Thema 3 – Klausur-Übersetzer (Sachkontexte sicher knacken)</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <tr><th style="width:45%;">Formulierung im Sachkontext</th><th>Mathematischer Klausur-Ansatz</th></tr>
+                            <tr><td>„Geradliniger Kanal / Straßenstück schließt in $P(x_0\mid f(x_0))$ <strong>knickfrei</strong> an“</td><td>Tangente in bekanntem Kurvenpunkt $P$: $t(x) = f'(x_0)(x - x_0) + f(x_0)$ ($u = x_0$ bekannt).</td></tr>
+                            <tr><td>„Ab Zeitpunkt $t_0$ bleibt die momentane Änderungsrate konstant“</td><td>Graph geht bei $t_0$ knickfrei in seine Tangente $t(t) = f'(t_0)(t - t_0) + f(t_0)$ über.</td></tr>
+                            <tr><td>„Geradlinige Straße durch $Q(q\mid r)$ mündet knickfrei in die Kurve ein“</td><td><strong>Tangente von außen</strong> durch $Q$: $r = f'(u)(q - u) + f(u)$ nach Einmündungsstelle $u$ lösen.</td></tr>
+                            <tr><td>„Aquaplaning: Fahrzeug rutscht tangential aus der Kurve und trifft $Q(q\mid r)$“</td><td>Tangente von außen durch $Q$; gesucht ist der Abflugpunkt $B(u\mid f(u))$ <em>(Fahrtrichtung prüfen!)</em>.</td></tr>
+                            <tr><td>„Sichtlinie vom Boot / Ballon $Q(q\mid r)$ über Kuppe / Uferlinie“</td><td>Tangente von außen durch $Q$: $r = f'(u)(q - u) + f(u)$.</td></tr>
+                            <tr><td>„Kürzester geradliniger Verbindungsweg von $Q(q\mid r)$ zu $G_f$“</td><td><strong>Normale von außen:</strong> $r = -\frac{1}{f'(u)}(q - u) + f(u)$ nach Lotfußpunkten $B_i$ lösen $\to$ kleinstes $d(Q; B_i)$ wählen.</td></tr>
+                            <tr><td>„Brücke der Länge $L$ kreuzt Flusslauf $G_f$ orthogonal im Mittelpunkt $P(u\mid f(u))$“</td><td>Normale $n$ in $P$ aufstellen; Brückenendpunkte $S(r\mid n(r))$ auf $n$ erfüllen $d(S; P) = \sqrt{(u-r)^2 + (f(u)-n(r))^2} = \frac{L}{2}$.</td></tr>
+                        </table>
+                    </div>
+                    <div class="detail-close-row">
+                        <button type="button" class="detail-close-btn" data-close-topic="3" data-close-layer="uebersetzer">▲ Übersetzer einklappen</button>
+                    </div>
+                </div>
+
+                <div class="detail-section" data-topic="3" data-layer="fallen">
+                    <h3 id="sec-t3-fallen">🏆 Thema 3 – Fallen, Sonderfälle &amp; Gegenbeispiele</h3>
+                    <div class="trap-box">
+                        <span class="trap-title">⚡ 1. Sofort-Check $P \in G_f$? &amp; 2. Sonderfall $f'(u) = 0$ bei Normalen</span>
+                        <p style="margin-bottom:0;">• <strong>Erster Handgriff bei „Tangente durch $P(x_P\mid y_P)$“:</strong> Prüfe $f(x_P) = y_P$! Falls <strong>Ja</strong> $\to$ direkt einsetzen (1 Min.); falls <strong>Nein</strong> $\to$ 5-Schritte-Rezept mit unbekanntem $u$!<br>
+                        • <strong>Sonderfall Extrempunkt ($f'(u) = 0$):</strong> $-\frac{1}{0}$ ist verboten! Die Tangente ist dort waagerecht ($y = f(u)$), also ist die Normale die <strong>vertikale Gerade $x = u$</strong>!</p>
+                    </div>
+
+                    <div class="trap-box">
+                        <span class="trap-title">⚡ 3. Existenz- &amp; Anzahl-Falle bei Tangenten von außen (Musterbeweis an $f(x) = x^2$)</span>
+                        <p style="margin-bottom:0;"><strong>Fangfrage:</strong> „Durch jeden Punkt $Q(q_1\mid q_2)$ außerhalb von $G_f$ gibt es mindestens eine Tangente.“ $\longrightarrow$ <strong>FALSCH!</strong><br>
+                        Ansatz für $f(x)=x^2$: $q_2 = 2u(q_1 - u) + u^2 \iff u^2 - 2q_1 u + q_2 = 0 \implies u_{1,2} = q_1 \pm \sqrt{q_1^2 - q_2}$.<br>
+                        • <strong>Fall 1 ($q_2 &gt; q_1^2$, oberhalb/im Inneren der Parabel wie $Q(0\mid 1)$):</strong> Radikand $&lt; 0 \implies$ <strong>0 Tangenten!</strong><br>
+                        • <strong>Fall 2 ($q_2 = q_1^2$, auf $G_f$):</strong> <strong>1 Tangente.</strong> &nbsp;|&nbsp; <strong>Fall 3 ($q_2 &lt; q_1^2$, unterhalb):</strong> <strong>2 Tangenten.</strong></p>
+                    </div>
+
+                    <div class="trap-box">
+                        <span class="trap-title">⚡ 4. Mehrdeutigkeits-Falle bei Normalen von außen (Lokales Max statt Min!)</span>
+                        <p style="margin-bottom:0;">Nicht jede Normale durch $Q$ liefert den kürzesten Abstand! Beispiel $f(x) = x^2$ und $Q(0\mid 12{,}75)$:<br>
+                        • Normalengleichung liefert $u_{1,2} = \pm 3{,}5 \implies B_{1,2}(\pm 3{,}5 \mid 12{,}25)$ mit Abstand $d = \sqrt{12{,}25 + 0{,}25} = \sqrt{12{,}5} \approx 3{,}54$ (echtes Minimum!).<br>
+                        • Zusätzlich ist die $y$-Achse $x = 0$ Normale im Scheitel $B_3(0\mid 0)$ mit Abstand $d = 12{,}75$ (hier lokales Abstands-Maximum!). <strong>Deshalb immer alle Abstände berechnen und vergleichen!</strong></p>
+                    </div>
+                    <div class="detail-close-row">
+                        <button type="button" class="detail-close-btn" data-close-topic="3" data-close-layer="fallen">▲ Fallen einklappen</button>
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>15-Punkte-Master: Analysis – Thema 3 (Übersetzer &amp; Fallen)</span>
+                <span>Olga V.</span>
+                <span>Seite 10</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 11: BLOCK 4 (KERN) – EXTREMWERTPROBLEME MIT NEBENBEDINGUNGEN
+             ============================================================ -->
+        <div class="page">
+            <div class="card" id="block-4-core">
+                <h2 id="sec-t4">4. 🛠️ Extremwertprobleme mit Nebenbedingungen (Optimierung)</h2>
+
+                <div class="core-banner">
+                    <strong>Mathematischer Kern:</strong> Eine zu optimierende Größe (<strong>Hauptbedingung</strong>: Fläche, Volumen, Abstand, Erlös) hängt anfangs von mehreren Variablen ab. Durch Einsetzen einer geometrischen oder funktionalen <strong>Nebenbedingung</strong> entsteht eine <strong>Zielfunktion $Z(u)$</strong> in nur noch <em>einer</em> Variablen auf einem festen Definitionsbereich $D_Z = [a; b]$, deren <strong>globales Extremum</strong> über $Z'(u) = 0$ <em>und</em> den zwingenden Vergleich mit den Randwerten $Z(a), Z(b)$ bestimmt wird.
+                </div>
+
+                <!-- Programmierte Pflichtteil-Skizzen 4A & 4B -->
+                <div class="sketches-grid">
+                    <div class="sketch-card">
+                        <div class="sketch-title">Skizze A: Eingeschriebene Figur mit wanderndem Punkt $P(u\mid f(u))$</div>
+                        <svg class="sketch-svg" viewBox="0 0 380 215" aria-label="Skizze Eingeschriebenes Rechteck unter Graph G_f">
+                            <defs>
+                                <marker id="arr4a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#2D3A2E"/>
+                                </marker>
+                            </defs>
+                            <!-- Achsen -->
+                            <line x1="28" y1="180" x2="355" y2="180" stroke="#2D3A2E" stroke-width="1.5" marker-end="url(#arr4a)"/>
+                            <line x1="48" y1="200" x2="48" y2="15" stroke="#2D3A2E" stroke-width="1.5" marker-end="url(#arr4a)"/>
+                            <text x="348" y="196" font-size="11" fill="#2D3A2E" font-weight="bold">x</text>
+                            <text x="33" y="24" font-size="11" fill="#2D3A2E" font-weight="bold">y</text>
+
+                            <!-- Orange schraffiertes Rechteck A(u) = u * f(u) -->
+                            <rect x="48" y="75.5" width="134" height="104.5" fill="rgba(217, 119, 6, 0.16)" stroke="#D97706" stroke-width="2"/>
+                            <text x="86" y="132" font-size="11" fill="#B45309" font-weight="bold">A(u) = u · f(u)</text>
+                            <text x="104" y="195" font-size="10" fill="#B45309" font-weight="bold">Breite u</text>
+                            <text x="187" y="135" font-size="10" fill="#B45309" font-weight="bold">v = f(u)</text>
+
+                            <!-- Fallender Graph G_f im 1. Quadranten bis Nullstelle c = 296 -->
+                            <path d="M 48 38 Q 192 42 296 180" fill="none" stroke="#2A5C8A" stroke-width="2.6"/>
+                            <text x="235" y="72" font-size="11" fill="#2A5C8A" font-weight="bold">G_f (NB: v = f(u))</text>
+
+                            <!-- Rechte Intervallgrenze c -->
+                            <line x1="296" y1="176" x2="296" y2="184" stroke="#2D3A2E" stroke-width="1.6"/>
+                            <text x="282" y="196" font-size="10" fill="#2D3A2E" font-weight="bold">c (Rand)</text>
+
+                            <!-- Wandernder Eckpunkt P(u | f(u)) (Rot) -->
+                            <circle cx="182" cy="75.5" r="5" fill="#C0392B"/>
+                            <text x="166" y="64" font-size="10.5" fill="#C0392B" font-weight="bold">P(u | f(u)) ↔</text>
+                        </svg>
+                        <div class="sketch-legend">
+                            <span><i class="legend-dot" style="background:#C0392B;"></i>Variabler Eckpunkt $P(u\mid f(u))$</span>
+                            <span><i class="legend-dot" style="background:#D97706;"></i>Zielfläche auf $D_Z = [0; c]$</span>
+                        </div>
+                    </div>
+
+                    <div class="sketch-card">
+                        <div class="sketch-title">Skizze B: Das Randextrema-Warnbild ($Z'(b) \neq 0$, aber globales Max!)</div>
+                        <svg class="sketch-svg" viewBox="0 0 380 215" aria-label="Skizze Randextremum schlägt lokales inneres Maximum">
+                            <defs>
+                                <marker id="arr4b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#2D3A2E"/>
+                                </marker>
+                            </defs>
+                            <!-- Intervall-Zone [a; b] -->
+                            <rect x="75" y="20" width="240" height="165" fill="rgba(58, 90, 63, 0.05)"/>
+                            <line x1="75" y1="20" x2="75" y2="185" stroke="#7F8C8D" stroke-width="1.4" stroke-dasharray="4,3"/>
+                            <line x1="315" y1="20" x2="315" y2="185" stroke="#1D6FA5" stroke-width="1.6" stroke-dasharray="4,3"/>
+
+                            <!-- Achsen -->
+                            <line x1="28" y1="185" x2="355" y2="185" stroke="#2D3A2E" stroke-width="1.5" marker-end="url(#arr4b)"/>
+                            <line x1="45" y1="200" x2="45" y2="15" stroke="#2D3A2E" stroke-width="1.5" marker-end="url(#arr4b)"/>
+                            <text x="71" y="199" font-size="10.5" fill="#2D3A2E" font-weight="bold">a</text>
+                            <text x="150" y="199" font-size="10.5" fill="#2E7D32" font-weight="bold">u₁</text>
+                            <text x="311" y="199" font-size="10.5" fill="#1D6FA5" font-weight="bold">b</text>
+
+                            <!-- Zielfunktion Z(u): lokales Max bei (155, 92), lokales Min bei (235, 134), steiler Rand (315, 34) -->
+                            <path d="M 75 148 C 105 102, 130 92, 155 92 C 185 92, 208 134, 235 134 C 265 134, 292 85, 315 34" fill="none" stroke="#2D3A2E" stroke-width="2.6"/>
+
+                            <!-- Grüner innerer Hochpunkt H (Z'(u1)=0) -->
+                            <line x1="130" y1="92" x2="180" y2="92" stroke="#2E7D32" stroke-width="1.8"/>
+                            <circle cx="155" cy="92" r="4.8" fill="#2E7D32"/>
+                            <text x="86" y="83" font-size="9.5" fill="#2E7D32" font-weight="bold">Lokales Max (Z'=0)</text>
+
+                            <!-- Blauer Randpunkt R(b | Z(b)) = Globales Maximum! -->
+                            <circle cx="75" cy="148" r="4" fill="#7F8C8D"/>
+                            <circle cx="315" cy="34" r="5.5" fill="#1D6FA5"/>
+                            <text x="172" y="34" font-size="10" fill="#1D6FA5" font-weight="bold">Globales Max Z(b) &gt; Z(u₁)!</text>
+                            <text x="195" y="47" font-size="9.2" fill="#C0392B" font-weight="bold">(obwohl Z'(b) ≠ 0)</text>
+                        </svg>
+                        <div class="sketch-legend">
+                            <span><i class="legend-dot" style="background:#2E7D32;"></i>Inneres lokales Max ($Z'(u_1)=0$)</span>
+                            <span><i class="legend-dot" style="background:#1D6FA5;"></i>Globales Max am Rand $Z(b)$</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aufklappbare Skizzen-Anleitung -->
+                <div class="collapsible-inline" data-topic="4" data-layer="skizze">
+                    <div class="tip-box">
+                        <strong>📝 Pflichtteil-Skizzen selbst zeichnen:</strong>
+                        <ul style="margin-bottom:0; margin-top:4px;">
+                            <li><strong>Skizze A (Geometrie am Graphen):</strong> Zeichne $G_f$ und markiere den beweglichen Eckpunkt <strong>rot</strong> als $P(u\mid f(u))$. Bemaße die Seiten des <strong>orangen</strong> Rechtecks/Dreiecks direkt mit $u$ (bzw. $c - u$) und $f(u)$ – daran liest du Hauptbedingung und $D_Z$ fehlerfrei ab!</li>
+                            <li><strong>Skizze B (Randextrema-Begründung):</strong> Zeichne auf $[a; b]$ einen <strong>grünen</strong> inneren Hochpunkt $H(u_1\mid Z(u_1))$ mit waagerechter Tangente und lasse den Graphen danach bis zum rechten Rand $b$ noch höher ansteigen (<strong>blau</strong>: $Z(b) &gt; Z(u_1)$ mit $Z'(b) \neq 0$). Perfekt für „Begründen Sie“-Aufgaben!</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Zone 2: 5-Schritte-Schema & 4 Grundtypen -->
+                <div class="zones-grid">
+                    <div class="zone-panel">
+                        <h3>1. Das verbindliche 5-Schritte-Lösungsschema</h3>
+                        <ol style="margin-bottom:0;">
+                            <li><span class="highlight">Hauptbedingung (HB):</span> Zu optimierende Größe als Formel (z. B. $A(u, v) = u \cdot v$).</li>
+                            <li><span class="highlight">Nebenbedingung (NB):</span> Zusammenhang aus Kurve/Vorgabe nach einer Variablen auflösen ($v = g(u)$).</li>
+                            <li><span class="highlight">Zielfunktion &amp; $D_Z$:</span> $Z(u) = A(u, g(u))$ vereinfachen + <strong>Definitionsbereich $D_Z = [a; b]$</strong> festlegen (alle Längen/Radien $\ge 0$!).</li>
+                            <li><span class="highlight">Innere Extrema:</span> $Z'(u) = 0$ für $u_i \in \left]a; b\right[$ lösen + hinreichende Bedingung ($Z''(u_i) \lessgtr 0$ oder VZW).</li>
+                            <li><span class="highlight">Globaler Randwert-Check:</span> $\mathbf{\max/\min\{Z(u_i),\; Z(a),\; Z(b)\}}$ (bzw. $\lim$ bei offenen Rändern) vergleichen &amp; alle gefragten Größen + Antwortsatz angeben!</li>
+                        </ol>
+                    </div>
+
+                    <div class="zone-panel">
+                        <h3>2. Die 4 Abitur-Grundtypen (Formel-Baukasten)</h3>
+                        <ul style="margin-bottom:0;">
+                            <li><span class="highlight">Typ A (Koordinaten-Geometrie mit $P(u\mid f(u))$):</span><br>
+                            • Rechteck mit $O(0\mid 0)$: $A(u) = u\cdot f(u)$, $U(u) = 2u + 2f(u)$.<br>
+                            • Rechteck bis Kante $x = c$: $A(u) = |c - u|\cdot f(u)$.<br>
+                            • Dreieck auf $x$-Achse von $a$ bis $u$: $A(u) = \frac{1}{2}|u - a|\cdot f(u)$.</li>
+                            <li><span class="highlight">Typ B (Körper):</span><br>
+                            • Schachtel aus $a \times b$: $V(x) = (a - 2x)(b - 2x)\cdot x$ ($0 &lt; x &lt; \frac{\min(a,b)}{2}$).<br>
+                            • Zylinder <em>oben offen</em>: $V = \pi r^2 h$, $\mathbf{O = \pi r^2 + 2\pi r h}$ <em>(geschlossen: $+2\pi r^2$)</em>.<br>
+                            • Quader quadratisch <em>oben offen</em>: $V = a^2 h$, $O = a^2 + 4ah$.<br>
+                            • Pyramide quadratisch (Seitenkante $s$): $V = \frac{1}{3}a^2 h$ mit $a^2 = 2(s^2 - h^2)$.</li>
+                            <li><span class="highlight">Typ C (Abstand $Q(q\mid r)$ zu $G_f$ – Radikanden-Trick!):</span><br>
+                            $d(u) = \sqrt{(q-u)^2 + (r-f(u))^2}$ minimal $\iff$ <strong>Radikand $R(u) = (q-u)^2 + (r-f(u))^2$ minimal</strong> ($R'(u)=0$ spart die Wurzelableitung!).</li>
+                            <li><span class="highlight">Typ D (Preis-Absatz):</span> $E(x) = (p_0 - k\cdot x)\cdot(m_0 + \Delta m\cdot x)$.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="drawer-bar">
+                    <span class="drawer-bar-label">Mehr zu Thema 4:</span>
+                    <button type="button" class="drawer-btn" data-toggle-topic="4" data-toggle-layer="skizze"><span class="state-icon">＋</span> 📝 Skizzen-Anleitung</button>
+                    <button type="button" class="drawer-btn" data-toggle-topic="4" data-toggle-layer="rezept"><span class="state-icon">＋</span> 🧮 2-Spalten-Musteraufgaben &amp; WTR</button>
+                    <button type="button" class="drawer-btn" data-toggle-topic="4" data-toggle-layer="uebersetzer"><span class="state-icon">＋</span> 🕵️‍♀️ Klausur-Übersetzer</button>
+                    <button type="button" class="drawer-btn" data-toggle-topic="4" data-toggle-layer="fallen"><span class="state-icon">＋</span> 🏆 15-Punkte-Fallen &amp; Gegenbeispiele</button>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>15-Punkte-Master: Analysis – Thema 4 (Kern &amp; Formeln)</span>
+                <span>Olga V.</span>
+                <span>Seite 11</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 12: BLOCK 4 (PRAXIS) – 2-SPALTEN-KOCHREZEPT
+             ============================================================ -->
+        <div class="page detail-page is-closed" data-topic="4" data-page-layers="rezept">
+            <div class="card detail-card">
+                <div class="detail-section" data-topic="4" data-layer="rezept">
+                    <h3 id="sec-t4-rezept">🧮 Thema 4 – Das 2-Spalten-Kochrezept (Körper-Optimierung &amp; Abstands-Minimum)</h3>
+                    <div class="task-prompt-box">
+                        <strong>Musteraufgabe (2 Klausur-Archetypen):</strong><br>
+                        <strong>Teil 1 (Körper):</strong> Ein oben offener zylindrischer Messbecher soll das Volumen $V = 1000\text{ cm}^3$ ($= 1\text{ l}$) fassen. Bestimmen Sie Radius $r$ und Höhe $h$ für minimalen Materialverbrauch (Oberfläche $O$).<br>
+                        <strong>Teil 2 (Abstand mit Radikanden-Trick):</strong> Ein Tunnelquerschnitt wird durch $f(x) = -0{,}5x^2 + 4{,}5$ ($x \in [-3; 3]$, in m) beschrieben. Ein mittig fahrender Lkw hat seine rechte obere Ecke in $E(1{,}2 \mid 3{,}5)$. Berechnen Sie den minimalen Abstand von $E$ zur Tunnelwand.
+                    </div>
+
+                    <div class="two-col-recipe">
+                        <div class="two-col-head">
+                            <div>Linke Spalte: Klausur-Rechnung (15-Punkte-Vorlage)</div>
+                            <div>Rechte Spalte: Denk-Schritt, Klausur-Check &amp; WTR (CALCOOM IQ-S1)</div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">Teil 1 – Schritt 1 bis 3: HB, NB &amp; Zielfunktion $O(r)$</span><br>
+                                • <strong>HB:</strong> $O(r, h) = \pi r^2 + 2\pi r h \to \min$ <em>(oben offen = nur 1 Boden!)</em><br>
+                                • <strong>NB:</strong> $\pi r^2 h = 1000 \iff h = \frac{1000}{\pi r^2}$ ($r &gt; 0$)<br>
+                                • <strong>ZF:</strong> $O(r) = \pi r^2 + 2\pi r \cdot \frac{1000}{\pi r^2} = \pi r^2 + \frac{2000}{r} = \pi r^2 + 2000r^{-1}$, $D_O = \mathbb{R}^+$.
+                            </div>
+                            <div class="col-think">
+                                💡 <strong>Strategie-Wahl:</strong> Immer nach der Variablen in 1. Potenz ($h$ statt $r^2$) auflösen – vermeidet Wurzeln!<br>
+                                Vor dem Ableiten $\frac{2000}{r}$ zwingend als $2000r^{-1}$ schreiben!
+                            </div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">Teil 1 – Schritt 4 &amp; 5: Extremum, Ränder &amp; Zweitgröße $h$</span><br>
+                                • $O'(r) = 2\pi r - \frac{2000}{r^2} = 0 \iff 2\pi r^3 = 2000 \iff r^3 = \frac{1000}{\pi} \iff \mathbf{r = \frac{10}{\sqrt[3]{\pi}} \approx 6{,}83\text{ cm}}$<br>
+                                • $O''(r) = 2\pi + \frac{4000}{r^3} &gt; 0$ ($\forall r &gt; 0$) $\implies$ lokales Minimum.<br>
+                                • Randverhalten: $\lim_{r\to 0^+} O(r) = +\infty$ und $\lim_{r\to\infty} O(r) = +\infty \implies$ globales Min!<br>
+                                • Zweitgröße: $\mathbf{h = \frac{1000}{\pi r^2} = \frac{10}{\sqrt[3]{\pi}} = r \approx 6{,}83\text{ cm}}$ &nbsp;($O_{\min} \approx 439{,}38\text{ cm}^2$).
+                            </div>
+                            <div class="col-think">
+                                <strong>WTR (CALCOOM IQ-S1):</strong> Kubikwurzel über <code>SHIFT</code> $\to$ $x^3$ ($\sqrt[3]{\square}$), Ergebnis sofort mit <code>STO</code> $\to$ <code>A</code> speichern!<br>
+                                ✅ <strong>15-Punkte-Plausibilitätscheck:</strong> Beim optimalen Zylinder gilt <em>oben offen</em> immer $\mathbf{h = r}$ (geschlossen immer $\mathbf{h = 2r}$)!
+                            </div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">Teil 2 – Schritt 1 &amp; 2: Abstandsansatz &amp; Radikanden-Trick</span><br>
+                                Für $P(u \mid -0{,}5u^2 + 4{,}5)$ auf dem rechten Tunnelbogen ($u \in [0; 3]$):<br>
+                                $d(u) = \sqrt{(1{,}2 - u)^2 + (3{,}5 - (-0{,}5u^2 + 4{,}5))^2} = \sqrt{(1{,}2 - u)^2 + (0{,}5u^2 - 1)^2}$<br>
+                                Da $x \mapsto \sqrt{x}$ streng monoton wächst, wird $d(u)$ genau dort minimal, wo der Radikand minimal ist:<br>
+                                $R(u) = (1{,}44 - 2{,}4u + u^2) + (0{,}25u^4 - u^2 + 1) = \mathbf{0{,}25u^4 - 2{,}4u + 2{,}44}$.
+                            </div>
+                            <div class="col-think">
+                                🔥 <strong>Zeitspar-Wunder:</strong> Ohne Wurzel kein Kettenregel-Bruch! Außerdem heben sich $+u^2$ und $-u^2$ beim Ausmultiplizieren komplett weg!
+                            </div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">Teil 2 – Schritt 3: Minimum &amp; Rückrechnung mit Wurzel!</span><br>
+                                • $R'(u) = u^3 - 2{,}4 = 0 \iff u_1 = \sqrt[3]{2{,}4} \approx 1{,}34 \in [0; 3]$; &nbsp;$R''(u) = 3u^2 &gt; 0 \implies$ TP.<br>
+                                • Minimaler Abstand: $\mathbf{d_{\min} = \sqrt{R(\sqrt[3]{2{,}4})} \approx \sqrt{0{,}029} \approx 0{,}17\text{ m}}$ ($17\text{ cm}$).<br>
+                                • Randcheck: $d(0) = \sqrt{2{,}44} \approx 1{,}56\text{ m}$, $d(3) = \sqrt{15{,}25} \approx 3{,}91\text{ m} \implies 0{,}17\text{ m}$ ist global minimal!
+                            </div>
+                            <div class="col-think">
+                                ⚠️ <strong>Tödliche End-Falle:</strong> Am Schluss MUSS für den echten Abstand $d_{\min}$ wieder die Wurzel $\sqrt{R(u_1)}$ gezogen werden ($0{,}029\text{ m}^2$ wäre das Abstandsquadrat)!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-close-row">
+                        <button type="button" class="detail-close-btn" data-close-topic="4" data-close-layer="rezept">▲ Musteraufgaben einklappen</button>
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>15-Punkte-Master: Analysis – Thema 4 (2-Spalten-Kochrezept)</span>
+                <span>Olga V.</span>
+                <span>Seite 12</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 13: BLOCK 4 (15-PUNKTE-BOX) – ÜBERSETZER & FALLEN
+             ============================================================ -->
+        <div class="page detail-page is-closed" data-topic="4" data-page-layers="uebersetzer fallen">
+            <div class="card detail-card">
+                <div class="detail-section" data-topic="4" data-layer="uebersetzer">
+                    <h3 id="sec-t4-uebersetzer">🕵️‍♀️ Thema 4 – Klausur-Übersetzer (Text $\leftrightarrow$ HB &amp; NB)</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <tr><th style="width:45%;">Aufgabentyp im Text</th><th>Hauptbedingung (HB) &amp; Nebenbedingung (NB)</th></tr>
+                            <tr><td>„Achsenparalleles Rechteck mit Eckpunkten $O(0\mid 0)$ und $P(u\mid f(u))$ im 1. Quadranten“</td><td>HB Fläche: $A(u) = u \cdot f(u)$ &nbsp;|&nbsp; HB Umfang: $U(u) = 2u + 2f(u)$.</td></tr>
+                            <tr><td>„Rechteck aus Glasplatte mit Bruchkante $f(x)$ und geraden Kanten $x=a, y=b$“</td><td>Breite $= |a - u|$, Höhe $= |b - f(u)|$ (Skizze zeichnen! Nicht blind $u\cdot f(u)$ nehmen!).</td></tr>
+                            <tr><td>„400-m-Stadion (Rechteck $x \times 2r$ + 2 angesetzte Halbkreise = 1 Vollkreis)“</td><td>HB Spielfeld: $A(r,x) = 2r\cdot x \to \max$ &nbsp;|&nbsp; NB Laufbahn: $2x + 2\pi r = 400$.</td></tr>
+                            <tr><td>„Tunnel / Fenster aus Rechteck ($2r \times x$) mit aufgesetztem Halbkreis“</td><td>HB Querschnitt: $A(r,x) = 2rx + \frac{1}{2}\pi r^2$ &nbsp;|&nbsp; NB Umfang (mit Boden): $U = 2r + 2x + \pi r$ <em>(ohne innere Trennlinie!)</em>.</td></tr>
+                            <tr><td>„Bei Preis $p_0$ werden $m_0$ Stück verkauft; je Senkung um $\Delta p$ steigen Verkäufe um $\Delta m$“</td><td>Mit $x =$ Anzahl der Preissenkungen: $E(x) = (p_0 - \Delta p \cdot x) \cdot (m_0 + \Delta m \cdot x)$.</td></tr>
+                        </table>
+                    </div>
+                    <div class="detail-close-row">
+                        <button type="button" class="detail-close-btn" data-close-topic="4" data-close-layer="uebersetzer">▲ Übersetzer einklappen</button>
+                    </div>
+                </div>
+
+                <div class="detail-section" data-topic="4" data-layer="fallen">
+                    <h3 id="sec-t4-fallen">🏆 Thema 4 – Fallen, Sonderfälle &amp; Gegenbeispiele</h3>
+                    <div class="trap-box">
+                        <span class="trap-title">⚡ 1. Die Randextremum-Falle (2 klassische Fälle, warum $Z'(u)=0$ scheitert!)</span>
+                        <p style="margin-bottom:0;"><strong>Aussage:</strong> „Das globale Maximum liegt immer bei einer Nullstelle von $Z'$.“ $\longrightarrow$ <strong>FALSCH!</strong><br>
+                        • <strong>Fall A (Scheitel außerhalb von $D_Z$):</strong> Bei $A(u) = -2u^2 + 60u$ auf $D_A = [20; 30]$ liegt $Z'(u)=0$ bei $u_1 = 15 \notin [20; 30]$! Da $A$ auf $[20; 30]$ streng monoton fällt, liegt das globale Maximum am linken Rand $u = 20$ ($A(20)=400 &gt; A(30)=0$).<br>
+                        • <strong>Fall B (Rand übertrifft inneres Max):</strong> Siehe Skizze B oben ($Z(b) &gt; Z(u_1)$).</p>
+                    </div>
+
+                    <div class="trap-box">
+                        <span class="trap-title">⚡ 2. Die „Innenwand“-Falle &amp; 3. Flächenmaximum $\neq$ Umfangsmaximum!</span>
+                        <p style="margin-bottom:0;">• <strong>Innenwand / Mauer:</strong> Beim Halbkreis-Tunnel gehört die gestrichelte Linie $2r$ zwischen Rechteck und Halbkreis <em>nicht</em> zum Außenumfang! Bei einem Weidezaun entlang einer Hausmauer braucht die Mauerseite keinen Zaun ($U = a + 2b$ statt $2a + 2b$).<br>
+                        • <strong>Fläche $\neq$ Umfang:</strong> Unter $f(x) = 9 - x^2$ ($u \in [0; 3]$) ist der Umfang $U(u) = 4u + 2(9-u^2)$ maximal bei $u = 1$, die Fläche $A(u) = 2u(9-u^2)$ aber erst bei $u = \sqrt{3} \approx 1{,}73$! <em>(Ausnahme: rechtwinkliges Dreieck mit fester Hypotenuse $\to$ beides beim gleichschenkligen Dreieck!)</em></p>
+                    </div>
+
+                    <div class="trap-box">
+                        <span class="trap-title">⚡ 4. Einheiten- &amp; Ganzzahligkeits-Falle im Sachkontext</span>
+                        <p style="margin-bottom:0;">• <strong>Einheiten angleichen:</strong> $1\text{ l} = 1\text{ dm}^3 = 1000\text{ cm}^3$ und $1000\text{ l} = 1\text{ m}^3$!<br>
+                        • <strong>Ganze Stückzahlen / ganze Euro-Schritte:</strong> Liefert $E'(x) = 0$ einen krummen Wert wie $x = 4{,}1\overline{6}$, wenn nur ganzzahlige Schritte erlaubt sind, <strong>nicht blind abrunden</strong>, sondern beide Nachbarn $E(4)$ und $E(5)$ berechnen und vergleichen!</p>
+                    </div>
+                    <div class="detail-close-row">
+                        <button type="button" class="detail-close-btn" data-close-topic="4" data-close-layer="fallen">▲ Fallen einklappen</button>
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>15-Punkte-Master: Analysis – Thema 4 (Übersetzer &amp; Fallen)</span>
+                <span>Olga V.</span>
+                <span>Seite 13</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 14: BLOCK 5 (KERN) – DIE e-FUNKTION, ABLEITUNGEN & TRANSFORMATIONEN
+             ============================================================ -->
+        <div class="page">
+            <div class="card" id="block-5-core">
+                <h2 id="sec-t5">5. 🚀 Die $e$-Funktion, Ableitungen &amp; Transformationen</h2>
+
+                <div class="core-banner">
+                    <strong>Mathematischer Kern:</strong> Bei jeder Exponentialfunktion $f(x) = b^x$ ist die Ableitung proportional zum Funktionswert: $f'(x) = f'(0) \cdot b^x$. Die <strong>Euler’sche Zahl $e \approx 2{,}71828$</strong> ist exakt diejenige irrationale Basis mit Anfangssteigung $f'(0) = 1$, sodass die <strong>natürliche Exponentialfunktion $f(x) = e^x$</strong> an jeder Stelle mit ihrer eigenen Ableitung übereinstimmt ($\mathbf{f'(x) = e^x}$).
+                </div>
+
+                <!-- Programmierte Pflichtteil-Skizze 5 -->
+                <div class="sketches-grid">
+                    <div class="sketch-card" style="grid-column: 1 / -1;">
+                        <div class="sketch-title">Pflichtteil-Skizze: $f(x) = e^x$, Spiegelgraph $g(x) = e^{-x}$, Asymptote $y=0$ &amp; Subtangenten-Trick ($u - 1$)</div>
+                        <svg class="sketch-svg" style="max-width: 640px;" viewBox="0 0 580 225" aria-label="Skizze e-Funktion, Spiegelgraph e hoch minus x und Subtangenten-Trick">
+                            <defs>
+                                <marker id="arr5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#2D3A2E"/>
+                                </marker>
+                            </defs>
+                            <!-- Koordinatenachsen: Ursprung O(270, 185), 1 LE_x = 65px, 1 LE_y = 50px -->
+                            <line x1="45" y1="185" x2="535" y2="185" stroke="#2D3A2E" stroke-width="1.5" marker-end="url(#arr5)"/>
+                            <line x1="270" y1="208" x2="270" y2="12" stroke="#2D3A2E" stroke-width="1.5" marker-end="url(#arr5)"/>
+                            <text x="526" y="200" font-size="11" fill="#2D3A2E" font-weight="bold">x</text>
+                            <text x="255" y="22" font-size="11" fill="#2D3A2E" font-weight="bold">y</text>
+
+                            <!-- Waagerechte Asymptote y = 0 (Rot gestrichelt) -->
+                            <line x1="50" y1="183.5" x2="265" y2="183.5" stroke="#C0392B" stroke-width="2.2" stroke-dasharray="6,4"/>
+                            <text x="58" y="175" font-size="10" fill="#C0392B" font-weight="bold">Asymptote y = 0 (für x → −∞)</text>
+
+                            <!-- Spiegelgraph g(x) = e^{-x} (Grün) -->
+                            <path d="M 192 18 C 205 50, 232 102, 270 135 C 312 165, 365 178, 485 183.5" fill="none" stroke="#2E7D32" stroke-width="2.3" stroke-dasharray="5,3"/>
+                            <text x="115" y="34" font-size="10.5" fill="#2E7D32" font-weight="bold">g(x) = e⁻ˣ (Spiegelung an y-Achse)</text>
+
+                            <!-- Hauptgraph f(x) = e^x (Blau) -->
+                            <path d="M 55 183.5 C 175 178, 228 165, 270 135 C 308 102, 335 50, 348 18" fill="none" stroke="#2A5C8A" stroke-width="2.8"/>
+                            <text x="355" y="28" font-size="11.5" fill="#2A5C8A" font-weight="bold">f(x) = eˣ</text>
+
+                            <!-- Subtangenten-Trick (Orange): Tangente in P(u | e^u) bei u=0.8 (322, 73.7) schneidet x-Achse exakt bei u-1=-0.2 (257, 185)! -->
+                            <line x1="245" y1="205.5" x2="352" y2="22.3" stroke="#D97706" stroke-width="2.1"/>
+                            <line x1="257" y1="185" x2="322" y2="185" stroke="#D97706" stroke-width="3.2"/>
+                            <line x1="322" y1="185" x2="322" y2="73.7" stroke="#D97706" stroke-width="1.6" stroke-dasharray="4,3"/>
+                            <circle cx="257" cy="185" r="4" fill="#D97706"/>
+                            <circle cx="322" cy="73.7" r="4.5" fill="#D97706"/>
+                            <text x="218" y="201" font-size="9.8" fill="#B45309" font-weight="bold">N(u−1 | 0)</text>
+                            <text x="280" y="199" font-size="9.5" fill="#D97706" font-weight="bold">Δx = 1</text>
+                            <text x="328" y="132" font-size="9.8" fill="#D97706" font-weight="bold">Δy = eᵘ ⇒ m = eᵘ/1 = eᵘ</text>
+                            <text x="330" y="76" font-size="10.5" fill="#B45309" font-weight="bold">P(u | eᵘ)</text>
+
+                            <!-- Pflicht-Ankerpunkte A(0|1) und B'(-1|e) -->
+                            <circle cx="270" cy="135" r="4.5" fill="#2D3A2E"/>
+                            <text x="277" y="139" font-size="10.5" fill="#2D3A2E" font-weight="bold">A(0 | 1) [⊥ Schnitt!]</text>
+                            <circle cx="205" cy="49.1" r="3.8" fill="#2E7D32"/>
+                            <text x="148" y="54" font-size="9.5" fill="#2E7D32" font-weight="bold">B'(−1 | e)</text>
+                        </svg>
+                        <div class="sketch-legend">
+                            <span><i class="legend-dot" style="background:#2A5C8A;"></i>$f(x)=e^x$ ($f'(x)=e^x$)</span>
+                            <span><i class="legend-dot" style="background:#2E7D32;"></i>$g(x)=e^{-x}$ ($f\perp g$ in $A(0\mid 1)$)</span>
+                            <span><i class="legend-dot" style="background:#D97706;"></i>Subtangenten-Satz: Tangente in $u$ trifft $x$-Achse immer bei $u - 1$!</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aufklappbare Skizzen-Anleitung -->
+                <div class="collapsible-inline" data-topic="5" data-layer="skizze">
+                    <div class="tip-box">
+                        <strong>📝 Pflichtteil-Skizze &amp; Geometrischer Tangenten-Trick:</strong><br>
+                        • <strong>Ankerpunkte für $f(x)=e^x$:</strong> $A(0\mid 1)$, $B(1\mid e \approx 2{,}72)$ und $(-1\mid \frac{1}{e} \approx 0{,}37)$, dazu <strong>rot gestrichelt</strong> die Asymptote $y = 0$ für $x \to -\infty$.<br>
+                        • <strong>Der Subtangenten-Trick (Orange):</strong> Willst du in $P(u\mid e^u)$ ohne Rechnen die exakte Tangente zeichnen, gehe auf der $x$-Achse genau <strong>$1$ Einheit nach links</strong> zu $N(u - 1 \mid 0)$ und verbinde $N$ mit $P$ ($\Delta x = 1, \Delta y = e^u \implies m_t = \frac{e^u}{1} = e^u$)! (Z. B. geht die Ursprungstangente durch $(0\mid 0)$ zwingend durch $B(1\mid e)$!)
+                    </div>
+                </div>
+
+                <!-- Zone 2: Formeln, Produktregel-Pflicht & Transformationen -->
+                <div class="zones-grid">
+                    <div class="zone-panel">
+                        <h3>1. Stamm-Eigenschaften &amp; Ableitungsregeln</h3>
+                        <ul>
+                            <li><span class="highlight">Definition von $e \approx 2{,}71828$:</span> $\lim_{h\to 0}\frac{e^h - 1}{h} = 1$, bzw. $e = \lim_{n\to\infty}\left(1 + \frac{1}{n}\right)^n = 1 + \frac{1}{1!} + \frac{1}{2!} + \frac{1}{3!} + \dots$</li>
+                            <li><span class="highlight">Stammfunktion &amp; Eigenschaften von $e^x$:</span> $D_f = \mathbb{R}$, $W_f = \mathbb{R}^+ = \left]0; \infty\right[$; $\mathbf{f^{(n)}(x) = e^x}$; streng positiv ($\mathbf{e^x &gt; 0}$: keine Nullstellen, keine Extrema, keine Wendestellen, überall smw &amp; linksgekrümmt); $\lim_{x\to -\infty} e^x = 0$ (Asymptote $y=0$), $\lim_{x\to +\infty} e^x = +\infty$.</li>
+                            <li><span class="highlight">Kettenregel:</span> $\mathbf{\left(e^{g(x)}\right)' = g'(x) \cdot e^{g(x)}}$ &nbsp;|&nbsp; Linear: $\left(a\cdot e^{kx+c}\right)^{(n)} = a\cdot k^n \cdot e^{kx+c}$.</li>
+                            <li><span class="highlight">Produkt- &amp; Kettenregel (Ausklammer-Pflicht!):</span><br>
+                            $\mathbf{\left(u(x) \cdot e^{g(x)}\right)' = \left[u'(x) + u(x) \cdot g'(x)\right] \cdot e^{g(x)}}$.</li>
+                        </ul>
+                    </div>
+
+                    <div class="zone-panel">
+                        <h3>2. Transformationen zu $g(x) = a \cdot e^{b(x - c)} + d$</h3>
+                        <ul>
+                            <li><span class="highlight">$c$ ($x$-Verschiebung):</span> $e^{x + c}$ um $c$ nach <strong>links</strong>; $e^{x - c}$ um $c$ nach <strong>rechts</strong> (Vorzeichen-Umkehr!).</li>
+                            <li><span class="highlight">$d$ ($y$-Verschiebung):</span> Um $d$ nach oben/unten $\implies$ <strong>neue waagerechte Asymptote $y = d$</strong>!</li>
+                            <li><span class="highlight">$a$ ($y$-Streckung / Spiegelung):</span> Streckung in $y$-Richtung mit $|a|$; für $a &lt; 0$ zusätzlich <strong>Spiegelung an der $x$-Achse</strong>.</li>
+                            <li><span class="highlight">$b$ ($x$-Streckung / Spiegelung):</span> Streckung in $x$-Richtung mit $\frac{1}{|b|}$; für $b = -1$ ($e^{-x}$) <strong>Spiegelung an der $y$-Achse</strong> ($\lim_{x\to +\infty} e^{-x} = 0$).</li>
+                            <li><span class="highlight">Potenzgesetze:</span> $e^u \cdot e^v = e^{u+v}$ &nbsp;|&nbsp; $\frac{e^u}{e^v} = e^{u-v}$ &nbsp;|&nbsp; $e^{-x} = \frac{1}{e^x}$ &nbsp;|&nbsp; $(e^u)^r = e^{u\cdot r}$.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="drawer-bar">
+                    <span class="drawer-bar-label">Mehr zu Thema 5:</span>
+                    <button type="button" class="drawer-btn" data-toggle-topic="5" data-toggle-layer="skizze"><span class="state-icon">＋</span> 📝 Skizzen-Anleitung</button>
+                    <button type="button" class="drawer-btn" data-toggle-topic="5" data-toggle-layer="rezept"><span class="state-icon">＋</span> 🧮 2-Spalten-Musteraufgaben &amp; $e^x = ax$</button>
+                    <button type="button" class="drawer-btn" data-toggle-topic="5" data-toggle-layer="uebersetzer"><span class="state-icon">＋</span> 🕵️‍♀️ Klausur-Übersetzer</button>
+                    <button type="button" class="drawer-btn" data-toggle-topic="5" data-toggle-layer="fallen"><span class="state-icon">＋</span> 🏆 15-Punkte-Fallen &amp; Wahr/Falsch</button>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>15-Punkte-Master: Analysis – Thema 5 (Kern &amp; Formeln)</span>
+                <span>Olga V.</span>
+                <span>Seite 14</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 15: BLOCK 5 (PRAXIS) – 2-SPALTEN-KOCHREZEPT
+             ============================================================ -->
+        <div class="page detail-page is-closed" data-topic="5" data-page-layers="rezept">
+            <div class="card detail-card">
+                <div class="detail-section" data-topic="5" data-layer="rezept">
+                    <h3 id="sec-t5-rezept">🧮 Thema 5 – Das 2-Spalten-Kochrezept (Schar-Ableitung, Tangente $t_u$ &amp; Parameter-Fallunterscheidung)</h3>
+                    <div class="task-prompt-box">
+                        <strong>Musteraufgabe (Pflichtteil &amp; 15-Punkte-Transfer):</strong><br>
+                        <strong>1A:</strong> Leiten Sie die Funktionenschar $f_k(x) = (3x - 2x^2) \cdot e^{-kx}$ ($k \in \mathbb{R}\setminus\{0\}$) nach $x$ ab und vereinfachen Sie maximal.<br>
+                        <strong>1B:</strong> Stellen Sie für $g(x) = e^x$ die allgemeine Tangente $t_u$ in $A(u \mid e^u)$ auf und bestimmen Sie ihre Achsenschnittpunkte (speziell auch für $u = 2$).<br>
+                        <strong>Teil 2 (AFB III):</strong> Untersuchen Sie mithilfe von 1B, wie viele Lösungen die Gleichung $e^x = a \cdot x$ in Abhängigkeit von $a \in \mathbb{R}$ besitzt.
+                    </div>
+
+                    <div class="two-col-recipe">
+                        <div class="two-col-head">
+                            <div>Linke Spalte: Klausur-Rechnung (15-Punkte-Vorlage)</div>
+                            <div>Rechte Spalte: Denk-Schritt, Klausur-Check &amp; WTR (CALCOOM IQ-S1)</div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">Teil 1A: Schar $f_k(x)$ ableiten &amp; $e^{-kx}$ sofort ausklammern</span><br>
+                                $u(x) = 3x - 2x^2 \implies u'(x) = 3 - 4x$; &nbsp;$v(x) = e^{-kx} \implies v'(x) = -k \cdot e^{-kx}$<br>
+                                $f_k'(x) = (3 - 4x)\cdot e^{-kx} + (3x - 2x^2)\cdot(-k)\cdot e^{-kx}$<br>
+                                $= \left[3 - 4x - 3kx + 2kx^2\right]\cdot e^{-kx} = \mathbf{\left(2kx^2 - (4 + 3k)x + 3\right) \cdot e^{-kx}}$
+                            </div>
+                            <div class="col-think">
+                                ⚠️ <strong>Parameter-Regel:</strong> $k$ wird wie eine feste Zahl behandelt (innere Ableitung von $-kx$ ist $-k$)!<br>
+                                <strong>Ausklammer-Pflicht:</strong> Nur mit ausgeklammertem $e^{-kx}$ kann man danach $f_k''(x)$ oder $f_k'(x)=0$ fehlerfrei berechnen!
+                            </div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">Teil 1B: Tangente $t_u$ an $g(x) = e^x$ &amp; Beweis des Subtangenten-Satzes</span><br>
+                                • $g(u) = e^u, g'(u) = e^u \implies t_u: y = e^u(x - u) + e^u = \mathbf{e^u \cdot x + e^u(1 - u)}$<br>
+                                <em>(Speziell für $u = 2$: $\mathbf{t_2: y = e^2 x - e^2}$ – exakt stehen lassen!)</em><br>
+                                • $y$-Achsenschnittpunkt ($x = 0$): $\mathbf{S_y(0 \mid e^u(1 - u))}$.<br>
+                                • $x$-Achsenschnittpunkt ($y = 0$, Division durch $e^u &gt; 0$ erlaubt!):<br>
+                                $e^u(x - u + 1) = 0 \iff x - u + 1 = 0 \iff x = u - 1 \implies \mathbf{S_x(u - 1 \mid 0)}$ <em>(für $u=2$: $S_x(1\mid 0)$)</em>.
+                            </div>
+                            <div class="col-think">
+                                💡 <strong>Goldene $e$-Divisionsregel:</strong> Weil $e^{\text{Term}} &gt; 0$ für alle reellen Zahlen gilt, darf man Gleichungen <strong>immer</strong> ohne Fallunterscheidung durch $e^u$ teilen!<br>
+                                <strong>Pflichtteil-Konvention:</strong> Niemals $e^2 \approx 7{,}39$ runden – exakt als $e^2$ stehen lassen!
+                            </div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">Teil 2 (AFB III): Anzahl der Lösungen von $e^x = a \cdot x$</span><br>
+                                Geometrisch: Schnittpunkte von $G_g$ ($y = e^x$) mit der Ursprungsgeraden $h_a: y = ax$ (Drehpunkt $(0\mid 0)$, Steigung $a$).<br>
+                                <strong>Grenzfall Ursprungstangente:</strong> $t_u$ geht durch $(0\mid 0) \iff S_y$ liegt in $(0\mid 0) \iff 1 - u = 0 \iff u = 1$.<br>
+                                Dort ist $B(1\mid e)$ mit Tangentensteigung $a = g'(1) = e$!<br>
+                                <strong>Vollständige Fallunterscheidung:</strong><br>
+                                • <strong>$a &lt; 0$:</strong> <strong>genau 1 Lösung</strong> (Gerade fällt, trifft $G_g$ einmal im 2. Quadranten $x &lt; 0$).<br>
+                                • <strong>$0 \le a &lt; e$:</strong> <strong>0 Lösungen</strong> (Gerade verläuft komplett unterhalb von $G_g$).<br>
+                                • <strong>$a = e$:</strong> <strong>genau 1 Lösung</strong> (Berührpunkt $B(1\mid e)$, also $x = 1$).<br>
+                                • <strong>$a &gt; e$:</strong> <strong>genau 2 Lösungen</strong> (steilere Gerade schneidet $G_g$ einmal für $0 &lt; x &lt; 1$ und – da $e^x$ schneller wächst als jede Gerade – ein zweites Mal für $x &gt; 1$).
+                            </div>
+                            <div class="col-think">
+                                🏆 <strong>15-Punkte-Strategie:</strong> $e^x = ax$ lässt sich algebraisch <em>nicht</em> nach $x$ auflösen! Solche Parameterfragen werden im Abitur immer geometrisch über die <strong>Ursprungstangente</strong> als Grenzfall geknackt!<br><br>
+                                <strong>WTR-Tipps (CALCOOM IQ-S1):</strong><br>
+                                • $e^{\square}$ über <code>SHIFT</code> $\to$ <code>ln</code>; Zahl $e$ allein über <code>ALPHA</code> $\to$ <code>×10ˣ</code>.<br>
+                                • Bei $\left(1 + \frac{1}{n}\right)^n$ im WTR $n = 10^8$ statt $10^{15}$ wählen (ab $10^{15}$ rundet der Speicher $1 + 10^{-15}$ zu $1 \implies$ Fehlausgabe $1$!).
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-close-row">
+                        <button type="button" class="detail-close-btn" data-close-topic="5" data-close-layer="rezept">▲ Musteraufgaben einklappen</button>
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>15-Punkte-Master: Analysis – Thema 5 (2-Spalten-Kochrezept)</span>
+                <span>Olga V.</span>
+                <span>Seite 15</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 16: BLOCK 5 (15-PUNKTE-BOX) – ÜBERSETZER & FALLEN
+             ============================================================ -->
+        <div class="page detail-page is-closed" data-topic="5" data-page-layers="uebersetzer fallen">
+            <div class="card detail-card">
+                <div class="detail-section" data-topic="5" data-layer="uebersetzer">
+                    <h3 id="sec-t5-uebersetzer">🕵️‍♀️ Thema 5 – Klausur-Übersetzer ($e$-Funktion &amp; Transformationen)</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <tr><th style="width:44%;">Formulierung in der Aufgabe</th><th>Mathematischer Klausur-Ansatz</th></tr>
+                            <tr><td>„Bestimmen Sie $f$ so, dass die Ableitung überall doppelt so groß ist wie der Funktionswert ($f'(x) = 2f(x)$)“</td><td>Ansatz $f(x) = c \cdot e^{kx} \implies f'(x) = k \cdot f(x)$, hier $k = 2 \implies \mathbf{f(x) = c \cdot e^{2x}}$ ($c \in \mathbb{R}\setminus\{0\}$).</td></tr>
+                            <tr><td>„Geben Sie die $100.$ Ableitung $f^{(100)}(x)$ an“</td><td>• $f(x) = e^{3x} \implies f^{(100)}(x) = 3^{100}\cdot e^{3x}$<br>• $f(x) = e^{-x} \implies f^{(100)}(x) = (-1)^{100} e^{-x} = +e^{-x}$<br>• $f(x) = x\cdot e^x \implies f^{(n)}(x) = (x + n)e^x \implies f^{(100)}(x) = (x + 100)e^x$.</td></tr>
+                            <tr><td>„Untersuchen Sie die gegenseitige Lage von $f(x) = e^x$ und $g(x) = e^{-x}$“</td><td>1.) Spiegelbildlich zur $y$-Achse ($g(x) = f(-x)$).<br>2.) Schneiden sich in $S(0\mid 1)$ <strong>orthogonal ($90^\circ$)</strong>, da $f'(0)\cdot g'(0) = 1 \cdot (-1) = -1$!</td></tr>
+                            <tr><td>„Wie entsteht $g(x) = -4\cdot e^{-x+2}$ aus $f(x) = e^x$?“</td><td><strong>Zuerst Faktor vor $x$ ausklammern:</strong> $g(x) = -4\cdot e^{-(x - 2)}$!<br>Reihenfolge: 1.) Spiegelung an $y$-Achse $\to$ 2.) Streckung mit $4$ in $y$-Richtung &amp; Spiegelung an $x$-Achse $\to$ 3.) Verschiebung um $2$ nach <strong>rechts</strong>!</td></tr>
+                        </table>
+                    </div>
+                    <div class="detail-close-row">
+                        <button type="button" class="detail-close-btn" data-close-topic="5" data-close-layer="uebersetzer">▲ Übersetzer einklappen</button>
+                    </div>
+                </div>
+
+                <div class="detail-section" data-topic="5" data-layer="fallen">
+                    <h3 id="sec-t5-fallen">🏆 Thema 5 – Fallen, Algebra-Tricks &amp; Die 5 Wahr/Falsch-Klassiker</h3>
+                    <div class="trap-box">
+                        <span class="trap-title">⚡ 1. Potenzregel-Verwechslung vs. Konstante $e^2$ &amp; 2. Ausmultiplizier-Vorteil</span>
+                        <p style="margin-bottom:0;">• <strong>NIEMALS</strong> $(e^x)' = x\cdot e^{x-1}$ schreiben! Die Variable steht im Exponenten: $(e^{\text{Term}})' = (\text{Term})'\cdot e^{\text{Term}}$ (Exponent bleibt unverändert!).<br>
+                        • <strong>Konstanten-Falle:</strong> $(e^2)' = 0$ und $(e^2 \cdot x)' = e^2$, weil $e^2 \approx 7{,}39$ kein $x$ enthält!<br>
+                        • <strong>Reine $e$-Klammern erst ausmultiplizieren:</strong> $h(u) = e^{-3u}(e^{8u} + 2u) = e^{5u} + 2u\cdot e^{-3u}$ spart eine unnötige Produktregel!</p>
+                    </div>
+
+                    <div class="trap-box">
+                        <span class="trap-title">⚡ 3. Warum sieht $g(x) = e^{x+2}$ wie eine Streckung aus? (Graph-Erkennung im Pflichtteil!)</span>
+                        <p style="margin-bottom:0;">Wegen des Potenzgesetzes gilt $\mathbf{e^{x+2} = e^2 \cdot e^x \approx 7{,}39 \cdot e^x}$! Eine Verschiebung um $2$ nach links ist bei der $e$-Funktion <em>identisch</em> mit einer Streckung in $y$-Richtung um $e^2$!<br>
+                        <strong>So unterscheidest du $g(x) = e^{x+2}$ von $h(x) = e^x + 2$ am Graphen sofort:</strong><br>
+                        • <strong>Asymptote für $x \to -\infty$:</strong> $g$ nähert sich weiter $y = 0$, während $h$ sich $y = 2$ nähert!<br>
+                        • <strong>$y$-Achsenabschnitt:</strong> $g(0) = e^2 \approx 7{,}39$, während $h(0) = 1 + 2 = 3$ ist!</p>
+                    </div>
+
+                    <div class="trap-box">
+                        <span class="trap-title">⚡ 4. Die 5 Wahr/Falsch-Klassiker zu $f(x) = e^x$ im Schnellcheck</span>
+                        <p style="margin-bottom:0;">1.) „Kein Schnittpunkt mit $x$-Achse“ $\to$ <strong>WAHR</strong> ($e^x &gt; 0$). &nbsp;|&nbsp; 2.) „Kein Schnittpunkt mit $y$-Achse“ $\to$ <strong>FALSCH</strong> ($S_y(0\mid 1)$). &nbsp;|&nbsp; 3.) „Keine waagerechte Tangente“ $\to$ <strong>WAHR</strong> ($f'(x)=e^x &gt; 0$). &nbsp;|&nbsp; 4.) „Nähert sich der $x$-Achse beliebig an“ $\to$ <strong>WAHR</strong> ($x \to -\infty$). &nbsp;|&nbsp; 5.) „Nähert sich für $x \to +\infty$ einer Parallelen zur $y$-Achse an“ $\to$ <strong>FALSCH!</strong> ($f$ wächst zwar extrem steil, ist aber auf ganz $\mathbb{R}$ ohne Polstelle/senkrechte Asymptote definiert!)</p>
+                    </div>
+                    <div class="detail-close-row">
+                        <button type="button" class="detail-close-btn" data-close-topic="5" data-close-layer="fallen">▲ Fallen einklappen</button>
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>15-Punkte-Master: Analysis – Thema 5 (Übersetzer &amp; Fallen)</span>
+                <span>Olga V.</span>
+                <span>Seite 16</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 17: BLOCK 6 – INTERAKTIVE 15-PUNKTE-LERNKARTEN
+             ============================================================ -->
+        <div class="page">
+            <div class="card" id="lernkarten-card">
+                <h2 id="sec-t6">6. 🃏 15-Punkte-Lernkarten (Active Recall für Pflicht- &amp; Wahlteil)</h2>
+                <p><em>Klicke im Plakat-Modus auf eine Karte, um die Musterlösung aufzudecken!</em></p>
+
+                <div class="flashcards-container">
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front">
+                                <p>1. Wie lauten die maximale Definitionsmenge und die Ableitung einer Verkettung $f = u \circ v$ – und was gilt für die Symmetrie, wenn $G_v$ punktsymmetrisch und $G_u$ achsensymmetrisch ist?</p>
+                            </div>
+                            <div class="flashcard-back">
+                                <p><span class="highlight">Definition:</span> $f(x) = (u \circ v)(x) = u(v(x))$.<br><span class="highlight">$D_f$:</span> $x \in D_v \land v(x) \in D_u$.<br><span class="highlight">Kettenregel:</span> $f'(x) = u'(v(x)) \cdot v'(x)$.<br><span class="highlight">Symmetrie:</span> $f(-x) = u(v(-x)) = u(-v(x)) = u(v(x)) = f(x) \implies G_f$ ist achsensymmetrisch zur $y$-Achse!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front">
+                                <p>2. Wie berechnest du den Schnittwinkel $\beta$ zweier Graphen $G_f, G_g$ im Schnittpunkt $S(a\mid f(a))$?</p>
+                            </div>
+                            <div class="flashcard-back">
+                                <p>1. Einzelne Steigungswinkel (WTR auf <span class="highlight">DEG</span>!): $\alpha_1 = \arctan(f'(a))$, $\alpha_2 = \arctan(g'(a))$.<br>2. Differenz: $\tilde{\beta} = |\alpha_1 - \alpha_2|$.<br>3. Falls $\tilde{\beta} &gt; 90^\circ \implies \mathbf{\beta = 180^\circ - \tilde{\beta}}$, sonst $\beta = \tilde{\beta}$ (da Schnittwinkel immer $\le 90^\circ$ sind!).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front">
+                                <p>3. Nenne für jede der 3 Aussagen das 15-Punkte-Gegenbeispiel:<br>a) $f$ stetig in $a \implies f$ diff'bar in $a$<br>b) $f$ smw auf $\mathbb{R} \implies f'(x) &gt; 0$ überall<br>c) $f'(x_0)=0 \land f''(x_0)=0 \implies$ Sattelpunkt</p>
+                            </div>
+                            <div class="flashcard-back">
+                                <p>a) <span class="highlight">$f(x) = |x|$</span> bei $x=0$ (Knick) oder <span class="highlight">$\sqrt{x}$</span> am Rand $x=0$ (senkrechte Tangente).<br>b) <span class="highlight">$f(x) = x^3$</span> ist auf $\mathbb{R}$ smw, aber $f'(0) = 0$.<br>c) <span class="highlight">$f(x) = x^4$</span> hat $f'(0)=f''(0)=0$, aber VZW von $f'(x)=4x^3$ von $-\to+ \implies$ Tiefpunkt $T(0\mid 0)$!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front">
+                                <p>4. Wie lauten Tangente und Normale von außen durch $Q(q\mid r) \notin G_f$ – und was gilt bei $f'(u) = 0$?</p>
+                            </div>
+                            <div class="flashcard-back">
+                                <p>Unbekannte Berührstelle $u$ einsetzen:<br>• <span class="highlight">Tangente:</span> $r = f'(u)\cdot(q - u) + f(u)$<br>• <span class="highlight">Normale ($f'(u)\neq 0$):</span> $r = -\frac{1}{f'(u)}\cdot(q - u) + f(u)$<br>• <span class="highlight">Sonderfall $f'(u)=0$:</span> Waagerechte Tangente $y = f(u) \implies$ Normale ist die vertikale Gerade $\mathbf{x = u}$!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front">
+                                <p>5. Wie viele Tangenten von außen gibt es durch $Q(q_1\mid q_2)$ an die Normalparabel $f(x) = x^2$?</p>
+                            </div>
+                            <div class="flashcard-back">
+                                <p>Aus $q_2 = 2u(q_1 - u) + u^2 \iff u^2 - 2q_1 u + q_2 = 0$ folgt $u_{1,2} = q_1 \pm \sqrt{q_1^2 - q_2}$:<br>• <span class="highlight">$q_2 &gt; q_1^2$</span> (oberhalb/innen): <strong>0 Tangenten</strong><br>• <span class="highlight">$q_2 = q_1^2$</span> (auf $G_f$): <strong>1 Tangente</strong><br>• <span class="highlight">$q_2 &lt; q_1^2$</span> (unterhalb): <strong>2 Tangenten</strong>.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front">
+                                <p>6. Wie funktioniert der „Radikanden-Trick“ bei Abstandsproblemen $d(u) = \sqrt{(q-u)^2 + (r-f(u))^2}$ – und welche End-Falle lauert?</p>
+                            </div>
+                            <div class="flashcard-back">
+                                <p>Da $\sqrt{x}$ streng monoton wächst, wird $d(u)$ genau dort minimal, wo der <span class="highlight">Radikand $R(u) = (q-u)^2 + (r-f(u))^2$</span> minimal wird ($R'(u)=0$ spart die Kettenregel!).<br><br><span class="highlight">End-Falle:</span> Am Schluss zwingend $d_{\min} = \sqrt{R(u_1)}$ ziehen &amp; Intervallränder prüfen!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front">
+                                <p>7. Welches optimale Verhältnis von Höhe $h$ zu Radius $r$ gilt beim Zylinder mit festem Volumen $V$ (oben offen vs. geschlossen)?</p>
+                            </div>
+                            <div class="flashcard-back">
+                                <p>• <span class="highlight">Oben offen</span> ($O = \pi r^2 + 2\pi r h$): Optimales Maß ist immer $\mathbf{h = r}$ (mit $r = \sqrt[3]{\frac{V}{\pi}}$).<br><br>• <span class="highlight">Geschlossen / Dose</span> ($O = 2\pi r^2 + 2\pi r h$): Optimales Maß ist immer $\mathbf{h = 2r}$ (Durchmesser $=$ Höhe).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front">
+                                <p>8. Was besagt der Subtangenten-Satz bei $f(x) = e^x$ und wie viele Lösungen hat $e^x = a \cdot x$ je nach $a \in \mathbb{R}$?</p>
+                            </div>
+                            <div class="flashcard-back">
+                                <p><span class="highlight">Subtangenten-Satz:</span> Die Tangente in $P(u\mid e^u)$ schneidet die $x$-Achse immer bei $\mathbf{S_x(u - 1 \mid 0)}$ $\implies$ Ursprungstangente bei $u=1$ hat Steigung $a = e$!<br><span class="highlight">Lösungen von $e^x = ax$:</span> $a &lt; 0$: <strong>1</strong> &nbsp;|&nbsp; $0 \le a &lt; e$: <strong>0</strong> &nbsp;|&nbsp; $a = e$: <strong>1</strong> ($x=1$) &nbsp;|&nbsp; $a &gt; e$: <strong>2</strong>.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front">
+                                <p>9. Wie entsteht $g(x) = -4\cdot e^{-x+2}$ aus $e^x$ und wie unterscheidest du $e^{x+2}$ von $e^x + 2$ am Graphen?</p>
+                            </div>
+                            <div class="flashcard-back">
+                                <p>• <span class="highlight">Erst ausklammern:</span> $g(x) = -4\cdot e^{-(x - 2)}$ $\implies$ Spiegelung an $y$-Achse, Streckung mit $4$ in $y$-Richtung + Spiegelung an $x$-Achse, Verschiebung um $2$ nach <strong>rechts</strong>!<br>• <span class="highlight">$e^{x+2} = e^2\cdot e^x$:</span> Asymptote bleibt $y = 0$, $S_y(0\mid e^2 \approx 7{,}39)$. Bei $e^x + 2$: Asymptote $y = 2$, $S_y(0\mid 3)$.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>15-Punkte-Master: Analysis – Lernkarten</span>
+                <span>Olga V.</span>
+                <span>Seite 17</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        (function () {
+            const body = document.body;
+            const btnPlakat = document.getElementById('btn-plakat');
+            const btnDruck = document.getElementById('btn-druck');
+            const btnPrint = document.getElementById('btn-print');
+            const btnInhalt = document.getElementById('btn-inhalt');
+            const dropdown = document.getElementById('toc-dropdown');
+            const flashcards = document.querySelectorAll('.flashcard');
+
+            const LAYER_NAMES = ['skizze', 'rezept', 'uebersetzer', 'fallen'];
+
+            function retypesetMath() {
+                if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+                    window.MathJax.typesetPromise().catch(function () {});
+                }
+            }
+
+            /* Synchronisiert .detail-page.is-closed, .drawer-btn.open und die globalen Filter-Pills */
+            function syncUiState() {
+                document.querySelectorAll('.detail-page').forEach(function (pageEl) {
+                    const anyOpen = Array.from(pageEl.querySelectorAll('.detail-section')).some(function (sec) {
+                        return sec.classList.contains('is-open');
+                    });
+                    pageEl.classList.toggle('is-closed', !anyOpen);
+                });
+
+                document.querySelectorAll('.drawer-btn[data-toggle-topic][data-toggle-layer]').forEach(function (btn) {
+                    const topic = btn.getAttribute('data-toggle-topic');
+                    const layer = btn.getAttribute('data-toggle-layer');
+                    const target = getLayerElement(topic, layer);
+                    const isOpen = target ? target.classList.contains('is-open') : false;
+                    btn.classList.toggle('open', isOpen);
+                    const icon = btn.querySelector('.state-icon');
+                    if (icon) icon.textContent = isOpen ? '✓' : '＋';
+                });
+
+                let anyGlobalOpen = false;
+                let allGlobalOpen = true;
+
+                LAYER_NAMES.forEach(function (layer) {
+                    const els = getAllElementsForLayer(layer);
+                    const allLayerOpen = els.length > 0 && els.every(function (el) { return el.classList.contains('is-open'); });
+                    const someLayerOpen = els.some(function (el) { return el.classList.contains('is-open'); });
+                    if (someLayerOpen) anyGlobalOpen = true;
+                    if (!allLayerOpen) allGlobalOpen = false;
+
+                    const pill = document.querySelector('.filter-pill[data-global-layer="' + layer + '"]');
+                    if (pill) pill.classList.toggle('active', allLayerOpen);
+                });
+
+                const btnCompact = document.getElementById('btn-preset-compact');
+                const btnAll = document.getElementById('btn-preset-all');
+                if (btnCompact) btnCompact.classList.toggle('active', !anyGlobalOpen);
+                if (btnAll) btnAll.classList.toggle('active', allGlobalOpen);
+            }
+
+            function getLayerElement(topic, layer) {
+                return document.querySelector(
+                    '.collapsible-inline[data-topic="' + topic + '"][data-layer="' + layer + '"], ' +
+                    '.detail-section[data-topic="' + topic + '"][data-layer="' + layer + '"]'
+                );
+            }
+
+            function getAllElementsForLayer(layer) {
+                return Array.from(document.querySelectorAll(
+                    '.collapsible-inline[data-layer="' + layer + '"], .detail-section[data-layer="' + layer + '"]'
+                ));
+            }
+
+            function setTopicLayer(topic, layer, open) {
+                const el = getLayerElement(topic, layer);
+                if (!el) return;
+                el.classList.toggle('is-open', open);
+                syncUiState();
+                if (open) retypesetMath();
+            }
+
+            /* Einzelne Themen-Buttons (Auf-/Zuklappen) */
+            document.querySelectorAll('.drawer-btn[data-toggle-topic][data-toggle-layer]').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    const topic = btn.getAttribute('data-toggle-topic');
+                    const layer = btn.getAttribute('data-toggle-layer');
+                    const el = getLayerElement(topic, layer);
+                    if (!el) return;
+                    const willOpen = !el.classList.contains('is-open');
+                    setTopicLayer(topic, layer, willOpen);
+                    if (willOpen && el.classList.contains('detail-section')) {
+                        setTimeout(function () {
+                            const y = el.getBoundingClientRect().top + window.scrollY - 82;
+                            window.scrollTo({ top: y, behavior: 'smooth' });
+                        }, 40);
+                    }
+                });
+            });
+
+            /* Einklapp-Buttons am Ende jedes Detail-Abschnitts */
+            document.querySelectorAll('.detail-close-btn[data-close-topic][data-close-layer]').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    const topic = btn.getAttribute('data-close-topic');
+                    const layer = btn.getAttribute('data-close-layer');
+                    setTopicLayer(topic, layer, false);
+                    const coreCard = document.getElementById('block-' + topic + '-core');
+                    if (coreCard) {
+                        const y = coreCard.getBoundingClientRect().top + window.scrollY - 82;
+                        window.scrollTo({ top: y, behavior: 'smooth' });
+                    }
+                });
+            });
+
+            /* Globale Filter-Leiste oben */
+            document.querySelectorAll('.filter-pill[data-global-layer]').forEach(function (pill) {
+                pill.addEventListener('click', function () {
+                    const layer = pill.getAttribute('data-global-layer');
+                    const els = getAllElementsForLayer(layer);
+                    const shouldOpen = !els.every(function (el) { return el.classList.contains('is-open'); });
+                    els.forEach(function (el) { el.classList.toggle('is-open', shouldOpen); });
+                    syncUiState();
+                    if (shouldOpen) retypesetMath();
+                });
+            });
+
+            const btnCompact = document.getElementById('btn-preset-compact');
+            if (btnCompact) {
+                btnCompact.addEventListener('click', function () {
+                    LAYER_NAMES.forEach(function (layer) {
+                        getAllElementsForLayer(layer).forEach(function (el) { el.classList.remove('is-open'); });
+                    });
+                    syncUiState();
+                });
+            }
+
+            const btnAll = document.getElementById('btn-preset-all');
+            if (btnAll) {
+                btnAll.addEventListener('click', function () {
+                    LAYER_NAMES.forEach(function (layer) {
+                        getAllElementsForLayer(layer).forEach(function (el) { el.classList.add('is-open'); });
+                    });
+                    syncUiState();
+                    retypesetMath();
+                });
+            }
+
+            /* Modus-Wechsel Plakat <-> Druck (A4) */
+            btnPlakat.addEventListener('click', function () {
+                body.classList.remove('print-mode');
+                btnPlakat.classList.add('active');
+                btnDruck.classList.remove('active');
+                retypesetMath();
+            });
+            btnDruck.addEventListener('click', function () {
+                body.classList.add('print-mode');
+                btnDruck.classList.add('active');
+                btnPlakat.classList.remove('active');
+                retypesetMath();
+            });
+            btnPrint.addEventListener('click', function () { window.print(); });
+
+            /* Inhaltsverzeichnis-Dropdown */
+            btnInhalt.addEventListener('click', function (e) {
+                e.stopPropagation();
+                dropdown.parentElement.classList.toggle('show');
+            });
+            document.addEventListener('click', function (e) {
+                if (!dropdown.contains(e.target) && e.target !== btnInhalt) {
+                    dropdown.parentElement.classList.remove('show');
+                }
+            });
+
+            /* Vollbild */
+            const btnFullscreen = document.getElementById('btn-fullscreen');
+            if (btnFullscreen) {
+                btnFullscreen.addEventListener('click', function () {
+                    if (!document.fullscreenElement) {
+                        document.documentElement.requestFullscreen().catch(function (err) { console.warn(err); });
+                        btnFullscreen.textContent = 'Vollbild beenden';
+                    } else {
+                        if (document.exitFullscreen) document.exitFullscreen();
+                        btnFullscreen.textContent = 'Vollbild';
+                    }
+                });
+            }
+
+            /* Auto-TOC (öffnet bei Klick auf eingeklappte Unterabschnitte diese automatisch!) */
+            document.querySelectorAll('h1[id], h2[id], h3[id]').forEach(function (heading) {
+                const item = document.createElement('a');
+                item.className = 'dropdown-item';
+                if (heading.tagName === 'H2') item.style.paddingLeft = '16px';
+                else if (heading.tagName === 'H3') item.style.paddingLeft = '30px';
+                else item.style.paddingLeft = '10px';
+
+                const clone = heading.cloneNode(true);
+                clone.querySelectorAll('small').forEach(function (s) { s.remove(); });
+                item.textContent = clone.textContent.trim();
+
+                item.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    dropdown.parentElement.classList.remove('show');
+                    const parentDetail = heading.closest('.detail-section');
+                    if (parentDetail && !parentDetail.classList.contains('is-open')) {
+                        const t = parentDetail.getAttribute('data-topic');
+                        const l = parentDetail.getAttribute('data-layer');
+                        setTopicLayer(t, l, true);
+                    }
+                    setTimeout(function () {
+                        const topPosition = heading.getBoundingClientRect().top + window.scrollY - 82;
+                        window.scrollTo({ top: topPosition, behavior: 'smooth' });
+                    }, 30);
+                });
+                dropdown.appendChild(item);
+            });
+
+            /* Schnell-Sprung-Chips */
+            document.querySelectorAll('.quick-chip').forEach(function (chip) {
+                chip.addEventListener('click', function (e) {
+                    const targetId = chip.getAttribute('href').slice(1);
+                    const targetEl = document.getElementById(targetId);
+                    if (targetEl) {
+                        e.preventDefault();
+                        const topPosition = targetEl.getBoundingClientRect().top + window.scrollY - 82;
+                        window.scrollTo({ top: topPosition, behavior: 'smooth' });
+                    }
+                });
+            });
+
+            /* Lernkarten umdrehen */
+            flashcards.forEach(function (card) {
+                card.addEventListener('click', function () {
+                    if (!body.classList.contains('print-mode')) {
+                        card.classList.toggle('flipped');
+                    }
+                });
+            });
+
+            syncUiState();
+        })();
+    </script>
+    <script src="../pdf-export.js"></script>
+</body>
+</html>

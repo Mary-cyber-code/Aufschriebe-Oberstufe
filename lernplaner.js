@@ -895,6 +895,12 @@
   }
 
   var FALLBACK_CARDS = {
+    'mathe/analysis_j1_abitur_master.html': [
+      { tag: 'AFB I–II · Verkettung (u∘v), Ketten- & Produktregel', q: 'Wie lauten Definitionsmenge und Kettenregel für f = u ∘ v, wie lautet die Produktregel – und was gilt für Schnittwinkel β?', a: 'f(x) = (u ∘ v)(x) = u(v(x)) mit x ∈ D_v ∧ v(x) ∈ D_u · Kettenregel: f\'(x) = u\'(v(x))·v\'(x) · Produktregel: f\' = u\'v + uv\' · Schnittwinkel (DEG): β̃ = |arctan(f\'(a)) − arctan(g\'(a))|, falls > 90° dann 180° − β̃.' },
+      { tag: 'AFB II–III · NEW-Schema & Umkehrschluss-Fallen', q: 'Nenne die 3 Gegenbeispiele zu: a) stetig ⇒ diff\'bar, b) streng monoton wachsend ⇒ überall f\'(x) > 0, c) f\'(x₀)=0 ∧ f\'\'(x₀)=0 ⇒ Sattelpunkt!', a: 'a) |x| bei x=0 (Knick) bzw. √x bei x=0 (senkrechte Tangente) · b) x³ (smw auf ℝ, aber f\'(0)=0) · c) x⁴ (f\'(0)=f\'\'(0)=0, aber VZW von f\'=4x³ von − nach + ⇒ Tiefpunkt!).' },
+      { tag: 'AFB II · Tangente/Normale von außen & Optimierung', q: 'Wie lauten Tangente & Normale von außen durch Q(q|r) ∉ G_f und wie funktioniert der Radikanden-Trick beim Abstand?', a: 'Tangente: r = f\'(u)·(q − u) + f(u) · Normale: r = (−1/f\'(u))·(q − u) + f(u) (bei f\'(u)=0 vertikal x = u). Radikanden-Trick: R(u) = (q−u)² + (r−f(u))² minimieren (R\'(u)=0), am Ende zwingend d_min = √R(u₁) ziehen & Ränder prüfen!' },
+      { tag: 'AFB II–III · e-Funktion, Subtangente & e^x = a·x', q: 'Wie leitest du u(x)·e^{g(x)} ab, wo schneidet die Tangente an e^x in u die x-Achse, und wie viele Lösungen hat e^x = a·x?', a: '(u·e^g)\' = [u\' + u·g\']·e^g (Ausklammer-Pflicht!). Subtangenten-Satz: S_x(u − 1 | 0) ⇒ Ursprungstangente bei u = 1 hat Steigung a = e. Lösungen von e^x = ax: a < 0 → 1 · 0 ≤ a < e → 0 · a = e → 1 · a > e → 2.' }
+    ],
     'mathe/analysis_j1_formelsammlung.html': [
       { tag: 'AFB I · Ableitungsregeln & Umschreiben', q: 'Wie schreibst du Wurzeln (√x, √(e^x)) und Brüche (a/xⁿ, 5/e^x) vor dem Ableiten um – und wie lauten Ketten- und Produktregel?', a: '√x = x^(1/2), √(e^x) = e^(0,5x), a/xⁿ = a·x⁻ⁿ, 5/e^x = 5·e⁻ˣ · Kettenregel: f\'(x) = u\'(v(x))·v\'(x) · Produktregel: f\'(x) = u\'(x)·v(x) + u(x)·v\'(x).' },
       { tag: 'AFB II · Tangente von außen & Normale', q: 'Wie lauten Normalengleichung und das 4-Schritte-Kochrezept für die „Tangente von außen“ durch Q(q₁|q₂)?', a: 'Normale: n(x) = (−1/f\'(u))·(x − u) + f(u). Tangente von außen: 1) ATG y = f\'(u)·(x − u) + f(u) aufstellen · 2) Punktprobe mit Q(q₁|q₂) einsetzen · 3) Nach Berührstelle u auflösen · 4) u in ATG einsetzen.' },
