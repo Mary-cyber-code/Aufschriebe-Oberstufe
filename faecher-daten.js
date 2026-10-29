@@ -53,8 +53,7 @@ const subjectData = {
       {
         name: "J1 – Analysis",
         topics: [
-          { title: "Differenzialrechnung, Optimierung & e-Funktion (15-Punkte-Master)", link: "mathe/analysis_j1_abitur_master.html" },
-          { title: "Differenzialrechnung, Optimierung & e-Funktion (Referenz)", link: "mathe/analysis_j1_formelsammlung.html" }
+          { title: "Differenzialrechnung, Optimierung & e-Funktion", link: "mathe/analysis_j1_abitur_master.html" }
         ]
       }
     ]
