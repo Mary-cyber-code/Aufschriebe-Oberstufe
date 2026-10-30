@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chemie LK (J1): Chemische Energetik</title>
+    <title>Chemie LK (J1): Chemische Energetik (15-Punkte-Master)</title>
     <!-- MathJax für LaTeX-Formeln -->
     <script>
         MathJax = {
@@ -25,7 +25,10 @@
             --text-secondary: #5A6B5C;
             --gold: #C9A96E;
             --forest: #3A5A3F;
-            --nav-bg: rgba(248, 246, 241, 0.95);
+            --forest-soft: rgba(58, 90, 63, 0.06);
+            --gold-soft: rgba(201, 169, 110, 0.13);
+            --crimson: #9E3B2E;
+            --nav-bg: rgba(248, 246, 241, 0.96);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -34,57 +37,39 @@
             background-color: var(--paper-white);
             color: var(--text-primary);
             font-family: 'Raleway', sans-serif;
-            line-height: 1.6;
-            padding-top: 70px;
+            line-height: 1.58;
+            padding-top: 72px;
         }
 
-        h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; color: var(--forest); margin-bottom: 0.5rem; }
-        h1 { font-size: 2.2rem; text-align: center; margin-bottom: 2rem; border-bottom: 2px solid var(--gold); padding-bottom: 1rem; }
-        h2 { font-size: 1.8rem; margin-top: 1.5rem; border-bottom: 1px solid rgba(201, 169, 110, 0.3); padding-bottom: 0.3rem;}
-        h3 { font-size: 1.4rem; margin-top: 1rem; color: var(--text-primary); }
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--forest); margin-bottom: 0.45rem; }
+        h1 { font-size: 2.02rem; text-align: center; margin-bottom: 0.95rem; border-bottom: 2px solid var(--gold); padding-bottom: 0.75rem; }
+        h2 { font-size: 1.55rem; margin-top: 0.35rem; border-bottom: 1.5px solid rgba(201, 169, 110, 0.42); padding-bottom: 0.3rem; }
+        h3 { font-size: 1.16rem; margin-top: 0.8rem; color: var(--text-primary); }
 
-        p { margin-bottom: 1rem; }
-        ul, ol { margin-bottom: 1rem; padding-left: 2rem; }
-        li { margin-bottom: 0.5rem; }
+        p { margin-bottom: 0.65rem; }
+        ul, ol { margin-bottom: 0.7rem; padding-left: 1.6rem; }
+        li { margin-bottom: 0.3rem; }
 
         .highlight { color: var(--forest); font-weight: 600; }
         .flashcard-back .highlight { color: var(--gold); }
 
-        /* Korrekte Darstellung tiefer/höhergestellter Zahlen ohne Layout-Bugs */
         sub, sup { line-height: 0; vertical-align: baseline; font-size: 0.8em; }
         sub { position: relative; top: 0.3em; }
         sup { position: relative; top: -0.3em; }
 
-        /* Reaktionspfeile */
-        .reaction-arrow { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; vertical-align: middle; margin: 0 8px; }
-        .reaction-arrow .arrow-text { font-size: 0.65rem; line-height: 1; color: var(--text-secondary); }
-        .reaction-arrow .arrow-symbol { line-height: 1; font-size: 1.2rem; margin-top: -4px; }
-        .arrow-simple { font-family: sans-serif; margin: 0 5px; }
-
-        /* Formel-Kasten & Tipp-Kasten (passend zum Botanical-Design) */
-        .formula-box {
-            background: #fff; border: 1px solid rgba(201, 169, 110, 0.4); border-radius: 6px;
-            padding: 10px 16px; margin: 0.5rem 0 1rem; text-align: center; overflow-x: auto;
-        }
-        .formula-box .formula-label { display: block; font-size: 0.8rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 2px; }
-        .tip-box {
-            background: rgba(201, 169, 110, 0.1); border-left: 4px solid var(--gold); border-radius: 4px;
-            padding: 12px 16px; margin: 1rem 0;
-        }
-        .tip-box strong { color: var(--forest); font-family: 'Playfair Display', serif; }
-        mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width: 100%; }
+        mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width: 100%; margin: 0.32em 0 !important; }
 
         /* Navigation */
         nav {
             position: fixed; top: 0; left: 0; width: 100%; background-color: var(--nav-bg); backdrop-filter: blur(10px);
-            z-index: 1000; display: flex; justify-content: center; align-items: center; padding: 15px 20px;
+            z-index: 1000; display: flex; justify-content: center; align-items: center; padding: 12px 18px;
             box-shadow: 0 2px 15px rgba(0,0,0,0.05); border-bottom: 1px solid var(--gold);
         }
-        .nav-group { display: flex; gap: 15px; align-items: center; }
+        .nav-group { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: center; }
         .nav-btn {
-            background: transparent; border: 1px solid var(--forest); color: var(--forest); padding: 8px 16px;
-            font-family: 'Raleway', sans-serif; font-weight: 500; font-size: 0.9rem; cursor: pointer; border-radius: 4px;
-            transition: all 0.3s ease; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;
+            background: transparent; border: 1px solid var(--forest); color: var(--forest); padding: 7px 14px;
+            font-family: 'Raleway', sans-serif; font-weight: 600; font-size: 0.88rem; cursor: pointer; border-radius: 4px;
+            transition: all 0.25s ease; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;
         }
         .nav-btn:hover, .nav-btn.active { background: var(--forest); color: var(--paper-white); }
         .nav-btn.gold { border-color: var(--gold); color: var(--text-primary); }
@@ -93,141 +78,255 @@
         /* Dropdown */
         .dropdown { position: relative; display: inline-block; }
         .dropdown-content {
-            display: none; position: absolute; background-color: var(--paper-cream); min-width: 250px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1); border: 1px solid var(--gold); border-radius: 4px;
-            z-index: 1; top: 100%; left: 0; margin-top: 5px; max-height: 70vh; overflow-y: auto;
+            display: none; position: absolute; background-color: var(--paper-cream); min-width: 295px;
+            box-shadow: 0px 8px 18px rgba(0,0,0,0.12); border: 1px solid var(--gold); border-radius: 6px;
+            z-index: 10; top: 100%; left: 0; margin-top: 5px; max-height: 74vh; overflow-y: auto;
         }
         .dropdown.show .dropdown-content { display: block; }
         .dropdown-item {
-            color: var(--text-primary); padding: 12px 16px; text-decoration: none; display: block; cursor: pointer;
-            font-family: 'Raleway', sans-serif; font-size: 0.9rem; border-bottom: 1px solid rgba(201, 169, 110, 0.1); transition: background 0.2s;
+            color: var(--text-primary); padding: 10px 15px; text-decoration: none; display: block; cursor: pointer;
+            font-family: 'Raleway', sans-serif; font-size: 0.88rem; border-bottom: 1px solid rgba(201, 169, 110, 0.14); transition: background 0.2s;
         }
-        .dropdown-item:hover { background-color: rgba(201, 169, 110, 0.1); color: var(--forest); }
+        .dropdown-item:hover { background-color: rgba(201, 169, 110, 0.12); color: var(--forest); }
         .dropdown-item:last-child { border-bottom: none; }
 
-        /* Container & Layout Defaults */
-        .content-wrapper { margin: 0 auto; transition: all 0.3s ease; }
+        /* ============================================================
+           AUFKLAPP-BUTTONS PRO BLOCK (Nur im Plakat-Modus)
+           ============================================================ */
+        .drawer-bar {
+            display: flex; flex-wrap: wrap; gap: 9px; margin-top: 16px; padding-top: 14px;
+            border-top: 1.5px dashed rgba(201, 169, 110, 0.55); align-items: center;
+        }
+        .drawer-bar-label {
+            font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;
+            color: var(--text-secondary); margin-right: 4px;
+        }
+        .drawer-btn {
+            background: #fff; border: 1.5px solid var(--gold); color: var(--forest);
+            padding: 7px 14px; border-radius: 999px; font-family: 'Raleway', sans-serif; font-size: 0.86rem; font-weight: 600;
+            cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+        .drawer-btn:hover { background: var(--gold-soft); border-color: var(--forest); transform: translateY(-1px); }
+        .drawer-btn.open { background: var(--forest); color: #fff; border-color: var(--forest); }
+        .drawer-btn .state-icon { font-weight: 700; font-size: 0.95rem; }
 
-        /* Plakat Modus (Standard) */
-        body:not(.print-mode) .content-wrapper { max-width: 1500px; padding: 20px; display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
+        /* Einklappbare Detail-Container im Plakat-Modus */
+        body:not(.print-mode) .collapsible-inline { display: none; margin-top: 10px; }
+        body:not(.print-mode) .collapsible-inline.is-open { display: block; }
+
+        body:not(.print-mode) .detail-page.is-closed .card { display: none !important; }
+        body:not(.print-mode) .detail-section { display: none; }
+        body:not(.print-mode) .detail-section.is-open { display: block; }
+        body:not(.print-mode) .card.detail-card {
+            margin-top: -12px; border-top: 3px solid var(--forest);
+            background: #FAF8F3;
+        }
+        body:not(.print-mode) .card.core-continuation {
+            margin-top: -12px; border-top: 2px dashed rgba(201, 169, 110, 0.65);
+        }
+        .detail-close-row {
+            display: flex; justify-content: flex-end; margin-top: 10px;
+        }
+        .detail-close-btn {
+            background: transparent; border: 1px solid rgba(58, 90, 63, 0.35); color: var(--text-secondary);
+            padding: 4px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 600; cursor: pointer;
+        }
+        .detail-close-btn:hover { background: var(--forest); color: #fff; border-color: var(--forest); }
+
+        /* Container & Plakat-Modus */
+        .content-wrapper { margin: 0 auto; transition: all 0.3s ease; }
+        body:not(.print-mode) .content-wrapper { max-width: 1440px; padding: 18px 20px 50px; display: flex; flex-wrap: wrap; gap: 22px; align-items: flex-start; }
         body:not(.print-mode) .page { display: contents; }
         body:not(.print-mode) .page-footer { display: none !important; }
         body:not(.print-mode) .card {
-            background: var(--paper-cream); border: 1px solid var(--gold); border-radius: 8px; padding: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03); flex: 1 1 600px; max-width: 100%;
+            background: var(--paper-cream); border: 1px solid var(--gold); border-radius: 10px; padding: 26px 30px;
+            box-shadow: 0 4px 16px rgba(45, 58, 46, 0.04); flex: 1 1 100%; max-width: 100%;
         }
 
-        /* Tables */
-        .table-wrapper { overflow-x: auto; margin-bottom: 1.5rem; border-radius: 4px; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.02); border: 1px solid rgba(201, 169, 110, 0.2); }
-        table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
-        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid rgba(45, 58, 46, 0.1); }
-        th { background-color: rgba(58, 90, 63, 0.05); color: var(--forest); font-family: 'Playfair Display', serif; font-weight: 600; }
+        /* Zonen, Skizzen & Boxen */
+        .core-banner {
+            background: linear-gradient(135deg, rgba(58, 90, 63, 0.07) 0%, rgba(201, 169, 110, 0.11) 100%);
+            border-left: 4px solid var(--forest); border-radius: 6px; padding: 10px 15px; margin: 0.55rem 0 0.9rem;
+        }
+        .core-banner strong { font-family: 'Playfair Display', serif; color: var(--forest); font-size: 1.01rem; }
+
+        .zone-badge {
+            display: inline-block; background: rgba(58, 90, 63, 0.1); color: var(--forest); border: 1px solid rgba(58, 90, 63, 0.25);
+            font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.9px;
+            padding: 2px 9px; border-radius: 999px; margin-bottom: 6px;
+        }
+
+        .sketches-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 14px; margin: 0.65rem 0 0.9rem;
+        }
+        .sketch-card {
+            background: #fff; border: 1px solid rgba(201, 169, 110, 0.45); border-radius: 8px; padding: 11px 14px;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .sketch-title {
+            font-family: 'Playfair Display', serif; font-weight: 700; color: var(--forest); font-size: 0.95rem;
+            margin-bottom: 6px; text-align: center; width: 100%;
+        }
+        .sketch-svg { width: 100%; max-width: 470px; height: auto; display: block; }
+        .sketch-legend {
+            display: flex; flex-wrap: wrap; gap: 8px 12px; justify-content: center; font-size: 0.78rem;
+            margin-top: 6px; color: var(--text-secondary);
+        }
+        .legend-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
+
+        .zones-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; margin-top: 0.45rem;
+        }
+        .zone-panel {
+            background: #fff; border: 1px solid rgba(201, 169, 110, 0.38); border-radius: 7px; padding: 13px 16px;
+        }
+        .zone-panel h3 { margin-top: 0; font-size: 1.07rem; color: var(--forest); border-bottom: 1px solid rgba(201, 169, 110, 0.28); padding-bottom: 4px; margin-bottom: 8px; }
+
+        .formula-box {
+            background: #fff; border: 1px solid rgba(201, 169, 110, 0.48); border-radius: 6px;
+            padding: 8px 14px; margin: 0.4rem 0 0.65rem; text-align: center; overflow-x: auto;
+        }
+        .formula-box .formula-label {
+            display: block; font-size: 0.72rem; letter-spacing: 1.2px; text-transform: uppercase;
+            color: var(--text-secondary); margin-bottom: 2px; font-weight: 700;
+        }
+        .tip-box {
+            background: var(--gold-soft); border-left: 4px solid var(--gold); border-radius: 5px;
+            padding: 9px 13px; margin: 0.5rem 0; font-size: 0.91rem;
+        }
+        .tip-box strong { color: var(--forest); font-family: 'Playfair Display', serif; }
+
+        .trap-box {
+            background: #fff; border: 1px solid rgba(201, 169, 110, 0.42); border-left: 4px solid var(--crimson);
+            border-radius: 6px; padding: 10px 14px; margin: 0.55rem 0;
+        }
+        .trap-title {
+            display: block; font-family: 'Playfair Display', serif; font-weight: 700;
+            color: var(--crimson); font-size: 0.98rem; margin-bottom: 4px;
+        }
+
+        .step-badge {
+            display: inline-block; background: var(--forest); color: #fff; font-size: 0.74rem; font-weight: 700;
+            padding: 1px 8px; border-radius: 10px; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+
+        /* 2-Spalten-Rezept */
+        .two-col-recipe { display: flex; flex-direction: column; gap: 8px; margin-bottom: 0.6rem; }
+        .two-col-head {
+            display: grid; grid-template-columns: 1.22fr 1fr; gap: 12px;
+            background: rgba(58, 90, 63, 0.09); border: 1px solid rgba(58, 90, 63, 0.2); border-radius: 6px;
+            padding: 7px 13px; font-family: 'Playfair Display', serif; font-weight: 700; color: var(--forest); font-size: 0.95rem;
+        }
+        .two-col-row {
+            display: grid; grid-template-columns: 1.22fr 1fr; gap: 12px;
+            background: #fff; border: 1px solid rgba(201, 169, 110, 0.35); border-radius: 6px; padding: 10px 13px;
+            align-items: start;
+        }
+        .col-calc { border-right: 1px dashed rgba(201, 169, 110, 0.5); padding-right: 12px; overflow-x: auto; }
+        .col-think { font-size: 0.89rem; color: var(--text-primary); background: rgba(201, 169, 110, 0.07); padding: 8px 11px; border-radius: 5px; }
+
+        /* Tabellen */
+        .table-wrapper { overflow-x: auto; margin-bottom: 0.75rem; border-radius: 5px; background: #fff; border: 1px solid rgba(201, 169, 110, 0.32); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        th, td { padding: 7px 11px; text-align: left; border-bottom: 1px solid rgba(45, 58, 46, 0.1); vertical-align: top; }
+        th { background-color: rgba(58, 90, 63, 0.06); color: var(--forest); font-family: 'Playfair Display', serif; font-weight: 700; }
         tr:last-child td { border-bottom: none; }
 
         /* Flashcards */
-        .flashcards-container { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px; margin-bottom: 1rem; }
-        .flashcard { perspective: 1000px; width: 200px; height: 240px; cursor: pointer; flex: 1 1 200px; }
+        .flashcards-container { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 12px; margin-bottom: 0.8rem; }
+        .flashcard { perspective: 1000px; width: 300px; height: 270px; cursor: pointer; flex: 1 1 300px; }
         .flashcard-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; }
         .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
         .flashcard-front, .flashcard-back {
-            position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 8px; padding: 15px;
-            display: flex; align-items: center; justify-content: center; border: 1px solid var(--gold);
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 8px; padding: 18px 20px;
+            display: flex; align-items: flex-start; justify-content: center; border: 1px solid var(--gold);
             background-color: var(--paper-cream); box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            overflow-y: auto; scrollbar-width: none;
+            overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(201, 169, 110, 0.6) transparent;
         }
-        .flashcard-front { color: var(--forest); font-family: 'Playfair Display', serif; font-weight: 600; font-size: 1.05rem; }
-        .flashcard-back { transform: rotateY(180deg); background-color: var(--forest); color: var(--paper-white); border-color: var(--forest); font-size: 0.9rem; }
-        .flashcard span, .flashcard p { display: block; width: 100%; }
+        .flashcard-front { color: var(--forest); font-family: 'Playfair Display', serif; font-weight: 600; font-size: 1.01rem; }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--forest); color: var(--paper-white); border-color: var(--forest); font-size: 0.89rem; line-height: 1.5; }
+        .flashcard span, .flashcard p { display: block; width: 100%; margin: auto 0; }
 
-        /* Druck Modus - KOMPAKTERES LAYOUT */
-        body.print-mode { background-color: #E2E2E2; padding-top: 90px; font-size: 0.85rem; line-height: 1.4; }
-        body.print-mode h1 { font-size: 1.7rem; margin-bottom: 1rem; padding-bottom: 0.5rem; }
-        body.print-mode h2 { font-size: 1.3rem; margin-top: 1rem; padding-bottom: 0.2rem; }
-        body.print-mode h3 { font-size: 1.1rem; margin-top: 0.8rem; margin-bottom: 0.3rem; }
-        body.print-mode p, body.print-mode ul, body.print-mode ol { margin-bottom: 0.6rem; }
-        body.print-mode li { margin-bottom: 0.2rem; }
-        body.print-mode th, body.print-mode td { padding: 6px 10px; }
-        body.print-mode .formula-box { padding: 6px 12px; margin: 0.3rem 0 0.6rem; }
-        body.print-mode .tip-box { padding: 8px 12px; margin: 0.6rem 0; }
-
-        body.print-mode .content-wrapper { max-width: none; padding: 0; display: block; }
-        body.print-mode .page {
-            width: 210mm; height: auto; min-height: 297mm; padding: 15mm; margin: 0 auto 20mm auto; background: white;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: visible; break-after: page;
-        }
-        body.print-mode .card { background: transparent; border: none; padding: 0; box-shadow: none; margin-bottom: 0; }
-        body.print-mode .flashcards-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; }
-        body.print-mode .flashcard { width: auto; height: auto; min-height: auto; border: 1px solid var(--text-primary); border-radius: 0; page-break-inside: avoid; }
-        body.print-mode .flashcard-inner { transform: none !important; transition: none; display: flex; flex-direction: column; }
-        body.print-mode .flashcard-front, body.print-mode .flashcard-back {
-            border: none; box-shadow: none; position: static; height: auto; padding: 6px 10px;
-            background: transparent; border-radius: 0; color: var(--text-primary); transform: none;
-        }
-        body.print-mode .flashcard-front { border-bottom: 1px dashed #ccc; font-size: 0.95rem; }
-
-        .page-footer {
-            margin-top: auto; border-top: 1px solid var(--gold); padding-top: 10px;
-            display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-secondary); font-family: 'Playfair Display', serif;
+        /* Mobile / Tablet Anpassungen */
+        @media (max-width: 860px) {
+            .two-col-head { display: none; }
+            .two-col-row { grid-template-columns: 1fr; gap: 8px; }
+            .col-calc { border-right: none; padding-right: 0; border-bottom: 1px dashed rgba(201, 169, 110, 0.45); padding-bottom: 8px; }
         }
         @media (max-width: 768px) {
             #btn-fullscreen { display: none !important; }
-            .nav-group { gap: 8px; flex-wrap: wrap; justify-content: center; }
-            .nav-btn { padding: 6px 10px; font-size: 0.8rem; }
-            nav { padding: 10px; }
-        }
-        @media print {
-            @page { size: A4; margin: 0; }
-            body { background-color: white !important; padding-top: 0 !important; font-size: 0.85rem !important; line-height: 1.4 !important; }
-            h1 { font-size: 1.7rem !important; margin-bottom: 1rem !important; padding-bottom: 0.5rem !important; }
-            h2 { font-size: 1.3rem !important; margin-top: 1rem !important; padding-bottom: 0.2rem !important; break-after: avoid !important; }
-            h3 { font-size: 1.1rem !important; margin-top: 0.8rem !important; margin-bottom: 0.3rem !important; break-after: avoid !important; }
-            p, ul, ol { margin-bottom: 0.6rem !important; }
-            li { margin-bottom: 0.2rem !important; }
-            th, td { padding: 6px 10px !important; }
-            table { break-inside: avoid !important; }
-            .formula-box { padding: 6px 12px !important; margin: 0.3rem 0 0.6rem !important; break-inside: avoid !important; }
-            .tip-box { padding: 8px 12px !important; margin: 0.6rem 0 !important; break-inside: avoid !important; }
-            nav { display: none !important; }
-            .content-wrapper { margin: 0; padding: 0; }
-            .page { margin: 0; box-shadow: none; width: 210mm; min-height: 297mm; height: 297mm; padding: 15mm !important; display: block; overflow: hidden !important; break-after: page; break-before: auto; page-break-after: always; box-sizing: border-box; }
-            .page:last-child { break-after: auto; page-break-after: auto; }
-            .card { background: transparent; border: none; padding: 0; box-shadow: none; break-inside: avoid !important; }
-            .flashcards-container { display: grid; grid-template-columns: repeat(3, 1fr) !important; gap: 6mm !important; }
-            .flashcard { width: auto; height: auto; min-height: auto !important; border: 1px solid #000; border-radius: 0; break-inside: avoid !important; }
-            .flashcard-inner { transform: none !important; transition: none; display: flex; flex-direction: column; }
-            .flashcard-front { position: static; height: auto; border: none; border-bottom: 1px dashed #000; color: #000; background: transparent; transform: none; padding: 6px 10px !important; font-size: 0.95rem !important;}
-            .flashcard-back { position: static; height: auto; border: none; color: #000; background: transparent; transform: none; padding: 6px 10px !important;}
-            .page-footer { break-before: auto !important; margin-top: auto; }
+            body { padding-top: 86px; }
+            nav { padding: 8px 10px; }
+            .nav-group { gap: 6px; }
+            .nav-btn { padding: 5px 9px; font-size: 0.78rem; }
+            body:not(.print-mode) .card { padding: 18px 16px; }
+            h1 { font-size: 1.55rem; }
+            h2 { font-size: 1.3rem; }
         }
 
-        /* ===== PC-MODUS: Bessere Lesbarkeit auf großen Bildschirmen (Druck-Modus bleibt unverändert) ===== */
-        @media screen and (min-width: 1200px) {
-            html:not(:has(body.print-mode)) { font-size: 18px; }
-            body:not(.print-mode) { font-weight: 500; line-height: 1.7; --text-secondary: #4A5A4C; }
-            body:not(.print-mode) h1 { font-weight: 700; border-bottom-width: 3px; }
-            body:not(.print-mode) h2 { font-weight: 700; border-bottom: 2px solid rgba(201, 169, 110, 0.55); }
-            body:not(.print-mode) h3 { font-weight: 700; }
-            body:not(.print-mode) .highlight { font-weight: 700; }
-            body:not(.print-mode) .card { border-width: 1.5px; padding: 35px 40px; box-shadow: 0 6px 22px rgba(45, 58, 46, 0.07); }
-            body:not(.print-mode) .table-wrapper { border-color: rgba(201, 169, 110, 0.5); }
-            body:not(.print-mode) table { font-size: 1rem; }
-            body:not(.print-mode) th, body:not(.print-mode) td { border-bottom-color: rgba(45, 58, 46, 0.18); }
-            body:not(.print-mode) th { font-weight: 700; }
-            body:not(.print-mode) .flashcard { height: 280px; }
-            body:not(.print-mode) .flashcard-front, body:not(.print-mode) .flashcard-back { border-width: 1.5px; padding: 20px; }
-            body:not(.print-mode) .flashcard-front { font-size: 1.15rem; font-weight: 700; }
-            body:not(.print-mode) .flashcard-back { font-size: 1rem; font-weight: 500; }
-            body:not(.print-mode) .reaction-arrow .arrow-text { font-size: 0.75rem; }
-            body:not(.print-mode) .nav-btn { font-size: 0.95rem; font-weight: 600; border-width: 1.5px; }
-            body:not(.print-mode) .dropdown-item { font-size: 0.95rem; font-weight: 500; }
-            body:not(.print-mode) nav { border-bottom-width: 1.5px; }
-            body:not(.print-mode) .formula-box { border-color: rgba(201, 169, 110, 0.6); }
-            body:not(.print-mode) .formula-box .formula-label { font-weight: 600; }
+        /* ============================================================
+           DRUCK-MODUS (A4) & PDF-EXPORT (Alle Details sauber aufgeklappt)
+           ============================================================ */
+        body.print-mode { background-color: #E2E2E2; padding-top: 86px; font-size: 0.74rem; line-height: 1.3; }
+        body.print-mode .drawer-bar,
+        body.print-mode .detail-close-row { display: none !important; }
+        body.print-mode .collapsible-inline,
+        body.print-mode .detail-section { display: block !important; }
+        body.print-mode .detail-page .card,
+        body.print-mode .card.core-continuation { display: block !important; margin-top: 0 !important; border-top: none !important; }
+
+        body.print-mode h1 { font-size: 1.34rem; margin-bottom: 0.4rem; padding-bottom: 0.25rem; }
+        body.print-mode h2 { font-size: 1.08rem; margin-top: 0.2rem; padding-bottom: 0.14rem; }
+        body.print-mode h3 { font-size: 0.91rem; margin-top: 0.3rem; margin-bottom: 0.16rem; }
+        body.print-mode p, body.print-mode ul, body.print-mode ol { margin-bottom: 0.28rem; }
+        body.print-mode li { margin-bottom: 0.1rem; }
+        body.print-mode table { font-size: 0.71rem; }
+        body.print-mode th, body.print-mode td { padding: 3.5px 6px; }
+        body.print-mode .core-banner { padding: 5px 9px; margin: 0.25rem 0 0.45rem; }
+        body.print-mode .sketch-card { padding: 5px 8px; }
+        body.print-mode .sketch-svg { max-width: 280px; max-height: 132px; }
+        body.print-mode .zones-grid { grid-template-columns: 1fr 1fr; gap: 7px; }
+        body.print-mode .zone-panel { padding: 6px 9px; }
+        body.print-mode .formula-box { padding: 4px 8px; margin: 0.18rem 0 0.3rem; }
+        body.print-mode .tip-box, body.print-mode .trap-box { padding: 4.5px 8px; margin: 0.24rem 0; font-size: 0.71rem; }
+        body.print-mode .two-col-head { display: grid !important; grid-template-columns: 1.25fr 1fr; padding: 4px 8px; font-size: 0.75rem; }
+        body.print-mode .two-col-row { display: grid !important; grid-template-columns: 1.25fr 1fr; gap: 7px; padding: 4.5px 8px; }
+        body.print-mode .col-calc { border-right: 1px dashed rgba(201,169,110,0.5); border-bottom: none; padding-right: 7px; padding-bottom: 0; }
+        body.print-mode .col-think { padding: 4px 7px; font-size: 0.7rem; }
+
+        body.print-mode .content-wrapper { max-width: none; padding: 0; display: block; }
+        body.print-mode .page {
+            width: 210mm; min-height: 297mm; height: auto; padding: 9.5mm 11.5mm; margin: 0 auto 18mm auto; background: #fff;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: visible; break-after: page;
         }
-        @media screen and (min-width: 1700px) {
-            html:not(:has(body.print-mode)) { font-size: 19.5px; }
-            body:not(.print-mode) .content-wrapper { max-width: 1800px; }
-            body:not(.print-mode) .flashcard { height: 300px; }
+        body.print-mode .card { background: transparent; border: none; padding: 0; box-shadow: none; }
+        body.print-mode .flashcards-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3.5mm; }
+        body.print-mode .flashcard { width: auto; height: auto; border: 1px solid var(--text-primary); border-radius: 2px; page-break-inside: avoid; }
+        body.print-mode .flashcard-inner { transform: none !important; display: flex; flex-direction: column; }
+        body.print-mode .flashcard-front, body.print-mode .flashcard-back {
+            position: static; height: auto; border: none; box-shadow: none; background: transparent; color: var(--text-primary); transform: none; padding: 4px 7px;
+        }
+        body.print-mode .flashcard-front { border-bottom: 1px dashed #aaa; font-size: 0.78rem; }
+        body.print-mode .flashcard-back { font-size: 0.69rem; }
+
+        .page-footer {
+            margin-top: auto; border-top: 1px solid var(--gold); padding-top: 6px;
+            display: flex; justify-content: space-between; font-size: 0.74rem; color: var(--text-secondary); font-family: 'Playfair Display', serif;
+        }
+
+        @media print {
+            @page { size: A4; margin: 0; }
+            .drawer-bar, .detail-close-row, nav { display: none !important; }
+            .collapsible-inline, .detail-section { display: block !important; }
+            .detail-page .card { display: block !important; }
+        }
+
+        /* Große Bildschirme im Plakat-Modus */
+        @media screen and (min-width: 1250px) {
+            html:not(:has(body.print-mode)) { font-size: 17px; }
+            body:not(.print-mode) .card { padding: 28px 34px; border-width: 1.5px; }
+            body:not(.print-mode) .flashcard { flex: 1 1 350px; height: 290px; }
         }
     </style>
 </head>
@@ -248,340 +347,1226 @@
         </div>
     </nav>
 
-    <div class="content-wrapper" id="content">
+    <div class="content-wrapper">
 
-        <!-- SEITE 1: Basis-Vorwissen + Reaktionsarten -->
+        <!-- ============================================================
+             SEITE 1: BLOCK 1 (KERN – ZONE A)
+             Bindungsarten, Zwischenmolekulare Kräfte & Schmelzenthalpien
+             ============================================================ -->
         <div class="page">
-            <div class="card" id="teil-0">
-                <h1 id="sec-titel">Chemische Energetik<br><small style="font-size: 0.6em; font-weight: normal;">(Chemie LK J1 – Lernaufschrieb)</small></h1>
+            <div class="card" id="block-1-core">
+                <h1 id="main-title">Chemie LK (J1): Chemische Energetik</h1>
+                <h2 id="sec-b1">1. ⚛️ Block 1: Grundlagen, Bindungsarten, Wechselwirkungen &amp; Stöchiometrie</h2>
 
-                <h2 id="sec-0">🧠 0. Das absolute Basis-Vorwissen (deine Werkzeuge)</h2>
-                <p>Um die neuen Themen zu verstehen, brauchst du ein paar Grundlagen aus der Mittelstufe:</p>
-                <div class="table-wrapper">
-                    <table>
-                        <tr><th>Werkzeug</th><th>Erklärung</th></tr>
-                        <tr><td><span class="highlight">Stoffmenge</span> $n$</td><td>Berechnet sich über $n = \frac{m}{M}$ (Masse $m$ in Gramm geteilt durch die molare Masse $M$ aus dem Periodensystem). Du brauchst $n$ fast immer am Ende einer Rechnung, um Energien auf <span class="highlight">genau 1 Mol</span> zu beziehen.</td></tr>
-                        <tr><td><span class="highlight">Energieerhaltungssatz</span></td><td>Energie kann nicht aus dem Nichts erschaffen oder vernichtet werden, sondern wird nur <span class="highlight">umgewandelt</span> (z. B. von chemischer Bindungsenergie in messbare Wärmeenergie).</td></tr>
-                        <tr><td><span class="highlight">Temperaturdifferenz</span> $\Delta T$</td><td>Wird in <span class="highlight">Kelvin (K)</span> angegeben. Da es um den Unterschied geht, ist eine Änderung um $1\,^\circ\mathrm{C}$ rechnerisch exakt das Gleiche wie eine Änderung um $1\,\mathrm{K}$.<br>$\Delta T = T_{\text{Ende}} - T_{\text{Anfang}}$</td></tr>
-                    </table>
+                <div class="core-banner">
+                    <strong>Energetischer Leitgedanke (Teilchenebene):</strong> Jede Temperatur- oder Enthalpieänderung bei Phasenübergängen, Lösevorgängen und Reaktionen folgt aus einer Bilanz: <strong>Bindungen/Wechselwirkungen aufbrechen kostet Energie ($&gt; 0$, endotherm)</strong> – <strong>neue Bindungen/Wechselwirkungen knüpfen setzt Energie frei ($&lt; 0$, exotherm)</strong>.
                 </div>
 
-                <h2 id="sec-1">📈 1. Reaktionsarten &amp; Energiediagramme</h2>
-                <p>Jede chemische Reaktion setzt Energie um. Um eine Reaktion überhaupt zu starten, braucht man immer erst eine <span class="highlight">Aktivierungsenergie</span> ($E_A$) – wie den Funken an einem Feuerzeug.</p>
-                <div class="table-wrapper">
-                    <table>
-                        <tr><th>Reaktionsart</th><th>Was passiert?</th><th>Energiediagramm</th></tr>
-                        <tr><td><span class="highlight">Exotherm</span><br>$\Delta H &lt; 0$</td><td>Das System <span class="highlight">gibt Wärme an die Umgebung ab</span> (das Gefäß wird warm/heiß).</td><td>Die Produkte fallen <span class="highlight">unter</span> das Energieniveau der Edukte ab (Energie wird frei).</td></tr>
-                        <tr><td><span class="highlight">Endotherm</span><br>$\Delta H &gt; 0$</td><td>Das System <span class="highlight">nimmt Wärme aus der Umgebung auf</span> (es kühlt ab, oder man muss dauerhaft mit dem Brenner heizen).</td><td>Die Produkte liegen energetisch <span class="highlight">höher</span> als die Edukte.</td></tr>
-                    </table>
+                <span class="zone-badge">Zone A · Kausalketten &amp; Teilchenebene (Das „Warum“)</span>
+
+                <div class="zones-grid">
+                    <div class="zone-panel">
+                        <h3 id="sec-b1-bindungen">1. Chemische Hauptbindungsarten (Intramolekular &amp; Gitter)</h3>
+                        <div class="table-wrapper">
+                            <table>
+                                <tr><th>Bindungsart</th><th>Gitterbausteine</th><th>Stoffgruppe (Bildung)</th><th>Beispiele ($298\text{ K}, 1000\text{ hPa}$)</th></tr>
+                                <tr><td><span class="highlight">Ionenbindung</span></td><td>Kationen &amp; Anionen</td><td>Salze (Metall + Nichtmetall)</td><td>$\text{NaCl(s)}$, $\text{ZnO(s)}$</td></tr>
+                                <tr><td><span class="highlight">Elektronenpaarbindung</span></td><td>Moleküle oder Atome</td><td>Molekülstoffe, Atomgitter (Nichtmetalle)</td><td>$\text{Cl}_2\text{(g)}$, $\text{H}_2\text{O(l)}$, $\text{CO}_2\text{(g)}$, $\text{Si(s)}$</td></tr>
+                                <tr><td><span class="highlight">Metallbindung</span></td><td>Atomrümpfe, Elektronengas</td><td>Metalle, Legierungen (Metalle)</td><td>$\text{Al(s)}$, $\text{Fe(s)}$, $\text{Mg(s)}$</td></tr>
+                            </table>
+                        </div>
+                        <ul style="margin-bottom:0;">
+                            <li><span class="highlight">Ionengitter:</span> $e^-$-Übertragung Metall $\to$ Nichtmetall (z. B. $2\,\text{Na(s)}+\text{Cl}_2\text{(g)}\to 2\,\text{NaCl(s)}$) $\to$ entgegengesetzt geladene Ionen ($\text{Na}^+, \text{Cl}^-$) $\to$ <strong>starke, ungerichtete elektrostatische Anziehung</strong> $\to$ hohe Gitterenergie &amp; hohe Schmelztemperatur.</li>
+                            <li><span class="highlight">Kovalente Bindung (Oktettregel):</span> Gemeinsame bindende $e^-$-Paare zwischen Nichtmetallen.<br>
+                            • <em>Molekülstoffe ($\text{Cl}_2, \text{H}_2\text{O}, \text{CO}_2$):</em> Starke gerichtete Bindungen im Molekül, aber nur zwischenmolekulare Kräfte nach außen $\to$ niedrige Schmelz-/Siedetemperaturen.<br>
+                            • <em>Atomgitter ($\text{Si}$):</em> Durchgehende 3D-Verknüpfung über kovalente Bindungen $\to$ extrem hoher Energieaufwand zum Gitteraufbruch $\to$ sehr hohe Schmelztemperatur.<br>
+                            • <em>Sonderfall Radikal ($\cdot\text{Cl}$):</em> Einzelnes ungepaartes Valenzelektron (Oktettlücke) $\to$ energetisch instabil $\to$ extrem hohe Reaktivität.</li>
+                            <li><span class="highlight">Metallgitter:</span> Valenzelektronen bilden frei bewegliches, delokalisiertes Elektronengas $\to$ starke ungerichtete Anziehung zu positiven Atomrümpfen $\to$ hohe Festigkeit, elektrische Leitfähigkeit &amp; Verformbarkeit.</li>
+                        </ul>
+                    </div>
+
+                    <div class="zone-panel">
+                        <h3 id="sec-b1-ww">2. Zwischenmolekulare Wechselwirkungen (Intermolekular)</h3>
+                        <div class="table-wrapper">
+                            <table>
+                                <tr><th>Wechselwirkung</th><th>Teilchenvoraussetzung</th><th>Stärke</th><th>Beispiel</th></tr>
+                                <tr><td><span class="highlight">London-Kräfte</span></td><td>Alle Moleküle, Edelgase</td><td>Schwach</td><td>$\text{Cl}_2\text{(g)}$, $\text{H}_2\text{(g)}$</td></tr>
+                                <tr><td><span class="highlight">Dipol-Dipol</span></td><td>Permanente Dipolmoleküle</td><td>Mittel</td><td>$\text{H}_2\text{S(g)}$, $\text{HCl(g)}$</td></tr>
+                                <tr><td><span class="highlight">H-Brücken</span></td><td>$\text{H}$ an $\text{F, O, N}$ + freies $e^-$-Paar</td><td>Stark (intermol.)</td><td>$\text{H}_2\text{O(l)}$</td></tr>
+                                <tr><td><span class="highlight">Ion-Dipol</span></td><td>Ionen + Dipolmoleküle</td><td>Sehr stark</td><td>$\text{Na}^+\text{(aq)}$ in $\text{H}_2\text{O(l)}$</td></tr>
+                            </table>
+                        </div>
+                        <ul style="margin-bottom:0;">
+                            <li><span class="highlight">London (Dispersionskräfte):</span> Kurzzeitige asymmetrische $e^-$-Verteilung $\to$ temporäre Dipole induzieren Nachbardipole $\to$ schwache Anziehung, <strong>steigt mit der Moleküloberfläche</strong>.</li>
+                            <li><span class="highlight">Dipol-Dipol:</span> $\Delta EN &gt; 0{,}4$ + asymmetrischer Molekülbau $\to$ permanente Partialladungen ($\delta^+, \delta^-$) $\to$ elektrostatische Anziehung $\to$ erhöhte Siedetemperatur.</li>
+                            <li><span class="highlight">Wasserstoffbrücken:</span> Stark polarisierte $\text{O–H}$-, $\text{N–H}$- oder $\text{F–H}$-Bindung $\to$ stark positiviertes $\text{H}$ ($\delta^+$) wechselwirkt gerichtet mit freiem Elektronenpaar ($\delta^-$) $\to$ hohe Phasenübergangsenthalpien.</li>
+                            <li><span class="highlight">Ion-Dipol:</span> Anziehung zwischen Kationen/Anionen und Partialladungen von Dipolen (z. B. $\text{H}_2\text{O}$) $\to$ Bildung einer <strong>Hydrathülle</strong> unter Freisetzung von Hydratationsenergie ($\Delta_{\text{hyd}}H &lt; 0$).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Muster-Kausalkette Schmelzenthalpien + SVG -->
+                <div class="zone-panel" style="margin-top: 12px;">
+                    <h3 id="sec-b1-fus">3. Muster-Kausalkette: Molare Schmelzenthalpien $\Delta_{\text{fus}}H_m$ bei $1013\text{ hPa}$ ($\text{Si} &gt; \text{Al} &gt; \text{H}_2\text{O} &gt; \text{H}_2\text{S}$)</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 14px; align-items: center;">
+                        <div>
+                            <svg class="sketch-svg" viewBox="0 0 420 148" xmlns="http://www.w3.org/2000/svg" aria-label="Balkendiagramm Schmelzenthalpien">
+                                <rect x="0" y="0" width="420" height="148" rx="6" fill="#FDFCF8"/>
+                                <!-- Si -->
+                                <text x="8" y="28" font-family="Raleway, sans-serif" font-size="11.5" font-weight="700" fill="#2D3A2E">Si (1410 °C)</text>
+                                <rect x="102" y="15" width="245" height="18" rx="3" fill="#3A5A3F"/>
+                                <text x="353" y="28" font-family="Raleway, sans-serif" font-size="11.5" font-weight="700" fill="#3A5A3F">50,2 kJ/mol</text>
+                                <!-- Al -->
+                                <text x="8" y="62" font-family="Raleway, sans-serif" font-size="11.5" font-weight="700" fill="#2D3A2E">Al (660 °C)</text>
+                                <rect x="102" y="49" width="53" height="18" rx="3" fill="#688B6E"/>
+                                <text x="162" y="62" font-family="Raleway, sans-serif" font-size="11.5" font-weight="600" fill="#2D3A2E">10,7 kJ/mol (Metallgitter)</text>
+                                <!-- H2O -->
+                                <text x="8" y="96" font-family="Raleway, sans-serif" font-size="11.5" font-weight="700" fill="#2D3A2E">H₂O (0 °C)</text>
+                                <rect x="102" y="83" width="30" height="18" rx="3" fill="#C9A96E"/>
+                                <text x="139" y="96" font-family="Raleway, sans-serif" font-size="11.5" font-weight="600" fill="#2D3A2E">6,0 kJ/mol (H-Brücken)</text>
+                                <!-- H2S -->
+                                <text x="8" y="130" font-family="Raleway, sans-serif" font-size="11.5" font-weight="700" fill="#2D3A2E">H₂S (−86 °C)</text>
+                                <rect x="102" y="117" width="12" height="18" rx="3" fill="#9E3B2E"/>
+                                <text x="121" y="130" font-family="Raleway, sans-serif" font-size="11.5" font-weight="600" fill="#2D3A2E">2,4 kJ/mol (Dipol/London)</text>
+                            </svg>
+                        </div>
+                        <ul style="margin-bottom:0; font-size:0.9rem;">
+                            <li><span class="highlight">$\text{Si(s)}\to\text{Si(l)}$ ($50{,}2\text{ kJ/mol}$, $\vartheta_{\text{sm}}=1410\,^\circ\text{C}$):</span> 3D-Atomgitter $\to$ echte, sehr starke kovalente Bindungen müssen aufgebrochen werden.</li>
+                            <li><span class="highlight">$\text{Al(s)}\to\text{Al(l)}$ ($10{,}7\text{ kJ/mol}$, $660\,^\circ\text{C}$):</span> Metallgitter aus $\text{Al}^{3+}$-Rümpfen &amp; delokalisiertem Elektronengas $\to$ starke Metallbindung wird gelockert.</li>
+                            <li><span class="highlight">$\text{H}_2\text{O(s)}\to\text{H}_2\text{O(l)}$ ($6{,}0\text{ kJ/mol}$, $0\,^\circ\text{C}$):</span> Molekülgitter (Eis) $\to$ kovalente Bindungen bleiben intakt, aber starke intermolekulare H-Brücken brechen teilweise auf.</li>
+                            <li><span class="highlight">$\text{H}_2\text{S(s)}\to\text{H}_2\text{S(l)}$ ($2{,}4\text{ kJ/mol}$, $-86\,^\circ\text{C}$):</span> Geringere EN von Schwefel verhindert H-Brücken $\to$ nur schwache Dipol-Dipol- &amp; London-Kräfte zu überwinden.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <div class="page-footer">
-                <span>Chemische Energetik</span>
+                <span>Chemische Energetik – Block 1 (Zone A: Bindungen &amp; Wechselwirkungen)</span>
                 <span>Olga V.</span>
                 <span>Seite 1</span>
             </div>
         </div>
 
-        <!-- SEITE 2: Qualitative Versuche V1–V4 -->
+        <!-- ============================================================
+             SEITE 2: BLOCK 1 (KERN – ZONE B + AUFKLAPP-LEISTE)
+             Stöchiometrie-Formeln, Einheiten-Fallen & Oxidationszahlen
+             ============================================================ -->
         <div class="page">
-            <div class="card" id="teil-1-versuche">
-                <h3 id="sec-1-1">🧪 Zusammenfassung eurer qualitativen Versuche (V1 – V4)</h3>
-                <div class="table-wrapper">
-                    <table>
-                        <tr><th>Versuch</th><th>Was passiert?</th><th>Ergebnis</th></tr>
-                        <tr>
-                            <td><span class="highlight">V1:</span> Zucker erhitzen</td>
-                            <td>Zucker schmilzt, karamellisiert, wird schwarz (Kohlenstoff) und Wasserdampf entsteht.</td>
-                            <td><span class="highlight">Endotherm.</span> Sobald man den Brenner wegnimmt, stoppt die Zersetzung.</td>
-                        </tr>
-                        <tr>
-                            <td rowspan="2"><span class="highlight">V2:</span> Salze in Wasser lösen</td>
-                            <td>Natron &amp; Citronensäure: Temperatur sinkt</td>
-                            <td><span class="highlight">Endotherm</span> (dem Wasser wird Wärme entzogen, um das Kristallgitter aufzubrechen).</td>
-                        </tr>
-                        <tr>
-                            <td>Calciumchlorid (CaCl<sub>2</sub>) &amp; Natriumhydroxid (NaOH): Temperatur steigt stark</td>
-                            <td><span class="highlight">Exotherm.</span></td>
-                        </tr>
-                        <tr>
-                            <td><span class="highlight">V3:</span> Eisenwolle an Batterie</td>
-                            <td>Die Batterie bringt die Wolle kurz zum Glühen, danach glüht und oxidiert die ganze Wolle von selbst weiter:<br>4 Fe + 3 O<sub>2</sub> <span class="arrow-simple">&rarr;</span> 2 Fe<sub>2</sub>O<sub>3</sub></td>
-                            <td><span class="highlight">Exotherm.</span> Die Batterie liefert lediglich den „Stupser“ (Aktivierungsenergie $E_A$).</td>
-                        </tr>
-                        <tr>
-                            <td rowspan="2"><span class="highlight">V4:</span> Eisenoxalat (FeC<sub>2</sub>O<sub>4</sub>) zersetzen</td>
-                            <td><span class="highlight">Schritt 1:</span> Erhitzen des gelben Pulvers zu schwarzem Pulver</td>
-                            <td><span class="highlight">Endotherm</span> (Zersetzung erfordert Hitze).</td>
-                        </tr>
-                        <tr>
-                            <td><span class="highlight">Schritt 2:</span> Das entstandene extrem feine („pyrophore“) Eisen wird an die Luft geschüttet und fängt von selbst an, rot zu glühen!</td>
-                            <td><span class="highlight">Stark exotherm</span> (Oxidation mit Luftsauerstoff).</td>
-                        </tr>
-                    </table>
+            <div class="card core-continuation">
+                <span class="zone-badge">Zone B · Formeln, Regeln, Vorzeichen &amp; Einheiten-Fallen</span>
+
+                <div class="zones-grid">
+                    <div class="zone-panel">
+                        <h3 id="sec-b1-stoech">1. Zentrale Stöchiometrie-Formeln &amp; Einheiten-Fallen</h3>
+                        <div class="table-wrapper">
+                            <table>
+                                <tr><th>Größe</th><th>Formel</th><th>Einheit</th><th>Konstanten / Bedingung</th></tr>
+                                <tr><td><span class="highlight">Stoffmenge $n$</span></td><td>$n = \dfrac{m}{M}$</td><td>$\text{mol}$</td><td>$M$ aus PSE in $\text{g/mol}$</td></tr>
+                                <tr><td><span class="highlight">Teilchenzahl $N$</span></td><td>$N = n \cdot N_A$</td><td>$1$</td><td>$N_A = 6{,}022 \cdot 10^{23}\text{ mol}^{-1}$</td></tr>
+                                <tr><td><span class="highlight">Molares Volumen $V_m$</span></td><td>$V_m = \dfrac{V}{n}$</td><td>$\text{L/mol}$</td><td>$V_m(25\,^\circ\text{C}, 1000\text{ hPa}) = 24{,}466\text{ L/mol}$<br>$V_m(0\,^\circ\text{C}, 1013{,}25\text{ hPa}) = 22{,}4\text{ L/mol}$</td></tr>
+                                <tr><td><span class="highlight">Konzentration $c$</span></td><td>$c = \dfrac{n}{V}$</td><td>$\text{mol/L}$</td><td>$V$ <strong>zwingend in $\text{L}$</strong> einsetzen!</td></tr>
+                                <tr><td><span class="highlight">Dichte $\rho$</span></td><td>$\rho = \dfrac{m}{V}$</td><td>$\text{g/cm}^3$ ($\text{g/mL}$)</td><td>$\rho(\text{H}_2\text{O}) \approx 1{,}00\text{ g/cm}^3$</td></tr>
+                                <tr><td><span class="highlight">Massenanteil $w$</span></td><td>$w = \dfrac{m(\text{Stoff})}{m(\text{Lösung})}$</td><td>$1$ bzw. $\%$</td><td>Dimensionslos ($w \in [0; 1]$)</td></tr>
+                            </table>
+                        </div>
+                        <div class="tip-box" style="margin-bottom:0;">
+                            <strong>Klausur-Checks &amp; Einheiten-Fallen:</strong><br>
+                            • <strong>Molare Masse summieren:</strong> $M(\text{H}_2\text{SO}_4) = 2\cdot 1 + 32 + 4\cdot 16 = 98\text{ g/mol}$.<br>
+                            • <strong>Masse ($\text{kg}\to\text{g}$):</strong> $1\text{ kg }\text{Al}_2\text{O}_3 = 1000\text{ g} \implies n = \frac{1000\text{ g}}{102\text{ g/mol}} = 9{,}80\text{ mol}$.<br>
+                            • <strong>Zehnerpotenz-Check:</strong> $n(\text{S}) = 0{,}04\text{ mol} \implies N = 0{,}04 \cdot 6{,}022\cdot 10^{23} = \mathbf{2{,}409 \cdot 10^{22}}$ Teilchen <em>(nicht $10^{23}$!)</em>.<br>
+                            • <strong>Kette $m\to n\to N\to V$ ($25\,^\circ\text{C}, 1000\text{ hPa}$):</strong> $440\text{ g }\text{CO}_2\text{(g)}$ ($M=44\text{ g/mol}$) $\implies n = 10\text{ mol} \implies N = 6{,}022\cdot 10^{24}$ und $V = 10\cdot 24{,}466 = 244{,}66\text{ L}$.<br>
+                            • <strong>Volumen &amp; Dichte skalieren:</strong> $1\text{ mL} = 1\text{ cm}^3 = 10^{-3}\text{ L}$; wird $\rho$ ($\text{g/cm}^3$) mit $c$ ($\text{mol/L}$) kombiniert, $\rho$ mit $\mathbf{\cdot 1000}$ auf $\text{g/L}$ umrechnen!
+                        </div>
+                    </div>
+
+                    <div class="zone-panel">
+                        <h3 id="sec-b1-oz">2. Oxidationszahlen (OZ): Bilanz &amp; 4 Vorrangregeln</h3>
+                        <p><strong>Definition:</strong> Gedachte Ladung bei heterolytischer Zuordnung aller Bindungselektronen zum elektronegativeren Partner ($\text{OZ} = N(\text{Valenz-}e^-\text{ neutral}) - N(\text{zugeordnete }e^-)$; gleiche Atome wie $\text{C–C}$ werden homolytisch geteilt).<br>
+                        <strong>Summenregeln:</strong> Elemente $\pm 0$ &nbsp;|&nbsp; Neutrale Moleküle $\sum\text{OZ} = 0$ &nbsp;|&nbsp; Ionen $\sum\text{OZ} = \text{Ionenladung}$.<br>
+                        <strong>Redox:</strong> <em>Oxidation</em> = OZ steigt ($e^-$-Abgabe) &nbsp;|&nbsp; <em>Reduktion</em> = OZ sinkt ($e^-$-Aufnahme).</p>
+
+                        <p style="margin-bottom:0.35rem;"><strong>Die 4 Vorrangregeln (strikt hierarchisch von 1 $\to$ 4 anwenden!):</strong></p>
+                        <ol>
+                            <li><span class="highlight">Metalle in Verbindungen</span> immer positiv (HG I: $+\text{I}$, II: $+\text{II}$, III: $+\text{III}$).</li>
+                            <li><span class="highlight">Fluor ($\text{F}$)</span> als elektronegativstes Element immer $-\text{I}$.</li>
+                            <li><span class="highlight">Wasserstoff ($\text{H}$)</span> meist $+\text{I}$ <em>(Ausnahme Metallhydride wie $\text{NaH}$ wegen Regel 1: $-\text{I}$)</em>.</li>
+                            <li><span class="highlight">Sauerstoff ($\text{O}$)</span> meist $-\text{II}$ <em>(Ausnahme Peroxide $\text{H}_2\text{O}_2$ wegen Regel 3: $-\text{I}$; $\text{OF}_2$ wegen Regel 2: $+\text{II}$)</em>.</li>
+                        </ol>
+
+                        <div class="tip-box" style="margin-bottom:0;">
+                            <strong>Wichtige Beispiele:</strong><br>
+                            • $\text{AlF}_3$: $\text{Al} = +\text{III}$, $\text{F} = -\text{I}$ ($+3 + 3\cdot(-1)=0$).<br>
+                            • $\text{ZnO}$: $\text{O} = -\text{II} \implies \mathbf{\text{Zn} = +\text{II}}$ <em>(Nebengruppenmetall Zink hat in Verbindungen immer $+\text{II}$, niemals $+\text{III}$!)</em>.<br>
+                            • $\text{SO}_4^{2-}$ &amp; $\text{H}_2\text{SO}_4$: $\text{OZ(S)} + 4\cdot(-2) = -2 \implies \mathbf{\text{OZ(S)} = +\text{VI}}$.<br>
+                            • <strong>Propansäure ($\text{CH}_3\text{–CH}_2\text{–COOH}$):</strong> $\text{–CH}_3$: $4-7 = \mathbf{-\text{III}}$ &nbsp;|&nbsp; $\text{–CH}_2\text{–}$: $4-6 = \mathbf{-\text{II}}$ &nbsp;|&nbsp; $\text{–COOH}$: $4-1 = \mathbf{+\text{III}}$.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="drawer-bar">
+                    <span class="drawer-bar-label">Mehr zu Block 1:</span>
+                    <button type="button" class="drawer-btn" data-toggle-topic="1" data-toggle-layer="rezept"><span class="state-icon">＋</span> 🧮 Stöchiometrie- &amp; Säureverdünnungs-Rezepte</button>
+                    <button type="button" class="drawer-btn" data-toggle-topic="1" data-toggle-layer="fallen"><span class="state-icon">＋</span> 🏆 15-Punkte-Box: Sicherheitsregel, Fallen &amp; AFB-III</button>
                 </div>
             </div>
             <div class="page-footer">
-                <span>Chemische Energetik</span>
+                <span>Chemische Energetik – Block 1 (Zone B: Stöchiometrie &amp; Oxidationszahlen)</span>
                 <span>Olga V.</span>
                 <span>Seite 2</span>
             </div>
         </div>
 
-        <!-- SEITE 3: Thermodynamik-Theorie -->
-        <div class="page">
-            <div class="card" id="teil-2">
-                <h2 id="sec-2">⚙️ 2. Thermodynamik-Theorie: Warum Enthalpie?</h2>
-                <p>Wie beschreiben wir Energieänderungen in der Chemie mathematisch?</p>
+        <!-- ============================================================
+             SEITE 3: BLOCK 1 (DETAIL: RECHENREZEPTE)
+             ============================================================ -->
+        <div class="page detail-page is-closed" data-topic="1" data-page-layers="rezept">
+            <div class="card detail-card">
+                <div class="detail-section" data-topic="1" data-layer="rezept">
+                    <span class="zone-badge">Zone C · Allgemeine Rechenrezepte &amp; Musterrechnungen</span>
+                    <h3 id="sec-b1-rezept">🧮 Block 1 – Stöchiometrisches Rechnen &amp; Verdünnen konzentrierter Säuren</h3>
 
-                <h3 id="sec-2-1">Systemarten</h3>
-                <div class="table-wrapper">
-                    <table>
-                        <tr><th>System</th><th>Austausch</th><th>Beispiel</th></tr>
-                        <tr><td><span class="highlight">Offenes System</span></td><td>Stoff- &amp; Energieaustausch</td><td>Becherglas ohne Deckel</td></tr>
-                        <tr><td><span class="highlight">Geschlossenes System</span></td><td>Nur Energieaustausch</td><td>verschlossenes Reagenzglas</td></tr>
-                        <tr><td><span class="highlight">Isoliertes System</span></td><td>Kein Austausch</td><td>perfekte Thermoskanne</td></tr>
-                    </table>
-                </div>
+                    <div class="two-col-recipe">
+                        <div class="two-col-head">
+                            <div>1. 5-Schritt-Rezept: Stöchiometrisches Rechnen über Reaktionsgleichungen</div>
+                            <div>Durchgerechnete Klausur-Musterbeispiele</div>
+                        </div>
 
-                <h3 id="sec-2-2">Innere Energie (U)</h3>
-                <p>Die gesamte absolute Energie, die in einem Stoff steckt. Man kann nur ihre <span class="highlight">Änderung</span> ($\Delta U$) messen – Änderung durch Wärme $Q$ und Arbeit $W$:</p>
-                <div class="formula-box">
-                    $$\Delta U = Q + W$$
-                </div>
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">Schritt 1 &amp; 2: Gleichung ($\nu$) &amp; $n_{\text{geg}}$</span><br>
+                                1. Vollständige Reaktionsgleichung mit Stöchiometriezahlen $\nu$ &amp; Aggregatzuständen.<br>
+                                2. Gegebene Masse in $\text{g}$ umrechnen und $n_{\text{geg}} = \dfrac{m_{\text{geg}}}{M_{\text{geg}}}$ berechnen.
+                            </div>
+                            <div class="col-think">
+                                • <strong>Bsp. A ($\text{Zn(s)}+\text{S(s)}\to\text{ZnS(s)}$, $1:1:1$):</strong> $200\text{ g Zn}$ $\Rightarrow n(\text{Zn})=\frac{200}{65{,}38}\approx 3{,}06\text{ mol}$.<br>
+                                • <strong>Bsp. B ($\text{HgS(s)}+\text{Fe(s)}\to\text{Hg(l)}+\text{FeS(s)}$, $1:1:1:1$):</strong> $1\text{ kg}=1000\text{ g Hg}$ $\Rightarrow n(\text{Hg})=\frac{1000}{200{,}592}\approx 4{,}985\text{ mol}$.<br>
+                                • <strong>Bsp. C ($3\,\text{Mg(s)}+\text{Fe}_2\text{O}_3\text{(s)}\to 2\,\text{Fe(s)}+3\,\text{MgO(s)}$, $3:1:2:3$):</strong> $111{,}70\text{ g Fe}$ $\Rightarrow n(\text{Fe})=\frac{111{,}70}{55{,}845}\approx 2{,}000\text{ mol}$.
+                            </div>
+                        </div>
 
-                <h3 id="sec-2-3">Volumenarbeit</h3>
-                <div class="formula-box">
-                    $$W = -p \cdot \Delta V$$
-                </div>
-                <p>Entsteht bei einer Reaktion ein <span class="highlight">Gas</span>, dehnt es sich aus ($\Delta V$) und muss dabei die Raumluft wegdrücken, arbeitet also gegen den Luftdruck ($p$). <span class="highlight">Das kostet das System Energie!</span></p>
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">Schritt 3 bis 5: Verhältnis $\nu$, $M_{\text{ges}}$ &amp; $m_{\text{ges}}$</span><br>
+                                3. Stoffmengenverhältnis auswerten:<br>
+                                $$\frac{n_{\text{ges}}}{n_{\text{geg}}} = \frac{\nu_{\text{ges}}}{\nu_{\text{geg}}} \implies n_{\text{ges}} = n_{\text{geg}} \cdot \frac{\nu_{\text{ges}}}{\nu_{\text{geg}}}$$
+                                4. $M_{\text{ges}}$ für <strong>$1\text{ mol}$ Formeleinheit</strong> aus PSE addieren.<br>
+                                5. Zielmasse berechnen: $m_{\text{ges}} = n_{\text{ges}} \cdot M_{\text{ges}}$.
+                            </div>
+                            <div class="col-think">
+                                • <strong>Bsp. A:</strong> $n(\text{ZnS})=3{,}06\text{ mol}$, $M(\text{ZnS})=97{,}445\text{ g/mol} \implies \mathbf{m(\text{ZnS})=298{,}18\text{ g}}$.<br>
+                                • <strong>Bsp. B:</strong> $n(\text{HgS})=n(\text{Fe})=4{,}985\text{ mol}$ $\implies m(\text{HgS})=4{,}985\cdot 232{,}657 = \mathbf{1153{,}51\text{ g}}$, $m(\text{Fe})=4{,}985\cdot 55{,}845 = \mathbf{278{,}39\text{ g}}$.<br>
+                                • <strong>Bsp. C ($\nu(\text{Fe})=2$):</strong> $n(\text{Fe}_2\text{O}_3)=2{,}000\cdot\frac{1}{2}=1{,}000\text{ mol} \implies \mathbf{159{,}69\text{ g}}$; $n(\text{Mg})=n(\text{MgO})=2{,}000\cdot\frac{3}{2}=3{,}000\text{ mol} \implies m(\text{Mg})=\mathbf{72{,}92\text{ g}}$, $m(\text{MgO})=\mathbf{120{,}91\text{ g}}$.
+                            </div>
+                        </div>
+                    </div>
 
-                <h3 id="sec-2-4">Die Enthalpie (H) – dein bester Freund im LK!</h3>
-                <p>Da ihr im Labor fast immer im offenen Becherglas (also bei <span class="highlight">konstantem Druck</span> $p$) arbeitet, entweicht Volumenarbeit. Um das beim Rechnen nicht immer mühsam herausrechnen zu müssen, nutzt man die Enthalpie:</p>
-                <div class="formula-box">
-                    $$H = U + p \cdot V$$
-                </div>
-                <div class="tip-box">
-                    <strong>Die goldene Regel:</strong> Bei konstantem Druck ist die Reaktionsenthalpie ($\Delta H$) <span class="highlight">exakt gleich der messbaren Reaktionswärme</span> ($Q_p$)!
+                    <h3 id="sec-b1-verduennen">2. Rechenrezept: Verdünnen konzentrierter Säuren (Fall A, B &amp; C)</h3>
+                    <div class="zones-grid">
+                        <div class="zone-panel">
+                            <h3>Fall A ($c_1$ bekannt) &amp; Fall B (über $w$ und Dichte $\rho$)</h3>
+                            <p><span class="highlight">Fall A – Verdünnungsgleichung ($n_1 = n_2$):</span><br>
+                            $$c_1 \cdot V_1 = c_2 \cdot V_2 \implies V_1 = \frac{c_2 \cdot V_2}{c_1}$$
+                            <em>Muster ($\text{HCl}$):</em> $c_1 = 1\text{ mol/L}$, $c_2 = 0{,}15\text{ mol/L}$, $V_2 = 20\text{ mL} \implies V_1 = \frac{0{,}15 \cdot 20\text{ mL}}{1} = \mathbf{3\text{ mL}}$ Stammlösung (Wasser vorlegen, $3\text{ mL}$ Säure zugeben, auf exakt $20\text{ mL}$ auffüllen).</p>
+                            <p style="margin-bottom:0;"><span class="highlight">Fall B – Konz. Säure über Massenanteil $w$ &amp; $\rho$ gegeben:</span><br>
+                            Aus $m_{\text{Säure}} = w \cdot \rho \cdot V$ und $n = \frac{m_{\text{Säure}}}{M}$ folgt mit $\rho$ in $\text{g/L}$:
+                            $$c_1 = \frac{w \cdot \rho}{M}$$
+                            <em>Muster ($96\,\%$ige $\text{H}_2\text{SO}_4$, $w=0{,}96$, $\rho = 1{,}84\text{ g/mL} = 1840\text{ g/L}$, $M=98\text{ g/mol}$):</em> $c_1 = \frac{0{,}96 \cdot 1840}{98} \approx \mathbf{18{,}02\text{ mol/L}}$, danach in $V_1 = \frac{c_2 \cdot V_2}{c_1}$ einsetzen.</p>
+                        </div>
+
+                        <div class="zone-panel">
+                            <h3>Fall C – Verdünnen über das Mischungskreuz</h3>
+                            <p>Beim Mischen konzentrierter Säure ($w_1$, Masse $m_1$) mit reinem Wasser ($w_2 = 0\,\%$, Masse $m_2$) auf den Ziel-Massenanteil $w_{\text{Ziel}}$ gilt:</p>
+                            <div class="formula-box">
+                                $$\frac{m_1}{m_2} = \frac{w_{\text{Ziel}} - 0}{w_1 - w_{\text{Ziel}}}$$
+                            </div>
+                            <div class="trap-box" style="margin-bottom:0;">
+                                <span class="trap-title">⚠️ Dichte-Falle beim Mischungskreuz</span>
+                                Das Mischungskreuz mit $w$ liefert immer ein <strong>Massenverhältnis</strong>! Die berechnete Säuremasse $m_1$ muss für das Abmessen mit der Pipette zwingend über die Dichte $\rho_1$ in das Volumen $\mathbf{V_1 = \dfrac{m_1}{\rho_1}}$ umgerechnet werden.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="detail-close-row">
+                        <button type="button" class="detail-close-btn" data-close-topic="1" data-close-layer="rezept">▲ Rechenrezepte einklappen</button>
+                    </div>
                 </div>
             </div>
             <div class="page-footer">
-                <span>Chemische Energetik</span>
+                <span>Chemische Energetik – Block 1 (Zone C: Stöchiometrie &amp; Säureverdünnung)</span>
                 <span>Olga V.</span>
                 <span>Seite 3</span>
             </div>
         </div>
 
-        <!-- SEITE 4: Kalorimetrie -->
-        <div class="page">
-            <div class="card" id="teil-3">
-                <h2 id="sec-3">🌡️ 3. Quantitativ: Die Kalorimetrie (Rechnen!)</h2>
-                <p>Mit einem <span class="highlight">Kalorimeter</span> (einem isolierten Gefäß mit Wasser und Thermometer) misst man, wie viel Wärme eine chemische Reaktion abgibt oder aufnimmt.</p>
-                <p><span class="highlight">Das Prinzip:</span> Die von der Reaktion abgegebene Wärme erwärmt das Wasser <span class="highlight">UND</span> das Gerät selbst.</p>
+        <!-- ============================================================
+             SEITE 4: BLOCK 1 (DETAIL: 15-PUNKTE-BOX)
+             ============================================================ -->
+        <div class="page detail-page is-closed" data-topic="1" data-page-layers="fallen">
+            <div class="card detail-card">
+                <div class="detail-section" data-topic="1" data-layer="fallen">
+                    <span class="zone-badge">Zone D · Die „15-Punkte-Box“ (Stolpersteine, Sicherheit &amp; AFB-III-Transfer)</span>
+                    <h3 id="sec-b1-fallen">🏆 Block 1 – Sicherheitsregel, Stöchiometrie-Fallen &amp; Gitterbruch-Transfer</h3>
 
-                <div class="formula-box">
-                    <span class="formula-label">Die wichtigste Formel für Klausuren</span>
-                    $$Q_r = (c_W \cdot m_W + C_K) \cdot \Delta T$$
-                </div>
-                <div class="table-wrapper">
-                    <table>
-                        <tr><th>Größe</th><th>Bedeutung</th></tr>
-                        <tr><td>$c_W$</td><td>Spezifische Wärmekapazität von Wasser: $4{,}183\ \frac{\mathrm{J}}{\mathrm{g \cdot K}}$</td></tr>
-                        <tr><td>$m_W$</td><td>Masse des Wassers in Gramm</td></tr>
-                        <tr><td>$C_K$</td><td>Wärmekapazität des Kalorimeters. Das Gefäß, das Thermometer und der Rührer <span class="highlight">„schlucken“ leider auch Wärme!</span></td></tr>
-                        <tr><td>$\Delta T$</td><td>Temperaturdifferenz in K</td></tr>
-                    </table>
-                </div>
+                    <div class="trap-box">
+                        <span class="trap-title">🛡️ 1. Sicherheitsregel beim Säureverdünnen (Makro- &amp; Teilchenebene)</span>
+                        <p style="margin-bottom:0;"><strong>Merksatz &amp; Durchführung:</strong> <em>„Erst das Wasser, dann die Säure, sonst geschieht das Ungeheure!“</em> – Zuerst einen Teil dest. Wasser im Messgefäß vorlegen (z. B. $10\text{ mL}$), abgemessene Säure ($3\text{ mL}$) langsam unter Rühren zugeben und erst nach Abkühlen bis zur Eichmarke ($20\text{ mL}$) auffüllen.<br>
+                        • <strong>Energetische Kausalkette (AFB II/III):</strong> Konz. Säure (z. B. $\text{H}_2\text{SO}_4$) + $\text{H}_2\text{O(l)} \to$ Protolyse &amp; Ausbildung starker Ion-Dipol-Wechselwirkungen (Hydrathüllen um $\text{H}_3\text{O}^+\text{(aq)}$ und Säurerest-Ionen) $\to$ <strong>extrem exotherme Hydratation ($\Delta_{\text{hyd}}H \ll 0$)</strong> setzt schlagartig große Wärmemengen frei.<br>
+                        • <strong>Physikalischer Grund:</strong> Vorgelegtes Wasser hat eine sehr hohe spezifische Wärmekapazität ($c = 4{,}18\text{ J/(g}\cdot\text{K)}$) und nimmt die Wärme sicher als Wärmesenke auf. Tropft man umgekehrt Wasser (geringere Dichte $1{,}00\text{ g/mL}$) auf konz. $\text{H}_2\text{SO}_4$ (höhere Dichte $1{,}84\text{ g/mL}$), schwimmt das Wasser oben, erhitzt sich lokal über $100\,^\circ\text{C}$ und verspritzt durch schlagartiges Sieden (<strong>Siedeverzug</strong>) heiße, ätzende Säure!</p>
+                    </div>
 
-                <h3 id="sec-3-1">Molare Enthalpie</h3>
-                <p>Damit Werte in der Literatur vergleichbar sind, teilt man $Q_r$ am Ende durch die <span class="highlight">Stoffmenge $n$</span> des eingesetzten Stoffes:</p>
-                <div class="formula-box">
-                    $$\Delta_r H_m = \frac{Q_r}{n} \quad \text{(in } \mathrm{kJ/mol}\text{)}$$
+                    <div class="trap-box">
+                        <span class="trap-title">⚡ 2. Die 3 Klausur-Rechenfallen bei Stöchiometrie &amp; Verdünnung</span>
+                        <p style="margin-bottom:0;">• <strong>Falle 1 (Stöchiometriefaktor $\nu$ in $M$ einrechnen):</strong> $M$ gilt immer für genau $1\text{ mol}$ Formeleinheit! Auch bei $2\,\text{Fe}$ in der Gleichung bleibt $M(\text{Fe}) = 55{,}845\text{ g/mol}$ – der Faktor $2$ darf ausschließlich im Stoffmengenverhältnis genutzt werden.<br>
+                        • <strong>Falle 2 (Zähler &amp; Nenner vertauschen):</strong> Nutze immer die bruchsichere Grundformel $\dfrac{n(\text{gesucht})}{\nu(\text{gesucht})} = \dfrac{n(\text{gegeben})}{\nu(\text{gegeben})}$.<br>
+                        • <strong>Falle 3 (Volumenkontraktion ignorieren):</strong> Flüssigkeitsvolumina sind bei hohen Konzentrationen nicht streng additiv! Schreibe in Durchführungen nie „$3\text{ mL}$ Säure + $17\text{ mL}$ Wasser mischen“, sondern immer: <em>„Wasser vorlegen, $3\text{ mL}$ Säure zugeben und mit dest. Wasser exakt bis zur Eichmarke $V_2 = 20\text{ mL}$ auffüllen.“</em></p>
+                    </div>
+
+                    <div class="zone-panel">
+                        <h3>🔬 3. AFB-III-Transfer: Phasenübergang vs. Chemische Reaktion</h3>
+                        <ul style="margin-bottom:0;">
+                            <li><span class="highlight">Phasenübergang bei Molekülsubstanzen ($\text{H}_2\text{O}, \text{H}_2\text{S}, \text{Cl}_2$):</span> Beim Schmelzen/Verdampfen werden <strong>nur zwischenmolekulare Kräfte</strong> überwunden, alle kovalenten Bindungen im Molekül bleiben intakt ($\Delta_{\text{fus}}H_m(\text{Cl}_2) = 6{,}4\text{ kJ/mol}$).</li>
+                            <li><span class="highlight">Phasenübergang bei Riesenstrukturen ($\text{Si}, \text{NaCl}, \text{Al}$):</span> Keine isolierten Moleküle $\to$ beim Schmelzen/Verdampfen müssen <strong>echte chemische Hauptbindungen</strong> gelockert/gebrochen werden $\to$ viel höhere Schmelzenthalpien ($\Delta_{\text{fus}}H_m(\text{Si}) = 50{,}2\text{ kJ/mol}$, $\Delta_{\text{fus}}H_m(\text{NaCl}) = 28{,}1\text{ kJ/mol}$, $\Delta_{\text{fus}}H_m(\text{Al}) = 10{,}7\text{ kJ/mol}$).</li>
+                            <li><span class="highlight">Spaltung kovalenter Bindungen in Reaktionen:</span> Erfordert hohe Energie und erfolgt entweder <strong>homolytisch</strong> ($\text{Cl–Cl} \to 2\,\cdot\text{Cl}$, hochreaktive Radikale mit ungepaartem $e^-$) oder <strong>heterolytisch</strong> (asymmetrisch unter Bildung von Ionen).</li>
+                        </ul>
+                    </div>
+
+                    <div class="detail-close-row">
+                        <button type="button" class="detail-close-btn" data-close-topic="1" data-close-layer="fallen">▲ 15-Punkte-Box einklappen</button>
+                    </div>
                 </div>
             </div>
             <div class="page-footer">
-                <span>Chemische Energetik</span>
+                <span>Chemische Energetik – Block 1 (Zone D: 15-Punkte-Box &amp; AFB-III)</span>
                 <span>Olga V.</span>
                 <span>Seite 4</span>
             </div>
         </div>
 
-        <!-- SEITE 5: Quantitative Versuche + Extrapolation -->
+        <!-- ============================================================
+             SEITE 5: BLOCK 2 (KERN – ZONE A.1 & A.2)
+             Systemarten, Innere Energie, Exotherm/Endotherm & Salzlösung
+             ============================================================ -->
         <div class="page">
-            <div class="card" id="teil-3-versuche">
-                <h3 id="sec-3-2">🧪 Eure quantitativen Versuche</h3>
+            <div class="card" id="block-2-core">
+                <h2 id="sec-b2">2. 🔥 Block 2: Chemische Systeme, 1. Hauptsatz &amp; Kalorimetrie</h2>
+
+                <span class="zone-badge">Zone A · Kausalketten &amp; Teilchenebene (Das „Warum“)</span>
+
+                <h3 id="sec-b2-systeme">1. Klassifizierung thermodynamischer Systeme &amp; Systemgrenze</h3>
                 <div class="table-wrapper">
                     <table>
-                        <tr><th>Versuch</th><th>Durchführung &amp; Auswertung</th></tr>
-                        <tr>
-                            <td><span class="highlight">Bestimmung von $C_K$</span><br>(Mischungsversuch / Eichung)</td>
-                            <td>Man mischt warmes Wasser mit kaltem Wasser im Kalorimeter. Da das kalte Gefäß Wärme „klaut“, ist die Endtemperatur ($T_m$) <span class="highlight">kühler als der rechnerische Mittelwert</span>. Über diese Differenz lässt sich $C_K$ errechnen.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="highlight">Zink + Kupfer(II)-sulfat</span><br>Zn + Cu<sup>2+</sup> <span class="arrow-simple">&rarr;</span> Zn<sup>2+</sup> + Cu</td>
-                            <td>Eine <span class="highlight">Redoxreaktion</span>. Die Wassertemperatur steigt → <span class="highlight">exotherm</span>. Einsetzen in die Formeln lieferte bei euch eine molare Enthalpie von ca. $-209\ \frac{\mathrm{kJ}}{\mathrm{mol}}$.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="highlight">Schmelzenthalpie von Eis</span><br>($\Delta_{fus}H$)</td>
-                            <td>Eiswürfel ($0\,^\circ\mathrm{C}$) werden in warmes Wasser gegeben. Das warme Wasser kühlt ab. Seine abgegebene Energie wird exakt für zwei Dinge genutzt:<br>
-                                <span class="highlight">1.</span> Um das Eis zu schmelzen (Kristallgitter brechen = endotherm) <span class="highlight">UND</span><br>
-                                <span class="highlight">2.</span> um das kalte Schmelzwasser auf die Endtemperatur zu erwärmen.</td>
-                        </tr>
+                        <tr><th>Systemtyp</th><th>Stoffaustausch</th><th>Energieaustausch</th><th>Bedingung</th><th>Beispiele (Labor &amp; Alltag)</th></tr>
+                        <tr><td><span class="highlight">Offenes System</span></td><td>Ja</td><td>Ja (Wärme &amp; Arbeit)</td><td>$p = \text{konst.}$ (isobar)</td><td>Offenes Becherglas, Reagenzglas, Mensch</td></tr>
+                        <tr><td><span class="highlight">Geschlossenes System</span></td><td>Nein</td><td>Ja (Wärme &amp; Arbeit)</td><td>$V = \text{konst.}$ (starres Gefäß)</td><td>Geschlossene Gasflasche, Bombenkalorimeter</td></tr>
+                        <tr><td><span class="highlight">Isoliertes System</span></td><td>Nein</td><td>Nein ($Q=0, W=0$)</td><td>$U = \text{konst.}$</td><td>Ideales Kalorimeter, geschlossene Thermoskanne</td></tr>
                     </table>
                 </div>
+                <p style="font-size:0.91rem;"><strong>Scharfe Trennung in der Kalorimetrie:</strong> <span class="highlight">System</span> = ausschließlich die reagierenden Teilchen &nbsp;|&nbsp; <span class="highlight">Umgebung</span> = Lösungsmittel Wasser, Gefäßwand, Thermometer, Rührer &amp; Raumluft! Ein Dewar- oder Styropor-Kalorimeter nähert für kurze Messzeiten ein isoliertes Gesamtsystem an.</p>
 
-                <h3 id="sec-3-3">📊 LK-Methoden-Tipp: Grafische Auswertung (Extrapolation)</h3>
-                <p>Da eure Schul-Kalorimeter (und auch die Luft) nicht perfekt isolieren, geht über die Zeit langsam <span class="highlight">Wärme verloren</span>. Deswegen zeichnet man ein <span class="highlight">Temperatur-Zeit-Diagramm</span> (T-t-Diagramm).</p>
-                <div class="tip-box">
-                    <strong>So geht's:</strong> Man verlängert die <span class="highlight">Abkühlkurve mit dem Lineal gerade zurück zur y-Achse</span> (zum Zeitpunkt der Zugabe). So liest man die „echte“ theoretische Endtemperatur ab, als hätte das System keinerlei Wärmeverlust gehabt!
+                <div class="zones-grid">
+                    <div class="zone-panel">
+                        <h3 id="sec-b2-exoendo">2. Innere Energie $U$, Exotherm vs. Endotherm</h3>
+                        <p><strong>Innere Energie $U$:</strong> Summe aller gespeicherten Energien (Bindungs-, Bewegungs- &amp; Kernenergie); absolut nicht messbar, nur $\Delta_r U = U_2(\text{Produkte}) - U_1(\text{Edukte})$.</p>
+                        <svg class="sketch-svg" viewBox="0 0 420 150" xmlns="http://www.w3.org/2000/svg" aria-label="Energiediagramm Exotherm vs Endotherm">
+                            <rect x="0" y="0" width="420" height="150" rx="6" fill="#FDFCF8"/>
+                            <!-- Links: Exotherm -->
+                            <line x1="24" y1="132" x2="24" y2="16" stroke="#2D3A2E" stroke-width="1.5"/>
+                            <line x1="24" y1="132" x2="195" y2="132" stroke="#2D3A2E" stroke-width="1.5"/>
+                            <text x="28" y="24" font-family="Playfair Display, serif" font-size="11" font-weight="700" fill="#3A5A3F">Exotherm (ΔrH &lt; 0)</text>
+                            <line x1="32" y1="66" x2="76" y2="66" stroke="#2D3A2E" stroke-width="2.2"/>
+                            <text x="34" y="61" font-family="Raleway, sans-serif" font-size="9.5" fill="#2D3A2E">Edukte</text>
+                            <path d="M 76 66 Q 108 18 136 108" fill="none" stroke="#9E3B2E" stroke-width="2"/>
+                            <line x1="136" y1="108" x2="186" y2="108" stroke="#3A5A3F" stroke-width="2.2"/>
+                            <text x="137" y="121" font-family="Raleway, sans-serif" font-size="9.5" fill="#3A5A3F">Produkte</text>
+                            <!-- EA & Delta H -->
+                            <line x1="106" y1="66" x2="106" y2="43" stroke="#C9A96E" stroke-width="1.4" stroke-dasharray="3,2"/>
+                            <text x="110" y="56" font-family="Raleway, sans-serif" font-size="9" font-weight="700" fill="#8C6D32">EA</text>
+                            <line x1="162" y1="66" x2="162" y2="105" stroke="#9E3B2E" stroke-width="1.8"/>
+                            <polygon points="162,108 158,101 166,101" fill="#9E3B2E"/>
+                            <text x="166" y="90" font-family="Raleway, sans-serif" font-size="9.5" font-weight="700" fill="#9E3B2E">ΔrH&lt;0</text>
+
+                            <!-- Rechts: Endotherm -->
+                            <line x1="228" y1="132" x2="228" y2="16" stroke="#2D3A2E" stroke-width="1.5"/>
+                            <line x1="228" y1="132" x2="404" y2="132" stroke="#2D3A2E" stroke-width="1.5"/>
+                            <text x="233" y="24" font-family="Playfair Display, serif" font-size="11" font-weight="700" fill="#3A5A3F">Endotherm (ΔrH &gt; 0)</text>
+                            <line x1="236" y1="108" x2="280" y2="108" stroke="#2D3A2E" stroke-width="2.2"/>
+                            <text x="238" y="121" font-family="Raleway, sans-serif" font-size="9.5" fill="#2D3A2E">Edukte</text>
+                            <path d="M 280 108 Q 314 22 344 58" fill="none" stroke="#3A5A3F" stroke-width="2"/>
+                            <line x1="344" y1="58" x2="396" y2="58" stroke="#3A5A3F" stroke-width="2.2"/>
+                            <text x="345" y="52" font-family="Raleway, sans-serif" font-size="9.5" fill="#3A5A3F">Produkte</text>
+                            <line x1="370" y1="108" x2="370" y2="61" stroke="#3A5A3F" stroke-width="1.8"/>
+                            <polygon points="370,58 366,65 374,65" fill="#3A5A3F"/>
+                            <text x="374" y="88" font-family="Raleway, sans-serif" font-size="9.5" font-weight="700" fill="#3A5A3F">ΔrH&gt;0</text>
+                        </svg>
+                        <ul style="margin-bottom:0; font-size:0.89rem; margin-top:6px;">
+                            <li><span class="highlight">Exotherm ($\Delta_r H &lt; 0$, z. B. Eisenwolle $4\,\text{Fe}+3\,\text{O}_2\to 2\,\text{Fe}_2\text{O}_3$ bzw. $\text{Fe}_3\text{O}_4$):</span> Nach $E_A$ werden schwächere Bindungen gelöst und stabilere, energieärmere Bindungen geknüpft $\to H(\text{Prod.}) &lt; H(\text{Ed.}) \to$ Differenz geht in kinetische Teilchenbewegung über $\to$ Umgebung erwärmt sich ($\Delta T &gt; 0$).</li>
+                            <li><span class="highlight">Endotherm ($\Delta_r H &gt; 0$, z. B. Thermolyse $\text{FeC}_2\text{O}_4\text{(s)}\to\text{FeO(s)}+\text{CO(g)}+\text{CO}_2\text{(g)}$ oder Citronensäure + $\text{NaHCO}_3$):</span> Aufbruch starker Edukt-Bindungen kostet mehr Energie als Produktbildung liefert $\to H(\text{Prod.}) &gt; H(\text{Ed.}) \to$ System entzieht der Umgebung Wärme ($\Delta T &lt; 0$).</li>
+                        </ul>
+                    </div>
+
+                    <div class="zone-panel">
+                        <h3 id="sec-b2-salze">3. Lösen von Salzen &amp; Schmelzen von Eis</h3>
+                        <p><strong>Lösen von Salzen in Wasser (2 Teilschritte):</strong></p>
+                        <div class="formula-box">
+                            $$\Delta_{\text{sol}}H_m = \underbrace{\Delta_{\text{L}}H_m}_{\text{Gitteraufbruch }(&gt;0)} + \underbrace{\Delta_{\text{hyd}}H_m}_{\text{Hydrathüllen }(&lt;0)}$$
+                        </div>
+                        <ul style="font-size:0.89rem;">
+                            <li><span class="highlight">Endotherm (z. B. $\text{NH}_4\text{Cl(s)} \xrightarrow{\text{H}_2\text{O}} \text{NH}_4^+\text{(aq)}+\text{Cl}^-\text{(aq)}$):</span> Aufbruch des Ionengitters erfordert mehr Energie als Ion-Dipol-Hydrathüllen freisetzen ($|\Delta_{\text{L}}H_m| &gt; |\Delta_{\text{hyd}}H_m| \implies \Delta_{\text{sol}}H_m &gt; 0$) $\to$ Energie wird der Bewegungsenergie des Wassers entzogen $\to$ starke Abkühlung (z. B. $\Delta T = -7{,}75\text{ K}$).</li>
+                            <li><span class="highlight">Exotherm (z. B. wasserfreies $\text{CaCl}_2\text{(s)}$ oder $\text{NaOH(s)}$):</span> Hohe Ladungsdichte von $\text{Ca}^{2+}$ bzw. $\text{OH}^-$ erzeugt extrem starke Ion-Dipol-Anziehungen ($|\Delta_{\text{hyd}}H_m| &gt; |\Delta_{\text{L}}H_m| \implies \Delta_{\text{sol}}H_m &lt; 0$) $\to$ starke Erwärmung.</li>
+                        </ul>
+                        <div class="tip-box" style="margin-bottom:0;">
+                            <strong>Schmelzen von Eis ($\text{H}_2\text{O(s)}\to\text{H}_2\text{O(l)}$, $\Delta_{\text{fus}}H_m = +6{,}0\text{ kJ/mol}$):</strong><br>
+                            Zugeführte Wärme bricht ausschließlich einen Teil der H-Brücken im Eisgitter auf (erhöht nur $E_{\text{pot}}$). Da die mittlere $E_{\text{kin}}$ der $\text{H}_2\text{O}$-Moleküle gleich bleibt, verharrt die Temperatur während des gesamten Phasenübergangs <strong>konstant bei $\vartheta_{\text{sm}} = 0\,^\circ\text{C}$</strong>!
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="page-footer">
-                <span>Chemische Energetik</span>
+                <span>Chemische Energetik – Block 2 (Zone A: Systeme, Exotherm/Endotherm &amp; Salze)</span>
                 <span>Olga V.</span>
                 <span>Seite 5</span>
             </div>
         </div>
 
-        <!-- SEITE 6: Brennwert vs. Heizwert -->
+        <!-- ============================================================
+             SEITE 6: BLOCK 2 (KERN – 1. HAUPTSATZ, ZONE B & AUFKLAPP-LEISTE)
+             ============================================================ -->
         <div class="page">
-            <div class="card" id="teil-4">
-                <h2 id="sec-4">🔥 4. Brennwert vs. Heizwert (Klausur-Klassiker!)</h2>
-                <p>Bei der Verbrennung von Kohlenwasserstoffen (Holz, Knäckebrot, Benzin) entsteht immer CO<sub>2</sub> und Wasser (H<sub>2</sub>O). Durch die Hitze der Flamme entsteht das Wasser als <span class="highlight">gasförmiger Dampf</span>.</p>
-                <div class="table-wrapper">
-                    <table>
-                        <tr><th>Begriff</th><th>Bedeutung</th></tr>
-                        <tr><td><span class="highlight">Heizwert</span> ($H_i$)</td><td>Die nutzbare Energie, wenn dieser Wasserdampf einfach ungenutzt durch den Schornstein abhaut.</td></tr>
-                        <tr><td><span class="highlight">Brennwert</span> ($H_s$)</td><td>Kühlt man die Abgase ab, wird der Dampf wieder flüssig (er <span class="highlight">kondensiert</span>). Dabei wird <span class="highlight">Kondensationswärme frei!</span></td></tr>
-                    </table>
-                </div>
-                <div class="formula-box">
-                    $$\text{Brennwert} = \text{Heizwert} + \text{Kondensationswärme}$$
-                </div>
-                <p>Der <span class="highlight">Brennwert ist also immer der höhere Wert!</span></p>
+            <div class="card core-continuation">
+                <h3 id="sec-b2-hs1" style="margin-top:0;">4. 1. Hauptsatz der Thermodynamik ($\Delta_r U = Q + W$): Isochor vs. Isobar</h3>
+                <p style="font-size:0.9rem;"><strong>Energieerhaltung:</strong> Energie kann weder erzeugt noch vernichtet, sondern nur umgewandelt werden ($\Delta_r U = Q + W$). Dehnt sich ein Gas gegen den konstanten Außendruck $p = \frac{F_{\text{außen}}}{A}$ um $\Delta V = A\cdot\Delta s$ aus, verrichtet das System die <strong>Volumenarbeit $W = -F_{\text{außen}}\cdot\Delta s = -p\cdot\Delta V$</strong>.</p>
 
-                <h3 id="sec-4-1">Bombenkalorimeter vs. Low-Cost-Schulversuch</h3>
                 <div class="table-wrapper">
                     <table>
-                        <tr><th>Low-Cost-Schulversuch</th><th>Bombenkalorimeter</th></tr>
-                        <tr>
-                            <td>Eure Versuche (Knäckebrot verbrennen, Teelicht unter Cola-Dose) sind <span class="highlight">sehr ungenau</span>, da Verbrennungsgase, Ruß und extrem viel Wärme unkontrolliert in den Raum entweichen (<span class="highlight">offenes System</span>).</td>
-                            <td>Ein massiver, <span class="highlight">geschlossener Stahlzylinder</span> im Wasserbad. Die Verbrennung findet in reinem Sauerstoff statt → keine Wärmeverluste, vollständige Verbrennung, <span class="highlight">super genaue Werte!</span></td>
-                        </tr>
+                        <tr><th>Reaktionsbedingung</th><th>System &amp; Gefäß</th><th>Volumenarbeit $W = -p\Delta V$</th><th>Gemessene Wärme</th><th>Beispiel $\text{Zn(s)} + 2\,\text{HCl(aq)} \to \text{ZnCl}_2\text{(aq)} + \text{H}_2\text{(g)}$</th></tr>
+                        <tr><td><span class="highlight">Isochor ($V = \text{konst.}$)</span></td><td>Geschlossener Kolben</td><td>$W = 0$ (da $\Delta V = 0$)</td><td>$\mathbf{Q_{r,V} = \Delta_r U}$ <em>(Index $V$!)</em></td><td>$\Delta_r U = -156{,}5\text{ kJ/mol}$ (keine Volumenarbeit)</td></tr>
+                        <tr><td><span class="highlight">Isobar ($p = \text{konst.}$)</span></td><td>Offener Kolben</td><td>$W = -p\cdot\Delta V \neq 0$</td><td>$\mathbf{Q_{r,p} = \Delta_r H = \Delta_r U + p\Delta V}$</td><td>$\Delta_r H = -154{,}0\text{ kJ/mol}$ ($\text{H}_2\text{(g)}$ kostet $2{,}5\text{ kJ/mol}$ Arbeit!)</td></tr>
                     </table>
                 </div>
-                <div class="tip-box">
-                    <strong>Achtung:</strong> Da das Bombenkalorimeter ein <span class="highlight">festes Volumen</span> hat, misst man hier direkt $\Delta U$ und muss es dann in $\Delta H$ umrechnen.
+                <p style="font-size:0.88rem; margin-bottom:0.65rem;"><em>Spezialfall ohne Gasbeteiligung (nur $\text{s, l, aq}$):</em> $\Delta V \approx 0 \implies p\cdot\Delta V \approx 0 \implies \mathbf{\Delta_r H \approx \Delta_r U}$.</p>
+
+                <span class="zone-badge">Zone B · Kalorimetrie-Formeln &amp; 100 %-punktesichere Vorzeichen-Konvention</span>
+
+                <div class="zones-grid">
+                    <div class="zone-panel">
+                        <h3 id="sec-b2-formeln">1. Kalorimetrie-Formeln &amp; Brennwert/Heizwert</h3>
+                        <div class="table-wrapper" style="margin-bottom:0.5rem;">
+                            <table>
+                                <tr><th>Größe</th><th>Formel</th><th>Einheit &amp; Konstanten</th></tr>
+                                <tr><td><span class="highlight">Temperaturdiff.</span></td><td>$\Delta T = \vartheta_{\text{nach}} - \vartheta_{\text{vor}}$</td><td>$\text{K}$ (Zahlenwert wie in $^\circ\text{C}$)</td></tr>
+                                <tr><td><span class="highlight">Wärme Wasser</span></td><td>$Q_{\text{W}} = m_{\text{W}} \cdot c_{\text{W}} \cdot \Delta T$</td><td>$\text{J}$; $c_{\text{W}} = 4{,}184\text{ J/(g}\cdot\text{K)}$ <em>(bzw. $4{,}183$)</em></td></tr>
+                                <tr><td><span class="highlight">Wärme Kalorim.</span></td><td>$Q_{\text{K}} = C_{\text{K}} \cdot \Delta T$</td><td>$\text{J}$; $C_{\text{K}}$ in $\text{J/K}$ (Gerätekonstante)</td></tr>
+                                <tr><td><span class="highlight">Gesamtwärme</span></td><td>$Q_{\text{Lösung/K}} = (m_{\text{Lsg}}\cdot c_{\text{W}} + C_{\text{K}})\cdot\Delta T$</td><td>$\text{J} \xrightarrow{:1000} \text{kJ}$ vor Einsetzen!</td></tr>
+                                <tr><td><span class="highlight">Reaktionsenth.</span></td><td>$\Delta_r H_m = \dfrac{-Q_{\text{Lösung/K}}}{n_{\text{Unterschuss}}}$</td><td>$\text{kJ/mol}$ ($n$ immer im Unterschuss!)</td></tr>
+                            </table>
+                        </div>
+                        <p style="font-size:0.87rem; margin-bottom:0;">
+                        • <strong>Mehrkomponenten-Kalorimeter:</strong> $C_{\text{ges}} = m_{\text{W}}c_{\text{W}} + m_{\text{Cu}}c_{\text{Cu}} + m_{\text{Glas}}c_{\text{Glas}}$ ($c_{\text{Cu}}=0{,}385$, $c_{\text{Glas}}=0{,}84\text{ J/(g}\cdot\text{K)}$).<br>
+                        • <strong>Spezifischer Brenn-/Heizwert:</strong> $H = \dfrac{|Q_{\text{ges}}|}{m_{\text{Stoff}}}$ in $\text{kJ/g}$ (Glucose $15{,}57$, Ethanol $29{,}7$, Paraffin $41{,}5\text{ kJ/g}$).<br>
+                        • <strong>Alltagsbezug Mensch:</strong> Grundumsatz $\approx 4{,}2\text{ kJ/(kg}\cdot\text{h)}$ + Leistungsumsatz; Nahrungsmasse $m = \frac{E}{\text{Brennwert}}$ (bei Flüssigkeiten $m = \rho\cdot V$).</p>
+                    </div>
+
+                    <div class="zone-panel">
+                        <h3 id="sec-b2-vorzeichen">2. Das 3-Stufen-Vorzeichen-Schema (100 % klausursicher!)</h3>
+                        <p style="font-size:0.88rem; margin-bottom:0.45rem;"><em>Hintergrund:</em> Manche Lösungen definieren $Q$ aus Sicht der Lösung ($Q_{\text{Lösung}} &gt; 0$ bei Erwärmung), andere direkt aus Sicht des Systems ($Q_r &lt; 0$ bei Erwärmung). Dieses 3-Stufen-Schema deckt <strong>beide Korrektur-Konventionen</strong> lückenlos ab:</p>
+                        <ol style="font-size:0.89rem; margin-bottom:0.45rem;">
+                            <li><span class="highlight">Stufe 1 ($\Delta T$ strikt mit Vorzeichen):</span> Immer $\Delta T = \vartheta_{\text{nach}} - \vartheta_{\text{vor}}$ rechnen (Erwärmung: $\Delta T &gt; 0$; Abkühlung: $\Delta T &lt; 0$).</li>
+                            <li><span class="highlight">Stufe 2 ($Q_{\text{Lösung/K}}$ und $Q_{\text{Reaktion}}$ explizit trennen):</span><br>
+                            $Q_{\text{Lösung/K}} = (m_{\text{Lösung}}\cdot c_{\text{W}} + C_{\text{K}})\cdot\Delta T$ berechnen und über den 1. Hauptsatz hinschreiben: $\mathbf{Q_{\text{Reaktion}} = -Q_{\text{Lösung/K}}}$.</li>
+                            <li><span class="highlight">Stufe 3 ($\Delta_r H_m$ &amp; Pflicht-Kontrollsatz):</span> $\Delta_r H_m = \dfrac{Q_{\text{Reaktion}}}{n} = \dfrac{-Q_{\text{Lösung/K}}}{n}$.</li>
+                        </ol>
+                        <div class="trap-box" style="margin-bottom:0;">
+                            <span class="trap-title">✅ Pflicht-Kontrollsatz unter jede Kalorimeter-Aufgabe</span>
+                            • $\Delta T &gt; 0 \to$ Lösung nimmt Wärme auf ($Q_{\text{Lösung/K}} &gt; 0$) $\to$ Reaktion gibt Wärme ab $\implies$ <strong>exotherm ($\Delta_r H_m &lt; 0$, Minus!)</strong>.<br>
+                            • $\Delta T &lt; 0 \to$ Lösung gibt Wärme ab ($Q_{\text{Lösung/K}} &lt; 0$) $\to$ Reaktion nimmt Wärme auf $\implies$ <strong>endotherm ($\Delta_r H_m &gt; 0$, Plus!)</strong>.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="drawer-bar">
+                    <span class="drawer-bar-label">Mehr zu Block 2:</span>
+                    <button type="button" class="drawer-btn" data-toggle-topic="2" data-toggle-layer="rezept"><span class="state-icon">＋</span> 🧮 Kalorimeter-Rechenrezepte (Typ a, b, c)</button>
+                    <button type="button" class="drawer-btn" data-toggle-topic="2" data-toggle-layer="versuche"><span class="state-icon">＋</span> 🧪 Unterrichtsversuche im Überblick</button>
+                    <button type="button" class="drawer-btn" data-toggle-topic="2" data-toggle-layer="fallen"><span class="state-icon">＋</span> 🏆 15-Punkte-Box: T-t-Extrapolation &amp; Fehleranalyse</button>
                 </div>
             </div>
             <div class="page-footer">
-                <span>Chemische Energetik</span>
+                <span>Chemische Energetik – Block 2 (1. Hauptsatz &amp; Zone B: Kalorimetrie)</span>
                 <span>Olga V.</span>
                 <span>Seite 6</span>
             </div>
         </div>
 
-        <!-- SEITE 7: Alltagsbezug + Lerntipps -->
-        <div class="page">
-            <div class="card" id="teil-5">
-                <h2 id="sec-5">🏃 5. Alltagsbezug: Energiebedarf des Menschen</h2>
-                <p>Der Mensch „verbrennt“ Nahrung chemisch ähnlich wie ein Kalorimeter (nur langsamer und via Enzyme).</p>
-                <div class="table-wrapper">
-                    <table>
-                        <tr><th>Begriff</th><th>Bedeutung</th></tr>
-                        <tr><td><span class="highlight">Grundumsatz</span></td><td>Energie, die der Körper bei absoluter Ruhe zum Überleben braucht (Richtwert: ca. $4{,}2\ \frac{\mathrm{kJ}}{\mathrm{kg \cdot h}}$).</td></tr>
-                        <tr><td><span class="highlight">Leistungsumsatz</span></td><td>Zusätzlicher Bedarf für Bewegung, Sport, Denken (z. B. Schule).</td></tr>
-                    </table>
-                </div>
-                <p><span class="highlight">Rechentyp (wie die Weinaufgabe):</span> Ihr müsst ausrechnen können, wie viel Masse eines Stoffes man essen/trinken muss. Mit dem spezifischen Brennwert (z. B. Glucose $= 15{,}57\ \frac{\mathrm{kJ}}{\mathrm{g}}$, Alkohol $= 29{,}7\ \frac{\mathrm{kJ}}{\mathrm{g}}$) geht das simpel über:</p>
-                <div class="formula-box">
-                    $$m = \frac{\text{Energie}}{\text{Brennwert}}$$
-                </div>
-                <div class="tip-box">
-                    <strong>Tipp:</strong> Bei Flüssigkeiten wie im Wein musst du das Volumen erst über die <span class="highlight">Dichte</span> (hier $0{,}79\ \frac{\mathrm{g}}{\mathrm{ml}}$) in Masse umrechnen!
+        <!-- ============================================================
+             SEITE 7: BLOCK 2 (DETAIL: RECHENREZEPTE & VERSUCHE)
+             ============================================================ -->
+        <div class="page detail-page is-closed" data-topic="2" data-page-layers="rezept versuche">
+            <div class="card detail-card">
+                <div class="detail-section" data-topic="2" data-layer="rezept">
+                    <span class="zone-badge">Zone C · Allgemeine Kalorimeter-Rechenrezepte</span>
+                    <h3 id="sec-b2-rezept">🧮 Block 2 – Die 3 Kalorimeter-Aufgabentypen (Schritt für Schritt)</h3>
+
+                    <div class="two-col-recipe">
+                        <div class="two-col-head">
+                            <div>Aufgabentyp &amp; 3-Schritt-Lösungsweg</div>
+                            <div>Durchgerechnetes Klausur-Zahlenbeispiel &amp; Fallen</div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">Typ (a): Wärmekapazität $C_{\text{K}}$ durch Mischungsversuch</span><br>
+                                1. Wärmebilanz: $|Q_{\text{ab,warm}}| = Q_{\text{auf,kalt}} + Q_{\text{auf,K}}$.<br>
+                                2. Positive Temperaturdifferenzen nutzen: $(T_2 - T_m) &gt; 0$ und $(T_m - T_1) &gt; 0$.<br>
+                                3. Auflösen nach $C_{\text{K}}$:
+                                $$C_{\text{K}} = \frac{m_2\cdot c_{\text{W}}\cdot(T_2 - T_m) - m_1\cdot c_{\text{W}}\cdot(T_m - T_1)}{T_m - T_1}$$
+                            </div>
+                            <div class="col-think">
+                                <strong>Muster:</strong> $m_1=50\text{ g}$ kalt ($T_1=22{,}4\,^\circ\text{C}$) + $m_2=50\text{ g}$ warm ($T_2=46{,}0\,^\circ\text{C}$) $\to T_m = 29{,}5\,^\circ\text{C}$ ($c_{\text{W}}=4{,}183\text{ J/(g}\cdot\text{K)}$):<br>
+                                $|Q_{\text{ab}}| = 50\cdot 4{,}183\cdot 16{,}5 = 3451{,}0\text{ J}$, $Q_{\text{auf,kalt}} = 50\cdot 4{,}183\cdot 7{,}1 = 1485{,}0\text{ J}$ $\implies C_{\text{K}} = \frac{1966{,}0\text{ J}}{7{,}1\text{ K}} = \mathbf{276{,}9\text{ J/K}}$.<br>
+                                ⚠️ <em>Warnung:</em> Im Zähler zwingend $(T_2 - T_m)$ statt $(T_m - T_2)$ rechnen, da $C_{\text{K}} &gt; 0$ sein muss!
+                            </div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">Typ (b): $\Delta_r H_m$ einer Reaktion / eines Lösevorgangs</span><br>
+                                1. $m_{\text{Lösung}} = V\cdot\rho$, $\Delta T = \vartheta_{\text{nach}}-\vartheta_{\text{vor}}$ und $Q_{\text{Lösung/K}}$ bestimmen.<br>
+                                2. <strong>Unterschuss-Prüfung:</strong> $n$ aller Edukte vergleichen (Stöchiometriezahl $\nu$ beachten!).<br>
+                                3. $\Delta_r H_m = \dfrac{-Q_{\text{Lösung/K}}}{n_{\text{Unterschuss}}}$ in $\text{kJ/mol}$ berechnen.
+                            </div>
+                            <div class="col-think">
+                                • <strong>Exotherm ($\text{Zn(s)}+2\,\text{HCl(aq)}\to\text{Zn}^{2+}+2\,\text{Cl}^-+\text{H}_2\text{(g)}$):</strong> $m_{\text{Lsg}}=100\text{ cm}^3\cdot 1{,}02\text{ g/cm}^3=102\text{ g}$, $\Delta T=+6{,}8\text{ K}$, $Q_{\text{K}}=140\text{ J} \implies Q_{\text{Lsg/K}}=+3041{,}3\text{ J}\approx +3{,}041\text{ kJ}$.<br>
+                                <em>Unterschuss:</em> $n(\text{Zn})=\frac{1{,}3}{65{,}38}=0{,}020\text{ mol}$, $n(\text{HCl})=1\cdot 0{,}10=0{,}10\text{ mol}$ (nötig: $0{,}040\text{ mol} \implies \text{Zn}$ limitiert!) $\implies \Delta_r H_m = \frac{-3{,}041}{0{,}020} = \mathbf{-152\text{ kJ/mol}}$ (Lit.: $-153\text{ kJ/mol}$).<br>
+                                <em>Transfer:</em> Doppeltes $n(\text{Zn}) \Rightarrow$ doppeltes $\Delta T$; doppeltes $c(\text{HCl})=2\text{ mol/L}$ ($\rho=1{,}035\text{ g/cm}^3$) $\Rightarrow$ gleicher Umsatz $0{,}020\text{ mol}$, $\Delta T$ fast gleich (sinkt wegen $103{,}5\text{ g}$ minimal um $0{,}07\text{ K}$)!<br>
+                                • <strong>Endotherm ($\text{NH}_4\text{Cl}$ in $100\text{ g}$ Lsg.):</strong> $\Delta T = 13{,}0 - 20{,}75 = -7{,}75\text{ K} \implies Q_{\text{Lsg}} = -3{,}24\text{ kJ} \implies Q_{\text{Reakt}} = +3{,}24\text{ kJ} \implies \Delta_{\text{sol}}H_m = \frac{+3{,}24\text{ kJ}}{n(\text{NH}_4\text{Cl})} &gt; 0$.
+                            </div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">Typ (c): Molare Schmelzenthalpie $\Delta_{\text{fus}}H_m$ von Eis</span><br>
+                                1. Abgegebene Wärme $|Q_{\text{ab}}| = (m_{\text{W}}c_{\text{W}} + C_{\text{K}})\cdot(T_{\text{W}} - T_m)$.<br>
+                                2. <strong>Erwärmung des Schmelzwassers</strong> von $0\,^\circ\text{C}$ auf $T_m$ abziehen:<br>
+                                $\Delta_{\text{fus}}H = |Q_{\text{ab}}| - m_{\text{Eis}}\cdot c_{\text{W}}\cdot(T_m - 0\,^\circ\text{C})$.<br>
+                                3. Auf $n(\text{Eis}) = \frac{m_{\text{Eis}}}{18{,}0\text{ g/mol}}$ beziehen: $\Delta_{\text{fus}}H_m = \frac{+\Delta_{\text{fus}}H}{n(\text{Eis})}$.
+                            </div>
+                            <div class="col-think">
+                                <strong>Muster:</strong> $m_{\text{W}}=102\text{ g}$ ($22{,}0\,^\circ\text{C}$), $C_{\text{K}}=90\text{ J/K}$ + $m_{\text{Eis}}=32{,}7\text{ g}$ ($0\,^\circ\text{C}$) $\to T_m = 1{,}8\,^\circ\text{C}$:<br>
+                                $|Q_{\text{ab}}| = (102\cdot 4{,}183 + 90)\cdot 20{,}2 = 10436{,}7\text{ J}$.<br>
+                                $Q_{\text{Erwärm}} = 32{,}7\cdot 4{,}183\cdot 1{,}8 = 246{,}2\text{ J} \implies \Delta_{\text{fus}}H = 10190{,}4\text{ J} \approx 10{,}19\text{ kJ}$.<br>
+                                Mit $n(\text{Eis}) = \frac{32{,}7}{18{,}0} = 1{,}817\text{ mol} \implies \mathbf{\Delta_{\text{fus}}H_m = +5{,}61\text{ kJ/mol}}$ (Lit.: $+6{,}01\text{ kJ/mol}$).
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="detail-close-row">
+                        <button type="button" class="detail-close-btn" data-close-topic="2" data-close-layer="rezept">▲ Kalorimeter-Rezepte einklappen</button>
+                    </div>
                 </div>
 
-                <h2 id="sec-tipps">💡 3 goldene Lerntipps für deine LK-Klausuren</h2>
-                <div class="table-wrapper">
-                    <table>
-                        <tr>
-                            <td><span class="highlight">1. Achte penibel auf Vorzeichen</span></td>
-                            <td>Im Kalorimeter misst du aus Sicht des Wassers. Wird das Wasser wärmer ($\Delta T &gt; 0$), hat die Reaktion diese Energie abgegeben. Die Enthalpie $\Delta H$ muss im Endergebnis ein <span class="highlight">Minuszeichen ($-$)</span> bekommen!</td>
-                        </tr>
-                        <tr>
-                            <td><span class="highlight">2. Einheiten überprüfen</span></td>
-                            <td>Du rechnest mit $c_W = 4{,}183\ \frac{\mathrm{J}}{\mathrm{g \cdot K}}$. Dein berechnetes Ergebnis $Q$ ist dann in <span class="highlight">Joule (J)</span>. Molare Enthalpien werden am Ende aber fast immer in <span class="highlight">kJ/mol</span> verlangt. Das <span class="highlight">Teilen durch 1000</span> nicht vergessen!</td>
-                        </tr>
-                        <tr>
-                            <td><span class="highlight">3. Die Extrapolation üben</span></td>
-                            <td>Wenn du in der Klausur eine Wertetabelle (Zeit &amp; Temperatur) bekommst, zeichne das Diagramm groß genug auf Millimeterpapier und nimm ein Lineal für die Verlängerung der Abkühlkurve. Das gibt sehr oft dicke <span class="highlight">Methodik-Punkte</span>.</td>
-                        </tr>
-                    </table>
+                <div class="detail-section" data-topic="2" data-layer="versuche">
+                    <h3 id="sec-b2-versuche">🧪 Block 2 – Kompakte Zusammenfassung der Unterrichtsversuche</h3>
+                    <ul>
+                        <li><span class="highlight">Zucker-Thermolyse vs. Dehydratisierung mit konz. $\text{H}_2\text{SO}_4$:</span> Die reine Thermolyse $\text{C}_{12}\text{H}_{22}\text{O}_{11}\text{(s)} \to 12\,\text{C(s)} + 11\,\text{H}_2\text{O(g)}$ über dem Brenner ist <strong>endotherm</strong> ($\Delta_r H &gt; 0$, dauerhafte Energiezufuhr für kovalenten Bindungsbruch nötig). Mit konz. $\text{H}_2\text{SO}_4\text{(l)}$ verläuft die Reaktion durch die stark exotherme Hydratation des abgespaltenen Wassers ($\Delta_{\text{hyd}}H \ll 0$) insgesamt <strong>stark exotherm</strong> unter Aufschäumen eines schwarzen Kohlenstoff-Pilzes.</li>
+                        <li><span class="highlight">Eisenwolle &amp; Eisen(II)-oxalat:</span> Verbrennung von Eisenwolle an Luft ist stark <strong>exotherm</strong> (Batterie liefert nur $E_A$). Die Thermolyse $\text{FeC}_2\text{O}_4\text{(s)} \to \text{FeO(s)} + \text{CO(g)} + \text{CO}_2\text{(g)}$ (bzw. pyrophores Eisen) ist <strong>endotherm</strong>; das anschließende Aufglühen an der Luft ist wieder eine stark <strong>exotherme Oxidation</strong>.</li>
+                        <li><span class="highlight">Neutralisationsenthalpie ($\text{HCl}+\text{NaOH}$ vs. $\text{H}_2\text{SO}_4+\text{NaOH}$):</span> Die exotherme Teilchenreaktion ist in beiden Fällen identisch: $\mathbf{\text{H}_3\text{O}^+\text{(aq)} + \text{OH}^-\text{(aq)} \to 2\,\text{H}_2\text{O(l)}}$ mit $\Delta_r H^\circ = \mathbf{-57{,}5\text{ kJ/mol}}$ pro Mol gebildetem Wasser! Zweiprotonige $\text{H}_2\text{SO}_4$ liefert bei vollständiger Neutralisation <em>pro Mol Säure</em> doppelt so viel Wärme ($-115{,}0\text{ kJ/mol}$), aber <em>pro Mol $\text{H}_3\text{O}^+$</em> exakt gleich viel: $100\text{ mL }\text{H}_2\text{SO}_4$ ($0{,}50\text{ mol/L} \Rightarrow n(\text{H}_3\text{O}^+)=0{,}10\text{ mol}$) + $100\text{ mL }\text{NaOH}$ ($1{,}00\text{ mol/L}$, <strong>Gesamtmasse $m_{\text{ges}} = 200\text{ g}$!</strong>) erzeugen exakt dasselbe $\Delta T = 6{,}7\text{ K}$ wie $100\text{ mL }\text{HCl}$ ($1{,}00\text{ mol/L}$)!</li>
+                    </ul>
+                    <div class="detail-close-row">
+                        <button type="button" class="detail-close-btn" data-close-topic="2" data-close-layer="versuche">▲ Unterrichtsversuche einklappen</button>
+                    </div>
                 </div>
             </div>
             <div class="page-footer">
-                <span>Chemische Energetik</span>
+                <span>Chemische Energetik – Block 2 (Zone C: Kalorimeter-Rezepte &amp; Versuche)</span>
                 <span>Olga V.</span>
                 <span>Seite 7</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 8: BLOCK 2 (DETAIL: 15-PUNKTE-BOX – EXTRAPOLATION & FEHLERANALYSE)
+             ============================================================ -->
+        <div class="page detail-page is-closed" data-topic="2" data-page-layers="fallen">
+            <div class="card detail-card">
+                <div class="detail-section" data-topic="2" data-layer="fallen">
+                    <span class="zone-badge">Zone D · Die „15-Punkte-Box“ (Grafische Auswertung &amp; AFB-III-Fehleranalyse)</span>
+                    <h3 id="sec-b2-extrapolation">📈 1. Grafische Auswertung von Kalorimeter-Versuchen ($T$-$t$-Diagramm &amp; Extrapolation)</h3>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; align-items: center; margin-bottom: 0.7rem;">
+                        <div class="sketch-card">
+                            <div class="sketch-title">Lineare Extrapolation im $T$-$t$-Diagramm ($A_1 = A_2$)</div>
+                            <svg class="sketch-svg" viewBox="0 0 430 175" xmlns="http://www.w3.org/2000/svg" aria-label="Temperatur-Zeit-Extrapolationsdiagramm">
+                                <rect x="0" y="0" width="430" height="175" rx="6" fill="#FDFCF8"/>
+                                <!-- Achsen -->
+                                <line x1="42" y1="152" x2="408" y2="152" stroke="#2D3A2E" stroke-width="1.5"/>
+                                <line x1="42" y1="152" x2="42" y2="14" stroke="#2D3A2E" stroke-width="1.5"/>
+                                <text x="12" y="24" font-family="Raleway, sans-serif" font-size="11" font-weight="700" fill="#2D3A2E">ϑ</text>
+                                <text x="398" y="167" font-family="Raleway, sans-serif" font-size="11" font-weight="700" fill="#2D3A2E">t</text>
+                                <!-- Flächen A1 und A2 -->
+                                <path d="M 135 126 L 166 126 L 166 84 Q 152 124 135 126 Z" fill="rgba(201,169,110,0.35)"/>
+                                <path d="M 166 34 L 166 84 Q 182 47 212 42 Z" fill="rgba(58,90,63,0.22)"/>
+                                <!-- Extrapolationsgeraden -->
+                                <line x1="52" y1="126" x2="215" y2="126" stroke="#5A6B5C" stroke-width="1.4" stroke-dasharray="4,3"/>
+                                <line x1="135" y1="29" x2="392" y2="66" stroke="#9E3B2E" stroke-width="1.4" stroke-dasharray="4,3"/>
+                                <!-- Senkrechte Hilfslinie (A1 = A2) -->
+                                <line x1="166" y1="26" x2="166" y2="152" stroke="#3A5A3F" stroke-width="1.6" stroke-dasharray="3,2"/>
+                                <!-- Messkurve (Exotherm) -->
+                                <path d="M 52 126 L 135 126 Q 152 124 166 84 Q 182 47 212 42 L 392 66" fill="none" stroke="#2D3A2E" stroke-width="2.3"/>
+                                <!-- Delta T Pfeil -->
+                                <line x1="196" y1="126" x2="196" y2="38" stroke="#9E3B2E" stroke-width="2"/>
+                                <polygon points="196,35 192,43 200,43" fill="#9E3B2E"/>
+                                <polygon points="196,126 192,118 200,118" fill="#9E3B2E"/>
+                                <text x="203" y="86" font-family="Raleway, sans-serif" font-size="11" font-weight="700" fill="#9E3B2E">ΔT_korr</text>
+                                <!-- Beschriftungen -->
+                                <text x="60" y="118" font-family="Raleway, sans-serif" font-size="9.5" font-weight="600" fill="#5A6B5C">Vorperiode (ϑ_vor)</text>
+                                <text x="145" y="118" font-family="Raleway, sans-serif" font-size="9" font-weight="700" fill="#8C6D32">A₁</text>
+                                <text x="171" y="54" font-family="Raleway, sans-serif" font-size="9" font-weight="700" fill="#3A5A3F">A₂</text>
+                                <text x="268" y="45" font-family="Raleway, sans-serif" font-size="9.5" font-weight="600" fill="#9E3B2E">Nachperiode (Wärmedrift)</text>
+                                <text x="122" y="166" font-family="Raleway, sans-serif" font-size="9.5" fill="#2D3A2E">t_Start</text>
+                            </svg>
+                        </div>
+
+                        <div style="font-size:0.89rem;">
+                            <p><strong>Die 3 Phasen im Temperatur-Zeit-Diagramm:</strong></p>
+                            <ul>
+                                <li><span class="highlight">Vorperiode ($t &lt; t_{\text{Start}}$):</span> Waagerechte Gerade der konstanten Anfangstemperatur $\vartheta_{\text{vor}}$ vor Zugabe des zweiten Edukts.</li>
+                                <li><span class="highlight">Hauptperiode:</span> Steiler Temperaturanstieg (exotherm) bzw. -abfall (endotherm) während des Stoffumsatzes.</li>
+                                <li><span class="highlight">Nachperiode ($t &gt; t_{\text{Ende}}$):</span> Lineare Temperaturdrift durch unvermeidbaren Wärmeaustausch mit der Raumluft (Abkühlungsgerade bei $T &gt; T_{\text{Raum}}$; Erwärmungsgerade bei $T &lt; T_{\text{Raum}}$).</li>
+                            </ul>
+                            <p style="margin-bottom:0;"><strong>Extrapolationsverfahren gegen Wärmeverluste:</strong><br>
+                            • <em>Flächen-Verfahren ($A_1 = A_2$):</em> Vorperioden-Gerade nach rechts &amp; Nachperioden-Gerade nach links verlängern; Senkrechte in der Hauptperiode so wählen, dass $A_1 = A_2$ gilt $\to$ vertikaler Schnittpunktabstand liefert $\Delta T_{\text{korr}}$.<br>
+                            • <em>Rückextrapolation auf $t_{\text{Start}}$:</em> Nachperioden-Gerade bis $t_{\text{Start}}$ zurückverlängern liefert das theoretische $T_{\text{max}}$ ohne Abkühlungsverlust.</p>
+                        </div>
+                    </div>
+
+                    <h3 id="sec-b2-fehler">🏆 2. Systematische Fehleranalyse für 15 Punkte (AFB III): Auswirkung auf $|\Delta T|$ &amp; $|\Delta_r H_m|$</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <tr><th>Experimentelle Fehlerquelle</th><th>Messwert $|\Delta T|$</th><th>Berechnetes $|\Delta_r H_m|$</th><th>Kausale Begründung für die Klausur</th></tr>
+                            <tr><td><span class="highlight">Wärmeaustausch mit Umgebung</span></td><td>Zu klein</td><td><strong>Kleiner</strong> als Lit.-Wert</td><td>Teil der Reaktionswärme entweicht an Luft/Stativ (bzw. strömt bei Endothermie ein).</td></tr>
+                            <tr><td><span class="highlight">$C_{\text{K}}$ vernachlässigt ($C_{\text{K}}=0$)</span></td><td>Unverändert</td><td><strong>Kleiner</strong> als Lit.-Wert</td><td>Im Zähler von $|\Delta_r H_m| = \frac{Q_{\text{W}}+Q_{\text{K}}}{n}$ fehlt der positive Summand $Q_{\text{K}} = C_{\text{K}}\cdot|\Delta T|$.</td></tr>
+                            <tr><td><span class="highlight">Unvollständige Reaktion / Ruß</span></td><td>Zu klein</td><td><strong>Kleiner</strong> als Lit.-Wert</td><td>Real reagiert $n_{\text{real}} &lt; n_{\text{Einwaage}}$, dividiert wird aber durch das zu große $n_{\text{Einwaage}}$.</td></tr>
+                            <tr><td><span class="highlight">Nasses Eis (Schmelzversuch)</span></td><td>Zu klein (pro g)</td><td><strong>Kleiner</strong> als Lit.-Wert</td><td>Anhaftendes Wasser ($0\,^\circ\text{C}$) erhöht $m_{\text{Eis}}$ und $n(\text{Eis})$ im Nenner ohne Schmelzwärme.</td></tr>
+                            <tr><td><span class="highlight">$c_{\text{W}}$ statt $c_{\text{Salzlösung}}$ genutzt</span></td><td>Unverändert</td><td><strong>Größer</strong> als Lit.-Wert!</td><td>Konzentrierte Salzlösungen haben $c_{\text{real}} &lt; 4{,}184\text{ J/(g}\cdot\text{K)} \to$ Zähler $Q$ wird überschätzt!</td></tr>
+                        </table>
+                    </div>
+
+                    <div class="trap-box" style="margin-bottom:0;">
+                        <span class="trap-title">✍️ Ausformulierte 15-Punkte-Begründungsketten (AFB III)</span>
+                        <p style="margin-bottom:0; font-size:0.88rem;">
+                        <strong>1. Wärmeverlust (z. B. offenes Dosenkalorimeter):</strong> Wärmeabstrahlung der Flamme an die Raumluft &amp; Ableitung über das Stativ $\to$ nur ein Teil der Wärme geht auf das Wasser über ($|\Delta T_{\text{mess}}| &lt; |\Delta T_{\text{theor}}|$) $\to$ wegen $|\Delta_r H_m| \sim |\Delta T|$ fällt $|\Delta_r H_m|$ bzw. der Heizwert deutlich <em>kleiner</em> als der Literaturwert aus.<br>
+                        <strong>2. Vernachlässigtes $C_{\text{K}}$:</strong> Gefäßwand, Thermometer und Rührer erwärmen sich real mit ($Q_{\text{K}} = C_{\text{K}}|\Delta T|$) $\to$ mit $C_{\text{K}}=0$ berechnet man nur $Q_{\text{W}} &lt; Q_{\text{ges}}$ $\to$ Zähler in $\frac{Q}{n}$ zu klein $\implies |\Delta_r H_m|$ systematisch <em>kleiner</em>.<br>
+                        <strong>3. Unvollständiger Umsatz (Ruß $\text{C(s)}$, Passivierung, ungelöste Reste):</strong> $n_{\text{real}} &lt; n_{\text{Einwaage}} \to$ weniger Wärme frei ($|\Delta T|$ zu klein), während im Nenner durch das zu große $n_{\text{Einwaage}}$ geteilt wird $\implies |\Delta_r H_m|$ <em>kleiner</em> als der Literaturwert.</p>
+                    </div>
+
+                    <div class="detail-close-row">
+                        <button type="button" class="detail-close-btn" data-close-topic="2" data-close-layer="fallen">▲ 15-Punkte-Box einklappen</button>
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>Chemische Energetik – Block 2 (Zone D: Extrapolation &amp; AFB-III-Fehleranalyse)</span>
+                <span>Olga V.</span>
+                <span>Seite 8</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 9: BLOCK 3 (KERN – ZONE A)
+             Heizwert vs. Brennwert, Graphit-Sonderfall & Satz von Hess
+             ============================================================ -->
+        <div class="page">
+            <div class="card" id="block-3-core">
+                <h2 id="sec-b3">3. ♻️ Block 3: Verbrennungsenthalpie, Heizwert vs. Brennwert &amp; Satz von Hess</h2>
+
+                <span class="zone-badge">Zone A · Kausalketten &amp; Teilchenebene (Das „Warum“)</span>
+
+                <div class="zones-grid">
+                    <div class="zone-panel">
+                        <h3 id="sec-b3-hshi">1. Heizwert ($H_i$) vs. Brennwert ($H_s$) &amp; Sonderfall Graphit</h3>
+                        <div class="table-wrapper">
+                            <table>
+                                <tr><th>Merkmal</th><th>Heizwert $H_i$ (inferior)</th><th>Brennwert $H_s$ (superior)</th></tr>
+                                <tr><td><span class="highlight">Zustand $\text{H}_2\text{O}$</span></td><td>Gasförmig: $\mathbf{\text{H}_2\text{O(g)}}$</td><td>Flüssig: $\mathbf{\text{H}_2\text{O(l)}}$</td></tr>
+                                <tr><td><span class="highlight">Wechselwirkungen</span></td><td>Kaum Kräfte im Dampf</td><td>Starke H-Brücken im Wasser</td></tr>
+                                <tr><td><span class="highlight">$\Delta_f H_m^0(\text{H}_2\text{O})$</span></td><td>$-242\text{ kJ/mol}$</td><td>$-286\text{ kJ/mol}$</td></tr>
+                                <tr><td><span class="highlight">Genutzte Wärme</span></td><td>Reine Verbrennungswärme</td><td>Heizwert + Kondensationswärme</td></tr>
+                                <tr><td><span class="highlight">Technik</span></td><td>Alter Heizkessel (Abgas heiß)</td><td>Brennwertkessel ($&lt;100\,^\circ\text{C}$)</td></tr>
+                            </table>
+                        </div>
+                        <ul style="margin-bottom:0; font-size:0.88rem;">
+                            <li><span class="highlight">Kausalkette ($H_s &gt; H_i$):</span> In der heißen Flamme entsteht primär $\text{H}_2\text{O(g)}$. Kühlt man die Abgase unter den Taupunkt ($&lt;100\,^\circ\text{C}$) ab, bilden die $\text{H}_2\text{O}$-Moleküle starke H-Brücken aus ($\text{H}_2\text{O(g)}\to\text{H}_2\text{O(l)}$) und setzen zusätzlich die Kondensationsenthalpie $\Delta_{\text{kond}}H_m^0 = -\Delta_{\text{vap}}H_m^0(\text{H}_2\text{O}) = \mathbf{-40{,}7\text{ kJ/mol}}$ (bei $100\,^\circ\text{C}$, bzw. $\mathbf{-44\text{ kJ/mol}}$ bei $25\,^\circ\text{C}$) frei!</li>
+                            <li><span class="highlight">Abstufung $H_s / H_i$ steigt mit dem $\text{H:C}$-Atomverhältnis:</span><br>
+                            • $\text{H}_2$: $\frac{12{,}8}{10{,}8} = \mathbf{1{,}19}$ (max. Wasseranteil) &nbsp;$&gt;$&nbsp; $\text{CH}_4$: $\frac{39{,}8}{35{,}9} = \mathbf{1{,}11}$ &nbsp;$&gt;$&nbsp; $\text{C(Graphit)}$: $\frac{32{,}7}{32{,}7} = \mathbf{1{,}00}$.</li>
+                            <li><span class="highlight">Sonderfall Kohlenstoff / Graphit ($\mathbf{H_s = H_i = 32{,}7\text{ MJ/kg}}$):</span> $\text{C(s, Graphit)}$ besitzt keine gebundenen H-Atome $\to$ bei $\text{C(s)}+\text{O}_2\text{(g)}\to\text{CO}_2\text{(g)}$ ($\Delta_c H_m^0 = -393\text{ kJ/mol}$) entsteht <strong>kein Wasser ($\nu(\text{H}_2\text{O})=0$)</strong> $\to$ keine Kondensationswärme möglich!</li>
+                        </ul>
+                    </div>
+
+                    <div class="zone-panel">
+                        <h3 id="sec-b3-hess-prinzip">2. Satz von Hess &amp; Enthalpie $H$ als Zustandsgröße</h3>
+                        <svg class="sketch-svg" viewBox="0 0 430 165" xmlns="http://www.w3.org/2000/svg" aria-label="Hessscher Enthalpiezyklus Kohlenstoffmonoxid">
+                            <rect x="0" y="0" width="430" height="165" rx="6" fill="#FDFCF8"/>
+                            <!-- Achse H -->
+                            <line x1="26" y1="150" x2="26" y2="14" stroke="#2D3A2E" stroke-width="1.5"/>
+                            <polygon points="26,11 22,19 30,19" fill="#2D3A2E"/>
+                            <text x="8" y="22" font-family="Playfair Display, serif" font-size="12" font-weight="700" fill="#2D3A2E">H</text>
+
+                            <!-- Niveau 1: Elemente C(s) + O2(g) = 0 -->
+                            <line x1="45" y1="28" x2="395" y2="28" stroke="#3A5A3F" stroke-width="2.2"/>
+                            <text x="50" y="21" font-family="Raleway, sans-serif" font-size="10.5" font-weight="700" fill="#3A5A3F">C(s, Graphit) + O₂(g)   [Element-Nullpunkt: 0 kJ]</text>
+
+                            <!-- Niveau 2: CO(g) + 1/2 O2(g) -->
+                            <line x1="215" y1="74" x2="395" y2="74" stroke="#C9A96E" stroke-width="2.2"/>
+                            <text x="220" y="68" font-family="Raleway, sans-serif" font-size="10" font-weight="700" fill="#8C6D32">CO(g) + ½ O₂(g)</text>
+
+                            <!-- Niveau 3: CO2(g) -->
+                            <line x1="45" y1="142" x2="395" y2="142" stroke="#9E3B2E" stroke-width="2.2"/>
+                            <text x="50" y="156" font-family="Raleway, sans-serif" font-size="10.5" font-weight="700" fill="#9E3B2E">CO₂(g)   [Endzustand: −393 kJ]</text>
+
+                            <!-- Direktweg I (links) -->
+                            <line x1="92" y1="28" x2="92" y2="138" stroke="#9E3B2E" stroke-width="2.2"/>
+                            <polygon points="92,141 88,133 96,133" fill="#9E3B2E"/>
+                            <text x="99" y="90" font-family="Raleway, sans-serif" font-size="10.5" font-weight="700" fill="#9E3B2E">Weg I (direkt):</text>
+                            <text x="99" y="104" font-family="Raleway, sans-serif" font-size="10.5" font-weight="700" fill="#9E3B2E">ΔrH₁° = −393 kJ</text>
+
+                            <!-- Umweg: Gesucht nach CO -->
+                            <line x1="258" y1="28" x2="258" y2="70" stroke="#3A5A3F" stroke-width="2.2"/>
+                            <polygon points="258,73 254,65 262,65" fill="#3A5A3F"/>
+                            <text x="266" y="53" font-family="Raleway, sans-serif" font-size="10.5" font-weight="700" fill="#3A5A3F">ΔfH°(CO) = −111 kJ</text>
+
+                            <!-- Umweg: CO -> CO2 (bzw. Rückweg +282) -->
+                            <line x1="258" y1="74" x2="258" y2="138" stroke="#5A6B5C" stroke-width="1.8" stroke-dasharray="4,2"/>
+                            <polygon points="258,141 254,133 262,133" fill="#5A6B5C"/>
+                            <text x="266" y="110" font-family="Raleway, sans-serif" font-size="10" font-weight="600" fill="#5A6B5C">ΔrH₂° = −282 kJ</text>
+                            <text x="266" y="123" font-family="Raleway, sans-serif" font-size="9.5" fill="#9E3B2E">(Rückweg: +282 kJ!)</text>
+                        </svg>
+                        <ul style="margin-bottom:0; font-size:0.88rem; margin-top:6px;">
+                            <li><span class="highlight">Teilchenebene ($H$ als Zustandsgröße):</span> Jeder Stoff besitzt bei festem $p, T$ durch seine Bindungen &amp; Wechselwirkungen einen exakt festgelegten Energieinhalt $H$.</li>
+                            <li><span class="highlight">1. Hauptsatz-Begründung:</span> Wäre $\Delta_r H$ auf Hinweg A größer als auf Rückweg B, könnte man im Kreisprozess Energie aus dem Nichts erzeugen (Widerspruch zur Energieerhaltung!).</li>
+                            <li><span class="highlight">Satz von Hess (1840):</span> $\Delta_r H = H(\text{Produkte}) - H(\text{Edukte})$ hängt <strong>nur vom Anfangs- und Endzustand</strong> ab $\to$ erlaubt die indirekte Berechnung experimentell nicht sauber isolierbarer Reaktionen (wie $\text{C(s)}+\frac{1}{2}\,\text{O}_2\text{(g)}\to\text{CO(g)}$ ohne $\text{CO}_2$-Nebenprodukt).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>Chemische Energetik – Block 3 (Zone A: Heizwert/Brennwert &amp; Satz von Hess)</span>
+                <span>Olga V.</span>
+                <span>Seite 9</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 10: BLOCK 3 (KERN – ZONE B & AUFKLAPP-LEISTE)
+             Definitionen, Element-Konvention & Formelsammlung Hess
+             ============================================================ -->
+        <div class="page">
+            <div class="card core-continuation">
+                <span class="zone-badge">Zone B · Definitionen, Element-Konvention &amp; Formelsammlung Block 3</span>
+
+                <h3 id="sec-b3-defs" style="margin-top:0.2rem;">1. Exakte 15-Punkte-Definitionen der Thermochemie</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <tr><th>Größe &amp; Symbol</th><th>Exakte 15-Punkte-Definition</th><th>Vorzeichen</th><th>Einheit</th></tr>
+                        <tr><td><span class="highlight">Standardbedingungen</span></td><td>Temperatur $T = 298{,}15\text{ K}$ ($\vartheta = 25\,^\circ\text{C}$), Standarddruck $p^0 = 1000\text{ hPa}$ ($1\text{ bar}$)</td><td>—</td><td>$\text{K}$, $\text{hPa}$</td></tr>
+                        <tr><td><span class="highlight">Standardbildungsenthalpie $\Delta_f H_m^0$</span></td><td>Reaktionsenthalpie bei der Bildung von <strong>$1\text{ mol}$ Verbindung direkt aus den Elementen</strong> in ihrer stabilsten Modifikation bei Standardbedingungen</td><td>meist $&lt;0$, teils $&gt;0$</td><td>$\text{kJ/mol}$</td></tr>
+                        <tr><td><span class="highlight">Standardverbrennungsenthalpie $\Delta_c H_m^0$</span></td><td>Reaktionsenthalpie bei der vollständigen Verbrennung von <strong>$1\text{ mol}$ Reinstoff</strong> mit $\text{O}_2\text{(g)}$ bei Standardbedingungen (<strong>Wasser entsteht flüssig als $\text{H}_2\text{O(l)}$!</strong>)</td><td><strong>immer $&lt;0$</strong> (exotherm)</td><td>$\text{kJ/mol}$</td></tr>
+                        <tr><td><span class="highlight">Spezifischer Brennwert $H_s$</span></td><td><strong>Betrag</strong> der freiwerdenden Wärme bei vollständiger Verbrennung von $1\text{ kg}$ (bzw. $1\text{ g}$) Stoff inkl. Kondensationswärme ($\text{H}_2\text{O(l)}$)</td><td><strong>immer $&gt;0$</strong> (Betrag!)</td><td>$\text{MJ/kg}$ ($= \text{kJ/g}$)</td></tr>
+                        <tr><td><span class="highlight">Volumenbezogener Brennwert $H_s$</span></td><td><strong>Betrag</strong> der freiwerdenden Wärme bei vollständiger Verbrennung von $1\text{ m}^3$ Gas (bezogen auf $0\,^\circ\text{C}, 1013{,}25\text{ hPa}$) inkl. Kondensationswärme</td><td><strong>immer $&gt;0$</strong> (Betrag!)</td><td>$\text{MJ/m}^3$ ($= \text{kJ/L}$)</td></tr>
+                    </table>
+                </div>
+
+                <div class="zones-grid">
+                    <div class="zone-panel">
+                        <h3 id="sec-b3-elemente">2. Element-Konvention ($\Delta_f H_m^0 = 0$) &amp; Ausnahmen</h3>
+                        <p style="font-size:0.88rem;">Da absolute Enthalpien $H$ nicht messbar sind, setzt man für alle Elemente in ihrem bei $25\,^\circ\text{C}$ &amp; $1000\text{ hPa}$ stabilsten Zustand per Konvention $\mathbf{\Delta_f H_m^0 = 0\text{ kJ/mol}}$:</p>
+                        <ul style="font-size:0.88rem; margin-bottom:0.45rem;">
+                            <li><span class="highlight">Immer $= 0\text{ kJ/mol}$ (auswendig erkennen!):</span><br>
+                            • Zweiatomige Gase: $\text{H}_2\text{(g)}, \text{O}_2\text{(g)}, \text{N}_2\text{(g)}, \text{F}_2\text{(g)}, \text{Cl}_2\text{(g)}$ <em>(Achtung: gasförmig $\text{O}_2\text{(g)}$, nie $\text{O}_2\text{(l)}$!)</em>.<br>
+                            • Flüssige/feste Elemente: $\text{Br}_2\text{(l)}, \text{Hg(l)}, \text{I}_2\text{(s)}$, Metalle ($\text{Fe(s)}, \text{Mg(s)}, \text{Zn(s)}, \text{Na(s)}$), $\mathbf{\text{C(s, Graphit)}}$.<br>
+                            • Wässrige Ionen-Konvention: $\Delta_f H_m^0(\text{H}^+\text{(aq)}) = 0\text{ kJ/mol}$ (damit z. B. $\text{OH}^-\text{(aq)} = -230\text{ kJ/mol}$ tabellierbar ist).</li>
+                            <li><span class="highlight">Wann ist $\Delta_f H_m^0$ bei Elementen $\neq 0$?</span><br>
+                            • <em>Metastabile Modifikationen (Allotrope):</em> $\text{C(s, Diamant)} = +2\text{ kJ/mol}$, Ozon $\text{O}_3\text{(g)} = +143\text{ kJ/mol}$ (Bildung endotherm!).<br>
+                            • <em>Falscher Aggregatzustand / Einzelatome:</em> $\text{Na(g)} = +107\text{ kJ/mol}$ (Sublimation), $\text{Cl(g)} = +121\text{ kJ/mol}$ (Bindungsspaltung von $\frac{1}{2}\,\text{Cl}_2\text{(g)}$).</li>
+                        </ul>
+                    </div>
+
+                    <div class="zone-panel">
+                        <h3 id="sec-b3-formeln">3. Formelsammlung: Satz von Hess &amp; $H_s / H_i$</h3>
+                        <div class="formula-box">
+                            <span class="formula-label">Summenformel zum Satz von Hess</span>
+                            $$\Delta_r H^0 = \sum_i \nu_i \cdot \Delta_f H_{m,i}^0(\text{Produkte}) - \sum_i \nu_i \cdot \Delta_f H_{m,i}^0(\text{Edukte})$$
+                        </div>
+                        <ul style="font-size:0.87rem; margin-bottom:0;">
+                            <li><span class="highlight">Rückwärts nach $\Delta_f H_m^0(\text{Brennstoff})$ ($\nu=1$, da $\Delta_f H_m^0(\text{O}_2)=0$):</span><br>
+                            $$\Delta_f H_m^0(\text{Stoff}) = \sum_i \nu_i \Delta_f H_{m,i}^0(\text{Produkte}) - \Delta_c H_m^0(\text{Stoff})$$</li>
+                            <li><span class="highlight">Umrechnung $\text{H}_2\text{O(l)} \to \text{H}_2\text{O(g)}$:</span><br>
+                            $\Delta_r H_m^0(\text{mit H}_2\text{O(g)}) = \Delta_c H_m^0(\text{mit H}_2\text{O(l)}) + \nu(\text{H}_2\text{O}) \cdot 40{,}7\text{ kJ/mol}$ <em>(bei $100\,^\circ\text{C}$; bzw. $+44\text{ kJ/mol}$ über $\Delta_f H_m^0$-Differenz bei $25\,^\circ\text{C}$)</em>.</li>
+                            <li><span class="highlight">Spezifischer Brennwert &amp; Heizwert ($\text{kJ/g} = \text{MJ/kg}$ zahlenwertgleich!):</span><br>
+                            $$H_s = \frac{|\Delta_c H_m^0|}{M} \qquad H_i = \frac{|\Delta_c H_m^0 + \nu(\text{H}_2\text{O})\cdot\Delta_{\text{vap}}H_m^0(\text{H}_2\text{O})|}{M}$$</li>
+                            <li><span class="highlight">Volumenbezogener Brennwert (Gase bei $0\,^\circ\text{C}$, $V_m = 22{,}4\text{ L/mol}$):</span><br>
+                            $H_s(\text{Vol}) = \dfrac{|\Delta_c H_m^0|}{22{,}4\text{ L/mol}}$ &nbsp;(z. B. $\text{H}_2$: $\frac{286}{22{,}4} = 12{,}8\text{ kJ/L} = 12{,}8\text{ MJ/m}^3$).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="drawer-bar">
+                    <span class="drawer-bar-label">Mehr zu Block 3:</span>
+                    <button type="button" class="drawer-btn" data-toggle-topic="3" data-toggle-layer="rezept"><span class="state-icon">＋</span> 🧮 Die 4 Klausur-Rechentypen (Hess, Hs/Hi, Wasser)</button>
+                    <button type="button" class="drawer-btn" data-toggle-topic="3" data-toggle-layer="versuche"><span class="state-icon">＋</span> 🧪 Verbrennungsversuche (Wachs &amp; Knäckebrot)</button>
+                    <button type="button" class="drawer-btn" data-toggle-topic="3" data-toggle-layer="fallen"><span class="state-icon">＋</span> 🏆 15-Punkte-Box: Bombenkalorimeter &amp; 5 Hess-Fallen</button>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>Chemische Energetik – Block 3 (Zone B: Definitionen, Elemente &amp; Formeln)</span>
+                <span>Olga V.</span>
+                <span>Seite 10</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 11: BLOCK 3 (DETAIL: RECHENREZEPTE TEIL 1 – TYP 1 & TYP 2)
+             ============================================================ -->
+        <div class="page detail-page is-closed" data-topic="3" data-page-layers="rezept">
+            <div class="card detail-card">
+                <div class="detail-section" data-topic="3" data-layer="rezept">
+                    <span class="zone-badge">Zone C · Die 4 Klausur-Rechentypen (Teil 1: Typ 1 &amp; Typ 2)</span>
+                    <h3 id="sec-b3-rezept12">🧮 Block 3 – Klausur-Rechentypen 1 &amp; 2: Wärmemenge $|Q|$, Wassererwärmung, $H_i$ &amp; $H_s$</h3>
+
+                    <div class="two-col-recipe">
+                        <div class="two-col-head">
+                            <div>Typ 1: Aus $\Delta_c H_m^0 \to |Q|$, Brennwert $H_s$ &amp; aufheizbare Wassermasse $m_{\text{W}}$</div>
+                            <div>Durchgerechnete Muster (Glucose, Methan &amp; Octan)</div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">Schritt 1: Verbrennungsgleichung, $\Delta_c H_m^0$ &amp; $n = \frac{m}{M}$</span><br>
+                                Vollständige Verbrennung zu $\text{CO}_2\text{(g)}$ + $\text{H}_2\text{O(l)}$ aufstellen, ggf. $\Delta_c H_m^0$ über Hess bestimmen und Stoffmenge $n = \frac{m}{M}$ berechnen.
+                            </div>
+                            <div class="col-think">
+                                • <strong>Glucose ($\text{C}_6\text{H}_{12}\text{O}_6\text{(s)} + 6\,\text{O}_2\text{(g)} \to 6\,\text{CO}_2\text{(g)} + 6\,\text{H}_2\text{O(l)}$):</strong><br>
+                                $\Delta_c H_m^0 = 6(-394) + 6(-286) - [1(-1274)] = -4080 + 1274 = \mathbf{-2806\text{ kJ/mol}}$; für $100\text{ g}$ ($M=180{,}16\text{ g/mol}$) ist $n = 0{,}555\text{ mol}$.<br>
+                                • <strong>Methan ($\text{CH}_4 + 2\,\text{O}_2 \to \text{CO}_2 + 2\,\text{H}_2\text{O(l)}$):</strong> $|\Delta_c H_m^0| = 891\text{ kJ/mol}$; $100\text{ g} \implies n = \frac{100}{16} = 6{,}25\text{ mol}$.<br>
+                                • <strong>Octan ($\text{C}_8\text{H}_{18} + 12{,}5\,\text{O}_2 \to 8\,\text{CO}_2 + 9\,\text{H}_2\text{O(l)}$):</strong> $|\Delta_c H_m^0| = 5072\text{ kJ/mol}$, $M = 114{,}22\text{ g/mol}$.
+                            </div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">Schritt 2 &amp; 3: $|Q| = n\cdot|\Delta_c H_m^0|$, $H_s$ &amp; Wassermasse $m_{\text{W}}$</span><br>
+                                • Freigesetzte Wärme: $|Q| = n \cdot |\Delta_c H_m^0|$ bzw. $H_s = \frac{|\Delta_c H_m^0|}{M}$.<br>
+                                • Aufheizbare Wassermasse (z. B. $10\,^\circ\text{C}\to 100\,^\circ\text{C} \Rightarrow \Delta T = 90\text{ K}$):
+                                $$m_{\text{W}} = \frac{|Q|}{c_{\text{W}} \cdot \Delta T}$$
+                            </div>
+                            <div class="col-think">
+                                • <strong>Glucose ($100\text{ g}$):</strong> $|Q| = 0{,}555\cdot 2806 = \mathbf{1557{,}5\text{ kJ}}$ ($H_s = 15{,}57\text{ kJ/g}$) $\implies m_{\text{W}} = \frac{1557{,}5\text{ kJ}}{4{,}183\text{ kJ/(kg}\cdot\text{K)}\cdot 90\text{ K}} = \mathbf{4{,}14\text{ kg}}$ ($\approx 4{,}14\text{ L}$).<br>
+                                • <strong>Methan ($100\text{ g}$):</strong> $|Q| = 6{,}25\cdot 891 = \mathbf{5568{,}75\text{ kJ}} \implies m_{\text{W}} = \frac{5568{,}75}{4{,}183\cdot 90} = \mathbf{14{,}79\text{ kg}}$ ($\approx 14{,}8\text{ L}$).<br>
+                                • <strong>Octan:</strong> $H_s = \frac{5{,}072\text{ MJ/mol}}{0{,}11422\text{ kg/mol}} = \mathbf{44{,}4\text{ MJ/kg}}$.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="two-col-recipe" style="margin-bottom:0;">
+                        <div class="two-col-head">
+                            <div>Typ 2: Umrechnung $\text{H}_2\text{O(l)} \to \text{H}_2\text{O(g)}$ sowie Heizwert $H_i$ &amp; Brennwert $H_s$</div>
+                            <div>Muster Benzol ($\text{C}_6\text{H}_6$, $M = 78\text{ g/mol}$) + Direktweg Propan/Methanol</div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">Schritt 1 &amp; 2: $\nu(\text{H}_2\text{O})$ ablesen &amp; Verdampfungswärme addieren</span><br>
+                                1. Korrekte Summenformel &amp; Gleichung für $1\text{ mol}$ Brennstoff:<br>
+                                $\text{C}_6\text{H}_6\text{(l)} + 7{,}5\,\text{O}_2\text{(g)} \to 6\,\text{CO}_2\text{(g)} + \mathbf{3}\,\text{H}_2\text{O(l)}$ ($\nu(\text{H}_2\text{O}) = 3$).<br>
+                                2. Verdampfungswärme $+3\cdot 40{,}7\text{ kJ/mol} = +122{,}1\text{ kJ/mol}$ addieren:<br>
+                                $\Delta_r H_m^0(\text{mit H}_2\text{O(g)}) = -3268 + 122{,}1 = \mathbf{-3145{,}9\text{ kJ/mol}}$.
+                            </div>
+                            <div class="col-think">
+                                💡 <strong>Alternativweg bei direkter Tabellenrechnung:</strong> Ist direkt nach $\Delta_r H^0$ mit Wasserdampf $\text{H}_2\text{O(g)}$ gefragt, setzt man im Satz von Hess sofort $\Delta_f H_m^0(\text{H}_2\text{O(g)}) = -242\text{ kJ/mol}$ ein:<br>
+                                • <em>Propan ($\text{C}_3\text{H}_8$):</em> $3(-393) + 4(-242) - (-104) = \mathbf{-2043\text{ kJ/mol}}$.<br>
+                                • <em>Methanol ($\text{CH}_3\text{OH}$):</em> $1(-393) + 2(-242) - (-239) = \mathbf{-638\text{ kJ/mol}}$.
+                            </div>
+                        </div>
+
+                        <div class="two-col-row">
+                            <div class="col-calc">
+                                <span class="step-badge">Schritt 3: Durch $M = 78\text{ g/mol}$ teilen &amp; Plausibilität prüfen</span><br>
+                                • Heizwert: $H_i = \dfrac{|-3145{,}9\text{ kJ/mol}|}{78\text{ g/mol}} = \mathbf{40{,}33\text{ kJ/g}} = 40{,}33\text{ MJ/kg}$.<br>
+                                • Brennwert: $H_s = \dfrac{|-3268\text{ kJ/mol}|}{78\text{ g/mol}} = \mathbf{41{,}90\text{ kJ/g}} = 41{,}90\text{ MJ/kg}$.
+                            </div>
+                            <div class="col-think">
+                                ✅ <strong>Pflicht-Plausibilitätscheck:</strong><br>
+                                $H_s = 41{,}90\text{ MJ/kg} &gt; H_i = 40{,}33\text{ MJ/kg}$ ist erfüllt, und beide Werte sind positiv!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>Chemische Energetik – Block 3 (Zone C: Klausur-Rechentypen 1 &amp; 2)</span>
+                <span>Olga V.</span>
+                <span>Seite 11</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 12: BLOCK 3 (DETAIL: RECHENREZEPTE TEIL 2 – TYP 3 & 4 + VERSUCHE)
+             ============================================================ -->
+        <div class="page detail-page is-closed" data-topic="3" data-page-layers="rezept versuche">
+            <div class="card detail-card">
+                <div class="detail-section" data-topic="3" data-layer="rezept">
+                    <span class="zone-badge">Zone C · Die 4 Klausur-Rechentypen (Teil 2: Typ 3 &amp; Typ 4)</span>
+                    <h3 id="sec-b3-rezept34">🧮 Block 3 – Klausur-Rechentypen 3 &amp; 4: $\Delta_f H_m^0$ rückwärts &amp; Enthalpiezyklen addieren</h3>
+
+                    <div class="zones-grid">
+                        <div class="zone-panel">
+                            <h3>Typ 3: Unbekannte $\Delta_f H_m^0$ aus $\Delta_c H_m^0$ (rückwärts &amp; vorwärts)</h3>
+                            <p style="font-size:0.88rem;"><strong>Grundformel ($\nu(\text{Stoff})=1$):</strong> $\Delta_f H_m^0(\text{Stoff}) = \nu(\text{CO}_2)\Delta_f H_m^0(\text{CO}_2) + \nu(\text{H}_2\text{O})\Delta_f H_m^0(\text{H}_2\text{O(l)}) - \Delta_c H_m^0(\text{Stoff})$.<br>
+                            <em>Tabellen-Hinweis:</em> Je nach Tabellenwerk gilt $\Delta_f H_m^0(\text{CO}_2\text{(g)}) = -394$ oder $-393\text{ kJ/mol}$ – genutzten Tabellenwert in der Klausur kurz angeben!</p>
+                            <ul style="font-size:0.87rem; margin-bottom:0;">
+                                <li><span class="highlight">Benzol ($\text{C}_6\text{H}_6\text{(l)} + 7{,}5\,\text{O}_2 \to 6\,\text{CO}_2 + 3\,\text{H}_2\text{O(l)}$, $\Delta_c H_m^0 = -3268$):</span><br>
+                                $\Delta_f H_m^0 = 6(-394) + 3(-286) - (-3268) = -3222 + 3268 = \mathbf{+46\text{ kJ/mol}}$.</li>
+                                <li><span class="highlight">Hexan ($\text{C}_6\text{H}_{14}\text{(l)} + 9{,}5\,\text{O}_2 \to 6\,\text{CO}_2 + 7\,\text{H}_2\text{O(l)}$, $\Delta_c H_m^0 = -4158$):</span><br>
+                                $\Delta_f H_m^0 = 6(-394) + 7(-286) - (-4158) = -4366 + 4158 = \mathbf{-208\text{ kJ/mol}}$.</li>
+                                <li><span class="highlight">Ethanol ($\text{C}_2\text{H}_5\text{OH(l)} + 3\,\text{O}_2 \to 2\,\text{CO}_2 + 3\,\text{H}_2\text{O(l)}$):</span><br>
+                                • <em>Vorwärts (aus $\Delta_f H_m^0 = -277$):</em> $\Delta_c H_m^0 = 2(-394) + 3(-286) - (-277) = -1646 + 277 = \mathbf{-1369\text{ kJ/mol}}$.<br>
+                                • <em>Rückwärts (aus $\Delta_c H_m^0 = -1369$):</em> $\Delta_f H_m^0 = -1646 - (-1369) = \mathbf{-277\text{ kJ/mol}}$.</li>
+                            </ul>
+                        </div>
+
+                        <div class="zone-panel">
+                            <h3>Typ 4: Teilgleichungen / Enthalpiezyklen aufstellen &amp; addieren</h3>
+                            <p style="font-size:0.88rem;"><strong>Regel:</strong> Teilgleichungen so umkehren/vervielfachen, dass Ziel-Edukte links und Ziel-Produkte rechts stehen. <strong>Beim Umdrehen zwingend Vorzeichen von $\Delta_r H^0$ wechseln!</strong></p>
+                            <ul style="font-size:0.87rem; margin-bottom:0;">
+                                <li><span class="highlight">Muster 1 ($\text{C(s)} + \frac{1}{2}\,\text{O}_2\text{(g)} \to \text{CO(g)}$):</span><br>
+                                ($\text{I}$) $\text{C(s)} + \text{O}_2 \to \text{CO}_2$ ($\Delta_r H_{\text{I}}^0 = -393\text{ kJ}$) unverändert lassen + ($\text{II}'$) umgedrehte Gleichung $\text{CO}_2 \to \text{CO} + \frac{1}{2}\,\text{O}_2$ ($\mathbf{+282\text{ kJ}}$) addieren $\implies \Delta_f H^0(\text{CO}) = -393 + 282 = \mathbf{-111\text{ kJ/mol}}$.</li>
+                                <li><span class="highlight">Muster 2 ($\text{CH}_4\text{(g)} + \frac{1}{2}\,\text{O}_2\text{(g)} \to \text{CH}_3\text{OH(l)}$):</span><br>
+                                Verbrennung $\text{CH}_4$ ($-802\text{ kJ}$) + umgekehrte Verbrennung $\text{CH}_3\text{OH}$ ($+638\text{ kJ}$) $\implies \Delta_r H^0 = -802 + 638 = \mathbf{-164\text{ kJ}}$.</li>
+                                <li><span class="highlight">Muster 3 (Hochofenprozess $\text{Fe}_2\text{O}_3\text{(s)} + 3\,\text{CO(g)} \to 2\,\text{Fe(s)} + 3\,\text{CO}_2\text{(g)}$):</span><br>
+                                Edukte: $1(-824) + 3(-111) = -1157\text{ kJ}$ (Zerlegung in Elemente kostet $+1157\text{ kJ}$); Produkte: $2(0) + 3(-393) = -1179\text{ kJ} \implies \Delta_r H^0 = -1179 - (-1157) = \mathbf{-22\text{ kJ}}$.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="detail-close-row">
+                        <button type="button" class="detail-close-btn" data-close-topic="3" data-close-layer="rezept">▲ Klausur-Rechentypen einklappen</button>
+                    </div>
+                </div>
+
+                <div class="detail-section" data-topic="3" data-layer="versuche">
+                    <h3 id="sec-b3-versuche">🧪 Block 3 – Verbrennungsversuche im Überblick (Wachs &amp; Knäckebrot)</h3>
+                    <ul style="font-size:0.89rem;">
+                        <li><span class="highlight">Kerzenwachs / Paraffin im Dosenkalorimeter:</span> $\Delta m = 0{,}40\text{ g}$ Kerzenwachs erwärmen $198{,}29\text{ g}$ Wasser in einer Getränkedose um $\Delta T \approx 10\text{ K}$ ($21{,}4\,^\circ\text{C}\to 31{,}4\,^\circ\text{C}$) $\implies |Q| = 4{,}183\cdot 198{,}29\cdot 10 = 8{,}29\text{ kJ} \implies$ experimenteller Heizwert $H = \frac{8{,}29\text{ kJ}}{0{,}40\text{ g}} = \mathbf{20{,}73\text{ kJ/g}}$ (Literaturwert Paraffin: $41{,}5\text{ kJ/g}$).</li>
+                        <li><span class="highlight">Knäckebrot im Low-Cost-Verbrennungskalorimeter mit Kupferspirale:</span> $0{,}50\text{ g}$ Knäckebrot verbrennen im $\text{O}_2$-Strom; die Abgase strömen durch eine Kupferspirale ($m_{\text{Cu}}=80\text{ g}, c_{\text{Cu}}=0{,}385$) im Glasgefäß ($m_{\text{Glas}}=40\text{ g}, c_{\text{Glas}}=0{,}84$) und erwärmen $400\text{ g}$ Wasser um extrapoliert $\Delta T = 3{,}5\text{ K}$ $\implies |Q| = 3{,}5\cdot(400\cdot 4{,}19 + 80\cdot 0{,}385 + 40\cdot 0{,}84) = 6{,}091\text{ kJ} \implies H = \frac{6{,}091}{0{,}50} = \mathbf{12{,}18\text{ kJ/g}}$ (Lit.: $15\text{–}16\text{ kJ/g}$).</li>
+                        <li><span class="highlight">AFB-III-Fehlervergleich:</span> Das Dosenkalorimeter verliert rund $50\,\%$ der Wärme durch freie Abstrahlung an die Raumluft sowie unvollständige Verbrennung (Ruß). Die Kupferspirale + $\text{O}_2$-Strom beim Knäckebrot-Versuch steigern die Wärmeübertragung deutlich, dennoch entweicht Restwärme über die warmen Abgase.</li>
+                    </ul>
+                    <div class="detail-close-row">
+                        <button type="button" class="detail-close-btn" data-close-topic="3" data-close-layer="versuche">▲ Verbrennungsversuche einklappen</button>
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>Chemische Energetik – Block 3 (Zone C: Rechentypen 3 &amp; 4 &amp; Versuche)</span>
+                <span>Olga V.</span>
+                <span>Seite 12</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 13: BLOCK 3 (DETAIL: 15-PUNKTE-BOX – BOMBENKALORIMETER & 5 HESS-FALLEN)
+             ============================================================ -->
+        <div class="page detail-page is-closed" data-topic="3" data-page-layers="fallen">
+            <div class="card detail-card">
+                <div class="detail-section" data-topic="3" data-layer="fallen">
+                    <span class="zone-badge">Zone D · Die „15-Punkte-Box“ (Bombenkalorimeter &amp; 5 Hess-Fallen)</span>
+                    <h3 id="sec-b3-bombe">💣 1. Direktvergleich: Einfaches Verbrennungskalorimeter vs. Bombenkalorimeter</h3>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <tr><th>Kriterium</th><th>Einfaches Verbrennungskalorimeter</th><th>Bombenkalorimeter</th></tr>
+                            <tr><td><span class="highlight">Thermodynamisches System</span></td><td>Offenes System ($p = \text{konst.}$, Gase strömen durch)</td><td>Geschlossenes, druckfestes Stahlgefäß ($V = \text{konst.}$)</td></tr>
+                            <tr><td><span class="highlight">Sauerstoffversorgung</span></td><td>Luftsauerstoff oder durchströmendes $\text{O}_2\text{(g)}$</td><td>Reiner Sauerstoff unter hohem Überdruck</td></tr>
+                            <tr><td><span class="highlight">Vollständigkeit</span></td><td>Oft unvollständig (Ruß $\text{C(s)}$ und $\text{CO(g)}$ entstehen)</td><td>Zu $100\,\%$ vollständige Verbrennung zu $\text{CO}_2$ &amp; $\text{H}_2\text{O(l)}$</td></tr>
+                            <tr><td><span class="highlight">Zündung &amp; Abgasverlust</span></td><td>Zündung außerhalb; heiße Abgase tragen Wärme weg</td><td>Elektrische Zündung im Gefäß; <strong>null Abgasverlust</strong></td></tr>
+                            <tr><td><span class="highlight">Primäre Messgröße</span></td><td>Ungenauer Näherungswert für $\Delta_c H$</td><td>Misst hochpräzise $\mathbf{\Delta_c U}$ (Umrechnung: $\Delta_c H = \Delta_c U + p\Delta V$)</td></tr>
+                        </table>
+                    </div>
+
+                    <div class="tip-box">
+                        <strong>🔬 AFB-III-Transfer: Umrechnung $\Delta_c U^0 \to \Delta_c H^0$ im Bombenkalorimeter (Knallgasreaktion):</strong><br>
+                        Im starren Bombenkalorimeter ($V = \text{konst.} \Rightarrow W = 0$) misst man für $2\,\text{H}_2\text{(g)} + \text{O}_2\text{(g)} \to 2\,\text{H}_2\text{O(l)}$ zunächst $\Delta_c U^0 = -565\text{ kJ}$.<br>
+                        • Aus $3\text{ mol}$ Gas ($2\text{ mol }\text{H}_2 + 1\text{ mol }\text{O}_2$) entsteht flüssiges Wasser mit vernachlässigbarem Volumen $\implies \Delta n_{\text{Gas}} = -3\text{ mol} \implies \Delta V = -3\text{ mol}\cdot 24{,}7\text{ L/mol} = -74{,}1\text{ L} = -0{,}0741\text{ m}^3$.<br>
+                        • Mit $p = 1000\text{ hPa} = 100\text{ kPa}$ folgt $\mathbf{p\cdot\Delta V = 100\text{ kPa}\cdot(-0{,}0741\text{ m}^3) = -7{,}41\text{ kJ}}$ (die Außenluft verrichtet beim Zusammenziehen Volumenarbeit am System, die bei $p = \text{konst.}$ zusätzlich als Wärme frei wird!).<br>
+                        • Für $2\text{ mol }\text{H}_2$ gilt $\Delta_r H^0 = -565\text{ kJ} + (-7{,}41\text{ kJ}) = -572{,}4\text{ kJ} \implies$ pro Mol $\text{H}_2$: $\mathbf{\Delta_c H_m^0(\text{H}_2) = \frac{-572{,}4\text{ kJ}}{2\text{ mol}} = -286{,}2\text{ kJ/mol}}$!
+                    </div>
+
+                    <h3 id="sec-b3-fallen">⚡ 2. Die 5 gefährlichsten Vorzeichen- und Rechenfallen beim Satz von Hess</h3>
+                    <div class="trap-box" style="margin-bottom:0;">
+                        <p style="margin-bottom:0; font-size:0.88rem;">
+                        <strong>1. „Minus mal Minus“ bei den Edukten vergessen:</strong> Da fast alle $\Delta_f H_m^0 &lt; 0$ sind, immer <strong>eckige Klammern</strong> um die Eduktsumme setzen: $-[1\cdot(-1274\text{ kJ/mol})] = +1274\text{ kJ/mol}$!<br>
+                        <strong>2. Vorzeichenwechsel beim Umdrehen im Enthalpiezyklus vergessen:</strong> Ist die Hinreaktion exotherm ($\text{CO}+\frac{1}{2}\,\text{O}_2\to\text{CO}_2$, $-282\text{ kJ}$), ist die Rückreaktion ($\text{CO}_2\to\text{CO}+\frac{1}{2}\,\text{O}_2$) nach dem 1. Hauptsatz betragsmäßig exakt gleich groß, aber <strong>endotherm ($+282\text{ kJ}$)</strong>!<br>
+                        <strong>3. Stöchiometriefaktoren $\nu_i$ vergessen:</strong> Tabellierte $\Delta_f H_m^0$ gelten für $1\text{ mol}$. Bei $6\,\text{CO}_2 + 7\,\text{H}_2\text{O(l)}$ zwingend $6\cdot(-394) + 7\cdot(-286)$ rechnen; wird eine Teilgleichung verdoppelt, verdoppelt sich auch ihr $\Delta_r H^0$!<br>
+                        <strong>4. Aggregatzustand von Wasser verwechseln ($\text{H}_2\text{O(l)}$ vs. $\text{H}_2\text{O(g)}$):</strong> $\Delta_c H_m^0$ und Brennwert $H_s$ <em>immer</em> mit flüssigem $\text{H}_2\text{O(l)}$ ($-286\text{ kJ/mol}$); Heizwert $H_i$ oder „es entsteht Wasserdampf“ <em>immer</em> mit $\text{H}_2\text{O(g)}$ ($-242\text{ kJ/mol}$ bzw. $+\nu(\text{H}_2\text{O})\cdot 40{,}7\text{ kJ/mol}$)!<br>
+                        <strong>5. Vorzeichen von $\Delta_c H_m^0$ vs. $H_s, H_i$:</strong> $\Delta_c H_m^0$ ist als exotherme Reaktionsenthalpie <strong>immer negativ</strong> (z. B. $-3268\text{ kJ/mol}$), Brennwert $H_s$ und Heizwert $H_i$ sind als Betragsgrößen <strong>immer positiv</strong> (z. B. $H_s = 41{,}90\text{ MJ/kg}$)!</p>
+                    </div>
+
+                    <div class="detail-close-row">
+                        <button type="button" class="detail-close-btn" data-close-topic="3" data-close-layer="fallen">▲ 15-Punkte-Box einklappen</button>
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>Chemische Energetik – Block 3 (Zone D: Bombenkalorimeter &amp; 5 Hess-Fallen)</span>
+                <span>Olga V.</span>
+                <span>Seite 13</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 14: INTERAKTIVE 15-PUNKTE-LERNKARTEN (ACTIVE RECALL)
+             ============================================================ -->
+        <div class="page">
+            <div class="card">
+                <h2 id="sec-lernkarten">🗂️ 4. Interaktive 15-Punkte-Lernkarten (Active Recall)</h2>
+                <p style="font-size:0.92rem; color:var(--text-secondary);">Klicke im Plakat-Modus auf eine Karte, um deine Kausalketten, Formeln und AFB-III-Fallen vor der Klausur aktiv abzufragen:</p>
+
+                <div class="flashcards-container">
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>1. Begründe auf Teilchenebene die Abstufung der Schmelzenthalpien $\Delta_{\text{fus}}H_m$:<br>$\text{Si} &gt; \text{Al} &gt; \text{H}_2\text{O} &gt; \text{H}_2\text{S}$!</span></div>
+                            <div class="flashcard-back"><span>• <span class="highlight">$\text{Si}$ ($50{,}2\text{ kJ/mol}$):</span> 3D-Atomgitter $\to$ echte kovalente Bindungen brechen.<br>• <span class="highlight">$\text{Al}$ ($10{,}7$):</span> Metallgitter ($\text{Al}^{3+} + e^-$-Gas) lockern.<br>• <span class="highlight">$\text{H}_2\text{O}$ ($6{,}0$):</span> Molekülgitter $\to$ kovalente Bindungen bleiben intakt, starke intermolekulare H-Brücken brechen teilweise.<br>• <span class="highlight">$\text{H}_2\text{S}$ ($2{,}4$):</span> Keine H-Brücken (EN von S zu klein), nur Dipol-Dipol/London.</span></div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>2. Wie berechnest du $c_1$ aus Massenanteil $w$ &amp; Dichte $\rho$ – und warum gilt „Erst das Wasser, dann die Säure“?</span></div>
+                            <div class="flashcard-back"><span>• Formel: <span class="highlight">$c_1 = \dfrac{w \cdot \rho}{M}$</span> mit $\rho$ in $\text{g/L}$ ($\cdot 1000$)! ($96\,\%$ige $\text{H}_2\text{SO}_4 \approx 18{,}02\text{ mol/L}$).<br>• <span class="highlight">Teilchenebene:</span> Protolyse + Hydrathüllen ($\Delta_{\text{hyd}}H \ll 0$) setzen schlagartig Wärme frei.<br>• <span class="highlight">Physik:</span> Wasser hat hohes $c_{\text{W}}=4{,}18\text{ J/(g}\cdot\text{K)}$; tropft Wasser ($\rho=1{,}00$) auf dichtere Säure ($\rho=1{,}84$), schwimmt es oben und verspritzt durch Siedeverzug!</span></div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>3. Warum kühlt sich Wasser beim Lösen von $\text{NH}_4\text{Cl}$ ab, erwärmt sich aber bei wasserfreiem $\text{CaCl}_2$ / $\text{NaOH}$?</span></div>
+                            <div class="flashcard-back"><span>Bilanz: <span class="highlight">$\Delta_{\text{sol}}H_m = \Delta_{\text{L}}H_m\,(&gt;0) + \Delta_{\text{hyd}}H_m\,(&lt;0)$</span>.<br>• <span class="highlight">$\text{NH}_4\text{Cl}$ (endotherm):</span> Gitteraufbruch kostet mehr Energie als Ion-Dipol-Hydrathüllen liefern ($|\Delta_{\text{L}}H_m| &gt; |\Delta_{\text{hyd}}H_m| \Rightarrow \Delta_{\text{sol}}H_m &gt; 0$).<br>• <span class="highlight">$\text{CaCl}_2 / \text{NaOH}$ (exotherm):</span> Hohe Ladungsdichte ($\text{Ca}^{2+}, \text{OH}^-$) $\Rightarrow |\Delta_{\text{hyd}}H_m| &gt; |\Delta_{\text{L}}H_m| \Rightarrow \Delta_{\text{sol}}H_m &lt; 0$.</span></div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>4. 1. Hauptsatz ($\Delta_r U = Q + W$): Warum liefert $\text{Zn} + 2\,\text{HCl}$ im offenen Kolben weniger Wärme ($-154{,}0$) als im geschlossenen ($-156{,}5\text{ kJ/mol}$)?</span></div>
+                            <div class="flashcard-back"><span>• <span class="highlight">Geschlossen ($V=\text{konst.}$):</span> $\Delta V = 0 \Rightarrow W = 0 \Rightarrow Q_{r,V} = \Delta_r U = -156{,}5\text{ kJ/mol}$.<br>• <span class="highlight">Offen ($p=\text{konst.}$):</span> Entstehendes $\text{H}_2\text{(g)}$ drückt Raumluft weg ($\Delta V &gt; 0$) und verbraucht $2{,}5\text{ kJ/mol}$ für Volumenarbeit ($W = -p\Delta V &lt; 0$) $\Rightarrow \Delta_r H = Q_{r,p} = -154{,}0\text{ kJ/mol}$.</span></div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>5. Wie lautet das 100 % punktesichere 3-Stufen-Vorzeichen-Schema in der Kalorimetrie?</span></div>
+                            <div class="flashcard-back"><span>1. <span class="highlight">$\Delta T = \vartheta_{\text{nach}} - \vartheta_{\text{vor}}$</span> mit Vorzeichen.<br>2. <span class="highlight">$Q_{\text{Lösung/K}} = (m_{\text{Lsg}}c_{\text{W}} + C_{\text{K}})\cdot\Delta T$</span> und explizit <span class="highlight">$Q_{\text{Reaktion}} = -Q_{\text{Lösung/K}}$</span>.<br>3. $\Delta_r H_m = \dfrac{-Q_{\text{Lösung/K}}}{n_{\text{Unterschuss}}}$ + Kontrollsatz: $\Delta T &gt; 0 \Rightarrow$ exotherm ($\Delta_r H_m &lt; 0$); $\Delta T &lt; 0 \Rightarrow$ endotherm ($\Delta_r H_m &gt; 0$)!</span></div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>6. AFB-III-Fehleranalyse: Wann wird der berechnete Betrag $|\Delta_r H_m|$ kleiner – und wann ausnahmsweise GRÖSSER als der Literaturwert?</span></div>
+                            <div class="flashcard-back"><span>• <span class="highlight">Kleiner als Literaturwert:</span> Wärmeverlust an Umgebung, $C_{\text{K}}=0$ vernachlässigt, unvollständige Reaktion / Ruß ($n_{\text{real}} &lt; n_{\text{Einwaage}}$), nasses Eis beim Schmelzversuch.<br>• <span class="highlight">GRÖSSER als Literaturwert:</span> Rechnen mit $c_{\text{W}}=4{,}184\text{ J/(g}\cdot\text{K)}$ statt der real kleineren Wärmekapazität $c_{\text{Salzlösung}}$ (überschätzt Zähler $Q$)!</span></div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>7. Heizwert $H_i$ vs. Brennwert $H_s$: Warum gilt $H_s &gt; H_i$ bei $\text{CH}_4$, aber $H_s = H_i = 32{,}7\text{ MJ/kg}$ bei Graphit $\text{C(s)}$?</span></div>
+                            <div class="flashcard-back"><span>• Bei <span class="highlight">$H_s$</span> kondensiert $\text{H}_2\text{O(g)}\to\text{H}_2\text{O(l)}$ unter Ausbildung von H-Brücken und liefert zusätzlich $-40{,}7\text{ kJ/mol}$ ($100\,^\circ\text{C}$) bzw. $-44\text{ kJ/mol}$ ($25\,^\circ\text{C}$).<br>• <span class="highlight">Graphit $\text{C(s)}$</span> enthält keine H-Atome $\Rightarrow$ bei $\text{C}+\text{O}_2\to\text{CO}_2$ entsteht kein Wasser ($\nu(\text{H}_2\text{O})=0$) $\Rightarrow$ keine Kondensationswärme $\Rightarrow H_s = H_i$!</span></div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>8. Wann ist $\Delta_f H_m^0 = 0\text{ kJ/mol}$ – und warum ist $\Delta_f H_m^0 \neq 0$ bei Diamant, Ozon $\text{O}_3\text{(g)}$ oder $\text{Cl(g)}$?</span></div>
+                            <div class="flashcard-back"><span>• <span class="highlight">$= 0$:</span> Elemente in ihrer bei $25\,^\circ\text{C}, 1000\text{ hPa}$ stabilsten Modifikation ($\text{H}_2\text{(g)}, \text{O}_2\text{(g)}, \text{Br}_2\text{(l)}, \text{C(Graphit)}$, Metalle) + Konvention $\text{H}^+\text{(aq)}=0$.<br>• <span class="highlight">$\neq 0$:</span> Metastabile Allotrope ($\text{Diamant } +2$, $\text{O}_3\text{(g) } +143\text{ kJ/mol}$) oder falscher Zustand / Einzelatome ($\text{Na(g) } +107$, $\text{Cl(g) } +121\text{ kJ/mol}$)!</span></div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>9. Bombenkalorimeter &amp; Satz von Hess: Was misst das Bombenkalorimeter primär und warum ist $|\Delta_c H^0|$ bei Knallgas größer als $|\Delta_c U^0|$?</span></div>
+                            <div class="flashcard-back"><span>• Starres Gefäß ($V=\text{konst.}, W=0$) misst primär <span class="highlight">$\Delta_c U^0$</span>.<br>• Bei $2\,\text{H}_2\text{(g)}+\text{O}_2\text{(g)}\to 2\,\text{H}_2\text{O(l)}$ schrumpft die Gasstoffmenge um $\Delta n_{\text{Gas}} = -3\text{ mol}$ ($\Delta V = -0{,}0741\text{ m}^3$). Bei $p=\text{konst.}$ verrichtet die Außenluft Arbeit am System ($p\Delta V = -7{,}41\text{ kJ}$) $\Rightarrow \Delta_r H^0 = -565 - 7{,}4 = -572{,}4\text{ kJ}$ ($-286{,}2\text{ kJ/mol }\text{H}_2$)!</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>Chemische Energetik – Interaktive 15-Punkte-Lernkarten</span>
+                <span>Olga V.</span>
+                <span>Seite 14</span>
             </div>
         </div>
 
     </div>
 
     <script>
-        const body = document.body;
-        const btnPlakat = document.getElementById('btn-plakat');
-        const btnDruck = document.getElementById('btn-druck');
-        const btnPrint = document.getElementById('btn-print');
-        const btnInhalt = document.getElementById('btn-inhalt');
-        const dropdown = document.getElementById('toc-dropdown');
-        const flashcards = document.querySelectorAll('.flashcard');
+        (function () {
+            'use strict';
 
-        btnPlakat.addEventListener('click', () => { body.classList.remove('print-mode'); btnPlakat.classList.add('active'); btnDruck.classList.remove('active'); });
-        btnDruck.addEventListener('click', () => { body.classList.add('print-mode'); btnDruck.classList.add('active'); btnPlakat.classList.remove('active'); });
-        btnPrint.addEventListener('click', () => { window.print(); });
+            const body = document.body;
+            const btnPlakat = document.getElementById('btn-plakat');
+            const btnDruck = document.getElementById('btn-druck');
+            const btnPrint = document.getElementById('btn-print');
+            const btnInhalt = document.getElementById('btn-inhalt');
+            const dropdown = document.getElementById('toc-dropdown');
+            const flashcards = document.querySelectorAll('.flashcard');
 
-        btnInhalt.addEventListener('click', (e) => { e.stopPropagation(); dropdown.parentElement.classList.toggle('show'); });
-        document.addEventListener('click', (e) => { if (!dropdown.contains(e.target) && e.target !== btnInhalt) dropdown.parentElement.classList.remove('show'); });
+            function retypesetMath() {
+                if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+                    window.MathJax.typesetPromise().catch(function () {});
+                }
+            }
 
-        const btnFullscreen = document.getElementById('btn-fullscreen');
-        if(btnFullscreen) {
-            btnFullscreen.addEventListener('click', () => {
-                if (!document.fullscreenElement) {
-                    document.documentElement.requestFullscreen().catch(err => console.warn(err));
-                    btnFullscreen.textContent = 'Vollbild beenden';
-                } else {
-                    if (document.exitFullscreen) document.exitFullscreen();
-                    btnFullscreen.textContent = 'Vollbild';
+            function getLayerElements(topic, layer) {
+                return Array.from(document.querySelectorAll(
+                    '.collapsible-inline[data-topic="' + topic + '"][data-layer="' + layer + '"], ' +
+                    '.detail-section[data-topic="' + topic + '"][data-layer="' + layer + '"]'
+                ));
+            }
+
+            /* Synchronisiert .detail-page.is-closed und .drawer-btn.open pro Block */
+            function syncUiState() {
+                document.querySelectorAll('.detail-page').forEach(function (pageEl) {
+                    const anyOpen = Array.from(pageEl.querySelectorAll('.detail-section')).some(function (sec) {
+                        return sec.classList.contains('is-open');
+                    });
+                    pageEl.classList.toggle('is-closed', !anyOpen);
+                });
+
+                document.querySelectorAll('.drawer-btn[data-toggle-topic][data-toggle-layer]').forEach(function (btn) {
+                    const topic = btn.getAttribute('data-toggle-topic');
+                    const layer = btn.getAttribute('data-toggle-layer');
+                    const targets = getLayerElements(topic, layer);
+                    const isOpen = targets.length > 0 && targets.some(function (el) { return el.classList.contains('is-open'); });
+                    btn.classList.toggle('open', isOpen);
+                    const icon = btn.querySelector('.state-icon');
+                    if (icon) icon.textContent = isOpen ? '✓' : '＋';
+                });
+            }
+
+            function setTopicLayer(topic, layer, open) {
+                const els = getLayerElements(topic, layer);
+                if (!els.length) return;
+                els.forEach(function (el) { el.classList.toggle('is-open', open); });
+                syncUiState();
+                if (open) retypesetMath();
+            }
+
+            /* Einzelne Block-Buttons (Auf-/Zuklappen) */
+            document.querySelectorAll('.drawer-btn[data-toggle-topic][data-toggle-layer]').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    const topic = btn.getAttribute('data-toggle-topic');
+                    const layer = btn.getAttribute('data-toggle-layer');
+                    const els = getLayerElements(topic, layer);
+                    if (!els.length) return;
+                    const willOpen = !els[0].classList.contains('is-open');
+                    setTopicLayer(topic, layer, willOpen);
+                    if (willOpen && els[0].classList.contains('detail-section')) {
+                        setTimeout(function () {
+                            const y = els[0].getBoundingClientRect().top + window.scrollY - 82;
+                            window.scrollTo({ top: y, behavior: 'smooth' });
+                        }, 40);
+                    }
+                });
+            });
+
+            /* Einklapp-Buttons am Ende jedes Detail-Abschnitts */
+            document.querySelectorAll('.detail-close-btn[data-close-topic][data-close-layer]').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    const topic = btn.getAttribute('data-close-topic');
+                    const layer = btn.getAttribute('data-close-layer');
+                    setTopicLayer(topic, layer, false);
+                    const coreCard = document.getElementById('block-' + topic + '-core');
+                    if (coreCard) {
+                        const y = coreCard.getBoundingClientRect().top + window.scrollY - 82;
+                        window.scrollTo({ top: y, behavior: 'smooth' });
+                    }
+                });
+            });
+
+            /* Modus-Wechsel Plakat <-> Druck (A4) */
+            btnPlakat.addEventListener('click', function () {
+                body.classList.remove('print-mode');
+                btnPlakat.classList.add('active');
+                btnDruck.classList.remove('active');
+                retypesetMath();
+            });
+            btnDruck.addEventListener('click', function () {
+                body.classList.add('print-mode');
+                btnDruck.classList.add('active');
+                btnPlakat.classList.remove('active');
+                retypesetMath();
+            });
+            btnPrint.addEventListener('click', function () { window.print(); });
+
+            /* Inhaltsverzeichnis-Dropdown */
+            btnInhalt.addEventListener('click', function (e) {
+                e.stopPropagation();
+                dropdown.parentElement.classList.toggle('show');
+            });
+            document.addEventListener('click', function (e) {
+                if (!dropdown.contains(e.target) && e.target !== btnInhalt) {
+                    dropdown.parentElement.classList.remove('show');
                 }
             });
-        }
 
-        const headings = document.querySelectorAll('h1, h2, h3');
-        headings.forEach(heading => {
-            if (!heading.id) return;
-            const item = document.createElement('a'); item.className = 'dropdown-item';
-            if (heading.tagName === 'H2') item.style.paddingLeft = '16px';
-            else if (heading.tagName === 'H3') item.style.paddingLeft = '30px';
-            else item.style.paddingLeft = '10px';
+            /* Vollbild */
+            const btnFullscreen = document.getElementById('btn-fullscreen');
+            if (btnFullscreen) {
+                btnFullscreen.addEventListener('click', function () {
+                    if (!document.fullscreenElement) {
+                        document.documentElement.requestFullscreen().catch(function (err) { console.warn(err); });
+                        btnFullscreen.textContent = 'Vollbild beenden';
+                    } else {
+                        if (document.exitFullscreen) document.exitFullscreen();
+                        btnFullscreen.textContent = 'Vollbild';
+                    }
+                });
+            }
 
-            let textContent = heading.cloneNode(true);
-            const smalls = textContent.querySelectorAll('small'); smalls.forEach(s => s.remove());
-            item.textContent = textContent.textContent.trim();
+            /* Auto-TOC (öffnet bei Klick auf eingeklappte Unterabschnitte diese automatisch!) */
+            document.querySelectorAll('h1[id], h2[id], h3[id]').forEach(function (heading) {
+                const item = document.createElement('a');
+                item.className = 'dropdown-item';
+                if (heading.tagName === 'H2') item.style.paddingLeft = '16px';
+                else if (heading.tagName === 'H3') item.style.paddingLeft = '30px';
+                else item.style.paddingLeft = '10px';
 
-            item.addEventListener('click', (e) => {
-                e.preventDefault(); dropdown.parentElement.classList.remove('show');
-                const topPosition = heading.getBoundingClientRect().top + window.scrollY - 80;
-                window.scrollTo({ top: topPosition, behavior: 'smooth' });
+                const clone = heading.cloneNode(true);
+                clone.querySelectorAll('small').forEach(function (s) { s.remove(); });
+                item.textContent = clone.textContent.trim();
+
+                item.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    dropdown.parentElement.classList.remove('show');
+                    const parentDetail = heading.closest('.detail-section');
+                    if (parentDetail && !parentDetail.classList.contains('is-open')) {
+                        const t = parentDetail.getAttribute('data-topic');
+                        const l = parentDetail.getAttribute('data-layer');
+                        setTopicLayer(t, l, true);
+                    }
+                    setTimeout(function () {
+                        const topPosition = heading.getBoundingClientRect().top + window.scrollY - 82;
+                        window.scrollTo({ top: topPosition, behavior: 'smooth' });
+                    }, 30);
+                });
+                dropdown.appendChild(item);
             });
-            dropdown.appendChild(item);
-        });
 
-        flashcards.forEach(card => {
-            card.addEventListener('click', () => {
-                if(!body.classList.contains('print-mode')) card.classList.toggle('flipped');
+            /* Lernkarten umdrehen */
+            flashcards.forEach(function (card) {
+                card.addEventListener('click', function () {
+                    if (!body.classList.contains('print-mode')) {
+                        card.classList.toggle('flipped');
+                    }
+                });
             });
-        });
+
+            syncUiState();
+        })();
     </script>
     <script src="../pdf-export.js"></script>
 </body>
