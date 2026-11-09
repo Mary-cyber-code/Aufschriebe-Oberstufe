@@ -97,6 +97,12 @@ const subjectData = {
           { title: "Die politische Urteilsbildung", link: "gk/politische-urteilsbildung.html" },
           { title: "Wirtschaft (Grundlagen der Ökonomie)", link: "gk/wirtschaft-grundlagen.html" }
         ]
+      },
+      {
+        name: "J1",
+        topics: [
+          { title: "Gesellschaft, Gerechtigkeit, Sozialstaat & Migration", link: "gk/gesellschaft-und-sozialstaat.html" }
+        ]
       }
     ]
   },

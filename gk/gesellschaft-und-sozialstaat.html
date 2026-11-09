@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GK LK (J1): Gesellschaft, Gerechtigkeit, Sozialstaat &amp; Migration</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --paper-white: #F8F6F1;
+            --paper-cream: #FDFCF8;
+            --text-primary: #2D3A2E;
+            --text-secondary: #5A6B5C;
+            --gold: #C9A96E;
+            --gold-soft: rgba(201, 169, 110, 0.14);
+            --forest: #3A5A3F;
+            --forest-soft: rgba(58, 90, 63, 0.07);
+            --crimson: #9E3B2E;
+            --crimson-soft: rgba(158, 59, 46, 0.06);
+            --nav-bg: rgba(248, 246, 241, 0.96);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--paper-white);
+            color: var(--text-primary);
+            font-family: 'Raleway', sans-serif;
+            line-height: 1.56;
+            padding-top: 72px;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--forest); margin-bottom: 0.45rem; }
+        h1 { font-size: 1.95rem; text-align: center; margin-bottom: 0.95rem; border-bottom: 2px solid var(--gold); padding-bottom: 0.7rem; }
+        h2 { font-size: 1.42rem; margin-top: 0.25rem; border-bottom: 1.5px solid rgba(201, 169, 110, 0.45); padding-bottom: 0.26rem; margin-bottom: 0.7rem; }
+        h3 { font-size: 1.08rem; margin-top: 0.65rem; margin-bottom: 0.38rem; color: var(--forest); }
+
+        p { margin-bottom: 0.5rem; }
+        ul, ol { margin-bottom: 0.45rem; padding-left: 1.35rem; }
+        li { margin-bottom: 0.28rem; }
+        li:last-child { margin-bottom: 0; }
+
+        .highlight { color: var(--forest); font-weight: 600; }
+        .crimson-text { color: var(--crimson); font-weight: 600; }
+        .flashcard-back .highlight { color: var(--gold); }
+
+        sub, sup { line-height: 0; vertical-align: baseline; font-size: 0.8em; }
+        sub { position: relative; top: 0.3em; }
+        sup { position: relative; top: -0.3em; }
+
+        /* Navigation */
+        nav {
+            position: fixed; top: 0; left: 0; width: 100%; background-color: var(--nav-bg); backdrop-filter: blur(10px);
+            z-index: 1000; display: flex; justify-content: center; align-items: center; padding: 12px 18px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05); border-bottom: 1px solid var(--gold);
+        }
+        .nav-group { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: center; }
+        .nav-btn {
+            background: transparent; border: 1px solid var(--forest); color: var(--forest); padding: 7px 14px;
+            font-family: 'Raleway', sans-serif; font-weight: 600; font-size: 0.88rem; cursor: pointer; border-radius: 4px;
+            transition: all 0.25s ease; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;
+        }
+        .nav-btn:hover, .nav-btn.active { background: var(--forest); color: var(--paper-white); }
+        .nav-btn.gold { border-color: var(--gold); color: var(--text-primary); }
+        .nav-btn.gold:hover { background: var(--gold); color: #fff; }
+
+        /* Dropdown */
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content {
+            display: none; position: absolute; background-color: var(--paper-cream); min-width: 330px;
+            box-shadow: 0px 8px 18px rgba(0,0,0,0.12); border: 1px solid var(--gold); border-radius: 6px;
+            z-index: 10; top: 100%; left: 0; margin-top: 5px; max-height: 76vh; overflow-y: auto;
+        }
+        .dropdown.show .dropdown-content { display: block; }
+        .dropdown-item {
+            color: var(--text-primary); padding: 8px 14px; text-decoration: none; display: block; cursor: pointer;
+            font-family: 'Raleway', sans-serif; font-size: 0.86rem; border-bottom: 1px solid rgba(201, 169, 110, 0.14); transition: background 0.2s;
+        }
+        .dropdown-item:hover { background-color: rgba(201, 169, 110, 0.12); color: var(--forest); }
+        .dropdown-item:last-child { border-bottom: none; }
+
+        /* Container & Plakat-Modus */
+        .content-wrapper { margin: 0 auto; transition: all 0.3s ease; }
+        body:not(.print-mode) .content-wrapper { max-width: 1320px; padding: 18px 20px 55px; display: flex; flex-direction: column; gap: 20px; }
+        body:not(.print-mode) .page { display: contents; }
+        body:not(.print-mode) .page-footer { display: none !important; }
+        body:not(.print-mode) .card {
+            background: var(--paper-cream); border: 1px solid var(--gold); border-radius: 10px; padding: 24px 28px;
+            box-shadow: 0 4px 16px rgba(45, 58, 46, 0.04); width: 100%;
+        }
+
+        /* Block-Banner */
+        .block-banner {
+            background: linear-gradient(135deg, var(--forest) 0%, #2C4630 100%);
+            color: var(--paper-white); border-radius: 8px; padding: 12px 18px; margin-bottom: 14px;
+            display: flex; align-items: center; justify-content: space-between; gap: 10px; border-left: 5px solid var(--gold);
+        }
+        .block-banner h2 {
+            color: var(--paper-white); border: none; margin: 0; padding: 0; font-size: 1.34rem;
+        }
+        .block-tag {
+            font-family: 'Raleway', sans-serif; font-size: 0.76rem; font-weight: 700; letter-spacing: 0.8px;
+            text-transform: uppercase; background: rgba(201, 169, 110, 0.22); color: #F5E6C8;
+            border: 1px solid rgba(201, 169, 110, 0.55); border-radius: 999px; padding: 3px 11px; white-space: nowrap;
+        }
+
+        /* Grid-Systeme für Übersichtlichkeit */
+        .cards-grid {
+            display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0.45rem 0 0.75rem;
+        }
+        .cards-grid.three-col {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        /* Baustein-Karten */
+        .merk-card {
+            background: #fff; border: 1px solid rgba(201, 169, 110, 0.45); border-top: 3px solid var(--forest);
+            border-radius: 8px; padding: 12px 15px; margin: 0.45rem 0 0.65rem;
+        }
+        .cards-grid .merk-card { margin: 0; }
+        .merk-card.gold-top { border-top-color: var(--gold); }
+        .merk-card.crimson-top { border-top-color: var(--crimson); }
+        .merk-title {
+            display: block; font-family: 'Playfair Display', serif; font-weight: 700; color: var(--forest);
+            font-size: 1.01rem; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid rgba(58, 90, 63, 0.14);
+        }
+        .merk-card.crimson-top .merk-title { color: var(--crimson); }
+
+        /* Grundgesetz-Box */
+        .gg-box {
+            background: #FFFDF8; border: 1.5px solid var(--gold); border-left: 5px solid var(--gold);
+            border-radius: 8px; padding: 12px 16px; margin: 0.45rem 0 0.75rem;
+        }
+        .gg-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px;
+        }
+        .gg-item {
+            background: #fff; border: 1px solid rgba(201, 169, 110, 0.38); border-radius: 6px; padding: 9px 12px; font-size: 0.91rem;
+        }
+        .gg-badge {
+            display: inline-block; background: var(--forest); color: #fff; font-weight: 700; font-size: 0.76rem;
+            padding: 2px 8px; border-radius: 4px; margin-right: 6px; letter-spacing: 0.3px;
+        }
+
+        /* Zahlen- & Daten-Kacheln */
+        .data-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px; margin: 0.45rem 0 0.75rem;
+        }
+        .data-card {
+            background: #fff; border: 1px solid rgba(201, 169, 110, 0.45); border-left: 4px solid var(--forest);
+            border-radius: 7px; padding: 10px 13px; font-size: 0.9rem;
+        }
+        .data-kpi {
+            display: block; font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.05rem;
+            color: var(--forest); margin-bottom: 3px;
+        }
+
+        /* Spannungsverhältnisse (Zielkonflikte) */
+        .conflict-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(265px, 1fr)); gap: 10px; margin: 0.45rem 0 0.75rem;
+        }
+        .conflict-card {
+            background: #FFFDF9; border: 1px solid rgba(201, 169, 110, 0.5); border-left: 3.5px solid #B5853B;
+            border-radius: 7px; padding: 9px 13px; font-size: 0.9rem;
+        }
+        .conflict-vs {
+            display: block; font-weight: 700; color: #7C5821; font-size: 0.91rem; margin-bottom: 3px;
+        }
+
+        /* Pro / Contra Gegenüberstellung */
+        .pro-contra-grid {
+            display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0.45rem 0 0.75rem;
+        }
+        .pro-box {
+            background: rgba(58, 90, 63, 0.05); border: 1px solid rgba(58, 90, 63, 0.3); border-top: 3px solid var(--forest);
+            border-radius: 8px; padding: 11px 15px;
+        }
+        .contra-box {
+            background: var(--crimson-soft); border: 1px solid rgba(158, 59, 46, 0.28); border-top: 3px solid var(--crimson);
+            border-radius: 8px; padding: 11px 15px;
+        }
+        .pc-title {
+            display: block; font-family: 'Playfair Display', serif; font-weight: 700; font-size: 0.99rem;
+            margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid rgba(0,0,0,0.08);
+        }
+        .pro-box .pc-title { color: var(--forest); }
+        .contra-box .pc-title { color: var(--crimson); }
+
+        /* Rezept- & ZPG-Boxen */
+        .recipe-box {
+            background: var(--forest-soft); border: 1px solid rgba(58, 90, 63, 0.25); border-left: 4px solid var(--forest);
+            border-radius: 8px; padding: 12px 16px; margin: 0.5rem 0 0.7rem;
+        }
+        .recipe-title {
+            display: block; font-family: 'Playfair Display', serif; font-weight: 700; color: var(--forest);
+            font-size: 1.02rem; margin-bottom: 6px;
+        }
+        .joker-box {
+            background: #FFFDF8; border: 1px solid var(--gold); border-left: 4px solid var(--crimson);
+            border-radius: 8px; padding: 11px 15px; margin: 0.5rem 0 0.65rem;
+        }
+        .joker-title {
+            display: block; font-family: 'Playfair Display', serif; font-weight: 700; color: var(--crimson);
+            font-size: 1rem; margin-bottom: 5px;
+        }
+        .template-quote {
+            display: block; background: #fff; border: 1px dashed var(--gold); border-left: 3px solid var(--forest);
+            border-radius: 5px; padding: 6px 10px; margin-top: 4px; font-style: italic; color: var(--text-primary); font-size: 0.89rem;
+        }
+
+        /* Tabellen */
+        .table-wrapper { overflow-x: auto; margin: 0.5rem 0 0.75rem; border-radius: 6px; background: #fff; border: 1px solid rgba(201, 169, 110, 0.42); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.89rem; }
+        th, td { padding: 8px 11px; text-align: left; border-bottom: 1px solid rgba(45, 58, 46, 0.1); vertical-align: top; }
+        th { background-color: rgba(58, 90, 63, 0.08); color: var(--forest); font-family: 'Playfair Display', serif; font-weight: 700; }
+        tr:last-child td { border-bottom: none; }
+
+        /* Kriterien-Spickzettel Grid */
+        .criteria-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(265px, 1fr)); gap: 8px; margin: 0.45rem 0 0.75rem;
+        }
+        .crit-item {
+            background: #fff; border: 1px solid rgba(201, 169, 110, 0.4); border-radius: 6px; padding: 7px 11px; font-size: 0.87rem;
+        }
+        .crit-num {
+            display: inline-block; min-width: 22px; text-align: center; background: var(--forest-soft); color: var(--forest);
+            font-weight: 700; font-size: 0.76rem; border-radius: 4px; padding: 1px 5px; margin-right: 5px;
+        }
+
+        /* Flashcards */
+        .flashcards-container { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 12px; margin-bottom: 0.6rem; }
+        .flashcard { perspective: 1000px; width: 300px; height: 245px; cursor: pointer; flex: 1 1 300px; }
+        .flashcard-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; }
+        .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+        .flashcard-front, .flashcard-back {
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 8px; padding: 16px 18px;
+            display: flex; align-items: flex-start; justify-content: center; border: 1px solid var(--gold);
+            background-color: var(--paper-cream); box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(201, 169, 110, 0.6) transparent;
+        }
+        .flashcard-front { color: var(--forest); font-family: 'Playfair Display', serif; font-weight: 600; font-size: 0.98rem; }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--forest); color: var(--paper-white); border-color: var(--forest); font-size: 0.86rem; line-height: 1.46; }
+        .flashcard span, .flashcard p { display: block; width: 100%; margin: auto 0; }
+
+        /* Mobile */
+        @media (max-width: 820px) {
+            .cards-grid, .cards-grid.three-col, .pro-contra-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            #btn-fullscreen { display: none !important; }
+            body { padding-top: 86px; }
+            nav { padding: 8px 10px; }
+            .nav-group { gap: 6px; }
+            .nav-btn { padding: 5px 9px; font-size: 0.78rem; }
+            body:not(.print-mode) .card { padding: 16px 15px; }
+            .block-banner { flex-direction: column; align-items: flex-start; }
+            h1 { font-size: 1.48rem; }
+            h2 { font-size: 1.22rem; }
+        }
+
+        /* ============================================================
+           DRUCK-MODUS (A4) & PDF-EXPORT
+           ============================================================ */
+        body.print-mode { background-color: #E2E2E2; padding-top: 86px; font-size: 0.73rem; line-height: 1.3; }
+        body.print-mode h1 { font-size: 1.32rem; margin-bottom: 0.4rem; padding-bottom: 0.25rem; }
+        body.print-mode h2 { font-size: 1.04rem; margin-bottom: 0.3rem; padding-bottom: 0.14rem; }
+        body.print-mode h3 { font-size: 0.88rem; margin-top: 0.28rem; margin-bottom: 0.15rem; }
+        body.print-mode .block-banner { padding: 6px 12px; margin-bottom: 7px; }
+        body.print-mode .block-banner h2 { font-size: 1.02rem; }
+        body.print-mode .block-tag { font-size: 0.64rem; padding: 2px 8px; }
+        body.print-mode .cards-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; margin: 0.25rem 0 0.4rem; }
+        body.print-mode .cards-grid.three-col { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        body.print-mode .pro-contra-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; margin: 0.25rem 0 0.4rem; }
+        body.print-mode .merk-card, body.print-mode .gg-box, body.print-mode .recipe-box, body.print-mode .joker-box,
+        body.print-mode .pro-box, body.print-mode .contra-box { padding: 6px 9px; margin: 0.22rem 0; }
+        body.print-mode .cards-grid .merk-card { margin: 0; }
+        body.print-mode .merk-title, body.print-mode .pc-title, body.print-mode .recipe-title, body.print-mode .joker-title { font-size: 0.82rem; margin-bottom: 3px; }
+        body.print-mode .gg-grid, body.print-mode .data-grid, body.print-mode .conflict-grid { gap: 5px; margin: 0.22rem 0 0.38rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        body.print-mode .gg-item, body.print-mode .data-card, body.print-mode .conflict-card { padding: 5px 8px; font-size: 0.71rem; }
+        body.print-mode .data-kpi { font-size: 0.8rem; }
+        body.print-mode .criteria-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; }
+        body.print-mode .crit-item { padding: 4px 7px; font-size: 0.69rem; }
+        body.print-mode .template-quote { padding: 3px 7px; font-size: 0.7rem; }
+        body.print-mode table { font-size: 0.7rem; }
+        body.print-mode th, body.print-mode td { padding: 4px 6px; }
+        body.print-mode li { margin-bottom: 0.14rem; }
+
+        body.print-mode .content-wrapper { max-width: none; padding: 0; display: block; }
+        body.print-mode .page {
+            width: 210mm; min-height: 297mm; height: auto; padding: 9mm 11mm; margin: 0 auto 18mm auto; background: #fff;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: visible; break-after: page;
+        }
+        body.print-mode .card { background: transparent; border: none; padding: 0; box-shadow: none; }
+        body.print-mode .flashcards-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3.5mm; }
+        body.print-mode .flashcard { width: auto; height: auto; border: 1px solid var(--text-primary); border-radius: 2px; page-break-inside: avoid; }
+        body.print-mode .flashcard-inner { transform: none !important; display: flex; flex-direction: column; }
+        body.print-mode .flashcard-front, body.print-mode .flashcard-back {
+            position: static; height: auto; border: none; box-shadow: none; background: transparent; color: var(--text-primary); transform: none; padding: 4px 7px;
+        }
+        body.print-mode .flashcard-front { border-bottom: 1px dashed #aaa; font-size: 0.74rem; }
+        body.print-mode .flashcard-back { font-size: 0.68rem; }
+
+        .page-footer {
+            margin-top: auto; border-top: 1px solid var(--gold); padding-top: 6px;
+            display: flex; justify-content: space-between; font-size: 0.73rem; color: var(--text-secondary); font-family: 'Playfair Display', serif;
+        }
+
+        @media print {
+            @page { size: A4; margin: 0; }
+            nav { display: none !important; }
+        }
+
+        @media screen and (min-width: 1250px) {
+            html:not(:has(body.print-mode)) { font-size: 16.5px; }
+            body:not(.print-mode) .card { padding: 26px 32px; border-width: 1.5px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-group">
+            <a href="../index.html" class="nav-btn">← Journal</a>
+            <div class="dropdown">
+                <button type="button" class="nav-btn" id="btn-inhalt">Inhalt ▼</button>
+                <div class="dropdown-content" id="toc-dropdown"></div>
+            </div>
+            <button type="button" class="nav-btn" id="btn-fullscreen">Vollbild</button>
+            <button type="button" class="nav-btn active" id="btn-plakat">Plakat-Modus</button>
+            <button type="button" class="nav-btn" id="btn-druck">Druck-Modus (A4)</button>
+            <button type="button" class="nav-btn gold" id="btn-save-pdf">📄 Als PDF speichern</button>
+            <button type="button" class="nav-btn" id="btn-print">🖨️ Drucken</button>
+        </div>
+    </nav>
+
+    <div class="content-wrapper">
+
+        <!-- ============================================================
+             SEITE 1: BLOCK 1 (TEIL 1) – GERECHTIGKEIT: BEGRIFFE, GG & GRUNDKONZEPTE
+             ============================================================ -->
+        <div class="page">
+            <div class="card">
+                <h1 id="main-title">GK LK (J1): Gesellschaft, Gerechtigkeit, Sozialstaat &amp; Migration</h1>
+
+                <div class="block-banner">
+                    <h2 id="sec-block1">Themenblock 1: Gerechtigkeit &amp; Politische Theorien</h2>
+                    <span class="block-tag">Rawls · Nozick · Habermas · Cremer</span>
+                </div>
+
+                <h2 id="sec-b1-1">1. Fachbegriffe &amp; Definitionen</h2>
+
+                <div class="cards-grid">
+                    <div class="merk-card">
+                        <span class="merk-title">Grundbegriff &amp; Klassische Dimensionen</span>
+                        <ul>
+                            <li><span class="highlight">Gerechtigkeit:</span> Faire, angemessene Verteilung von Gütern, Chancen und Lasten.</li>
+                            <li><span class="highlight">Prinzip nach Aristoteles:</span> Gleiches gleich, Ungleiches entsprechend ungleich behandeln.</li>
+                            <li><span class="highlight">Verteilungsgerechtigkeit (distributiv):</span> Faire Aufteilung von Gütern, Rechten und Lasten.</li>
+                            <li><span class="highlight">Chancengerechtigkeit:</span> Gleiche Startbedingungen unabhängig von Herkunft, Geschlecht oder Status.</li>
+                            <li><span class="highlight">Leistungsgerechtigkeit:</span> Verteilung nach individueller Leistung („Wer mehr leistet, erhält mehr“).</li>
+                            <li><span class="highlight">Bedarfsgerechtigkeit:</span> Unterstützung nach individuellem Bedürfnis (Krankheit, Alter, Notlage).</li>
+                            <li><span class="highlight">Verfahrensgerechtigkeit (prozedural):</span> Faire Prozesse durch klare, für alle gleiche Regeln.</li>
+                            <li><span class="highlight">Tauschgerechtigkeit (kommutativ):</span> Angemessenes Verhältnis von Leistung und Gegenleistung bei Verträgen.</li>
+                            <li><span class="highlight">Generationengerechtigkeit:</span> Heute nicht durch Schulden oder Ressourcenverbrauch auf Kosten Künftiger leben.</li>
+                            <li><span class="highlight">Soziale &amp; egalitäre Gerechtigkeit:</span> Abbau unverdienter Ungleichheiten durch Umverteilung für Teilhabe, Menschenwürde und Ergebnisangleichung.</li>
+                        </ul>
+                    </div>
+
+                    <div class="merk-card gold-top">
+                        <span class="merk-title">Erweiterte Konzepte &amp; Autoren</span>
+                        <ul>
+                            <li><span class="highlight">Befähigungsgerechtigkeit (Cremer):</span> Potenziale durch Bildung entfalten, noch bevor der Staat umverteilt.</li>
+                            <li><span class="highlight">Gleichheit als Bürger (Cremer):</span> Gleiche Behandlung, gleiche Rechte und gleiche Würde für alle Staatsbürger.</li>
+                            <li><span class="highlight">Selbsteigentum (Nozick):</span> Naturrechtliches Volleigentum jedes Menschen an seiner Person und seinen Talenten.</li>
+                            <li><span class="highlight">Zwangloser Zwang (Habermas):</span> Freiwillige Einsicht im Diskurs allein durch die Logik des besseren Arguments.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2 id="sec-b1-2">2. Verfassungsbezug</h2>
+                <div class="gg-box">
+                    <div class="gg-grid">
+                        <div class="gg-item"><span class="gg-badge">Art. 1 GG</span> <span class="highlight">Menschenwürde:</span> Unantastbare Würde und Gleichwertigkeit aller Menschen; sichert mit Art. 20 GG das Existenzminimum.</div>
+                        <div class="gg-item"><span class="gg-badge">Art. 3 GG</span> <span class="highlight">Gleichheit:</span> Gleichheit vor dem Gesetz, Gleichberechtigung der Geschlechter und Diskriminierungsverbot.</div>
+                        <div class="gg-item"><span class="gg-badge">Art. 20 GG</span> <span class="highlight">Sozialstaat:</span> Permanenter Auftrag zum sozialen Ausgleich; durch „sozialstaatliche Offenheit“ politisch flexibel gestaltbar.</div>
+                    </div>
+                </div>
+
+                <h2 id="sec-b1-3">3. Theorie &amp; Kernelemente</h2>
+
+                <div class="cards-grid">
+                    <div class="merk-card">
+                        <span class="merk-title">Equality vs. Equity (Chancengleichheit vs. Chancengerechtigkeit)</span>
+                        <ul>
+                            <li><span class="highlight">Chancengleichheit (Equality):</span> Empirisch; formal gleiche Mindestausstattung für alle („Jeder bekommt gleich viel“), ignoriert aber unfaire Vorbedingungen im Elternhaus.</li>
+                            <li><span class="highlight">Chancengerechtigkeit (Equity):</span> Normativ; gleicht individuelle Hürden gezielt ungleich aus („Kisten-Bild“), um reale Startchancen statt Ergebnisgleichheit zu sichern.</li>
+                        </ul>
+                    </div>
+
+                    <div class="merk-card">
+                        <span class="merk-title">Primär- vs. Sekundärverteilung</span>
+                        <ul>
+                            <li><span class="highlight">Primärverteilung (Startchancen):</span> Chancengleichheit soll Herkunftsfaktoren eliminieren, sodass nur Begabung („Lotterie der Gene“) und Anstrengung zählen.</li>
+                            <li><span class="highlight">Sekundärverteilung (Umverteilung):</span> Korrigiert ungleiche Marktergebnisse nachträglich nach Bedarfs- und egalitärer Gerechtigkeit, da Verteilungsungleichheit sonst neue Chancenungleichheit erzeugt.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>GK LK (J1) – Block 1: Gerechtigkeit &amp; Politische Theorien</span>
+                <span>Seite 1</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 2: BLOCK 1 (TEIL 2) – RAWLS, NOZICK, HABERMAS, DATEN & AFB III
+             ============================================================ -->
+        <div class="page">
+            <div class="card">
+                <div class="cards-grid three-col">
+                    <div class="merk-card">
+                        <span class="merk-title">John Rawls: „Gerechtigkeit als Fairness“ (Egalitärer Liberalismus)</span>
+                        <ul>
+                            <li><span class="highlight">Urzustand &amp; Schleier des Nichtwissens:</span> Einstimmiger Gesellschaftsvertrag Freier und Gleicher, ohne eigene spätere Position, Klasse, Gesundheit oder Intelligenz zu kennen.</li>
+                            <li><span class="highlight">1. Prinzip (Grundfreiheiten):</span> Gleiches Recht auf maximale Grundfreiheiten (Wahl-, Rede-, Eigentumsrecht); hat absoluten Vorrang vor wirtschaftlicher Güterverteilung.</li>
+                            <li><span class="highlight">2. Prinzip (Differenzprinzip &amp; Ämteroffenheit):</span> Soziale und wirtschaftliche Ungleichheiten sind nur legitim, wenn sie den Schwächsten nützen und alle Positionen jedem fair offenstehen.</li>
+                            <li><span class="highlight">Staatsverständnis:</span> Aktiver Sozialstaat; gleicht unverdiente natürliche und soziale Ungleichheiten durch Bildung und Umverteilung aus.</li>
+                        </ul>
+                    </div>
+
+                    <div class="merk-card crimson-top">
+                        <span class="merk-title">Robert Nozick: „Anarchie, Staat, Utopie“ (Radikalliberalismus)</span>
+                        <ul>
+                            <li><span class="highlight">Naturzustand &amp; Anspruchstheorie:</span> Fokus auf Einzelmenschen mit Selbsteigentum; jedes Ausmaß an Ungleichheit ist gerecht, sofern ohne Betrug/Zwang durch freien Tausch entstanden.</li>
+                            <li><span class="highlight">Steuern &amp; Minimalstaat:</span> Einkommensteuern zur Umverteilung gelten als Zwangsarbeit (Teilenteignung); Minimalstaat schützt nur Eigentum sowie vor Gewalt, Diebstahl und Betrug.</li>
+                        </ul>
+                    </div>
+
+                    <div class="merk-card gold-top">
+                        <span class="merk-title">Jürgen Habermas: Diskursethik („Ideale Sprechsituation“)</span>
+                        <ul>
+                            <li><span class="highlight">4 Voraussetzungen:</span> Gleiche Rederechte (Chancengleichheit), Herrschaftsfreiheit (keine Macht/Hierarchien), Wahrhaftigkeit (keine Manipulation) und gemeinsame Wahrheitssuche.</li>
+                            <li><span class="highlight">Regulatives Ideal:</span> In der Realität (Talkshows, Social Media) kaum perfekt erfüllt, aber unverzichtbarer Maßstab für demokratische Debatten.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2 id="sec-b1-4">4. Zahlen, Daten &amp; Beispiele</h2>
+
+                <div class="data-grid">
+                    <div class="data-card">
+                        <span class="data-kpi">Bildungstrichter: ~80 % vs. ~25 %</span>
+                        Studienbeginn bei ca. 80 % (exakt 79 %) der Akademikerkinder gegenüber ca. 25 % (exakt 27 %) der Nicht-Akademikerkinder.
+                    </div>
+                    <div class="data-card">
+                        <span class="data-kpi">Verteilungs- &amp; Chancengerechtigkeit</span>
+                        Spitzensteuersatz und Kindergeld (Verteilung) sowie kostenfreie Kitas und BAföG (Chancen).
+                    </div>
+                    <div class="data-card">
+                        <span class="data-kpi">Leistungs- &amp; Bedarfsgerechtigkeit</span>
+                        Höherer Jahresbonus bei mehr Umsatz (Leistung) sowie staatliche Pflegeunterstützung bei Behinderung (Bedarf).
+                    </div>
+                    <div class="data-card">
+                        <span class="data-kpi">Verfahrens-, Tausch- &amp; Generationengerechtigkeit</span>
+                        Unabhängiges Gerichtsverfahren (Verfahren), fairer Gebrauchtwagenpreis (Tausch), Klimaschutz gegen CO<sub>2</sub>-Ausstoß (Generationen).
+                    </div>
+                    <div class="data-card">
+                        <span class="data-kpi">Soziale Gerechtigkeit &amp; Equity</span>
+                        Gesetzlicher Mindestlohn zur Existenzsicherung sowie 30-Prozent-Frauenquote für Aufsichtsräte.
+                    </div>
+                </div>
+
+                <h2 id="sec-b1-5">5. Kontroversen &amp; Urteilskriterien (AFB III)</h2>
+
+                <h3>Zentrale Spannungsverhältnisse &amp; Zielkonflikte</h3>
+                <div class="conflict-grid">
+                    <div class="conflict-card"><span class="conflict-vs">⚡ Leistungs- vs. Bedarfsgerechtigkeit</span>Marktorientierter Lohnabstand kollidiert mit vorleistungsfreier, solidarischer Existenzsicherung.</div>
+                    <div class="conflict-card"><span class="conflict-vs">⚡ Freiheit vs. Sozialstaat</span>Negative Abwehrfreiheit (Nozick) gegen positive Teilhabefreiheit durch Umverteilung (Rawls).</div>
+                    <div class="conflict-card"><span class="conflict-vs">⚡ Equality vs. Equity</span>Formale Gleichbehandlung gegen kompensatorische Ungleichbehandlung durch Quoten (Art. 3 GG).</div>
+                    <div class="conflict-card"><span class="conflict-vs">⚡ Gießkanne vs. Zielgenauigkeit (Cremer)</span>Pauschale Leistungen für die Mitte statt gezielter Hilfe für Arme.</div>
+                    <div class="conflict-card"><span class="conflict-vs">⚡ Lieferando-Staat vs. Gemeinsinn (Cremer)</span>Konsumhaltung („Gerecht ist, was mir nützt“) untergräbt demokratische Kompromissbereitschaft.</div>
+                </div>
+
+                <h3>Kontroverse: Sozialstaat (Rawls) vs. Minimalstaat (Nozick)</h3>
+                <div class="pro-contra-grid">
+                    <div class="pro-box">
+                        <span class="pc-title">⊕ Pro Sozialstaat &amp; Umverteilung (Rawls / Cremer)</span>
+                        <ul>
+                            <li><span class="highlight">Pro Umverteilung (Rawls):</span> Unverdiente Startnachteile machen freien Markt ohne Ausgleich unfair.</li>
+                            <li><span class="highlight">Pro Befähigung (Cremer):</span> Frühkindliche Bildung schafft Autonomie und senkt langfristig Sozialausgaben.</li>
+                            <li><span class="highlight">Pro Sozialstaat:</span> Staatliche Absicherung schützt Menschenwürde und sichert sozialen Frieden.</li>
+                        </ul>
+                    </div>
+                    <div class="contra-box">
+                        <span class="pc-title">⊖ Contra Umverteilung &amp; Quoten (Nozick)</span>
+                        <ul>
+                            <li><span class="crimson-text">Contra Umverteilung (Nozick):</span> Steuern verletzen Eigentumsrechte und instrumentalisieren Leistungsträger als Zwangsarbeiter.</li>
+                            <li><span class="crimson-text">Contra Gleichmacherei:</span> Ergebnisangleichung zerstört Leistungsanreize und schwächt die gesamte Wirtschaftskraft.</li>
+                            <li><span class="crimson-text">Contra Quoten (Equity):</span> Kompensatorische Quoten benachteiligen im Einzelfall leistungsstärkere Bewerber unfair.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="recipe-box">
+                    <span class="recipe-title">Bewertungsansätze nach ZPG-Kriterien</span>
+                    <ul>
+                        <li><span class="highlight">Gerechtigkeit &amp; Legalität:</span> Abwägung von Leistungs-, Bedarfs-, Chancen- und Befähigungsgerechtigkeit sowie Verfassungsprüfung nach Art. 1, 3 und 20 GG.</li>
+                        <li><span class="highlight">Effektivität &amp; Effizienz:</span> Zielgenaue Unterstützung unterer Schichten vs. teure Verteilung mit der „Gießkanne“.</li>
+                        <li><span class="highlight">Legitimität &amp; Perspektiven:</span> Gesellschaftliche Akzeptanz aus individueller (Steuerlast/Chancen), öffentlicher (Verbände) und systemischer Sicht (Demokratie/Markt).</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>GK LK (J1) – Block 1: Gerechtigkeit &amp; Politische Theorien</span>
+                <span>Seite 2</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 3: BLOCK 2 (TEIL 1) – SOZIALE UNGLEICHHEIT & GESELLSCHAFTSMODELLE
+             ============================================================ -->
+        <div class="page">
+            <div class="card">
+                <div class="block-banner">
+                    <h2 id="sec-block2">Themenblock 2: Soziale Ungleichheit, Gesellschaftsmodelle &amp; Familie</h2>
+                    <span class="block-tag">Hradil · Marx · Dahrendorf · Geißler · SINUS</span>
+                </div>
+
+                <h2 id="sec-b2-1">1. Fachbegriffe &amp; Definitionen</h2>
+
+                <div class="cards-grid">
+                    <div class="merk-card">
+                        <span class="merk-title">Soziale Ungleichheit nach Stefan Hradil</span>
+                        <ul>
+                            <li><span class="highlight">Soziale Ungleichheit (Hradil):</span> Wenn Menschen wegen ihrer „Stellung in sozialen Beziehungsgefügen“ von den „wertvollen Gütern“ einer Gesellschaft „regelmäßig mehr als andere“ erhalten.</li>
+                            <li><span class="highlight">3 Bestandteile nach Hradil:</span> Erstrebenswerte Ressourcen wie Geld, Bildung, Macht („wertvolle Güter“), dauerhaft-systematisch statt zufällig wie ein Lottogewinn („regelmäßig mehr“) und gesellschaftlich durch Positionen wie Beruf oder Geschlecht bedingt („Beziehungsgefüge“).</li>
+                            <li><span class="highlight">Soziale Differenzierung:</span> Bloße Verschiedenartigkeit (z. B. Hobbys, Körpergröße) ohne Vor- oder Nachteile.</li>
+                            <li><span class="highlight">Deskriptiver Charakter:</span> Ungleichheit beschreibt wertfrei (deskriptiv); ob sie gerecht ist, ist eine normative Frage.</li>
+                        </ul>
+                    </div>
+
+                    <div class="merk-card gold-top">
+                        <span class="merk-title">Strukturbegriffe, Milieus &amp; Familie</span>
+                        <ul>
+                            <li><span class="highlight">Verteilungs- vs. Chancenungleichheit:</span> Aktuell ungleiche Güterverteilung (Einkommen/Vermögen) vs. ungleiche Möglichkeiten, diese Güter zu erreichen (z. B. Bildungschancen).</li>
+                            <li><span class="highlight">Vertikale vs. horizontale Ungleichheit:</span> Vertikal ordnet nach „Oben“ und „Unten“ (Einkommen, Bildung, Macht); horizontal beschreibt Vor-/Nachteile quer durch alle Schichten (Geschlecht, Alter, Herkunft, Wohnort).</li>
+                            <li><span class="highlight">Vertikale Segregation:</span> Unterrepräsentation von Frauen in Führungspositionen durch unsichtbare Aufstiegsbarrieren („gläserne Decke“).</li>
+                            <li><span class="highlight">Milieus (SINUS):</span> Gruppen „Gleichgesinnter“ nach sozialer Lage und Werten; unterteilt in Leitmilieus (tonangebende Oberschicht), Zukunftsmilieus (junge Trendsetter) und Mainstream (breite Mitte).</li>
+                            <li><span class="highlight">Familie:</span> Generationenübergreifende Verantwortungs-, Zweck- oder Solidargemeinschaft im Strukturwandel.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2 id="sec-b2-2">2. Verfassungsbezug</h2>
+                <div class="gg-box">
+                    <div class="gg-grid">
+                        <div class="gg-item"><span class="gg-badge">Art. 3 GG</span> Gleichheit, Gleichberechtigung der Geschlechter, Diskriminierungsverbot.</div>
+                        <div class="gg-item"><span class="gg-badge">Art. 6 GG</span> Schutz und Förderung der Familie.</div>
+                        <div class="gg-item"><span class="gg-badge">Art. 14 GG</span> Eigentumsgarantie und Sozialbindung.</div>
+                        <div class="gg-item"><span class="gg-badge">Art. 20 GG</span> Sozialstaatsgebot zum sozialen Ausgleich.</div>
+                    </div>
+                </div>
+
+                <h2 id="sec-b2-3">3. Theorie &amp; Kernelemente</h2>
+
+                <div class="merk-card">
+                    <span class="merk-title">Das 4-Ebenen-Grundmodell nach Hradil</span>
+                    <ul>
+                        <li><span class="highlight">1. Ursachen &amp; 2. Determinanten:</span> Strukturelle Gründe (Arbeitsteilung, Markt, Leistungsprinzip) verknüpfen sich mit sozialen Merkmalen (Beruf, Geschlecht, Alter, Herkunft), die zu Vor-/Nachteilen führen.</li>
+                        <li><span class="highlight">3. Dimensionen:</span> Vier klassische (materieller Wohlstand, Macht, Prestige, Bildung) plus Hradil-Erweiterung um wohlfahrtsstaatliche (Arbeits-/Wohnbedingungen, Gesundheit) und soziale Dimensionen (Netzwerke, Diskriminierung).</li>
+                        <li><span class="highlight">4. Auswirkungen:</span> Konkrete Folgen für Lebenschancen, Gesundheit, Lebenserwartung und politische Teilhabe.</li>
+                    </ul>
+                </div>
+
+                <h3>Gesellschaftsmodelle: Funktion &amp; Vergleich</h3>
+                <p><span class="highlight">Sinn &amp; Grenzen:</span> Schaffen Ordnung durch Vereinfachung, sind aber nur subjektive Interpretationen im Spannungsfeld zwischen Übersichtlichkeit und Reduktion.</p>
+
+                <div class="table-wrapper">
+                    <table>
+                        <tr>
+                            <th>Gesellschaftsmodell</th>
+                            <th>Aufbau &amp; Strukturprinzip</th>
+                            <th>(+) Stärke</th>
+                            <th>(–) Grenze / Kritik</th>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Klassenmodell (Marx)</span></td>
+                            <td>Pyramide nach Besitz und Nichtbesitz (Arbeiterklasse trägt Oberschichten).</td>
+                            <td>(+) zeigt klare Hierarchie</td>
+                            <td>(–) veraltet, da Bildung und Beruf fehlen</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Hausmodell (Dahrendorf)</span></td>
+                            <td>Haus mit Etagen und Zimmern nach Berufshierarchie.</td>
+                            <td>(+) sehr einprägsam</td>
+                            <td>(–) blendet alle nicht-berufsbezogenen Ungleichheiten aus</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Erweitertes Hausmodell (Geißler)</span></td>
+                            <td>Stärker ausdifferenzierte Berufsschichten plus Migranten als eigener „Anbau“.</td>
+                            <td>(+) näher an heutiger Realität</td>
+                            <td>(–) weiterhin rein berufsbezogen</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Sinus-Milieus („Kartoffelgrafik“)</span></td>
+                            <td>10 überlappende Milieus nach sozialer Lage (vertikal: Unter-, Mittel-, Oberschicht) und Grundorientierung (horizontal: Tradition, Modernisierung, Neuorientierung).</td>
+                            <td>(+) sehr realitätsnah durch Mehrdimensionalität</td>
+                            <td>(–) unübersichtlich und abstrakt</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>GK LK (J1) – Block 2: Soziale Ungleichheit, Gesellschaftsmodelle &amp; Familie</span>
+                <span>Seite 3</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 4: BLOCK 2 (TEIL 2) – DATEN, BEISPIELE & KONTROVERSEN (AFB III)
+             ============================================================ -->
+        <div class="page">
+            <div class="card">
+                <h2 id="sec-b2-4">4. Zahlen, Daten &amp; Beispiele</h2>
+
+                <div class="data-grid">
+                    <div class="data-card">
+                        <span class="data-kpi">1. Vermögensverteilung: Top 10 % → ~50 %</span>
+                        Die reichsten 10 % in Deutschland besitzen rund 50 % des gesamten Nettovermögens.
+                    </div>
+                    <div class="data-card">
+                        <span class="data-kpi">2. Trend Familie: Pluralisierung</span>
+                        Langfristig sinkende Heirats- und steigende Scheidungsquoten bei wachsender Formen-Vielfalt neben der Kernfamilie (Alleinerziehende, Patchwork-, Regenbogenfamilien, DINKs).
+                    </div>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="merk-card">
+                        <span class="merk-title">3a. Beispiele: Vertikale Ungleichheit</span>
+                        Großer Einkommensabstand zwischen Managerin und Lagerarbeiter sowie deutlich höhere Abiturquote von Akademikerkindern.
+                    </div>
+                    <div class="merk-card gold-top">
+                        <span class="merk-title">3b. Beispiele: Horizontale Ungleichheit</span>
+                        Gender-Pay-Gap bzw. Karriere-Nachteile für Frauen wegen Familienplanung (Karikatur „Gebrüder Mann &amp; Söhne“) sowie Benachteiligung bei ausländischem Namen oder von Alleinerziehenden (oft Überlagerung mit vertikaler Armut).
+                    </div>
+                </div>
+
+                <h2 id="sec-b2-5">5. Kontroversen &amp; Urteilskriterien (AFB III)</h2>
+
+                <h3>Zentrale Spannungsverhältnisse</h3>
+                <div class="conflict-grid">
+                    <div class="conflict-card"><span class="conflict-vs">⚡ Übersichtlichkeit vs. Realitätsnähe</span>Einfache Modelle (Marx, Dahrendorf) sind unterkomplex, Sinus-Milieus dagegen im Alltag kaum vermittelbar.</div>
+                    <div class="conflict-card"><span class="conflict-vs">⚡ Struktur vs. Individuum</span>Beruhen Ungleichheiten (z. B. weniger Frauen in Führung) auf freien Präferenzen oder strukturellen Barrieren (Kita-Mangel, Ehegattensplitting, Teilzeitfalle)?</div>
+                    <div class="conflict-card"><span class="conflict-vs">⚡ Leistungsprinzip vs. Herkunft</span>Ungleiche Ergebnisse sind nur leistungsgerecht, wenn vorherige Chancenungleichheiten des Elternhauses ausgeglichen wurden.</div>
+                    <div class="conflict-card"><span class="conflict-vs">⚡ Stabilität vs. Abstiegsangst (Cremer)</span>Trotz seit 20 Jahren stabiler Mittelschicht erzeugen Medienmythen Verlustängste und Entsolidarisierung nach unten.</div>
+                </div>
+
+                <h3>Kontroverse: Staatliche Korrektur (Umverteilung &amp; Quoten)</h3>
+                <div class="pro-contra-grid">
+                    <div class="pro-box">
+                        <span class="pc-title">⊕ Pro Staatliche Eingriffe &amp; Ausgleich</span>
+                        <ul>
+                            <li><span class="highlight">Pro Eingriffe:</span> Ohne Kitas, Bildungsförderung und Quoten (z. B. 30 % in Aufsichtsräten) verfestigen sich Chancenungleichheit und Machtstrukturen.</li>
+                            <li><span class="highlight">Pro Sozialer Ausgleich:</span> Hohe Wohlstandskluft und Verdrängung am Wohnungsmarkt gefährden sozialen Frieden und Demokratie.</li>
+                        </ul>
+                    </div>
+                    <div class="contra-box">
+                        <span class="pc-title">⊖ Contra Staatliche Eingriffe &amp; Quoten</span>
+                        <ul>
+                            <li><span class="crimson-text">Contra Eingriffe:</span> Ungleichheiten folgen natürlich aus Begabung („Lotterie der Gene“), Leistungsbereitschaft und freier Lebenswahl.</li>
+                            <li><span class="crimson-text">Contra Quoten:</span> Starre Vorgaben greifen in unternehmerische Freiheit (Art. 12, 14 GG) ein und stellen Gruppenmerkmale über Einzelleistung.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="recipe-box">
+                    <span class="recipe-title">Bewertungsansätze nach ZPG-Kriterien</span>
+                    <ul>
+                        <li><span class="highlight">Gerechtigkeit &amp; Nachhaltigkeit:</span> Prüfung nach Chancen-, Leistungs- und Bedarfsgerechtigkeit sowie dauerhafter Wirkung (z. B. Elterngeld mit Partnermonaten).</li>
+                        <li><span class="highlight">Legitimität &amp; Perspektiven:</span> Akzeptanz von Ungleichheit aus individueller (Karriere/Miete), öffentlicher (Unternehmen/Verbände) und systemischer Sicht (Wirtschaft/Demokratie).</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>GK LK (J1) – Block 2: Soziale Ungleichheit, Gesellschaftsmodelle &amp; Familie</span>
+                <span>Seite 4</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 5: BLOCK 3 (TEIL 1) – SOZIALSTAAT: BEGRIFFE & VERFASSUNGSBEZUG
+             ============================================================ -->
+        <div class="page">
+            <div class="card">
+                <div class="block-banner">
+                    <h2 id="sec-block3">Themenblock 3: Sozialstaat, Wohlfahrtsstaatsmodelle, Grundsicherungsgeld (2026) &amp; BGE</h2>
+                    <span class="block-tag">Esping-Andersen · Reform 07/2026 · BGE</span>
+                </div>
+
+                <h2 id="sec-b3-1">1. Fachbegriffe &amp; Definitionen</h2>
+
+                <div class="cards-grid">
+                    <div class="merk-card">
+                        <span class="merk-title">Auftrag, Finanzierung &amp; Sicherungsprinzipien</span>
+                        <ul>
+                            <li><span class="highlight">Sozialstaatsprinzip &amp; Offenheit:</span> Permanenter Staatsauftrag für soziale Sicherheit und Ausgleich; „soziale Gerechtigkeit“ ist nicht starr definiert, sondern muss politisch ständig neu ausgehandelt werden.</li>
+                            <li><span class="highlight">Sozialleistungen vs. Quote:</span> Absolute Staatsausgaben in Mrd. € vs. relativer Anteil am BIP in Prozent.</li>
+                            <li><span class="highlight">Solidar- vs. Äquivalenzprinzip:</span> Einkommensabhängige Beiträge bei gleichen Leistungen für alle (Krankenkasse) vs. Leistungshöhe nach Beitragsdauer und -höhe (Rente, ALG I).</li>
+                            <li><span class="highlight">Fürsorge- &amp; Subsidiaritätsprinzip:</span> Steuerfinanzierte Nothilfe nach Bedürftigkeitsprüfung, die erst greift, wenn eigene Mittel und Familie nicht ausreichen (Grundsicherung).</li>
+                            <li><span class="highlight">Versorgungsprinzip:</span> Steuerfinanzierte Leistung ohne eigene Beiträge und ohne Bedürftigkeitsprüfung für besondere Dienste oder Opfer (Beamtenpension, Kindergeld).</li>
+                        </ul>
+                    </div>
+
+                    <div class="merk-card gold-top">
+                        <span class="merk-title">Freiheitsbegriffe, Grundsicherung &amp; BGE</span>
+                        <ul>
+                            <li><span class="highlight">Negative vs. positive Freiheit (Berlin/Jellinek):</span> „Freiheit von“ staatlichen Eingriffen (Abwehrrecht) vs. „Freiheit zu“ realer Selbstbestimmung durch staatliche Teilhabe und Bildung.</li>
+                            <li><span class="highlight">Verhältnismäßigkeit:</span> Jeder Grundrechtseingriff braucht einen legitimen Zweck und muss geeignet, erforderlich (mildestes Mittel) sowie angemessen sein.</li>
+                            <li><span class="highlight">Existenzminimum &amp; Regelbedarf:</span> Sichert physisches Überleben und soziokulturelle Teilhabe; der monatliche Pauschalbetrag heißt Regelbedarf (Teuerung gemessen am Preisindex RPI).</li>
+                            <li><span class="highlight">Schonvermögen &amp; Lohnabstandsgebot:</span> Geschütztes Erspartes vor Hilfebezug (Sperrfrist = Vermögenskarenz); Erwerbstätige müssen spürbar mehr Geld haben als Leistungsbezieher.</li>
+                            <li><span class="highlight">Zielgruppenmissbrauch (Cremer):</span> Arme dienen als Vorwand für pauschale Maßnahmen (z. B. höheres Rentenniveau), die faktisch vor allem Bessergestellten nützen.</li>
+                            <li><span class="highlight">BGE &amp; Flat Tax:</span> Individuelles Einkommen für alle ohne Bedürftigkeitsprüfung und ohne Arbeitszwang; zur Finanzierung oft kombiniert mit einem einheitlichen Steuersatz für alle (Flat Tax).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2 id="sec-b3-2">2. Verfassungsbezug</h2>
+                <div class="gg-box">
+                    <div class="gg-grid">
+                        <div class="gg-item"><span class="gg-badge">Art. 1 GG</span> <span class="highlight">Menschenwürde:</span> Absolute, nicht abwägbare Grenze staatlichen Zwangs; garantiert zusammen mit Art. 20 GG das menschenwürdige Existenzminimum.</div>
+                        <div class="gg-item"><span class="gg-badge">Art. 3 GG</span> <span class="highlight">Gleichheit:</span> Verpflichtet zum Abbau sozialer Ungleichheiten und zur Gleichbehandlung.</div>
+                        <div class="gg-item"><span class="gg-badge">Art. 6 &amp; Art. 9 GG</span> Schutz und finanzieller Ausgleich für Familien (Art. 6) sowie Koalitionsfreiheit zur Bildung von Gewerkschaften für Tarifpolitik (Art. 9).</div>
+                        <div class="gg-item"><span class="gg-badge">Art. 14 &amp; Art. 15 GG</span> Eigentum verpflichtet für das Allgemeinwohl (Sozialbindung, Art. 14); Vergesellschaftung von Boden und Produktionsmitteln gegen Entschädigung möglich (Art. 15).</div>
+                        <div class="gg-item"><span class="gg-badge">Art. 20 GG</span> <span class="highlight">Sozialstaat:</span> Definiert Deutschland als sozialen Rechtsstaat.</div>
+                        <div class="gg-item"><span class="gg-badge" style="background: var(--crimson);">Art. 2 GG (Corona)</span> <span class="highlight">Grundrechtskonflikt:</span> Individuelle Freiheitsrechte (v. a. Art. 2 GG) vs. staatliche Schutzpflicht für Leben und Gesundheit (Art. 2 GG) nach dem Prinzip der Verhältnismäßigkeit.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>GK LK (J1) – Block 3: Sozialstaat, Grundsicherungsgeld (2026) &amp; BGE</span>
+                <span>Seite 5</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 6: BLOCK 3 (TEIL 2) – MODELLE, REFORM 07/2026 & DATEN
+             ============================================================ -->
+        <div class="page">
+            <div class="card">
+                <h2 id="sec-b3-3">3. Theorie &amp; Kernelemente</h2>
+
+                <div class="merk-card">
+                    <span class="merk-title">Ziele &amp; Sicherungssäulen des deutschen Sozialstaats</span>
+                    <ul>
+                        <li><span class="highlight">Sicherheit vs. Gerechtigkeit:</span> Schutz vor Lebensrisiken durch fünf Sozialversicherungen und Grundsicherung (Sicherheit) sowie Abbau von Wohlstandsklüften durch Bildung und Transfers (Gerechtigkeit).</li>
+                        <li><span class="highlight">Zuordnung der Prinzipien:</span> Beitragsfinanzierte Versicherungen teilen sich in <span class="highlight">Solidarprinzip</span> (Kranken-, Pflegekasse) und <span class="highlight">Äquivalenzprinzip</span> (Rente, ALG I, Unfallkasse); Steuern finanzieren <span class="highlight">Fürsorge</span> (Grundsicherung, Wohngeld) und <span class="highlight">Versorgung</span> (Pensionen, Kindergeld, Elterngeld).</li>
+                    </ul>
+                </div>
+
+                <h3>Wohlfahrtsstaatsmodelle nach Gøsta Esping-Andersen</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <tr>
+                            <th>Modell &amp; Länder</th>
+                            <th>Zentrale Norm</th>
+                            <th>Funktionslogik, Finanzierung &amp; Wirkung</th>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Liberal</span> (USA, UK)</td>
+                            <td>Freiheit</td>
+                            <td>Freier Markt und Eigenverantwortung stehen im Zentrum; Staat zahlt nur geringe, oft stigmatisierende Nothilfen nach strenger Prüfung.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Konservativ</span> (Deutschland, Frankreich)</td>
+                            <td>Sicherheit</td>
+                            <td>Beitragsfinanzierte Sozialversicherungen sichern den Status der Berufsgruppen; soziale Ungleichheit bleibt relativ groß.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Sozialdemokratisch</span> (Skandinavien)</td>
+                            <td>Gleichheit</td>
+                            <td>Steuerfinanzierte, universelle Versorgung auf hohem Niveau für alle Bürger; hohe Steuerlast und aktive Politik für Vollbeschäftigung.</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="merk-card gold-top">
+                        <span class="merk-title">Gedankenexperiment „Freeland“ (Freiheit vs. Sicherheit)</span>
+                        Staat ohne Abgaben und Pflichtversicherungen bietet maximales Netto (<span class="highlight">negative Freiheit</span>), aber hohes Armutsrisiko bei Krankheit/Jobverlust; erst der Sozialstaat ermöglicht reale <span class="highlight">positive Freiheit</span>.
+                    </div>
+                    <div class="merk-card crimson-top">
+                        <span class="merk-title">Reform Grundsicherungsgeld (ab 07/2026)</span>
+                        <ul>
+                            <li><span class="highlight">Leitbild Grundsicherungsgeld:</span> Verschiebt im aktivierenden Sozialstaat („Fördern und Fordern“) den Fokus von Bedarfs- und Befähigungs- hin zur Leistungsgerechtigkeit.</li>
+                            <li><span class="highlight">Vermittlungsvorrang:</span> Schnelle Jobaufnahme hat Vorrang vor Weiterbildung (Any Job First, außer bei unter 30-Jährigen); Arbeit ist Eltern ab dem 1. Geburtstag des Kindes zumutbar.</li>
+                            <li><span class="highlight">Sanktionen &amp; Schonvermögen:</span> 30 % Kürzung bei Pflichtverletzungen/Meldeversäumnissen und bis zu 100 % Regelsatz-Entzug (1–2 Monate) bei Arbeitsverweigerung (Miete direkt an Vermieter); Wegfall der Vermögenskarenz (Altersstaffel 5.000 bis 20.000 € ab Tag 1) und Halbierung der Miet-Karenzzeit auf 6 Monate.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2 id="sec-b3-4">4. Zahlen, Daten &amp; Beispiele</h2>
+                <div class="data-grid">
+                    <div class="data-card">
+                        <span class="data-kpi">Trend Sozialbudget: ~30 % am BIP</span>
+                        Absolute Ausgaben stark gestiegen, aber Sozialleistungsquote am BIP (~30 %) relativ stabil; der Staat muss immer mehr aus Steuern zuschießen, während der Arbeitgeberanteil sank.
+                    </div>
+                    <div class="data-card">
+                        <span class="data-kpi">Grundsicherungsgeld: ~563 € · ~42 Mrd. €</span>
+                        Regelsatz ~563 € (kaum Geld für Bildung/Strom), Gesamtkosten ~42 Mrd. €, größte Gruppe Arbeitslose (~1,8 Mio.) plus ~2 Mio. betroffene Kinder; Haupt-Ausländergruppen sind Geflüchtete (Ukraine, Syrien, Afghanistan), Missbrauch liegt bei nur ~4 %.
+                    </div>
+                    <div class="data-card">
+                        <span class="data-kpi">Steuer- &amp; Umfragefakten (Cremer)</span>
+                        Nur 25 % halten den Sozialstaat für fair, und eine Verdopplung der Erbschaftsteuer brächte unter 2 % des Sozialbudgets.
+                    </div>
+                    <div class="data-card">
+                        <span class="data-kpi">BGE-Studien &amp; Finanzierung (~200 Mrd. € Lücke)</span>
+                        Kanada, Finnland, Deutschland: Kein Rückzug vom Arbeitsmarkt und bessere psychische Gesundheit, aber eine riesige Finanzierungslücke von ~200 Mrd. € erfordert Steuern über 50 % (bis 66,1 % Flat Tax).
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>GK LK (J1) – Block 3: Sozialstaat, Grundsicherungsgeld (2026) &amp; BGE</span>
+                <span>Seite 6</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 7: BLOCK 3 (TEIL 3) – KONTROVERSEN & URTEILSKRITERIEN (AFB III)
+             ============================================================ -->
+        <div class="page">
+            <div class="card">
+                <h2 id="sec-b3-5">5. Kontroversen &amp; Urteilskriterien (AFB III)</h2>
+
+                <div class="cards-grid">
+                    <div class="merk-card">
+                        <span class="merk-title">1. Sozialstaatliche Offenheit &amp; Kosten</span>
+                        <span class="highlight">(+) Vorteil:</span> Flexibel für gesellschaftlichen Wandel.<br>
+                        <span class="crimson-text">(–) Kritik:</span> Politischer Dauerstreit um „soziale Gerechtigkeit“ als Kampfbegriff; Warnungen vor einer „Vollkasko-Republik“ skandalisieren einseitig absolute Summen statt der stabilen BIP-Quote.
+                    </div>
+
+                    <div class="merk-card gold-top">
+                        <span class="merk-title">2. Wohlfahrtsstaatsmodelle im Vergleich</span>
+                        <span class="highlight">Liberales Modell:</span> Maximiert Leistungsgerechtigkeit und Effizienz (gut für Spitzenverdiener), verletzt aber Bedarfsgerechtigkeit und Gemeinwohl.<br>
+                        <span class="highlight">Skandinavisches Modell:</span> Sichert Gleichheit und Legitimität (gut für Familien/Azubis), gefährdet durch hohe Steuern aber finanzielle Nachhaltigkeit.
+                    </div>
+                </div>
+
+                <h3>3. Corona-Maßnahmen (Verhältnismäßigkeit &amp; Grundrechtsabwägung)</h3>
+                <div class="pro-contra-grid">
+                    <div class="pro-box">
+                        <span class="pc-title">⊕ Verhältnismäßig &amp; Position A (Lebensschutz)</span>
+                        <ul>
+                            <li><span class="highlight">Verhältnismäßig:</span> Masken, Quarantäne, frühe Kontaktbeschränkungen und Betriebsschließungen mit Hilfen.</li>
+                            <li><span class="highlight">Position A:</span> Lebensschutz und Effektivität <em>ex ante</em> (aus damaliger Sicht bei Unsicherheit) vorrangig.</li>
+                        </ul>
+                    </div>
+                    <div class="contra-box">
+                        <span class="pc-title">⊖ Unverhältnismäßig &amp; Position B (Freiheit/Legalität)</span>
+                        <ul>
+                            <li><span class="crimson-text">Unverhältnismäßig:</span> Pauschale Ausgangssperren, Beherbergungs- und ausnahmslose Gottesdienst-/Demoverbote.</li>
+                            <li><span class="crimson-text">Position B:</span> Fokus auf Freiheit/Legalität, Kritik an später Parlamentsbeteiligung und schweren Folgen für Jugend und Pflegebedürftige.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>4. Grundsicherungsgeld 2026 &amp; Einordnung nach Georg Cremer</h3>
+                <div class="pro-contra-grid">
+                    <div class="pro-box">
+                        <span class="pc-title">⊕ Pro Reform Grundsicherungsgeld 2026</span>
+                        Stärkt <span class="highlight">Leistungsgerechtigkeit</span>, das <span class="highlight">Lohnabstandsgebot</span> und eine schnelle Jobvermittlung (<span class="highlight">Effizienz</span>).
+                    </div>
+                    <div class="contra-box">
+                        <span class="pc-title">⊖ Contra Reform &amp; Analyse nach Cremer</span>
+                        <ul>
+                            <li>Schwächt <span class="crimson-text">Bedarfs- und Befähigungsgerechtigkeit</span>, erzeugt „Drehtüreffekte“ ohne Qualifizierung und trifft über Sanktionen 2 Mio. Kinder (<span class="crimson-text">Menschenwürde</span>).</li>
+                            <li><span class="highlight">Cremer:</span> Es dominieren Abstiegsängste und Mythen, obwohl der Mindestlohn stärker stieg als Preise/Regelsätze und teure Gießkannen-Politik (z. B. Mütterrente) zielgenaue Hilfe blockiert.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>5. Bedingungsloses Grundeinkommen (Marcel Fratzscher vs. Andreas Peichl)</h3>
+                <div class="pro-contra-grid">
+                    <div class="pro-box">
+                        <span class="pc-title">⊕ Pro BGE (Fratzscher)</span>
+                        Positives Menschenbild, massiver Bürokratieabbau, reale <span class="highlight">positive Freiheit</span> und stärkere Lohnverhandlungsmacht gegenüber Arbeitgebern.
+                    </div>
+                    <div class="contra-box">
+                        <span class="pc-title">⊖ Contra BGE &amp; Alternative (Peichl)</span>
+                        Teures <span class="crimson-text">Gießkannenprinzip</span> ohne Zielgenauigkeit (München vs. Land), Leistungsfeindlichkeit durch Rekordsteuern und verletzte Legitimität bei Steuerzahlern; <span class="highlight">Alternative (Peichl):</span> Besser bestehende Leistungen bündeln und automatisieren.
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>GK LK (J1) – Block 3: Sozialstaat, Grundsicherungsgeld (2026) &amp; BGE</span>
+                <span>Seite 7</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 8: BLOCK 4 (TEIL 1) – DEMOGRAFISCHER WANDEL & FACHKRÄFTEZUWANDERUNG
+             ============================================================ -->
+        <div class="page">
+            <div class="card">
+                <div class="block-banner">
+                    <h2 id="sec-block4">Themenblock 4: Demografischer Wandel &amp; Fachkräftezuwanderung</h2>
+                    <span class="block-tag">Demografie · Chancenkarte · Akteure</span>
+                </div>
+
+                <h2 id="sec-b4-1">1. Fachbegriffe &amp; Definitionen</h2>
+                <div class="cards-grid">
+                    <div class="merk-card">
+                        <span class="merk-title">Demografie &amp; Arbeitsmarkt</span>
+                        <ul>
+                            <li><span class="highlight">Demografischer Wandel:</span> Veränderung der Altersstruktur durch Geburtenrückgang, hohe Lebenserwartung und Babyboomer-Renteneintritt.</li>
+                            <li><span class="highlight">Erwerbspersonenpotenzial:</span> Alle maximal verfügbaren Arbeitskräfte (Erwerbstätige, Erwerbslose, Stille Reserve).</li>
+                            <li><span class="highlight">Fachkraft:</span> Person mit anerkannter Berufsausbildung oder Hochschulabschluss.</li>
+                            <li><span class="highlight">Vorrangprüfung:</span> Abgeschaffte Prüfung, ob zuerst Deutsche oder EU-Bürger verfügbar sind.</li>
+                        </ul>
+                    </div>
+
+                    <div class="merk-card gold-top">
+                        <span class="merk-title">Migrationsformen &amp; globale Effekte</span>
+                        <ul>
+                            <li><span class="highlight">Erwerbsmigration:</span> Gesteuerte Zuwanderung aus Drittstaaten explizit zur Arbeitsaufnahme.</li>
+                            <li><span class="highlight">Fluchtmigration:</span> Humanitärer Schutz vor Verfolgung nach Asylrecht und Genfer Konvention.</li>
+                            <li><span class="highlight">EU-Freizügigkeit:</span> Freier Arbeitsmarktzugang für EU-Bürger, national kaum steuerbar.</li>
+                            <li><span class="highlight">Brain Drain:</span> Abwanderung qualifizierter Fachkräfte zum Nachteil des Herkunftslandes.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2 id="sec-b4-2">2. Verfassungsbezug</h2>
+                <div class="gg-box">
+                    <div class="gg-grid">
+                        <div class="gg-item"><span class="gg-badge">Art. 16a GG</span> <span class="highlight">Asylrecht:</span> Schutz politisch Verfolgter, rechtlich strikt getrennt von Erwerbsmigration.</div>
+                        <div class="gg-item"><span class="gg-badge">Art. 3 GG</span> <span class="highlight">Gleichheit:</span> Punktesystem durch sachlich begründete Kriterien (Qualifikation, Sprache, Alter) erlaubt.</div>
+                        <div class="gg-item"><span class="gg-badge">Art. 20 GG</span> <span class="highlight">Sozialstaat:</span> Auftrag zum dauerhaften Erhalt der Sozialsysteme und Daseinsvorsorge.</div>
+                    </div>
+                </div>
+
+                <h2 id="sec-b4-3">3. Theorie &amp; Kernelemente</h2>
+
+                <div class="merk-card">
+                    <span class="merk-title">Ursachen &amp; Folgen des demografischen Wandels</span>
+                    <ul>
+                        <li><span class="highlight">Ursachen:</span> Niedrige Geburtenrate, steigende Lebenserwartung, Renteneintritt der geburtenstarken Babyboomer.</li>
+                        <li><span class="highlight">Folgen:</span> Schrumpfendes Erwerbspersonenpotenzial gefährdet Wachstum, umlagefinanzierte Rentenkassen und Daseinsvorsorge (Pflege).</li>
+                    </ul>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="merk-card">
+                        <span class="merk-title">Politische Maßnahmen &amp; Instrumente</span>
+                        <ul>
+                            <li><span class="highlight">Fachkräfteeinwanderungsgesetz:</span> Niedrigere Gehaltsschwellen, Einreise schon vor voller Berufsanerkennung.</li>
+                            <li><span class="highlight">Chancenkarte:</span> Punktesystem ermöglicht ein Jahr Jobsuche inklusive Nebenjob.</li>
+                            <li><span class="highlight">Westbalkanregelung:</span> Kontingentierter Arbeitsmarktzugang mit Jobangebot ohne formalen Qualifikationsnachweis.</li>
+                            <li><span class="highlight">Work-and-Stay-Agentur:</span> Geplante zentrale Digitalstelle für Visum, Aufenthalt, Anerkennung.</li>
+                            <li><span class="highlight">Job-Turbo:</span> Schnellere Arbeitsmarktintegration Geflüchteter durch gelockerte Beschäftigungsverbote.</li>
+                            <li><span class="highlight">Staatsangehörigkeitsreform:</span> Bleibeanreiz durch Einbürgerung nach 5 Jahren, Mehrstaatigkeit.</li>
+                        </ul>
+                    </div>
+
+                    <div class="merk-card gold-top">
+                        <span class="merk-title">Akteure &amp; Interessen</span>
+                        <ul>
+                            <li><span class="highlight">Bundesregierung:</span> Fachkräftebasis sichern und irreguläre Migration stärker begrenzen.</li>
+                            <li><span class="highlight">Arbeitgeber &amp; Handwerk:</span> Schnelle, digitale, unbürokratische Verfahren für mehr Zuwanderung.</li>
+                            <li><span class="highlight">Gewerkschaften:</span> Gleiche Löhne, Tarifbindung, Schutz vor Lohndumping/Ausbeutung.</li>
+                            <li><span class="highlight">Länder &amp; Kommunen:</span> Behördenentlastung sowie Finanzierung von Wohnraum, Kitas, Schulen.</li>
+                            <li><span class="highlight">Zugewanderte:</span> Sichere Bleibeperspektive, rasche Berufsanerkennung, Familiennachzug und Teilhabe.</li>
+                            <li><span class="highlight">Herkunftsländer:</span> Rücküberweisungen und Wissenstransfer gegen Verlust eigener Fachkräfte.</li>
+                            <li><span class="highlight">Parteien &amp; Öffentlichkeit:</span> Stark polarisiert zwischen strikter Begrenzung und Öffnung.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>GK LK (J1) – Block 4: Demografischer Wandel &amp; Fachkräftezuwanderung</span>
+                <span>Seite 8</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 9: BLOCK 4 (TEIL 2) – ZAHLEN, TEILURTEILE & GESAMTURTEIL (AFB III)
+             ============================================================ -->
+        <div class="page">
+            <div class="card">
+                <h2 id="sec-b4-4">4. Zahlen, Daten &amp; Beispiele</h2>
+                <div class="data-grid">
+                    <div class="data-card">
+                        <span class="data-kpi">1. Geburtenrate: ~1,35 Kinder/Frau</span>
+                        Liegt bei ~1,35 Kindern/Frau (für Bestandserhaltung wären ~2,1 nötig).
+                    </div>
+                    <div class="data-card">
+                        <span class="data-kpi">2. Babyboomer-Rente: ~30 % bis 2040</span>
+                        Bis 2040 gehen ~30 % der heutigen Erwerbspersonen in Rente.
+                    </div>
+                    <div class="data-card">
+                        <span class="data-kpi">3. Bedarf: ~400.000 Nettozuwanderer/Jahr</span>
+                        Jährlich ~400.000 Nettozuwanderer für ein konstantes Erwerbspersonenpotenzial nötig.
+                    </div>
+                    <div class="data-card">
+                        <span class="data-kpi">4. Erwerbsmigration: ~420.000 Beschäftigte</span>
+                        Seit 2020 auf ~420.000 Beschäftigte verdoppelt (v. a. Blaue Karte EU).
+                    </div>
+                </div>
+
+                <h2 id="sec-b4-5">5. Kontroversen &amp; Urteilskriterien (AFB III)</h2>
+
+                <h3>Zentrale Spannungsverhältnisse</h3>
+                <div class="conflict-grid">
+                    <div class="conflict-card"><span class="conflict-vs">⚡ Bedarf vs. Steuerung</span>Wirtschaftlicher Arbeitskräftebedarf gegen politische Begrenzung von Zuwanderung.</div>
+                    <div class="conflict-card"><span class="conflict-vs">⚡ Schnelligkeit vs. Qualität</span>Rasche Verfahren gegen notwendige Qualitätsprüfung (Pflege, Medizin).</div>
+                    <div class="conflict-card"><span class="conflict-vs">⚡ Inland vs. Ausland</span>Deutsches Fachkräfteinteresse gegen Brain Drain der Herkunftsländer.</div>
+                    <div class="conflict-card"><span class="conflict-vs">⚡ Ökonomie vs. Akzeptanz</span>Wirtschaftliche Notwendigkeit gegen kommunale Überlastung und Polarisierung.</div>
+                </div>
+
+                <h3>Kriteriengeleitete Teilurteile (Operator „beurteilen“)</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <tr>
+                            <th>Kriterium</th>
+                            <th>(+) Pro-Argumente</th>
+                            <th>(–) Contra-Argumente</th>
+                            <th>→ Teilurteil</th>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Effektivität</span></td>
+                            <td>Erwerbsmigration seit 2020 verdoppelt</td>
+                            <td>400.000er-Bedarf wegen Bürokratie, Sprachhürden, Wohnungsmangel und Fortzügen verfehlt</td>
+                            <td><span class="highlight">Teilweise effektiv</span> (notwendig, nicht hinreichend).</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Effizienz</span></td>
+                            <td>Herkunftsland trägt Ausbildungskosten, Digitalagentur geplant</td>
+                            <td>Zersplitterte Behörden, inländische Potenziale (Frauen, Ältere) günstiger</td>
+                            <td><span class="highlight">Derzeit nur eingeschränkt effizient.</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Legalität</span></td>
+                            <td>Gedeckt durch Aufenthaltsgesetz/EU-Recht, sachliche Kriterien (Art. 3 GG), Trennung vom Asyl (Art. 16a GG)</td>
+                            <td>Keine Rechtsverstöße</td>
+                            <td><span class="highlight">Legal.</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Gerechtigkeit</span></td>
+                            <td>Generationen- und bedarfsgerecht für Rentenkassen und Pflege</td>
+                            <td>Internationaler Brain Drain sowie Diskriminierungs- und Anerkennungshürden</td>
+                            <td><span class="highlight">National gerecht, international eingeschränkt.</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Nachhaltigkeit</span></td>
+                            <td>Einbürgerungsreform schafft Bleibeanreiz</td>
+                            <td>Zugewanderte altern ebenfalls, Abwanderung und politische Polarisierung drohen</td>
+                            <td><span class="highlight">Nur bedingt nachhaltig</span> (integrationsabhängig).</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3>Perspektivenwechsel &amp; Gesamturteil (Operator „bewerten“)</h3>
+                <div class="recipe-box" style="margin-bottom: 0.55rem;">
+                    <span class="recipe-title">3 Perspektiven im Überblick</span>
+                    <span class="highlight">Individuell:</span> eigene Rente/Pflege vs. Wohnungsmarkt · <span class="highlight">Öffentlich:</span> Unternehmen dafür vs. belastete Kommunen · <span class="highlight">Systemisch:</span> Stabilität der Sozialkassen vs. Polarisierung.
+                </div>
+
+                <div class="pro-contra-grid">
+                    <div class="pro-box">
+                        <span class="pc-title">⊕ Position A (Pro Ausbau)</span>
+                        Gewichtet <span class="highlight">Effektivität</span> und <span class="highlight">Generationengerechtigkeit</span>; fordert schnelle Digitalagentur, Kommunalentlastung, faire Abkommen plus inländische Potenziale.
+                    </div>
+                    <div class="contra-box">
+                        <span class="pc-title">⊖ Position B (Vorrang Inland)</span>
+                        Gewichtet <span class="crimson-text">Nachhaltigkeit</span>, <span class="crimson-text">internationale Solidarität</span> und <span class="crimson-text">Akzeptanz</span>; sieht Zuwanderung nur als Ergänzung nach Aktivierung inländischer Reserven.
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>GK LK (J1) – Block 4: Demografischer Wandel &amp; Fachkräftezuwanderung</span>
+                <span>Seite 9</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 10: BLOCK 5 (TEIL 1) – OPERATOREN, MATERIALANALYSE & SCHREIBBAUPLAN
+             ============================================================ -->
+        <div class="page">
+            <div class="card">
+                <div class="block-banner">
+                    <h2 id="sec-block5">Themenblock 5: Methodik, Materialanalyse &amp; Urteilsbildung (ZPG-Schema)</h2>
+                    <span class="block-tag">Karikatur · ZPG-Schema · 15-Punkte-Taktik</span>
+                </div>
+
+                <h2 id="sec-b5-1">1. Operatoren-Check (AFB III)</h2>
+                <div class="cards-grid">
+                    <div class="merk-card">
+                        <span class="merk-title">Operator „beurteilen“ (Schritte 1–3)</span>
+                        Sachverhalt anhand begründet ausgewählter Kriterien prüfen und zu jedem Kriterium ein klares <span class="highlight">Teilurteil</span> formulieren.
+                    </div>
+                    <div class="merk-card crimson-top">
+                        <span class="merk-title">Operator „bewerten“ (= „beurteilen“ + Schritt 4)</span>
+                        Zusätzlich Kriterien gewichten, eigene Wertmaßstäbe offenlegen und ein <span class="highlight">Gesamturteil</span> fällen (im Abitur zählt nur die Begründungsqualität, nie die politische Meinung).
+                    </div>
+                </div>
+
+                <h2 id="sec-b5-2">2. Mini-Rezept: Karikatur, Statistik &amp; Textarbeit</h2>
+                <div class="cards-grid">
+                    <div class="merk-card">
+                        <span class="merk-title">4-Schritt-Methode für Karikaturen</span>
+                        <ol>
+                            <li><span class="highlight">Orientierung (AFB I):</span> Basissatz mit Zeichner, Jahr, Titel und Thema.<span class="template-quote">„Die Karikatur von [Name] aus dem Jahr [X] thematisiert/kritisiert...“</span></li>
+                            <li><span class="highlight">Beschreibung (AFB I):</span> Vorder-/Hintergrund, Figuren, Sprechblasen, Symbolik und Leerstellen.<span class="template-quote">„Im Zentrum sieht man..., während die Sprechblase verdeutlicht, dass...“</span></li>
+                            <li><span class="highlight">Deutung (AFB II):</span> Politischer Kontext, Pointe/Ironie, Adressaten und Kernaussage.<span class="template-quote">„Der Karikaturist wendet sich gegen..., indem er entlarvt, dass...“</span></li>
+                            <li><span class="highlight">Bewertung (AFB III):</span> Sachurteil (Bild-Text-Passung, Mittel) und Werturteil (Fakten-Zustimmung vs. Einseitigkeit).<span class="template-quote">„Insgesamt vermittelt die Karikatur ihre Kritik treffend, vereinfacht aber...“</span></li>
+                        </ol>
+                    </div>
+
+                    <div class="merk-card gold-top">
+                        <span class="merk-title">Muster Woessner („Gebrüder Mann &amp; Söhne“, 2020)</span>
+                        <ul>
+                            <li><span class="highlight">Symbolik:</span> Hochhaus/Glasfront steht für Macht und „gläserne Decke“, Firmenname schließt Töchter aus, Mutter fehlt als unsichtbare „Leerstelle“.</li>
+                            <li><span class="highlight">Pointe &amp; Kritik:</span> Tochter („Genau wie Du!“) entlarvt Doppelstandard (Art. 3 GG), aber Karikatur personalisiert strukturelle Probleme (Kita-Mangel, Ehegattensplitting).</li>
+                        </ul>
+
+                        <div class="joker-box" style="margin-top: 0.75rem;">
+                            <span class="joker-title">Goldene Regel für Statistik &amp; Textarbeit</span>
+                            Absolute Zahlen (Mrd. €) strikt von relativen Quoten (% am BIP) trennen und Belege immer exakt in Klammern setzen, z. B. <code>(vgl. M6, Z. 10–13)</code>.
+                        </div>
+                    </div>
+                </div>
+
+                <h2 id="sec-b5-3">3. Schreibbauplan: Urteilsbildung nach ZPG-Schema (4 Schritte)</h2>
+                <div class="recipe-box">
+                    <span class="recipe-title">Der 4-Schritt-Aufsatzplan für AFB III</span>
+                    <ol>
+                        <li><span class="highlight">Klärung der Aufgabenstellung:</span> Problemstellung, politische Leitfrage, Basisdaten und zentrale Fachbegriffe knapp definieren.</li>
+                        <li><span class="highlight">Wichtige Vorüberlegungen:</span> Mindestens 4 Kriterien begründet auswählen, Spannungsverhältnisse, Akteure, Politik/Wirtschaft/Gesellschaft sowie die <span class="highlight">3 Perspektiven</span> darstellen:
+                            <ul>
+                                <li><span class="highlight">Individuell:</span> Ich und mein direktes Umfeld (z. B. eigene Rente, Wohnungssuche, Schule).</li>
+                                <li><span class="highlight">Öffentlich:</span> Organisierte Gruppen und Verbände (z. B. Unternehmen, Gewerkschaften, Kommunen, Betroffene).</li>
+                                <li><span class="highlight">Systemisch:</span> Gesamtsystem (Stabilität von Demokratie, Rechtsstaat, Wirtschaft und Sozialstaat).</li>
+                            </ul>
+                        </li>
+                        <li><span class="highlight">Teilurteile („beurteilen“):</span> Jedes Kriterium einzeln mit Pro/Contra im Dreischritt (<em>Behauptung – Begründung – Beleg/Beispiel</em>) prüfen und mit einem Teilurteil abschließen.</li>
+                        <li><span class="highlight">Gesamturteil („bewerten“):</span> Teilurteile ordnen, Kriterien gewichten, eigene Wertmaßstäbe offenlegen und Handlungsempfehlung ableiten:
+                            <div class="cards-grid" style="margin-top: 6px; margin-bottom: 0;">
+                                <span class="template-quote" style="margin-top:0;">„Am überzeugendsten finde ich..., weil...“</span>
+                                <span class="template-quote" style="margin-top:0;">„Besonders wichtig ist mir das Kriterium..., denn...“</span>
+                                <span class="template-quote" style="margin-top:0;">„Allerdings muss man bedenken, dass...“</span>
+                                <span class="template-quote" style="margin-top:0;">„Insgesamt komme ich zu dem Ergebnis, dass...“</span>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>GK LK (J1) – Block 5: Methodik, Materialanalyse &amp; Urteilsbildung</span>
+                <span>Seite 10</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 11: BLOCK 5 (TEIL 2) – KRITERIEN-SPICKZETTEL & KLAUSURTAKTIK
+             ============================================================ -->
+        <div class="page">
+            <div class="card">
+                <h2 id="sec-b5-4">4. Kriterien-Spickzettel &amp; Klausurtaktik</h2>
+
+                <h3>Alle 19 ZPG-Urteilskriterien (Katalog I &amp; II)</h3>
+                <div class="criteria-grid">
+                    <div class="crit-item"><span class="crit-num">1</span><span class="highlight">Effektivität:</span> Wird das angestrebte Ziel erreicht?</div>
+                    <div class="crit-item"><span class="crit-num">2</span><span class="highlight">Effizienz:</span> Gleiches Ziel mit weniger Mitteln?</div>
+                    <div class="crit-item"><span class="crit-num">3</span><span class="highlight">Legalität:</span> Mit Grundgesetz und Recht vereinbar?</div>
+                    <div class="crit-item"><span class="crit-num">4</span><span class="highlight">Gerechtigkeit:</span> Leistungs-, bedarfs-, chancen-, befähigungs-, generationengerecht?</div>
+                    <div class="crit-item"><span class="crit-num">5</span><span class="highlight">Nachhaltigkeit:</span> Ökonomisch, sozial, ökologisch, politisch dauerhaft?</div>
+                    <div class="crit-item"><span class="crit-num">6</span><span class="highlight">Legitimität:</span> Von Bürgern als gerecht akzeptiert?</div>
+                    <div class="crit-item"><span class="crit-num">7</span><span class="highlight">Transparenz:</span> Entscheidungsprozess und Einflussnahme öffentlich sichtbar?</div>
+                    <div class="crit-item"><span class="crit-num">8</span><span class="highlight">Partizipation:</span> Ausreichende Beteiligungschancen für alle Gruppen?</div>
+                    <div class="crit-item"><span class="crit-num">9</span><span class="highlight">Repräsentation:</span> Werden Interessen aller Gruppen vertreten?</div>
+                    <div class="crit-item"><span class="crit-num">10</span><span class="highlight">Gleichheit:</span> Werden alle vor Gesetz gleichbehandelt?</div>
+                    <div class="crit-item"><span class="crit-num">11</span><span class="highlight">Freiheit:</span> Bleiben Privatsphäre und Entscheidungsfreiheit gewahrt?</div>
+                    <div class="crit-item"><span class="crit-num">12</span><span class="highlight">Sicherheit:</span> Ist innere/äußere Sicherheit gewährleistet?</div>
+                    <div class="crit-item"><span class="crit-num">13</span><span class="highlight">Solidarität:</span> Wird sozialer/internationaler Zusammenhalt gefördert?</div>
+                    <div class="crit-item"><span class="crit-num">14</span><span class="highlight">Kontrolle:</span> Ist der Entscheidungsprozess demokratisch kontrollierbar?</div>
+                    <div class="crit-item"><span class="crit-num">15</span><span class="highlight">Subsidiarität:</span> Problemlösung auf niedrigster möglicher Ebene?</div>
+                    <div class="crit-item"><span class="crit-num">16</span><span class="highlight">Politische Durchsetzbarkeit:</span> Umsetzung angesichts Machtverhältnissen realistisch?</div>
+                    <div class="crit-item"><span class="crit-num">17</span><span class="highlight">Verursacherprinzip:</span> Zahlen die Verursacher für Schäden?</div>
+                    <div class="crit-item"><span class="crit-num">18</span><span class="highlight">Anreizwirkung:</span> Entstehen positive Anreize oder Fehlanreize?</div>
+                    <div class="crit-item"><span class="crit-num">19</span><span class="highlight">Schnelligkeit:</span> Wie rasch wirken die Maßnahmen?</div>
+                </div>
+
+                <h3>Die 4 kontroversen Kriterien-Paare für die Klausur</h3>
+                <div class="cards-grid">
+                    <div class="joker-box" style="margin: 0;">
+                        <span class="joker-title">1. Effektivität vs. internationale Gerechtigkeit</span>
+                        Rasche Fachkräftegewinnung für Deutschland gegen <span class="highlight">Brain Drain</span> in Herkunftsländern.
+                    </div>
+                    <div class="joker-box" style="margin: 0;">
+                        <span class="joker-title">2. Effizienz vs. Nachhaltigkeit</span>
+                        Schnelle, billige Jobvermittlung („Any Job First“) gegen dauerhafte Qualifizierung.
+                    </div>
+                    <div class="joker-box" style="margin: 0;">
+                        <span class="joker-title">3. Leistungsgerechtigkeit vs. Bedarfsgerechtigkeit</span>
+                        Lohnabstandsgebot und Sanktionen gegen vorleistungsfreies, menschenwürdiges Existenzminimum.
+                    </div>
+                    <div class="joker-box" style="margin: 0;">
+                        <span class="joker-title">4. Legitimität vs. Effizienz (bzw. Interesse vs. Gemeinwohl)</span>
+                        Gesellschaftliche Akzeptanz und Freiheitsrechte gegen Steuerlast oder staatliche Zwangsmaßnahmen.
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>GK LK (J1) – Block 5: Methodik, Materialanalyse &amp; Urteilsbildung</span>
+                <span>Seite 11</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 12: LERNKARTEN ZUR SELBSTABFRAGE (ACTIVE RECALL)
+             ============================================================ -->
+        <div class="page">
+            <div class="card">
+                <h2 id="sec-lernkarten">Lernkarten zur Selbstabfrage (Active Recall)</h2>
+                <p>Klicke auf eine Karte, um die Lösung umzudrehen – ideal zum schnellen Abfragen aller 5 Themenblöcke vor der Klausur.</p>
+
+                <div class="flashcards-container">
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>Block 1 · Worin unterscheiden sich Equality vs. Equity sowie Primär- vs. Sekundärverteilung?</span></div>
+                            <div class="flashcard-back"><p><span class="highlight">Equality:</span> formal gleiche Ausstattung für alle · <span class="highlight">Equity:</span> gezielt ungleiche Förderung zum Ausgleich unverdienter Hürden (reale Startchancen). <span class="highlight">Primärverteilung:</span> faire Startchancen vor dem Markt · <span class="highlight">Sekundärverteilung:</span> nachträgliche staatliche Umverteilung.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>Block 1 · Vergleiche John Rawls („Gerechtigkeit als Fairness“) und Robert Nozick („Anarchie, Staat, Utopie“)!</span></div>
+                            <div class="flashcard-back"><p><span class="highlight">Rawls:</span> Urzustand + Schleier des Nichtwissens → 1. gleiche Grundfreiheiten (Vorrang), 2. Differenzprinzip (Ungleichheit nur zum Nutzen der Schwächsten) &amp; Ämteroffenheit → aktiver Sozialstaat. <span class="highlight">Nozick:</span> Selbsteigentum &amp; freier Tausch → Umverteilungssteuern = Zwangsarbeit → Minimalstaat.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>Block 1 · Welche 4 Voraussetzungen hat Habermas’ „Ideale Sprechsituation“ und wie lautet der Bildungstrichter?</span></div>
+                            <div class="flashcard-back"><p><span class="highlight">Habermas:</span> 1. Gleiche Rederechte, 2. Herrschaftsfreiheit, 3. Wahrhaftigkeit, 4. gemeinsame Wahrheitssuche („zwangloser Zwang“ des besseren Arguments; regulatives Ideal). <span class="highlight">Bildungstrichter:</span> ~80 % (79 %) der Akademikerkinder studieren vs. ~25 % (27 %) der Nicht-Akademikerkinder.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>Block 2 · Definiere soziale Ungleichheit nach Hradil (3 Bestandteile) und nenne seine 4 Ebenen!</span></div>
+                            <div class="flashcard-back"><p>Wenn Menschen wegen ihrer <span class="highlight">Stellung in sozialen Beziehungsgefügen</span> von den <span class="highlight">wertvollen Gütern</span> einer Gesellschaft <span class="highlight">regelmäßig mehr als andere</span> erhalten (deskriptiv!). <span class="highlight">4 Ebenen:</span> 1. Ursachen &amp; 2. Determinanten → 3. Dimensionen (klassisch + wohlfahrtsstaatlich/sozial) → 4. Auswirkungen.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>Block 2 · Vergleiche Marx, Dahrendorf, Geißler und die Sinus-Milieus (Stärke &amp; Grenze)!</span></div>
+                            <div class="flashcard-back"><p><span class="highlight">Marx:</span> Besitz-Pyramide (+ klare Hierarchie / – veraltet). <span class="highlight">Dahrendorf:</span> Berufshaus (+ einprägsam / – nur Beruf). <span class="highlight">Geißler:</span> Haus + Migranten-Anbau (+ realitätsnäher / – nur Beruf). <span class="highlight">Sinus-Milieus:</span> Lage × Werte (+ mehrdimensional / – unübersichtlich). Top 10 % besitzen ~50 % Nettovermögen.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>Block 3 · Ordne Solidar-, Äquivalenz-, Fürsorge- und Versorgungsprinzip mit Beispielen zu!</span></div>
+                            <div class="flashcard-back"><p><span class="highlight">Beiträge:</span> Solidarprinzip (einkommensabhängig, gleiche Leistung: Kranken-/Pflegekasse) · Äquivalenzprinzip (Leistung nach Beitrag: Rente, ALG I, Unfallkasse). <span class="highlight">Steuern:</span> Fürsorge/Subsidiarität (mit Prüfung: Grundsicherung, Wohngeld) · Versorgung (ohne Prüfung: Pension, Kindergeld).</p></div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>Block 3 · Welche 3 Wohlfahrtsstaatsmodelle unterscheidet Esping-Andersen (Länder &amp; Leitnorm)?</span></div>
+                            <div class="flashcard-back"><p><span class="highlight">1. Liberal</span> (USA, UK – Norm: Freiheit): Markt &amp; geringe Nothilfe. <span class="highlight">2. Konservativ</span> (D, F – Norm: Sicherheit): Beitrags-Sozialversicherungen zum Statuserhalt. <span class="highlight">3. Sozialdemokratisch</span> (Skandinavien – Norm: Gleichheit): steuerfinanzierte Universalversorgung bei hoher Steuerlast.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>Block 3 · Was ändert sich beim Grundsicherungsgeld (ab 07/2026) und welche Kennzahlen musst du kennen?</span></div>
+                            <div class="flashcard-back"><p>Fokus auf <span class="highlight">Leistungsgerechtigkeit</span>: Vermittlungsvorrang (Any Job First, außer U30; Eltern ab 1. Geburtstag), 30 % bis 100 % Regelsatz-Kürzung (Miete direkt), Schonvermögen ab Tag 1 (5.000–20.000 €), 6 Mon. Mietkarenz. Daten: ~563 € Regelsatz, ~42 Mrd. €, ~1,8 Mio. Arbeitslose, ~2 Mio. Kinder, ~4 % Missbrauch.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>Block 4 · Nenne die 4 Schlüsselzahlen zum demografischen Wandel &amp; die wichtigsten Migrationsinstrumente!</span></div>
+                            <div class="flashcard-back"><p><span class="highlight">Zahlen:</span> Geburtenrate ~1,35 (nötig ~2,1), bis 2040 ~30 % in Rente, Bedarf ~400.000 Nettozuwanderer/Jahr, Erwerbsmigration ~420.000 (verdoppelt seit 2020). <span class="highlight">Instrumente:</span> FEG, Chancenkarte (Punkte), Westbalkanregelung, Work-and-Stay-Agentur, Job-Turbo, Einbürgerung nach 5 J.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>Block 5 · Worin unterscheiden sich „beurteilen“ vs. „bewerten“ und wie lauten die 4 ZPG-Schritte + 3 Perspektiven?</span></div>
+                            <div class="flashcard-back"><p><span class="highlight">beurteilen (1–3):</span> 1. Aufgabenklärung · 2. Vorüberlegungen (mind. 4 Kriterien + Perspektiven: <span class="highlight">individuell, öffentlich, systemisch</span>) · 3. Kriterien-Teilurteile im Dreischritt. <span class="highlight">bewerten (+ Schritt 4):</span> Kriterien gewichten, eigene Wertmaßstäbe offenlegen &amp; Gesamturteil fällen.</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>GK LK (J1) – Lernkarten (Active Recall)</span>
+                <span>Seite 12</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        (function () {
+            const body = document.body;
+            const btnPlakat = document.getElementById('btn-plakat');
+            const btnDruck = document.getElementById('btn-druck');
+            const btnPrint = document.getElementById('btn-print');
+            const btnInhalt = document.getElementById('btn-inhalt');
+            const dropdown = document.getElementById('toc-dropdown');
+            const flashcards = document.querySelectorAll('.flashcard');
+
+            btnPlakat.addEventListener('click', function () {
+                body.classList.remove('print-mode');
+                btnPlakat.classList.add('active');
+                btnDruck.classList.remove('active');
+            });
+
+            btnDruck.addEventListener('click', function () {
+                body.classList.add('print-mode');
+                btnDruck.classList.add('active');
+                btnPlakat.classList.remove('active');
+            });
+
+            btnPrint.addEventListener('click', function () {
+                body.classList.add('print-mode');
+                btnDruck.classList.add('active');
+                btnPlakat.classList.remove('active');
+                window.print();
+            });
+
+            btnInhalt.addEventListener('click', function (e) {
+                e.stopPropagation();
+                dropdown.parentElement.classList.toggle('show');
+            });
+            document.addEventListener('click', function (e) {
+                if (!dropdown.contains(e.target) && e.target !== btnInhalt) {
+                    dropdown.parentElement.classList.remove('show');
+                }
+            });
+
+            const btnFullscreen = document.getElementById('btn-fullscreen');
+            if (btnFullscreen) {
+                btnFullscreen.addEventListener('click', function () {
+                    if (!document.fullscreenElement) {
+                        document.documentElement.requestFullscreen().catch(function (err) { console.warn(err); });
+                        btnFullscreen.textContent = 'Vollbild beenden';
+                    } else {
+                        if (document.exitFullscreen) document.exitFullscreen();
+                        btnFullscreen.textContent = 'Vollbild';
+                    }
+                });
+            }
+
+            document.querySelectorAll('h1[id], h2[id]').forEach(function (heading) {
+                const item = document.createElement('a');
+                item.className = 'dropdown-item';
+                if (heading.closest('.block-banner')) {
+                    item.style.paddingLeft = '12px';
+                    item.style.fontWeight = '700';
+                    item.style.color = 'var(--forest)';
+                } else if (heading.tagName === 'H2') {
+                    item.style.paddingLeft = '24px';
+                } else {
+                    item.style.paddingLeft = '10px';
+                }
+
+                item.textContent = heading.textContent.trim();
+                item.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    dropdown.parentElement.classList.remove('show');
+                    const topPosition = heading.getBoundingClientRect().top + window.scrollY - 82;
+                    window.scrollTo({ top: topPosition, behavior: 'smooth' });
+                });
+                dropdown.appendChild(item);
+            });
+
+            flashcards.forEach(function (card) {
+                card.addEventListener('click', function () {
+                    if (!body.classList.contains('print-mode')) {
+                        card.classList.toggle('flipped');
+                    }
+                });
+            });
+        })();
+    </script>
+    <script src="../pdf-export.js"></script>
+</body>
+</html>
