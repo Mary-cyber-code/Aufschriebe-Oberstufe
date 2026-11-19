@@ -16,7 +16,7 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600&display=swap');
 
         :root {
             --paper-white: #F8F6F1;
@@ -24,11 +24,9 @@
             --text-primary: #2D3A2E;
             --text-secondary: #5A6B5C;
             --gold: #C9A96E;
-            --gold-soft: rgba(201, 169, 110, 0.13);
             --forest: #3A5A3F;
-            --forest-soft: rgba(58, 90, 63, 0.07);
             --crimson: #9E3B2E;
-            --nav-bg: rgba(248, 246, 241, 0.96);
+            --nav-bg: rgba(248, 246, 241, 0.95);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -37,40 +35,40 @@
             background-color: var(--paper-white);
             color: var(--text-primary);
             font-family: 'Raleway', sans-serif;
-            line-height: 1.58;
-            padding-top: 72px;
+            line-height: 1.6;
+            padding-top: 70px;
         }
 
-        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--forest); margin-bottom: 0.45rem; }
-        h1 { font-size: 2rem; text-align: center; margin-bottom: 0.9rem; border-bottom: 2px solid var(--gold); padding-bottom: 0.7rem; }
-        h2 { font-size: 1.46rem; margin-top: 0.2rem; border-bottom: 1.5px solid rgba(201, 169, 110, 0.45); padding-bottom: 0.28rem; margin-bottom: 0.75rem; }
-        h3 { font-size: 1.1rem; margin-top: 0.6rem; color: var(--forest); }
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--forest); margin-bottom: 0.5rem; }
+        h1 { font-size: 2.1rem; text-align: center; margin-bottom: 1.5rem; border-bottom: 2px solid var(--gold); padding-bottom: 0.9rem; }
+        h2 { font-size: 1.65rem; margin-top: 1.2rem; border-bottom: 1px solid rgba(201, 169, 110, 0.35); padding-bottom: 0.3rem; }
+        h2:first-of-type { margin-top: 0.2rem; }
+        h3 { font-size: 1.25rem; margin-top: 1rem; color: var(--text-primary); }
 
-        p { margin-bottom: 0.55rem; }
-        ul, ol { margin-bottom: 0.55rem; padding-left: 1.45rem; }
-        li { margin-bottom: 0.3rem; }
-        li:last-child { margin-bottom: 0; }
+        p { margin-bottom: 0.85rem; }
+        ul, ol { margin-bottom: 0.95rem; padding-left: 1.8rem; }
+        li { margin-bottom: 0.4rem; }
 
         .highlight { color: var(--forest); font-weight: 600; }
-        .flashcard-back .highlight { color: var(--gold); }
+        .warn { color: var(--crimson); font-weight: 600; }
 
         sub, sup { line-height: 0; vertical-align: baseline; font-size: 0.8em; }
         sub { position: relative; top: 0.3em; }
         sup { position: relative; top: -0.3em; }
 
-        mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width: 100%; margin: 0.3em 0 !important; }
+        mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width: 100%; margin: 0.45em 0 !important; }
 
         /* Navigation */
         nav {
             position: fixed; top: 0; left: 0; width: 100%; background-color: var(--nav-bg); backdrop-filter: blur(10px);
-            z-index: 1000; display: flex; justify-content: center; align-items: center; padding: 12px 18px;
+            z-index: 1000; display: flex; justify-content: center; align-items: center; padding: 15px 20px;
             box-shadow: 0 2px 15px rgba(0,0,0,0.05); border-bottom: 1px solid var(--gold);
         }
-        .nav-group { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: center; }
+        .nav-group { display: flex; gap: 15px; align-items: center; }
         .nav-btn {
-            background: transparent; border: 1px solid var(--forest); color: var(--forest); padding: 7px 14px;
-            font-family: 'Raleway', sans-serif; font-weight: 600; font-size: 0.88rem; cursor: pointer; border-radius: 4px;
-            transition: all 0.25s ease; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;
+            background: transparent; border: 1px solid var(--forest); color: var(--forest); padding: 8px 16px;
+            font-family: 'Raleway', sans-serif; font-weight: 500; font-size: 0.9rem; cursor: pointer; border-radius: 4px;
+            transition: all 0.3s ease; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;
         }
         .nav-btn:hover, .nav-btn.active { background: var(--forest); color: var(--paper-white); }
         .nav-btn.gold { border-color: var(--gold); color: var(--text-primary); }
@@ -79,194 +77,74 @@
         /* Dropdown */
         .dropdown { position: relative; display: inline-block; }
         .dropdown-content {
-            display: none; position: absolute; background-color: var(--paper-cream); min-width: 305px;
-            box-shadow: 0px 8px 18px rgba(0,0,0,0.12); border: 1px solid var(--gold); border-radius: 6px;
-            z-index: 10; top: 100%; left: 0; margin-top: 5px; max-height: 74vh; overflow-y: auto;
+            display: none; position: absolute; background-color: var(--paper-cream); min-width: 270px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1); border: 1px solid var(--gold); border-radius: 4px;
+            z-index: 1; top: 100%; left: 0; margin-top: 5px; max-height: 70vh; overflow-y: auto;
         }
         .dropdown.show .dropdown-content { display: block; }
         .dropdown-item {
-            color: var(--text-primary); padding: 9px 14px; text-decoration: none; display: block; cursor: pointer;
-            font-family: 'Raleway', sans-serif; font-size: 0.87rem; border-bottom: 1px solid rgba(201, 169, 110, 0.14); transition: background 0.2s;
+            color: var(--text-primary); padding: 11px 16px; text-decoration: none; display: block; cursor: pointer;
+            font-family: 'Raleway', sans-serif; font-size: 0.9rem; border-bottom: 1px solid rgba(201, 169, 110, 0.1); transition: background 0.2s;
         }
-        .dropdown-item:hover { background-color: rgba(201, 169, 110, 0.12); color: var(--forest); }
+        .dropdown-item:hover { background-color: rgba(201, 169, 110, 0.1); color: var(--forest); }
         .dropdown-item:last-child { border-bottom: none; }
 
-        /* Container & Plakat-Modus */
+        /* Container & Plakat-Modus (2-Spalten-Kartenraster wie in den Grundlagen-Aufschrieben) */
         .content-wrapper { margin: 0 auto; transition: all 0.3s ease; }
-        body:not(.print-mode) .content-wrapper { max-width: 1320px; padding: 18px 20px 55px; display: flex; flex-direction: column; gap: 20px; }
+        body:not(.print-mode) .content-wrapper { max-width: 1500px; padding: 20px; display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
         body:not(.print-mode) .page { display: contents; }
         body:not(.print-mode) .page-footer { display: none !important; }
         body:not(.print-mode) .card {
-            background: var(--paper-cream); border: 1px solid var(--gold); border-radius: 10px; padding: 24px 28px;
-            box-shadow: 0 4px 16px rgba(45, 58, 46, 0.04); width: 100%;
+            background: var(--paper-cream); border: 1px solid var(--gold); border-radius: 8px; padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03); flex: 1 1 600px; max-width: 100%;
         }
-
-        /* Block-Banner */
-        .block-banner {
-            background: linear-gradient(135deg, var(--forest) 0%, #2C4630 100%);
-            color: var(--paper-white); border-radius: 8px; padding: 12px 18px; margin-bottom: 14px;
-            display: flex; align-items: center; gap: 10px; border-left: 5px solid var(--gold);
-        }
-        .block-banner h2 {
-            color: var(--paper-white); border: none; margin: 0; padding: 0; font-size: 1.36rem;
-        }
-
-        /* Baustein-Karten (Merk-Karte, Formel-Box, Kochrezept, 15-Punkte-Box) */
-        .merk-card {
-            background: #fff; border: 1px solid rgba(201, 169, 110, 0.45); border-top: 3px solid var(--forest);
-            border-radius: 8px; padding: 13px 16px; margin: 0.55rem 0 0.75rem;
-        }
-        .merk-title {
-            display: block; font-family: 'Playfair Display', serif; font-weight: 700; color: var(--forest);
-            font-size: 1.02rem; margin-bottom: 7px; padding-bottom: 4px; border-bottom: 1px solid rgba(58, 90, 63, 0.14);
-        }
-
-        .joker-box {
-            background: #FFFDF8; border: 1px solid var(--gold); border-left: 4px solid var(--crimson);
-            border-radius: 8px; padding: 12px 16px; margin: 0.6rem 0 0;
-        }
-        .joker-title {
-            display: block; font-family: 'Playfair Display', serif; font-weight: 700; color: var(--crimson);
-            font-size: 1.01rem; margin-bottom: 5px;
-        }
-
-        .formula-box {
-            background: #FFFDF8; border: 1.5px solid var(--gold); border-radius: 8px;
-            padding: 11px 16px; margin: 0.55rem 0 0.8rem; overflow-x: auto;
-        }
-        .formula-title {
-            display: block; font-size: 0.76rem; letter-spacing: 1px; text-transform: uppercase;
-            color: #8C6D32; margin-bottom: 5px; font-weight: 700;
-        }
-
-        .recipe-box {
-            background: var(--forest-soft); border: 1px solid rgba(58, 90, 63, 0.25); border-left: 4px solid var(--forest);
-            border-radius: 8px; padding: 12px 16px; margin: 0.65rem 0 0.5rem;
-        }
-        .recipe-title {
-            display: block; font-family: 'Playfair Display', serif; font-weight: 700; color: var(--forest);
-            font-size: 1.03rem; margin-bottom: 6px;
-        }
-        .recipe-box ol { margin-bottom: 0; }
-
-        /* Grafik-Boxen */
-        .graphic-box {
-            background: #fff; border: 1px solid rgba(201, 169, 110, 0.45); border-radius: 8px;
-            padding: 12px 16px; margin: 0.6rem 0 0.8rem; display: flex; flex-direction: column; align-items: center;
-        }
-        .graphic-title {
-            font-family: 'Playfair Display', serif; font-weight: 700; color: var(--forest);
-            font-size: 1rem; margin-bottom: 8px; text-align: center; width: 100%;
-        }
-        .graphic-svg { width: 100%; max-width: 780px; height: auto; display: block; }
-
-        /* Aufklappbare Boxen */
-        details.muster-drawer {
-            background: #fff; border: 1.5px solid var(--gold); border-radius: 8px;
-            margin: 0.45rem 0 0.75rem; overflow: hidden; transition: box-shadow 0.2s ease;
-        }
-        details.muster-drawer:hover { box-shadow: 0 3px 10px rgba(45, 58, 46, 0.06); }
-        details.muster-drawer summary {
-            list-style: none; cursor: pointer; padding: 9px 15px; font-weight: 600; font-size: 0.91rem;
-            color: var(--forest); background: rgba(201, 169, 110, 0.11);
-            display: flex; align-items: center; justify-content: space-between; gap: 10px; user-select: none;
-        }
-        details.muster-drawer summary::-webkit-details-marker { display: none; }
-        details.muster-drawer summary::after {
-            content: '＋ Aufklappen'; font-size: 0.78rem; font-weight: 700; color: var(--forest);
-            background: #fff; border: 1px solid var(--gold); border-radius: 999px; padding: 2px 10px; white-space: nowrap;
-        }
-        details.muster-drawer[open] summary {
-            background: var(--forest); color: #fff; border-bottom: 1px solid var(--gold);
-        }
-        details.muster-drawer[open] summary::after {
-            content: '－ Einklappen'; background: rgba(255,255,255,0.16); color: #fff; border-color: rgba(255,255,255,0.45);
-        }
-        .muster-body { padding: 12px 16px; font-size: 0.91rem; background: #fff; }
-        .muster-body ul { margin-bottom: 0.3rem; }
 
         /* Tabellen */
-        .table-wrapper { overflow-x: auto; margin: 0.55rem 0 0.75rem; border-radius: 6px; background: #fff; border: 1px solid rgba(201, 169, 110, 0.38); }
-        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-        th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid rgba(45, 58, 46, 0.1); vertical-align: top; }
-        th { background-color: rgba(58, 90, 63, 0.07); color: var(--forest); font-family: 'Playfair Display', serif; font-weight: 700; }
+        .table-wrapper { overflow-x: auto; margin-bottom: 1.2rem; border-radius: 4px; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.02); border: 1px solid rgba(201, 169, 110, 0.25); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.94rem; }
+        th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid rgba(45, 58, 46, 0.1); vertical-align: top; }
+        th { background-color: rgba(58, 90, 63, 0.06); color: var(--forest); font-family: 'Playfair Display', serif; font-weight: 600; }
         tr:last-child td { border-bottom: none; }
 
-        /* Flashcards */
-        .flashcards-container { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 12px; margin-bottom: 0.6rem; }
-        .flashcard { perspective: 1000px; width: 300px; height: 245px; cursor: pointer; flex: 1 1 300px; }
-        .flashcard-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; }
-        .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
-        .flashcard-front, .flashcard-back {
-            position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 8px; padding: 16px 18px;
-            display: flex; align-items: flex-start; justify-content: center; border: 1px solid var(--gold);
-            background-color: var(--paper-cream); box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(201, 169, 110, 0.6) transparent;
-        }
-        .flashcard-front { color: var(--forest); font-family: 'Playfair Display', serif; font-weight: 600; font-size: 1rem; }
-        .flashcard-back { transform: rotateY(180deg); background-color: var(--forest); color: var(--paper-white); border-color: var(--forest); font-size: 0.88rem; line-height: 1.48; }
-        .flashcard span, .flashcard p { display: block; width: 100%; margin: auto 0; }
-
-        /* Mobile */
-        @media (max-width: 768px) {
-            #btn-fullscreen { display: none !important; }
-            body { padding-top: 86px; }
-            nav { padding: 8px 10px; }
-            .nav-group { gap: 6px; }
-            .nav-btn { padding: 5px 9px; font-size: 0.78rem; }
-            body:not(.print-mode) .card { padding: 16px 15px; }
-            h1 { font-size: 1.52rem; }
-            h2 { font-size: 1.25rem; }
-        }
-
-        /* ============================================================
-           DRUCK-MODUS (A4) & PDF-EXPORT
-           ============================================================ */
-        body.print-mode { background-color: #E2E2E2; padding-top: 86px; font-size: 0.75rem; line-height: 1.32; }
-        body.print-mode h1 { font-size: 1.35rem; margin-bottom: 0.4rem; padding-bottom: 0.25rem; }
-        body.print-mode h2 { font-size: 1.08rem; margin-bottom: 0.35rem; padding-bottom: 0.15rem; }
-        body.print-mode h3 { font-size: 0.92rem; margin-top: 0.32rem; margin-bottom: 0.15rem; }
-        body.print-mode .block-banner { padding: 6px 12px; margin-bottom: 8px; }
-        body.print-mode .block-banner h2 { font-size: 1.06rem; }
-        body.print-mode .merk-card, body.print-mode .formula-box, body.print-mode .recipe-box, body.print-mode .graphic-box, body.print-mode .joker-box {
-            padding: 6px 10px; margin: 0.28rem 0;
-        }
-        body.print-mode .graphic-svg { max-height: 150px; width: auto; max-width: 100%; }
-        body.print-mode details.muster-drawer { margin: 0.25rem 0 0.4rem; border-width: 1px; }
-        body.print-mode details.muster-drawer summary { padding: 4px 9px; font-size: 0.75rem; background: rgba(58, 90, 63, 0.08); color: var(--forest); }
-        body.print-mode details.muster-drawer summary::after { display: none !important; }
-        body.print-mode .muster-body { padding: 5px 9px; font-size: 0.72rem; }
-        body.print-mode table { font-size: 0.72rem; }
-        body.print-mode th, body.print-mode td { padding: 4px 7px; }
+        /* Druck-Modus (A4) */
+        body.print-mode { background-color: #E2E2E2; padding-top: 90px; font-size: 0.83rem; line-height: 1.38; }
+        body.print-mode h1 { font-size: 1.6rem; margin-bottom: 0.8rem; padding-bottom: 0.4rem; }
+        body.print-mode h2 { font-size: 1.25rem; margin-top: 0.8rem; padding-bottom: 0.2rem; }
+        body.print-mode h3 { font-size: 1.05rem; margin-top: 0.65rem; margin-bottom: 0.25rem; }
+        body.print-mode p, body.print-mode ul, body.print-mode ol { margin-bottom: 0.55rem; }
+        body.print-mode li { margin-bottom: 0.2rem; }
+        body.print-mode th, body.print-mode td { padding: 5px 9px; }
 
         body.print-mode .content-wrapper { max-width: none; padding: 0; display: block; }
         body.print-mode .page {
-            width: 210mm; min-height: 297mm; height: auto; padding: 10mm 12mm; margin: 0 auto 18mm auto; background: #fff;
+            width: 210mm; height: auto; min-height: 297mm; padding: 14mm 15mm; margin: 0 auto 20mm auto; background: white;
             box-shadow: 0 0 15px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: visible; break-after: page;
         }
-        body.print-mode .card { background: transparent; border: none; padding: 0; box-shadow: none; }
-        body.print-mode .flashcards-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3.5mm; }
-        body.print-mode .flashcard { width: auto; height: auto; border: 1px solid var(--text-primary); border-radius: 2px; page-break-inside: avoid; }
-        body.print-mode .flashcard-inner { transform: none !important; display: flex; flex-direction: column; }
-        body.print-mode .flashcard-front, body.print-mode .flashcard-back {
-            position: static; height: auto; border: none; box-shadow: none; background: transparent; color: var(--text-primary); transform: none; padding: 4px 7px;
-        }
-        body.print-mode .flashcard-front { border-bottom: 1px dashed #aaa; font-size: 0.76rem; }
-        body.print-mode .flashcard-back { font-size: 0.69rem; }
+        body.print-mode .card { background: transparent; border: none; padding: 0; box-shadow: none; margin-bottom: 0; }
 
         .page-footer {
-            margin-top: auto; border-top: 1px solid var(--gold); padding-top: 6px;
-            display: flex; justify-content: space-between; font-size: 0.74rem; color: var(--text-secondary); font-family: 'Playfair Display', serif;
+            margin-top: auto; border-top: 1px solid var(--gold); padding-top: 10px;
+            display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--text-secondary); font-family: 'Playfair Display', serif;
+        }
+
+        @media (max-width: 768px) {
+            #btn-fullscreen { display: none !important; }
+            .nav-group { gap: 8px; flex-wrap: wrap; justify-content: center; }
+            .nav-btn { padding: 6px 10px; font-size: 0.8rem; }
+            nav { padding: 10px; }
         }
 
         @media print {
             @page { size: A4; margin: 0; }
-            nav, details.muster-drawer summary::after { display: none !important; }
+            nav { display: none !important; }
         }
 
-        @media screen and (min-width: 1250px) {
-            html:not(:has(body.print-mode)) { font-size: 16.8px; }
-            body:not(.print-mode) .card { padding: 26px 32px; border-width: 1.5px; }
+        /* PC-Modus */
+        @media screen and (min-width: 1200px) {
+            html:not(:has(body.print-mode)) { font-size: 17.5px; }
+            body:not(.print-mode) { font-weight: 500; line-height: 1.65; --text-secondary: #4A5A4C; }
+            body:not(.print-mode) h1, body:not(.print-mode) h2, body:not(.print-mode) h3, body:not(.print-mode) .highlight { font-weight: 700; }
+            body:not(.print-mode) .card { border-width: 1.5px; padding: 32px 36px; box-shadow: 0 6px 22px rgba(45, 58, 46, 0.07); }
         }
     </style>
 </head>
@@ -287,887 +165,206 @@
         </div>
     </nav>
 
-    <div class="content-wrapper">
+    <div class="content-wrapper" id="content">
 
         <!-- ============================================================
-             SEITE 1: BLOCK 1 – 1. CHEMISCHE SYSTEME, ZUSTANDS- & PROZESSGRÖSSEN
+             SEITE 1: BLOCK 1 – SYSTEME, 1. HAUPTSATZ, U, H & KALORIMETRIE
              ============================================================ -->
         <div class="page">
-            <div class="card">
-                <h1 id="main-title">Chemie LK (J1): Chemische Energetik</h1>
+            <div class="card" id="thema-1">
+                <h1 id="sec-titel">Chemische Energetik<br><small style="font-size: 0.58em; font-weight: normal;">(Chemie LK · J1)</small></h1>
 
-                <div class="block-banner">
-                    <h2 id="sec-block1">Block 1: Chemische Systeme, 1. Hauptsatz, $U$, $H$ &amp; Kalorimetrie</h2>
-                </div>
-
-                <h2 id="sec-b1-1">1. Chemische Systeme, Zustands- &amp; Prozessgrößen</h2>
-
-                <p>Ein <span class="highlight">chemisches System</span> ist ein festgelegter, von der Umgebung abgegrenzter räumlicher Bereich, in dem Reaktionen ablaufen.</p>
-
+                <h2 id="sec-1">1. Chemische Systeme, 1. Hauptsatz, $U$ &amp; Enthalpie $H$</h2>
                 <div class="table-wrapper">
                     <table>
-                        <tr><th>Systemtyp</th><th>Stoffaustausch</th><th>Energieaustausch</th></tr>
-                        <tr><td><span class="highlight">Offenes System</span></td><td>Ja</td><td>Ja</td></tr>
-                        <tr><td><span class="highlight">Geschlossenes System</span></td><td>Nein</td><td>Ja</td></tr>
-                        <tr><td><span class="highlight">Isoliertes System</span></td><td>Nein</td><td>Nein</td></tr>
+                        <tr>
+                            <th>Systemtyp</th>
+                            <th>Stoffaustausch</th>
+                            <th>Energieaustausch</th>
+                            <th>Technische Umsetzung / Beispiel</th>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Offenes System</span></td>
+                            <td>Ja</td>
+                            <td>Ja</td>
+                            <td>Offenes Becherglas ($p = \text{konst.}$)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Geschlossenes System</span></td>
+                            <td>Nein</td>
+                            <td>Ja</td>
+                            <td>Geschlossener Kolben, Bombenkalorimeter ($V = \text{konst.}$)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Isoliertes System</span></td>
+                            <td>Nein</td>
+                            <td>Nein</td>
+                            <td><span class="highlight">Dewar-Gefäß:</span> doppelwandig, evakuiert (gegen Wärmeleitung), innen verspiegelt (gegen Wärmestrahlung), Isolierdeckel</td>
+                        </tr>
                     </table>
                 </div>
 
-                <p>Ein <span class="highlight">Dewar-Gefäß</span> nähert ein isoliertes System technisch an: Es besteht aus einem doppelwandigen, innen verspiegelten (gegen Wärmestrahlung) und evakuierten, also luftleeren Glaskolben (gegen Wärmeleitung) mit Isolierdeckel.</p>
+                <ul>
+                    <li><span class="highlight">Zustandsgrößen</span> ($m, V, p, T, U, H$): beschreiben den aktuellen Zustand eines Systems unabhängig vom Weg.</li>
+                    <li><span class="highlight">Prozessgrößen</span> (Wärme $Q$, Arbeit $W$): beschreiben den Energieaustausch zwischen System und Umgebung nur während eines Prozesses.</li>
+                    <li><span class="highlight">1. Hauptsatz der Thermodynamik:</span> Energie kann weder erzeugt noch vernichtet werden ($\mathbf{\Delta U = Q + W}$). Vom System abgegebene Energie erhält ein negatives Vorzeichen ($&lt; 0$), aufgenommene ein positives ($&gt; 0$).</li>
+                    <li><span class="highlight">Exotherm vs. Endotherm:</span> Exotherme Reaktionen geben Energie an die Umgebung ab ($\Delta_r U &lt; 0, \Delta_r H &lt; 0$); endotherme nehmen Energie auf ($\Delta_r U &gt; 0, \Delta_r H &gt; 0$).</li>
+                    <li><span class="highlight">Volumenarbeit &amp; Reaktionsenthalpie $\Delta_r H$:</span> Entstehen bei konstantem Außendruck $p$ Gase ($\Delta V &gt; 0$), verrichtet das System Volumenarbeit gegen den Außendruck ($\mathbf{W = -p \cdot \Delta V}$).
+                        <ul>
+                            <li>Bei <span class="highlight">$V = \text{konst.}$</span> ($\Delta V = 0 \implies W = 0$): $\mathbf{\Delta_r U = Q_{r,V}}$</li>
+                            <li>Bei <span class="highlight">$p = \text{konst.}$</span> (offenes Gefäß): $\mathbf{\Delta_r H = Q_{r,p} = \Delta_r U + p \cdot \Delta V}$ (ohne Gasbeteiligung gilt $\Delta_r H \approx \Delta_r U$).</li>
+                            <li><span class="highlight">Molare Reaktionsenthalpie:</span> $\Delta_r H_m = \frac{\Delta_r H}{n}$ in $\text{kJ/mol}$ (Standardbedingungen: $25\,^\circ\text{C} = 298\text{ K}, 1000\text{ hPa}$, Symbol $\Delta_r H^0_m$).</li>
+                        </ul>
+                    </li>
+                </ul>
 
-                <!-- SVG 1: Schematischer Vergleich der 3 Systeme + Querschnitt Dewar-Gefäß -->
-                <div class="graphic-box">
-                    <div class="graphic-title">Systemvergleich (Stoff- &amp; Energieaustausch) &amp; Querschnitt eines Dewar-Gefäßes</div>
-                    <svg class="graphic-svg" viewBox="0 0 780 242" xmlns="http://www.w3.org/2000/svg" aria-label="Systemtypen und Querschnitt eines Dewar-Gefäßes">
-                        <rect x="0" y="0" width="780" height="242" rx="6" fill="#FDFCF8"/>
-
-                        <!-- LINKER BEREICH: 3 Systeme in der Umgebung -->
-                        <rect x="8" y="8" width="446" height="226" rx="7" fill="#FAF8F3" stroke="#C9A96E" stroke-dasharray="5,3"/>
-                        <text x="231" y="25" text-anchor="middle" font-family="Playfair Display, serif" font-size="12" font-weight="700" fill="#3A5A3F">UMGEBUNG: Vergleich der 3 Systemtypen</text>
-
-                        <!-- 1. Offenes System -->
-                        <rect x="18" y="36" width="136" height="188" rx="6" fill="#fff" stroke="#3A5A3F"/>
-                        <text x="86" y="53" text-anchor="middle" font-family="Playfair Display, serif" font-size="11" font-weight="700" fill="#3A5A3F">Offenes System</text>
-                        <path d="M 68 88 L 68 154 A 18 18 0 0 0 104 154 L 104 88" fill="none" stroke="#2D3A2E" stroke-width="2.1"/>
-                        <path d="M 70 124 L 70 153 A 16 16 0 0 0 102 153 L 102 124 Z" fill="rgba(58,90,63,0.16)"/>
-                        <line x1="86" y1="64" x2="86" y2="98" stroke="#2B6CB0" stroke-width="2"/>
-                        <polygon points="86,60 82,67 90,67" fill="#2B6CB0"/><polygon points="86,102 82,95 90,95" fill="#2B6CB0"/>
-                        <text x="56" y="79" text-anchor="end" font-family="Raleway" font-size="8.8" font-weight="700" fill="#2B6CB0">Stoff</text>
-                        <line x1="98" y1="138" x2="132" y2="138" stroke="#9E3B2E" stroke-width="2"/>
-                        <polygon points="94,138 101,134 101,142" fill="#9E3B2E"/><polygon points="136,138 129,134 129,142" fill="#9E3B2E"/>
-                        <text x="122" y="128" text-anchor="middle" font-family="Raleway" font-size="8.8" font-weight="700" fill="#9E3B2E">Energie</text>
-                        <text x="86" y="196" text-anchor="middle" font-family="Raleway" font-size="8.8" font-weight="700" fill="#3A5A3F">Stoff: Ja</text>
-                        <text x="86" y="210" text-anchor="middle" font-family="Raleway" font-size="8.8" font-weight="700" fill="#3A5A3F">Energie: Ja</text>
-
-                        <!-- 2. Geschlossenes System -->
-                        <rect x="163" y="36" width="136" height="188" rx="6" fill="#fff" stroke="#3A5A3F"/>
-                        <text x="231" y="53" text-anchor="middle" font-family="Playfair Display, serif" font-size="11" font-weight="700" fill="#3A5A3F">Geschlossenes S.</text>
-                        <rect x="211" y="80" width="40" height="10" rx="2" fill="#8C6D32"/>
-                        <path d="M 213 88 L 213 154 A 18 18 0 0 0 249 154 L 249 88" fill="none" stroke="#2D3A2E" stroke-width="2.1"/>
-                        <path d="M 215 124 L 215 153 A 16 16 0 0 0 247 153 L 247 124 Z" fill="rgba(58,90,63,0.16)"/>
-                        <line x1="243" y1="138" x2="277" y2="138" stroke="#9E3B2E" stroke-width="2"/>
-                        <polygon points="239,138 246,134 246,142" fill="#9E3B2E"/><polygon points="281,138 274,134 274,142" fill="#9E3B2E"/>
-                        <text x="268" y="128" text-anchor="middle" font-family="Raleway" font-size="8.8" font-weight="700" fill="#9E3B2E">Energie</text>
-                        <text x="231" y="196" text-anchor="middle" font-family="Raleway" font-size="8.8" font-weight="700" fill="#9E3B2E">Stoff: Nein</text>
-                        <text x="231" y="210" text-anchor="middle" font-family="Raleway" font-size="8.8" font-weight="700" fill="#3A5A3F">Energie: Ja</text>
-
-                        <!-- 3. Isoliertes System -->
-                        <rect x="308" y="36" width="136" height="188" rx="6" fill="#fff" stroke="#3A5A3F"/>
-                        <text x="376" y="53" text-anchor="middle" font-family="Playfair Display, serif" font-size="11" font-weight="700" fill="#3A5A3F">Isoliertes System</text>
-                        <rect x="350" y="79" width="52" height="92" rx="7" fill="#E5DEC9" stroke="#2D3A2E" stroke-width="2"/>
-                        <rect x="358" y="89" width="36" height="73" rx="4" fill="#fff" stroke="#3A5A3F" stroke-width="1.4"/>
-                        <rect x="360" y="73" width="32" height="8" rx="2" fill="#8C6D32"/>
-                        <line x1="396" y1="128" x2="430" y2="128" stroke="#AAA" stroke-width="1.7" stroke-dasharray="3,2"/>
-                        <line x1="409" y1="120" x2="421" y2="136" stroke="#9E3B2E" stroke-width="2.2"/>
-                        <line x1="421" y1="120" x2="409" y2="136" stroke="#9E3B2E" stroke-width="2.2"/>
-                        <text x="376" y="196" text-anchor="middle" font-family="Raleway" font-size="8.8" font-weight="700" fill="#9E3B2E">Stoff: Nein</text>
-                        <text x="376" y="210" text-anchor="middle" font-family="Raleway" font-size="8.8" font-weight="700" fill="#9E3B2E">Energie: Nein</text>
-
-                        <!-- RECHTER BEREICH: Querschnitt Dewar-Gefäß -->
-                        <rect x="464" y="8" width="308" height="226" rx="7" fill="#fff" stroke="#C9A96E"/>
-                        <text x="618" y="25" text-anchor="middle" font-family="Playfair Display, serif" font-size="12" font-weight="700" fill="#3A5A3F">Querschnitt: Dewar-Gefäß</text>
-
-                        <!-- Blechgehäuse außen -->
-                        <rect x="482" y="56" width="112" height="164" rx="5" fill="#DCE0DC" stroke="#2D3A2E" stroke-width="2.2"/>
-                        <!-- Schaumstofflagerung -->
-                        <rect x="486" y="60" width="104" height="156" rx="3" fill="#F3E8CE" stroke="#C9A96E" stroke-dasharray="2,2"/>
-                        <!-- Doppelwandiger Glaskolben -->
-                        <path d="M 502 56 L 502 180 A 36 18 0 0 0 574 180 L 574 56 L 562 56 L 562 173 A 24 12 0 0 1 514 173 L 514 56 Z" fill="#FFFFFF" stroke="#2D3A2E" stroke-width="1.8"/>
-                        <!-- Flüssigkeit im Innenraum -->
-                        <path d="M 515 122 L 515 172 A 23 11 0 0 0 561 172 L 561 122 Z" fill="rgba(43,108,176,0.16)"/>
-                        <!-- Innenverspiegelung -->
-                        <path d="M 505 60 L 505 178 A 33 15 0 0 0 571 178 L 571 60" fill="none" stroke="#9E3B2E" stroke-width="1.5" stroke-dasharray="4,2"/>
-                        <path d="M 511 60 L 511 174 A 27 13 0 0 0 565 174 L 565 60" fill="none" stroke="#9E3B2E" stroke-width="1.5" stroke-dasharray="4,2"/>
-                        <!-- Isolierdeckel -->
-                        <rect x="506" y="38" width="64" height="20" rx="3" fill="#8C6D32" stroke="#2D3A2E" stroke-width="1.6"/>
-
-                        <!-- Beschriftungslinien -->
-                        <line x1="570" y1="47" x2="606" y2="47" stroke="#2D3A2E" stroke-width="1.2"/><circle cx="570" cy="47" r="2.2" fill="#2D3A2E"/>
-                        <text x="611" y="50" font-family="Raleway" font-size="9.3" font-weight="700" fill="#2D3A2E">Isolierdeckel</text>
-
-                        <line x1="568" y1="82" x2="606" y2="82" stroke="#2B6CB0" stroke-width="1.2"/><circle cx="568" cy="82" r="2.2" fill="#2B6CB0"/>
-                        <text x="611" y="81" font-family="Raleway" font-size="9.3" font-weight="700" fill="#2B6CB0">Vakuum (evakuiert)</text>
-                        <text x="611" y="92" font-family="Raleway" font-size="8.4" fill="#5A6B5C">→ gegen Wärmeleitung</text>
-
-                        <line x1="565" y1="118" x2="606" y2="118" stroke="#9E3B2E" stroke-width="1.2"/><circle cx="565" cy="118" r="2.2" fill="#9E3B2E"/>
-                        <text x="611" y="117" font-family="Raleway" font-size="9.3" font-weight="700" fill="#9E3B2E">Verspiegelung</text>
-                        <text x="611" y="128" font-family="Raleway" font-size="8.4" fill="#5A6B5C">→ gegen Wärmestrahlung</text>
-
-                        <line x1="574" y1="154" x2="606" y2="154" stroke="#3A5A3F" stroke-width="1.2"/><circle cx="574" cy="154" r="2.2" fill="#3A5A3F"/>
-                        <text x="611" y="153" font-family="Raleway" font-size="9.3" font-weight="700" fill="#3A5A3F">Doppelwandiger</text>
-                        <text x="611" y="164" font-family="Raleway" font-size="9.3" font-weight="700" fill="#3A5A3F">Glaskolben</text>
-
-                        <line x1="582" y1="194" x2="606" y2="194" stroke="#8C6D32" stroke-width="1.2"/><circle cx="582" cy="194" r="2.2" fill="#8C6D32"/>
-                        <text x="611" y="193" font-family="Raleway" font-size="9.3" font-weight="700" fill="#8C6D32">Schaumstoff &amp;</text>
-                        <text x="611" y="204" font-family="Raleway" font-size="9.3" font-weight="700" fill="#2D3A2E">Blechgehäuse</text>
-                    </svg>
-                </div>
-
-                <div class="merk-card" style="margin-bottom:0;">
-                    <span class="merk-title">📌 Merk-Karte: Größen, 1. Hauptsatz &amp; Teilchenebene</span>
-                    <ul>
-                        <li><span class="highlight">Zustandsgrößen:</span> Beschreiben den aktuellen Zustand eines Systems unabhängig vom Weg (Masse $m$, Volumen $V$, Druck $p$, Temperatur $T$, innere Energie $U$).</li>
-                        <li><span class="highlight">Prozessgrößen:</span> Beschreiben den Energieaustausch zwischen System und Umgebung ausschließlich während eines Prozesses (Wärme $Q$, Arbeit $W$).</li>
-                        <li><span class="highlight">1. Hauptsatz der Thermodynamik:</span> Energie kann weder neu geschaffen noch vernichtet werden; die Gesamtenergie aus System und Umgebung bleibt konstant ($\Delta U = Q + W$).</li>
-                        <li><span class="highlight">Wärmeübertragung (Teilchenebene):</span> Wärme fließt vom wärmeren System (höhere Teilchengeschwindigkeit) zum kälteren, bis beide im thermischen Gleichgewicht die gleiche mittlere kinetische Energie besitzen.</li>
-                    </ul>
-                </div>
+                <h2 id="sec-2">2. Kalorimetrie &amp; Wärmekapazität $C_K$</h2>
+                <ul>
+                    <li><span class="highlight">Grundgleichung im Kalorimeter</span> ($c_w = 4{,}19\,\text{J}\cdot\text{g}^{-1}\cdot\text{K}^{-1}$): Die von der Reaktion abgegebene Wärme erwärmt Lösung ($m_w$) und Kalorimeter ($C_K$):
+                        $$\Delta_r H = Q_{\text{Reaktion}} = -(Q_w + Q_K) = -(c_w \cdot m_w + C_K) \cdot \Delta T \qquad (\Delta T = T_{\text{Ende}} - T_{\text{Start}})$$</li>
+                    <li><span class="highlight">Bestimmung von $C_K$ (Mischungsmethode):</span> Kaltes Wasser ($m_{w,1}, T_1$) im Kalorimeter ($T_1$) mit warmem Wasser ($m_{w,2}, T_2$) mischen $\to$ Mischtemperatur $T_{\text{misch}}$:
+                        $$Q_K = -Q_{w,2} - Q_{w,1} \implies C_K = \frac{-c_w \cdot m_{w,2} \cdot (T_{\text{misch}} - T_2) - c_w \cdot m_{w,1} \cdot (T_{\text{misch}} - T_1)}{T_{\text{misch}} - T_1}$$</li>
+                    <li><span class="highlight">Graphische Extrapolation im $T$-$t$-Diagramm:</span> Zum Ausgleich von Wärmeverlusten an die Umgebung werden Vor- und Nachperiode linear verlängert und eine Senkrechte im Temperaturanstieg so gelegt, dass die eingeschlossenen Dreiecksflächen gleich groß sind ($\mathbf{A_1 = A_2}$).</li>
+                </ul>
             </div>
             <div class="page-footer">
-                <span>Chemische Energetik – Block 1 (Systeme, Dewar-Gefäß, Zustands- &amp; Prozessgrößen)</span>
+                <span>[Chemische Energetik – Block 1]</span>
                 <span>Olga V.</span>
                 <span>Seite 1</span>
             </div>
         </div>
 
         <!-- ============================================================
-             SEITE 2: BLOCK 1 – 2. EXOTHERM/ENDOTHERM, INNERE ENERGIE U & ENTHALPIE H
+             SEITE 2: BLOCK 2 – NEUTRALISATION, PHASENÜBERGÄNGE & VERBRENNUNG
              ============================================================ -->
         <div class="page">
-            <div class="card">
-                <h2 id="sec-b1-2">2. Exotherm/Endotherm, Innere Energie $U$ &amp; Enthalpie $H$</h2>
+            <div class="card" id="thema-2">
+                <h2 id="sec-3">3. Neutralisationsenthalpie &amp; Phasenübergänge</h2>
+                <h3>A) Neutralisationsenthalpie starker Säuren und Basen</h3>
+                <ul>
+                    <li><span class="highlight">Ionengleichung:</span> $\text{H}_3\text{O}^+\text{(aq)} + \text{OH}^-\text{(aq)} \rightarrow 2\text{ H}_2\text{O(l)}$ mit $\mathbf{\Delta_r H^0_m \approx -57{,}5\text{ kJ/mol}}$.</li>
+                    <li><span class="highlight">Unabhängigkeit vom Gegenion:</span> Da bei allen starken Säuren/Basen dieselbe Teilchenreaktion abläuft, liefern $\text{HCl}$ und $\text{HNO}_3$ denselben Wert. Eine <span class="highlight">zweiprotonige Säure</span> ($\text{H}_2\text{SO}_4$) liefert bereits bei <strong>halber Konzentration</strong> ($0{,}5\text{ mol/L}$) und gleichem Volumen dieselbe Stoffmenge $n(\text{H}_3\text{O}^+)$ und damit dasselbe $\Delta T$ wie $1{,}0\text{ mol/L}$ $\text{HCl}$.</li>
+                </ul>
 
-                <div class="merk-card">
-                    <span class="merk-title">📌 Merk-Karte: Energieumsatz &amp; Innere Energie</span>
-                    <ul>
-                        <li><span class="highlight">Exotherme Reaktion:</span> Wärmeabgabe an die Umgebung ($Q_r &lt; 0$); innere Energie und Enthalpie des Systems nehmen ab ($\Delta_r U &lt; 0$, $\Delta_r H &lt; 0$).</li>
-                        <li><span class="highlight">Endotherme Reaktion:</span> Wärmeaufnahme aus der Umgebung ($Q_r &gt; 0$); innere Energie und Enthalpie des Systems nehmen zu ($\Delta_r U &gt; 0$, $\Delta_r H &gt; 0$).</li>
-                        <li><span class="highlight">Innere Energie $U$:</span> Summe aller kinetischen (Teilchenbewegung) und potenziellen Energien (Bindungsenergien, zwischenmolekulare Kräfte) im System; als Absolutwert nicht messbar.</li>
-                        <li><span class="highlight">Reaktionsenergie $\Delta_r U$:</span> Messbare Änderung der inneren Energie bei einer Reaktion gemäß $\Delta_r U = U_2 - U_1$ (Einheit: $\text{J}$ bzw. $\text{kJ}$).</li>
-                    </ul>
+                <h3>B) Enthalpie bei Phasenübergängen</h3>
+                <ul>
+                    <li><span class="highlight">Endotherm ($+\Delta H$):</span> Schmelzen ($\Delta_{\text{fus}}H$), Verdampfen ($\Delta_{\text{vap}}H$), Sublimieren ($\Delta_{\text{sub}}H = \Delta_{\text{fus}}H + \Delta_{\text{vap}}H$).</li>
+                    <li><span class="highlight">Exotherm ($-\Delta H$, betragsgleich):</span> Erstarren, Kondensieren ($\Delta_{\text{kond}}H = -\Delta_{\text{vap}}H$), Resublimieren. Für Wasser gilt $\mathbf{\Delta_{\text{vap}}H^0_m(\text{H}_2\text{O}) = +40{,}7\text{ kJ/mol}}$.</li>
+                    <li><span class="highlight">Teilchenebene:</span> Während des Schmelzens/Siedens bleibt die Temperatur $T$ konstant, da die zugeführte Wärme ausschließlich die Anziehungskräfte zwischen den Teilchen aufbricht ($E_{\text{pot}}$ steigt, mittlere $E_{\text{kin}}$ bleibt konstant). Abstufung der Schmelzenthalpien nach Bindungsstärke:
+                        $$\text{Si (Atomgitter)} &gt; \text{NaCl (Ionengitter)} &gt; \text{Al (Metallgitter)} &gt; \text{H}_2\text{O (H-Brücken)} &gt; \text{H}_2\text{S (Dipol/VdW)}$$</li>
+                </ul>
+
+                <h2 id="sec-4">4. Verbrennungsenthalpie $\Delta_c H^0_m$, Brennwert $H_s$ &amp; Heizwert $H_i$</h2>
+                <ul>
+                    <li><span class="highlight">Molare Standardverbrennungsenthalpie $\Delta_c H^0_m$:</span> Enthalpieänderung bei vollständiger Verbrennung von $1\text{ mol}$ Stoff mit $\text{O}_2$; alle Produkte liegen auf $25\,^\circ\text{C}$ abgekühlt vor (entstandenes <span class="highlight">Wasser ist flüssig</span>!).</li>
+                    <li><span class="highlight">Spezifischer Brennwert $H_s$</span> ($\text{H}_2\text{O(l)}$, inkl. Kondensationswärme) vs. <span class="highlight">Heizwert $H_i$</span> ($\text{H}_2\text{O(g)}$ entweicht gasförmig; bei $z\text{ mol }\text{H}_2\text{O}$ pro Mol Brennstoff):
+                        $$H_s = \frac{|\Delta_c H^0_m|}{M}, \qquad H_i = \frac{|\Delta_c H^0_m + z \cdot 40{,}7\text{ kJ/mol}|}{M}$$
+                        Entsteht bei der Verbrennung kein Wasser (z. B. reiner Kohlenstoff/Graphit), gilt $\mathbf{H_s = H_i}$.</li>
+                </ul>
+
+                <div class="table-wrapper">
+                    <table>
+                        <tr>
+                            <th>Kalorimetertyp</th>
+                            <th>Funktionsweise &amp; Messgröße</th>
+                            <th>Genauigkeit / Fehlerquellen</th>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Offenes Verbrennungskalorimeter</span></td>
+                            <td>Verbrennung unter konstantem Druck ($p = \text{konst.}$), Abgase strömen durch Wärmetauscher ($\to$ misst direkt $\Delta_c H$).</td>
+                            <td>Geringere Genauigkeit: unvollständige Verbrennung (Ruß), Abgaswärmeverluste, unvollständige Isolation.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Bombenkalorimeter</span></td>
+                            <td>Elektrische Zündung im geschlossenen Druckgefäß ($V = \text{konst.}$) mit reinem $\text{O}_2$-Überdruck ($\to$ misst $\Delta_c U$, Umrechnung über $\Delta_c H = \Delta_c U + p\cdot\Delta V$).</td>
+                            <td>Sehr hohe Genauigkeit: vollständige Verbrennung, kein Stoff-/Abgasverlust, isolierter Wassermantel.</td>
+                        </tr>
+                    </table>
                 </div>
-
-                <!-- SVG 2: Zwei Energiediagramme (Links exotherm, Rechts endotherm) -->
-                <div class="graphic-box">
-                    <div class="graphic-title">Energiediagramme: Exotherme Reaktion ($\Delta_r H &lt; 0$) vs. Endotherme Reaktion ($\Delta_r H &gt; 0$)</div>
-                    <svg class="graphic-svg" viewBox="0 0 740 208" xmlns="http://www.w3.org/2000/svg" aria-label="Energiediagramme Exotherm links und Endotherm rechts">
-                        <rect x="0" y="0" width="740" height="208" rx="6" fill="#FDFCF8"/>
-
-                        <!-- LINKS: Exotherme Reaktion -->
-                        <text x="185" y="21" text-anchor="middle" font-family="Playfair Display, serif" font-size="12.5" font-weight="700" fill="#9E3B2E">Exotherme Reaktion (ΔrH &lt; 0)</text>
-                        <line x1="46" y1="182" x2="335" y2="182" stroke="#2D3A2E" stroke-width="1.6"/>
-                        <polygon points="339,182 331,178 331,186" fill="#2D3A2E"/>
-                        <line x1="46" y1="182" x2="46" y2="28" stroke="#2D3A2E" stroke-width="1.6"/>
-                        <polygon points="46,24 42,32 50,32" fill="#2D3A2E"/>
-                        <text x="14" y="40" font-family="Raleway" font-size="10.2" font-weight="700" fill="#2D3A2E">Energie</text>
-                        <text x="242" y="198" font-family="Raleway" font-size="9.8" fill="#5A6B5C">Reaktionsverlauf</text>
-
-                        <line x1="56" y1="90" x2="122" y2="90" stroke="#2D3A2E" stroke-width="2.6"/>
-                        <text x="89" y="82" text-anchor="middle" font-family="Raleway" font-size="10.2" font-weight="700" fill="#2D3A2E">Edukte</text>
-                        <line x1="122" y1="90" x2="292" y2="90" stroke="#BBB" stroke-dasharray="4,3"/>
-                        <path d="M 122 90 C 150 90, 158 44, 184 44 C 210 44, 222 154, 248 154" fill="none" stroke="#2D3A2E" stroke-width="2.3"/>
-                        <line x1="248" y1="154" x2="322" y2="154" stroke="#2D3A2E" stroke-width="2.6"/>
-                        <text x="285" y="170" text-anchor="middle" font-family="Raleway" font-size="10.2" font-weight="700" fill="#2D3A2E">Produkte</text>
-
-                        <line x1="184" y1="90" x2="184" y2="49" stroke="#3A5A3F" stroke-width="2"/>
-                        <polygon points="184,44 180,52 188,52" fill="#3A5A3F"/>
-                        <text x="191" y="70" font-family="Raleway" font-size="9.5" font-weight="700" fill="#3A5A3F">Aktivierungsenergie</text>
-
-                        <line x1="282" y1="90" x2="282" y2="149" stroke="#9E3B2E" stroke-width="2.2"/>
-                        <polygon points="282,154 278,146 286,146" fill="#9E3B2E"/>
-                        <text x="289" y="126" font-family="Raleway" font-size="10.2" font-weight="700" fill="#9E3B2E">ΔrH &lt; 0</text>
-
-                        <!-- RECHTS: Endotherme Reaktion -->
-                        <text x="558" y="21" text-anchor="middle" font-family="Playfair Display, serif" font-size="12.5" font-weight="700" fill="#2B6CB0">Endotherme Reaktion (ΔrH &gt; 0)</text>
-                        <line x1="418" y1="182" x2="707" y2="182" stroke="#2D3A2E" stroke-width="1.6"/>
-                        <polygon points="711,182 703,178 703,186" fill="#2D3A2E"/>
-                        <line x1="418" y1="182" x2="418" y2="28" stroke="#2D3A2E" stroke-width="1.6"/>
-                        <polygon points="418,24 414,32 422,32" fill="#2D3A2E"/>
-                        <text x="386" y="40" font-family="Raleway" font-size="10.2" font-weight="700" fill="#2D3A2E">Energie</text>
-                        <text x="614" y="198" font-family="Raleway" font-size="9.8" fill="#5A6B5C">Reaktionsverlauf</text>
-
-                        <line x1="428" y1="150" x2="494" y2="150" stroke="#2D3A2E" stroke-width="2.6"/>
-                        <text x="461" y="166" text-anchor="middle" font-family="Raleway" font-size="10.2" font-weight="700" fill="#2D3A2E">Edukte</text>
-                        <line x1="494" y1="150" x2="664" y2="150" stroke="#BBB" stroke-dasharray="4,3"/>
-                        <path d="M 494 150 C 522 150, 530 44, 556 44 C 582 44, 592 98, 618 98" fill="none" stroke="#2D3A2E" stroke-width="2.3"/>
-                        <line x1="618" y1="98" x2="692" y2="98" stroke="#2D3A2E" stroke-width="2.6"/>
-                        <text x="655" y="90" text-anchor="middle" font-family="Raleway" font-size="10.2" font-weight="700" fill="#2D3A2E">Produkte</text>
-
-                        <line x1="556" y1="150" x2="556" y2="49" stroke="#3A5A3F" stroke-width="2"/>
-                        <polygon points="556,44 552,52 560,52" fill="#3A5A3F"/>
-                        <text x="563" y="75" font-family="Raleway" font-size="9.5" font-weight="700" fill="#3A5A3F">Aktivierungsenergie</text>
-
-                        <line x1="654" y1="150" x2="654" y2="103" stroke="#2B6CB0" stroke-width="2.2"/>
-                        <polygon points="654,98 650,106 658,106" fill="#2B6CB0"/>
-                        <text x="661" y="129" font-family="Raleway" font-size="10.2" font-weight="700" fill="#2B6CB0">ΔrH &gt; 0</text>
-                    </svg>
-                </div>
-
-                <div class="formula-box">
-                    <span class="formula-title">📐 Formel-Box &amp; Herleitung: Reaktionsenthalpie $\Delta_r H$</span>
-                    <ul>
-                        <li><span class="highlight">Reaktion bei $V = \text{konst.}$:</span> Im geschlossenen, druckfesten Gefäß ist die Volumenarbeit $W = 0$, sodass die Reaktionsenergie komplett als Wärme auftritt: $Q_{r,V} = \Delta_r U$.</li>
-                        <li><span class="highlight">Reaktion bei $p = \text{konst.}$:</span> Im offenen System mit Gasentwicklung wird Volumenarbeit $W = -p \cdot \Delta V$ gegen den äußeren Luftdruck verrichtet.</li>
-                        <li><span class="highlight">Reaktionsenthalpie $\Delta_r H$:</span> Aus $\Delta_r U = Q_{r,p} - p \cdot \Delta V$ folgt durch Umstellen die Reaktionsenthalpie: $Q_{r,p} = \Delta_r U + p \cdot \Delta V = \Delta_r H$ (Einheit: $\text{J}$ bzw. $\text{kJ}$).</li>
-                        <li><span class="highlight">Fallunterscheidung:</span> $\Delta V &gt; 0 \Rightarrow W &lt; 0$ (System verrichtet Arbeit an Umgebung); $\Delta V &lt; 0 \Rightarrow W &gt; 0$ (Umgebung verrichtet Arbeit am System); ohne Gase gilt $\Delta_r H \approx \Delta_r U$.</li>
-                    </ul>
-                </div>
-
-                <!-- SVG 3: Stufendiagramm ΔrU vs. ΔrH bei Volumenzunahme (ΔV > 0) -->
-                <div class="graphic-box">
-                    <div class="graphic-title">Stufendiagramm für eine exotherme Reaktion mit Volumenzunahme ($\Delta V &gt; 0$): $\Delta_r U$ vs. $\Delta_r H$</div>
-                    <svg class="graphic-svg" viewBox="0 0 740 205" xmlns="http://www.w3.org/2000/svg" aria-label="Stufendiagramm Innere Energie und Enthalpie">
-                        <rect x="0" y="0" width="740" height="205" rx="6" fill="#FDFCF8"/>
-                        <line x1="44" y1="188" x2="44" y2="18" stroke="#2D3A2E" stroke-width="1.6"/>
-                        <polygon points="44,14 40,22 48,22" fill="#2D3A2E"/>
-                        <text x="12" y="28" font-family="Raleway" font-size="10.2" font-weight="700" fill="#2D3A2E">Energie</text>
-
-                        <line x1="80" y1="44" x2="665" y2="44" stroke="#D5CDB8" stroke-dasharray="4,3"/>
-                        <line x1="185" y1="126" x2="665" y2="126" stroke="#D5CDB8" stroke-dasharray="4,3"/>
-
-                        <!-- LINKS: Innere Energie U -->
-                        <text x="220" y="24" text-anchor="middle" font-family="Playfair Display, serif" font-size="12" font-weight="700" fill="#3A5A3F">Innere Energie: ΔrU = Qr,p + W</text>
-                        <line x1="80" y1="44" x2="345" y2="44" stroke="#2D3A2E" stroke-width="2.6"/>
-                        <text x="120" y="37" text-anchor="middle" font-family="Raleway" font-size="10.2" font-weight="700" fill="#2D3A2E">U₁ (Edukte)</text>
-
-                        <line x1="185" y1="126" x2="345" y2="126" stroke="#8C6D32" stroke-width="1.6" stroke-dasharray="4,2"/>
-
-                        <line x1="80" y1="172" x2="345" y2="172" stroke="#2D3A2E" stroke-width="2.6"/>
-                        <text x="125" y="187" text-anchor="middle" font-family="Raleway" font-size="10.2" font-weight="700" fill="#2D3A2E">U₂ (Produkte)</text>
-
-                        <line x1="115" y1="44" x2="115" y2="166" stroke="#3A5A3F" stroke-width="2.5"/>
-                        <polygon points="115,171 110,163 120,163" fill="#3A5A3F"/>
-                        <text x="124" y="112" font-family="Raleway" font-size="11" font-weight="700" fill="#3A5A3F">ΔrU</text>
-
-                        <line x1="225" y1="44" x2="225" y2="120" stroke="#9E3B2E" stroke-width="2.3"/>
-                        <polygon points="225,125 220,117 230,117" fill="#9E3B2E"/>
-                        <text x="234" y="88" font-family="Raleway" font-size="10.2" font-weight="700" fill="#9E3B2E">Wärme Qr,p</text>
-
-                        <line x1="225" y1="126" x2="225" y2="166" stroke="#2B6CB0" stroke-width="2.3"/>
-                        <polygon points="225,171 220,163 230,163" fill="#2B6CB0"/>
-                        <text x="234" y="153" font-family="Raleway" font-size="10.2" font-weight="700" fill="#2B6CB0">Arbeit W = −p·ΔV</text>
-
-                        <!-- RECHTS: Enthalpie H -->
-                        <text x="560" y="24" text-anchor="middle" font-family="Playfair Display, serif" font-size="12" font-weight="700" fill="#9E3B2E">Enthalpie (p = konst.): ΔrH = Qr,p</text>
-                        <line x1="455" y1="44" x2="665" y2="44" stroke="#2D3A2E" stroke-width="2.6"/>
-                        <text x="560" y="37" text-anchor="middle" font-family="Raleway" font-size="10.2" font-weight="700" fill="#2D3A2E">H₁ (Edukte)</text>
-
-                        <line x1="455" y1="126" x2="665" y2="126" stroke="#9E3B2E" stroke-width="2.6"/>
-                        <text x="560" y="143" text-anchor="middle" font-family="Raleway" font-size="10.2" font-weight="700" fill="#9E3B2E">H₂ (Produkte)</text>
-
-                        <line x1="535" y1="44" x2="535" y2="120" stroke="#9E3B2E" stroke-width="2.6"/>
-                        <polygon points="535,125 530,117 540,117" fill="#9E3B2E"/>
-                        <text x="546" y="89" font-family="Raleway" font-size="11" font-weight="700" fill="#9E3B2E">ΔrH = Qr,p</text>
-                    </svg>
-                </div>
-
-                <details class="muster-drawer" style="margin-bottom:0;">
-                    <summary>📂 Herleitung der Volumenarbeit $W = -p \cdot \Delta V$</summary>
-                    <div class="muster-body">
-                        <p>Aus Arbeit $W = F \cdot \Delta s$ und Druck $p = \dfrac{F}{A}$ folgt für die Kraft des Außendrucks auf einen Stempel der Fläche $A$ die Beziehung $F_{\text{außen}} = p \cdot A$. Um den Stempel gegen den Luftdruck um $\Delta s$ zu verschieben, bringt das System die Gegenkraft $F_{\text{innen}} = -F_{\text{außen}}$ auf, woraus mit $\Delta V = A \cdot \Delta s$ folgt:</p>
-                        $$W = F_{\text{innen}} \cdot \Delta s = -F_{\text{außen}} \cdot \Delta s = -p \cdot A \cdot \Delta s = -p \cdot \Delta V$$
-                    </div>
-                </details>
             </div>
             <div class="page-footer">
-                <span>Chemische Energetik – Block 1 (Exotherm/Endotherm, Innere Energie U &amp; Enthalpie H)</span>
+                <span>[Chemische Energetik – Block 2]</span>
                 <span>Olga V.</span>
                 <span>Seite 2</span>
             </div>
         </div>
 
         <!-- ============================================================
-             SEITE 3: BLOCK 1 – 3. KALORIMETRIE-GRUNDLAGEN & WÄRMEKAPAZITÄT CK
+             SEITE 3: BLOCK 3 – SATZ VON HESS, BILDUNGS- & BINDUNGSENTHALPIE
              ============================================================ -->
         <div class="page">
-            <div class="card">
-                <h2 id="sec-b1-3">3. Kalorimetrie-Grundlagen &amp; Wärmekapazität $C_K$</h2>
+            <div class="card" id="thema-3">
+                <h2 id="sec-5">5. Molare Standardbildungsenthalpie $\Delta_f H^0_m$ &amp; Satz von Hess</h2>
+                <ul>
+                    <li><span class="highlight">Molare Standardbildungsenthalpie $\Delta_f H^0_m$:</span> Enthalpieänderung bei der Bildung von $1\text{ mol}$ einer Verbindung direkt aus den <span class="highlight">stabilsten reinen Elementen</span> unter Standardbedingungen ($25\,^\circ\text{C}, 1000\text{ hPa}$).</li>
+                    <li><span class="highlight">Elemente im Standardzustand:</span> Für alle reinen Elemente in ihrer stabilsten Modifikation (z. B. $\text{O}_2\text{(g)}, \text{H}_2\text{(g)}, \text{N}_2\text{(g)}, \text{C(s, Graphit)}$) gilt per Definition $\mathbf{\Delta_f H^0_m = 0\text{ kJ/mol}}$.</li>
+                    <li><span class="highlight">Satz von Hess (Wegunabhängigkeit):</span> Da $H$ eine Zustandsgröße ist, hängt $\Delta_r H$ nur vom Anfangs- (Edukte) und Endzustand (Produkte) ab, nicht vom Reaktionsweg:
+                        $$\mathbf{\Delta_r H^0 = \sum n_{\text{Produkte}} \cdot \Delta_f H^0_m(\text{Produkte}) - \sum n_{\text{Edukte}} \cdot \Delta_f H^0_m(\text{Edukte})}$$</li>
+                    <li><span class="highlight">Klassische Anwendung ($\text{CO}$-Bildung):</span> $\Delta_f H^0_m(\text{CO})$ ist wegen gleichzeitiger $\text{CO}_2$-Bildung nicht direkt messbar, lässt sich aber über den Umweg $\text{C(s)} + \text{O}_2\text{(g)} \to \text{CO}_2\text{(g)}$ ($-393\text{ kJ/mol}$) abzüglich $\text{CO(g)} + \frac{1}{2}\text{O}_2\text{(g)} \to \text{CO}_2\text{(g)}$ ($-282\text{ kJ/mol}$) exakt zu $\mathbf{-111\text{ kJ/mol}}$ berechnen.</li>
+                    <li><span class="highlight">Temperaturabhängigkeit von $\Delta_r H$:</span> Ohne Phasenwechsel ist $\Delta_r H$ kaum temperaturabhängig, da die zum Erwärmen/Abkühlen nötigen Wärmemengen ($\Delta H = c \cdot M \cdot n \cdot \Delta T$) klein sind und sich bei Edukten und Produkten fast aufheben. Tritt ein <span class="warn">Phasenwechsel</span> auf, muss $\Delta_{\text{vap}}H$ bzw. $\Delta_{\text{fus}}H$ im Hess-Zyklus eingerechnet werden!</li>
+                </ul>
 
-                <div class="formula-box">
-                    <span class="formula-title">📐 Formel-Box: Offenes Kalorimeter</span>
-                    <ul>
-                        <li><span class="highlight">Grundformel (nur Wasser):</span> $Q_r = c_w \cdot m_w \cdot \Delta T$ mit $c_w = 4{,}18\text{ J/(g}\cdot\text{K)}$, Wassermasse $m_w$ in $\text{g}$ und $\Delta T = \vartheta_2 - \vartheta_1$ in $\text{K}$.</li>
-                        <li><span class="highlight">Vorzeichen-Regel:</span> Bei Temperaturanstieg des Wassers ist die Reaktion exotherm ($Q_r &lt; 0$), bei Temperaturabfall endotherm ($Q_r &gt; 0$).</li>
-                        <li><span class="highlight">Gesamtformel (inkl. Kalorimeter):</span> $|Q_r| = (c_w \cdot m_w + C_K) \cdot |\Delta T|$ mit der Wärmekapazität des Kalorimeters $C_K$ in $\text{J/K}$.</li>
-                        <li><span class="highlight">Molare Reaktionsenthalpie:</span> $\Delta_r H_m = \dfrac{Q_r}{n}$ in $\text{J/mol}$ bzw. $\text{kJ/mol}$ (bezogen auf die Stoffmenge $n$ in $\text{mol}$).</li>
-                    </ul>
-                </div>
-
-                <div class="recipe-box">
-                    <span class="recipe-title">👩‍🍳 3-Schritt-Kochrezept: Wärmekapazität $C_K$ bestimmen</span>
-                    <ol>
-                        <li><span class="highlight">Mischen:</span> Kaltes Wasser ($m_{w,1}$, $T_1$) im Kalorimeter vorlegen, warmes Wasser ($m_{w,2}$, $T_2$) zugeben und nach kurzem Rühren die Mischtemperatur $T_{\text{misch}}$ messen.</li>
-                        <li><span class="highlight">Wärmebilanz:</span> Aus $Q_{\text{Aufnahme}} = -Q_{\text{Abgabe}}$ folgt $Q_{w,1} + Q_K = -Q_{w,2}$ und damit $Q_K = -Q_{w,2} - Q_{w,1}$ &nbsp;(wobei $Q_w = c_w \cdot m_w \cdot (T_{\text{misch}} - T_{\text{Start}})$).</li>
-                        <li><span class="highlight">Kapazität berechnen:</span> Die vom Kalorimeter aufgenommene Wärme $Q_K$ durch seine Temperaturerhöhung teilen: $C_K = \dfrac{Q_K}{T_{\text{misch}} - T_1}$.</li>
-                    </ol>
-                </div>
-
-                <details class="muster-drawer">
-                    <summary>📂 Beispielrechnung zur Bestimmung von $C_K$</summary>
-                    <div class="muster-body">
-                        <p style="margin-bottom:0;">Im Kalorimeter werden $m_{w,1} = 50\text{ g}$ kaltes Wasser ($T_1 = 22{,}4\,^\circ\text{C}$) mit $m_{w,2} = 50\text{ g}$ warmem Wasser ($T_2 = 46{,}0\,^\circ\text{C}$) gemischt, was $T_{\text{misch}} = 29{,}5\,^\circ\text{C}$ ergibt. Das warme Wasser gibt $-Q_{w,2} = 50\text{ g} \cdot 4{,}183\text{ J/(g}\cdot\text{K)} \cdot 16{,}5\text{ K} = 3450{,}98\text{ J}$ ab, das kalte Wasser nimmt $Q_{w,1} = 50\text{ g} \cdot 4{,}183\text{ J/(g}\cdot\text{K)} \cdot 7{,}1\text{ K} = 1484{,}97\text{ J}$ auf. Für das Kalorimeter bleibt $Q_K = 3450{,}98\text{ J} - 1484{,}97\text{ J} = 1966{,}01\text{ J}$ und damit $C_K = \dfrac{1966{,}01\text{ J}}{7{,}1\text{ K}} \approx \mathbf{276{,}9\text{ J/K}}$.</p>
-                    </div>
-                </details>
-
-                <!-- SVG 4: Temperatur-Zeit-Diagramm zur grafischen Ermittlung von Δϑ durch Extrapolation -->
-                <div class="graphic-box" style="margin-bottom:0;">
-                    <div class="graphic-title">Temperatur-Zeit-Diagramm zur grafischen Ermittlung von $\Delta \vartheta$ durch Extrapolation ($A_1 = A_2$)</div>
-                    <svg class="graphic-svg" viewBox="0 0 700 212" xmlns="http://www.w3.org/2000/svg" aria-label="Temperatur-Zeit-Diagramm Extrapolation A1 gleich A2">
-                        <rect x="0" y="0" width="700" height="212" rx="6" fill="#FDFCF8"/>
-                        <line x1="64" y1="182" x2="655" y2="182" stroke="#2D3A2E" stroke-width="1.6"/>
-                        <polygon points="659,182 651,178 651,186" fill="#2D3A2E"/>
-                        <line x1="64" y1="182" x2="64" y2="18" stroke="#2D3A2E" stroke-width="1.6"/>
-                        <polygon points="64,14 60,22 68,22" fill="#2D3A2E"/>
-                        <text x="12" y="28" font-family="Raleway" font-size="10.2" font-weight="700" fill="#2D3A2E">Temperatur ϑ</text>
-                        <text x="615" y="199" font-family="Raleway" font-size="10.2" font-weight="700" fill="#2D3A2E">Zeit t</text>
-
-                        <!-- Eingeschlossene Teilflächen A1 und A2 -->
-                        <path d="M 250 140 L 315 135.7 L 315 89.5 Q 286 135 250 140 Z" fill="rgba(201,169,110,0.42)"/>
-                        <path d="M 315 89.5 L 315 36.9 L 380 44 Q 344 45 315 89.5 Z" fill="rgba(58,90,63,0.25)"/>
-
-                        <!-- Gestrichelte Extrapolationsgeraden -->
-                        <line x1="250" y1="140" x2="415" y2="129" stroke="#5A6B5C" stroke-width="1.5" stroke-dasharray="4,3"/>
-                        <line x1="235" y1="28.1" x2="380" y2="44" stroke="#2B6CB0" stroke-width="1.5" stroke-dasharray="4,3"/>
-
-                        <!-- Senkrechte Hilfslinie -->
-                        <line x1="315" y1="22" x2="315" y2="182" stroke="#3A5A3F" stroke-width="1.7" stroke-dasharray="3,2"/>
-
-                        <!-- Messkurve -->
-                        <path d="M 72 152 L 250 140 Q 286 135 315 89.5 Q 344 45 380 44 L 635 72" fill="none" stroke="#2D3A2E" stroke-width="2.5"/>
-
-                        <!-- Schnittpunkte & Δϑ-Pfeil -->
-                        <circle cx="315" cy="135.7" r="3.6" fill="#9E3B2E"/>
-                        <circle cx="315" cy="36.9" r="3.6" fill="#9E3B2E"/>
-                        <line x1="315" y1="36.9" x2="418" y2="36.9" stroke="#9E3B2E" stroke-dasharray="2,2"/>
-                        <line x1="315" y1="135.7" x2="418" y2="135.7" stroke="#9E3B2E" stroke-dasharray="2,2"/>
-                        <line x1="412" y1="42" x2="412" y2="130.7" stroke="#9E3B2E" stroke-width="2.2"/>
-                        <polygon points="412,37 408,45 416,45" fill="#9E3B2E"/>
-                        <polygon points="412,135.7 408,127.7 416,127.7" fill="#9E3B2E"/>
-
-                        <text x="155" y="164" text-anchor="middle" font-family="Raleway" font-size="9.5" font-weight="600" fill="#5A6B5C">Vorperiode (langsamer Anstieg)</text>
-                        <text x="520" y="48" text-anchor="middle" font-family="Raleway" font-size="9.5" font-weight="600" fill="#2B6CB0">Nachperiode (Wärmeverlust)</text>
-                        <text x="302" y="128" text-anchor="end" font-family="Raleway" font-size="10" font-weight="700" fill="#8C6D32">A₁</text>
-                        <text x="328" y="54" font-family="Raleway" font-size="10" font-weight="700" fill="#3A5A3F">A₂</text>
-                        <text x="250" y="196" text-anchor="middle" font-family="Raleway" font-size="9.2" fill="#5A6B5C">Reaktionsstart</text>
-                        <text x="422" y="84" font-family="Raleway" font-size="10.8" font-weight="700" fill="#9E3B2E">korrigiertes Δϑ</text>
-                        <text x="422" y="98" font-family="Raleway" font-size="9.5" font-weight="600" fill="#3A5A3F">(Flächen A₁ = A₂)</text>
-                    </svg>
-                </div>
+                <h2 id="sec-6">6. Molare Standardbindungsenthalpie $\Delta_b H^0_m$</h2>
+                <ul>
+                    <li><span class="highlight">Definition (Dissoziationsenthalpie):</span> Energie, die zur <span class="highlight">homolytischen Spaltung</span> ($\to$ es entstehen <span class="highlight">Radikale</span>, keine Ionen!) von $1\text{ mol}$ einer kovalenten Bindung im <strong>Gaszustand</strong> benötigt wird (stets positiv: Bindungsspaltung ist endotherm, Bindungsknüpfung setzt denselben Betrag exotherm frei).</li>
+                    <li><span class="highlight">Mittelwerte bei mehratomigen Molekülen:</span> Da sich die schrittweise Spaltung einzelner Bindungen energetisch unterscheidet, nutzt man in Tabellen gemittelte Bindungsenthalpien (z. B. $\Delta_b H^0_m(\text{C=O in CO}_2) = +803\text{ kJ/mol}$, $\Delta_b H^0_m(\text{O–H in H}_2\text{O}) = +463\text{ kJ/mol}$).</li>
+                    <li><span class="highlight">Abschätzung von Reaktionsenthalpien aus Bindungsenthalpien:</span>
+                        $$\mathbf{\Delta_r H^0 \approx \sum \Delta_b H^0_m(\text{gespaltene Bindungen der Edukte}) - \sum \Delta_b H^0_m(\text{geknüpfte Bindungen der Produkte})}$$
+                        <span class="warn">Achtung Vorzeichen:</span> Im Gegensatz zum Satz von Hess mit $\Delta_f H^0_m$ gilt hier: <strong>Edukte (Spaltung $>0$) minus Produkte (Knüpfung)</strong>!</li>
+                    <li><span class="highlight">Gültigkeitsgrenzen:</span> Liefert nur Näherungswerte, da $\Delta_b H^0_m$ Durchschnittswerte über verschiedene Moleküle sind und streng nur für den Gaszustand gelten (Phasenübergänge und zwischenmolekulare Wechselwirkungen flüssiger/fester Stoffe bleiben unberücksichtigt).</li>
+                </ul>
             </div>
             <div class="page-footer">
-                <span>Chemische Energetik – Block 1 (Kalorimetrie-Grundlagen, Wärmekapazität CK &amp; Extrapolation)</span>
+                <span>[Chemische Energetik – Block 3]</span>
                 <span>Olga V.</span>
                 <span>Seite 3</span>
-            </div>
-        </div>
-
-        <!-- ============================================================
-             SEITE 4: BLOCK 2 – 1. BESTIMMUNG DER NEUTRALISATIONSENTHALPIE
-             ============================================================ -->
-        <div class="page">
-            <div class="card">
-                <div class="block-banner">
-                    <h2 id="sec-block2">Block 2: Neutralisation, Phasenübergänge &amp; Verbrennungskalorimetrie</h2>
-                </div>
-
-                <h2 id="sec-b2-1">1. Bestimmung der Neutralisationsenthalpie</h2>
-
-                <div class="formula-box">
-                    <span class="formula-title">📐 Formel-Box: Neutralisationsreaktion</span>
-                    <ul>
-                        <li><span class="highlight">Grundreaktion:</span> $\text{H}_3\text{O}^+\text{(aq)} + \text{OH}^-\text{(aq)} \rightarrow 2\text{ H}_2\text{O(l)}$.</li>
-                        <li><span class="highlight">Molare Standardneutralisationsenthalpie:</span> Stark exotherme Reaktion mit $\Delta_r H^0_m \approx -57{,}5\text{ kJ/mol}$ (bezogen auf $1\text{ mol}$ gebildetes Wasser bzw. $1\text{ mol}$ umgesetzte $\text{H}_3\text{O}^+$-Ionen).</li>
-                    </ul>
-                </div>
-
-                <div class="recipe-box">
-                    <span class="recipe-title">👩‍🍳 3-Schritt-Kochrezept: Auswertung im Dewar-Gefäß</span>
-                    <ol>
-                        <li><span class="highlight">Messung &amp; Gesamtmasse:</span> Gleiche Volumina gleich temperierter Säure und Lauge ($\vartheta_1$) im Dewar-Gefäß mischen, $\vartheta_2$ nach $30\text{ s}$ messen und die Gesamtmasse $m_{\text{ges}}$ bestimmen ($c_{\text{Lösung}} \approx c_w$).</li>
-                        <li><span class="highlight">Reaktionswärme berechnen:</span> Den Betrag über $|Q_r| = (c_w \cdot m_{\text{ges}} + C_K) \cdot |\Delta T|$ berechnen und wegen der Temperaturerhöhung ein negatives Vorzeichen setzen ($Q_r &lt; 0$).</li>
-                        <li><span class="highlight">Molare Neutralisationsenthalpie:</span> Die umgesetzte Stoffmenge über $n(\text{H}_3\text{O}^+) = c \cdot V$ bestimmen und durch Einsetzen in $\Delta_r H_m = \dfrac{Q_r}{n}$ auf $1\text{ mol}$ beziehen.</li>
-                    </ol>
-                </div>
-
-                <div class="joker-box">
-                    <span class="joker-title">🏆 15-Punkte-Erklärung: Schwefelsäure vs. Salzsäure</span>
-                    <p style="margin-bottom:0;">Schwefelsäure ($\text{H}_2\text{SO}_4$) ist eine <strong>zweiprotonige Säure</strong> ($\text{H}_2\text{SO}_4 + 2\text{ H}_2\text{O} \rightleftharpoons 2\text{ H}_3\text{O}^+ + \text{SO}_4^{2-}$) und liefert pro Säuremolekül doppelt so viele $\text{H}_3\text{O}^+$-Ionen wie die einprotonige Salzsäure. Bei halber Konzentration ($c(\text{H}_2\text{SO}_4) = 0{,}50\text{ mol/L}$) und gleichem Volumen ($100\text{ mL}$) liegt daher exakt dieselbe Stoffmenge $n(\text{H}_3\text{O}^+) = 2 \cdot 0{,}50\text{ mol/L} \cdot 0{,}1\text{ L} = 0{,}10\text{ mol}$ vor wie bei der Salzsäure ($c(\text{HCl}) = 1{,}00\text{ mol/L}$), was zu derselben Temperaturerhöhung $\Delta T$ und derselben Neutralisationsenthalpie führt.</p>
-                </div>
-            </div>
-            <div class="page-footer">
-                <span>Chemische Energetik – Block 2 (Bestimmung der Neutralisationsenthalpie)</span>
-                <span>Olga V.</span>
-                <span>Seite 4</span>
-            </div>
-        </div>
-
-        <!-- ============================================================
-             SEITE 5: BLOCK 2 – 2. ENTHALPIE UND AGGREGATZUSTÄNDE
-             ============================================================ -->
-        <div class="page">
-            <div class="card">
-                <h2 id="sec-b2-2">2. Enthalpie und Aggregatzustände</h2>
-
-                <!-- SVG 5: Zustandsschema Aggregatzustände -->
-                <div class="graphic-box">
-                    <div class="graphic-title">Zustandsschema der Phasenübergänge (Endotherm vs. Exotherm)</div>
-                    <svg class="graphic-svg" viewBox="0 0 640 186" xmlns="http://www.w3.org/2000/svg" aria-label="Zustandsschema fest flüssig gasförmig">
-                        <rect x="0" y="0" width="640" height="186" rx="6" fill="#FDFCF8"/>
-                        <line x1="48" y1="170" x2="48" y2="16" stroke="#2D3A2E" stroke-width="1.6"/>
-                        <polygon points="48,12 44,20 52,20" fill="#2D3A2E"/>
-                        <text x="12" y="28" font-family="Raleway" font-size="10.2" font-weight="700" fill="#2D3A2E">Enthalpie</text>
-
-                        <rect x="242" y="18" width="160" height="28" rx="5" fill="#EBF1EC" stroke="#3A5A3F" stroke-width="1.6"/>
-                        <text x="322" y="36" text-anchor="middle" font-family="Playfair Display, serif" font-size="12.5" font-weight="700" fill="#3A5A3F">gasförmig</text>
-
-                        <rect x="242" y="80" width="160" height="28" rx="5" fill="#EBF1EC" stroke="#3A5A3F" stroke-width="1.6"/>
-                        <text x="322" y="98" text-anchor="middle" font-family="Playfair Display, serif" font-size="12.5" font-weight="700" fill="#3A5A3F">flüssig</text>
-
-                        <rect x="242" y="142" width="160" height="28" rx="5" fill="#EBF1EC" stroke="#3A5A3F" stroke-width="1.6"/>
-                        <text x="322" y="160" text-anchor="middle" font-family="Playfair Display, serif" font-size="12.5" font-weight="700" fill="#3A5A3F">fest</text>
-
-                        <!-- Pfeile nach oben (Endotherm) -->
-                        <line x1="224" y1="142" x2="224" y2="113" stroke="#2B6CB0" stroke-width="2.2"/>
-                        <polygon points="224,108 220,116 228,116" fill="#2B6CB0"/>
-                        <text x="214" y="124" text-anchor="end" font-family="Raleway" font-size="10" font-weight="700" fill="#2B6CB0">Schmelzenthalpie +ΔfusH</text>
-                        <text x="214" y="136" text-anchor="end" font-family="Raleway" font-size="8.8" fill="#5A6B5C">(endotherm: Energieaufnahme)</text>
-
-                        <line x1="224" y1="80" x2="224" y2="51" stroke="#2B6CB0" stroke-width="2.2"/>
-                        <polygon points="224,46 220,54 228,54" fill="#2B6CB0"/>
-                        <text x="214" y="62" text-anchor="end" font-family="Raleway" font-size="10" font-weight="700" fill="#2B6CB0">Verdampfungsenthalpie +ΔvapH</text>
-                        <text x="214" y="74" text-anchor="end" font-family="Raleway" font-size="8.8" fill="#5A6B5C">(endotherm: Energieaufnahme)</text>
-
-                        <!-- Pfeile nach unten (Exotherm) -->
-                        <line x1="420" y1="46" x2="420" y2="75" stroke="#9E3B2E" stroke-width="2.2"/>
-                        <polygon points="420,80 416,72 424,72" fill="#9E3B2E"/>
-                        <text x="430" y="62" font-family="Raleway" font-size="10" font-weight="700" fill="#9E3B2E">Kondensationsenthalpie −ΔvapH</text>
-                        <text x="430" y="74" font-family="Raleway" font-size="8.8" fill="#5A6B5C">(exotherm: Energieabgabe)</text>
-
-                        <line x1="420" y1="108" x2="420" y2="137" stroke="#9E3B2E" stroke-width="2.2"/>
-                        <polygon points="420,142 416,134 424,134" fill="#9E3B2E"/>
-                        <text x="430" y="124" font-family="Raleway" font-size="10" font-weight="700" fill="#9E3B2E">Erstarrungsenthalpie −ΔfusH</text>
-                        <text x="430" y="136" font-family="Raleway" font-size="8.8" fill="#5A6B5C">(exotherm: Energieabgabe)</text>
-                    </svg>
-                </div>
-
-                <div class="formula-box">
-                    <span class="formula-title">📐 Formel-Box: Phasenübergänge bei konstantem Druck</span>
-                    <ul>
-                        <li><span class="highlight">Schmelz- &amp; Erstarrungsenthalpie:</span> Beim Schmelzen ($s \rightarrow l$, $p = \text{konst.}$) wird $+\Delta_{\text{fus}} H$ aufgenommen, beim Erstarren ($l \rightarrow s$) derselbe Betrag $-\Delta_{\text{fus}} H$ abgegeben.</li>
-                        <li><span class="highlight">Verdampfungs- &amp; Kondensationsenthalpie:</span> Beim Verdampfen ($l \rightarrow g$, $p = \text{konst.}$) wird $+\Delta_{\text{vap}} H$ aufgenommen, beim Kondensieren ($g \rightarrow l$) wird $-\Delta_{\text{vap}} H$ frei.</li>
-                        <li><span class="highlight">Molare Größen:</span> $\Delta_{\text{fus}} H_m = \dfrac{\Delta_{\text{fus}} H}{n}$ und $\Delta_{\text{vap}} H_m = \dfrac{\Delta_{\text{vap}} H}{n}$ in $\text{kJ/mol}$ sind direkt proportional zur Stoffmenge $n$.</li>
-                    </ul>
-                </div>
-
-                <div class="recipe-box">
-                    <span class="recipe-title">👩‍🍳 3-Schritt-Kochrezept: Molare Schmelzenthalpie von Eis bestimmen</span>
-                    <ol>
-                        <li><span class="highlight">Wärmeaufnahme Eis ($Q_1$):</span> Besteht aus dem Schmelzen bei $\vartheta_1 = 0\,^\circ\text{C}$ und dem Erwärmen des Schmelzwassers ($m_{w,1}$) auf $\vartheta_{\text{misch}}$: $Q_1 = \Delta_{\text{fus}} H + c_w \cdot m_{w,1} \cdot (\vartheta_{\text{misch}} - \vartheta_1)$.</li>
-                        <li><span class="highlight">Wärmeabgabe Umgebung ($Q_2$):</span> Das vorgelegte Wasser ($m_{w,2}$, $\vartheta_2$) und das Kalorimeter ($C_K$) kühlen auf $\vartheta_{\text{misch}}$ ab: $Q_2 = (c_w \cdot m_{w,2} + C_K) \cdot (\vartheta_{\text{misch}} - \vartheta_2)$.</li>
-                        <li><span class="highlight">Gesamtgleichung:</span> Aus $Q_1 = -Q_2$ folgt $\Delta_{\text{fus}} H = -(c_w \cdot m_{w,2} + C_K) \cdot (\vartheta_{\text{misch}} - \vartheta_2) - c_w \cdot m_{w,1} \cdot (\vartheta_{\text{misch}} - \vartheta_1)$ und $\Delta_{\text{fus}} H_m = \dfrac{\Delta_{\text{fus}} H}{n(\text{H}_2\text{O})}$.</li>
-                    </ol>
-                </div>
-
-                <div class="merk-card" style="margin-bottom:0;">
-                    <span class="merk-title">📌 Merk-Karte: Teilchenebene bei Phasenübergängen</span>
-                    <ul>
-                        <li><span class="highlight">Maß für Teilchenanziehung:</span> Je stärker die Anziehungskräfte zwischen den Teilchen sind, desto mehr Energie ist zu ihrer Überwindung nötig und desto höher sind $\Delta_{\text{fus}} H_m$ und $\Delta_{\text{vap}} H_m$.</li>
-                        <li><span class="highlight">Abstufung der Kräfte:</span> Kovalentes Atomgitter ($\text{Si}$) $&gt;$ Ionengitter ($\text{NaCl}$) $&gt;$ Metallbindung ($\text{Al}$) $&gt;$ Wasserstoffbrücken ($\text{H}_2\text{O}$) $&gt;$ schwache Dipol- und London-Kräfte ($\text{H}_2\text{S}$).</li>
-                        <li><span class="highlight">Konstante Temperatur:</span> Beim Schmelzen und Sieden dient die zugeführte Wärme komplett zum Aufbrechen der Anziehungskräfte (potenzielle Energie), sodass die mittlere kinetische Energie konstant bleibt.</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="page-footer">
-                <span>Chemische Energetik – Block 2 (Enthalpie und Aggregatzustände)</span>
-                <span>Olga V.</span>
-                <span>Seite 5</span>
-            </div>
-        </div>
-
-        <!-- ============================================================
-             SEITE 6: BLOCK 2 – 3. VERBRENNUNGSENTHALPIE, BRENNWERT Hs & HEIZWERT Hi
-             ============================================================ -->
-        <div class="page">
-            <div class="card">
-                <h2 id="sec-b2-3">3. Verbrennungsenthalpie $\Delta_c H$, Brennwert $H_s$ &amp; Heizwert $H_i$</h2>
-
-                <div class="merk-card">
-                    <span class="merk-title">📌 Merk-Karte: Größen, Bedingungen &amp; Vorzeichen</span>
-                    <ul>
-                        <li><span class="highlight">Standardverbrennungsenthalpie $\Delta_c H^0_m$:</span> Reaktionsenthalpie bei vollständiger Verbrennung von $1\text{ mol}$ Reinstoff mit $\text{O}_2$ unter Standardbedingungen ($25\,^\circ\text{C}$ / $298{,}15\text{ K}$, $1000\text{ hPa}$).</li>
-                        <li><span class="highlight">Vorzeichen &amp; Einheiten:</span> Verbrennungen sind exotherm ($\Delta_c H^0_m &lt; 0$, in $\text{kJ/mol}$); Brennwert $H_s$ und Heizwert $H_i$ sind positive Beträge in $\text{MJ/kg}$ (oder $\text{MJ/m}^3$ für Gase bei $0\,^\circ\text{C}$, $1013{,}25\text{ hPa}$).</li>
-                        <li><span class="highlight">Heizwert $H_i$ vs. Brennwert $H_s$:</span> Bei $H_i$ entweicht das Reaktionswasser als Wasserdampf; bei $H_s$ kondensiert es zu $\text{H}_2\text{O(l)}$ und gibt zusätzlich die Kondensationswärme ab ($H_s = H_i + \text{Kondensationswärme}$).</li>
-                        <li><span class="highlight">Sonderfall Kohlenstoff (Graphit):</span> Da bei der Verbrennung von reinem Kohlenstoff kein Wasser entsteht, fällt keine Kondensationswärme an und es gilt $H_s = H_i$.</li>
-                    </ul>
-                </div>
-
-                <!-- SVG 6: Balken- bzw. Energieniveauschema Heizwert Hi vs. Brennwert Hs -->
-                <div class="graphic-box">
-                    <div class="graphic-title">Balken- &amp; Energieniveauschema: Vergleich von Heizwert $H_i$ und Brennwert $H_s$</div>
-                    <svg class="graphic-svg" viewBox="0 0 720 205" xmlns="http://www.w3.org/2000/svg" aria-label="Balken- und Energieniveauschema Heizwert und Brennwert">
-                        <rect x="0" y="0" width="720" height="205" rx="6" fill="#FDFCF8"/>
-                        <line x1="42" y1="190" x2="42" y2="16" stroke="#2D3A2E" stroke-width="1.6"/>
-                        <polygon points="42,12 38,20 46,20" fill="#2D3A2E"/>
-                        <text x="12" y="28" font-family="Raleway" font-size="10.2" font-weight="700" fill="#2D3A2E">Energie</text>
-
-                        <line x1="65" y1="34" x2="665" y2="34" stroke="#2D3A2E" stroke-width="2.5"/>
-                        <text x="365" y="25" text-anchor="middle" font-family="Playfair Display, serif" font-size="11.8" font-weight="700" fill="#2D3A2E">Eduktniveau: Brennstoff + Sauerstoff O₂(g)</text>
-
-                        <line x1="65" y1="120" x2="500" y2="120" stroke="#C9A96E" stroke-width="2" stroke-dasharray="5,3"/>
-                        <text x="315" y="112" text-anchor="middle" font-family="Raleway" font-size="10.2" font-weight="700" fill="#8C6D32">Produkte mit gasförmigem Wasserdampf: CO₂(g) + H₂O(g)</text>
-
-                        <line x1="65" y1="178" x2="665" y2="178" stroke="#3A5A3F" stroke-width="2.5"/>
-                        <text x="365" y="195" text-anchor="middle" font-family="Raleway" font-size="10.2" font-weight="700" fill="#3A5A3F">Produkte nach Kondensation: CO₂(g) + flüssiges Wasser H₂O(l)</text>
-
-                        <!-- Kürzerer Balken links: Heizwert Hi + Kondensationswärme -->
-                        <rect x="92" y="34" width="56" height="86" rx="3" fill="rgba(201,169,110,0.36)" stroke="#8C6D32" stroke-width="1.6"/>
-                        <text x="120" y="75" text-anchor="middle" font-family="Raleway" font-size="10.5" font-weight="700" fill="#8C6D32">Heizwert</text>
-                        <text x="120" y="90" text-anchor="middle" font-family="Raleway" font-size="11" font-weight="700" fill="#8C6D32">Hᵢ</text>
-
-                        <rect x="92" y="120" width="56" height="58" rx="3" fill="rgba(43,108,176,0.18)" stroke="#2B6CB0" stroke-width="1.6"/>
-                        <text x="158" y="146" font-family="Raleway" font-size="9.8" font-weight="700" fill="#2B6CB0">+ Kondensationswärme</text>
-                        <text x="158" y="159" font-family="Raleway" font-size="9.2" fill="#2B6CB0">(H₂O(g) → H₂O(l))</text>
-
-                        <!-- Längerer Gesamtbalken rechts: Brennwert Hs -->
-                        <rect x="520" y="34" width="62" height="144" rx="3" fill="rgba(158,59,46,0.18)" stroke="#9E3B2E" stroke-width="1.8"/>
-                        <text x="551" y="98" text-anchor="middle" font-family="Raleway" font-size="10.5" font-weight="700" fill="#9E3B2E">Brennwert</text>
-                        <text x="551" y="114" text-anchor="middle" font-family="Raleway" font-size="11.5" font-weight="700" fill="#9E3B2E">Hₛ</text>
-                        <text x="592" y="106" font-family="Raleway" font-size="9.8" font-weight="700" fill="#9E3B2E">= Hᵢ + Kondensations-</text>
-                        <text x="592" y="119" font-family="Raleway" font-size="9.8" font-weight="700" fill="#9E3B2E">   wärme</text>
-                    </svg>
-                </div>
-
-                <div class="recipe-box">
-                    <span class="recipe-title">👩‍🍳 3-Schritt-Kochrezept: Umrechnung zwischen $\Delta_c H^0_m$, $H_s$ und $H_i$</span>
-                    <ol>
-                        <li><span class="highlight">Brennwert $H_s$ berechnen:</span> Da Wasser bei $25\,^\circ\text{C}$ flüssig ist, folgt $H_s$ direkt aus $\Delta_c H^0_m$ über die molare Masse $M$ bzw. das molare Volumen $V_m$: $H_s(\text{mass}) = \dfrac{|\Delta_c H^0_m|}{M}$.</li>
-                        <li><span class="highlight">Verdampfungswärme abziehen:</span> Für jedes pro Mol Brennstoff gebildete Mol Wasser ($z$) wird $\Delta_{\text{vap}} H^0_m(\text{H}_2\text{O}) = 40{,}7\text{ kJ/mol}$ vom Betrag $|\Delta_c H^0_m|$ abgezogen.</li>
-                        <li><span class="highlight">Heizwert $H_i$ berechnen:</span> Den um die Kondensationswärme verminderten Betrag durch $M$ teilen: $H_i(\text{mass}) = \dfrac{|\Delta_c H^0_m + z \cdot \Delta_{\text{vap}} H^0_m(\text{H}_2\text{O})|}{M}$.</li>
-                    </ol>
-                </div>
-
-                <details class="muster-drawer">
-                    <summary>📂 Beispielrechnung: Brennwert &amp; Heizwert von Benzol</summary>
-                    <div class="muster-body">
-                        <p>Bei der Verbrennung von $1\text{ mol}$ flüssigem Benzol ($\text{C}_6\text{H}_6\text{(l)} + 7{,}5\text{ O}_2\text{(g)} \rightarrow 6\text{ CO}_2\text{(g)} + 3\text{ H}_2\text{O(l)}$; $M = 78\text{ g/mol}$, $\Delta_c H^0_m = -3268\text{ kJ/mol}$) entstehen $z = 3\text{ mol}$ Wasser.</p>
-                        <ul style="margin-bottom:0;">
-                            <li><span class="highlight">Brennwert:</span> $H_s = \dfrac{|-3268\text{ kJ/mol}|}{78\text{ g/mol}} = \mathbf{41{,}90\text{ kJ/g}}$ (bzw. $\mathbf{41{,}90\text{ MJ/kg}}$).</li>
-                            <li><span class="highlight">Heizwert:</span> $H_i = \dfrac{|-3268\text{ kJ/mol} + 3 \cdot 40{,}7\text{ kJ/mol}|}{78\text{ g/mol}} = \dfrac{3145{,}9\text{ kJ/mol}}{78\text{ g/mol}} = \mathbf{40{,}33\text{ kJ/g}}$ (bzw. $\mathbf{40{,}33\text{ MJ/kg}}$).</li>
-                        </ul>
-                    </div>
-                </details>
-
-                <div class="merk-card" style="margin-bottom:0;">
-                    <span class="merk-title">📌 Direktvergleich: Bombenkalorimeter vs. Verbrennungskalorimeter</span>
-                    <ul>
-                        <li><span class="highlight">Zündung &amp; Reaktionsraum:</span> Im Bombenkalorimeter erfolgt die elektrische Zündung direkt im geschlossenen System, während beim Verbrennungskalorimeter außerhalb gezündet wird (Wärmeverlust).</li>
-                        <li><span class="highlight">Vollständigkeit &amp; Abgase:</span> Die Probe verbrennt in der Kalorimeterbombe in reinem Sauerstoff vollständig ohne Abgasverluste; beim offenen Verbrennungskalorimeter entweichen noch zu heiße Abgase.</li>
-                        <li><span class="highlight">Messgröße &amp; Umrechnung:</span> Da in der druckfesten Bombe $V = \text{konst.}$ gilt, misst man zuerst die Verbrennungsenergie $\Delta_c U$ und rechnet über $\Delta_c H = \Delta_c U + p \cdot \Delta V$ in die Verbrennungsenthalpie um.</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="page-footer">
-                <span>Chemische Energetik – Block 2 (Verbrennungsenthalpie, Brennwert Hs, Heizwert Hi &amp; Bombenkalorimeter)</span>
-                <span>Olga V.</span>
-                <span>Seite 6</span>
-            </div>
-        </div>
-
-        <!-- ============================================================
-             SEITE 7: BLOCK 3 – 1. MOLARE STANDARDBILDUNGSENTHALPIE & SATZ VON HESS
-             ============================================================ -->
-        <div class="page">
-            <div class="card">
-                <div class="block-banner">
-                    <h2 id="sec-block3">Block 3: Satz von Hess, Bildungsenthalpie $\Delta_f H^0_m$ &amp; Bindungsenthalpie $\Delta_b H^0_m$</h2>
-                </div>
-
-                <h2 id="sec-b3-1">1. Molare Standardbildungsenthalpie $\Delta_f H^0_m$ &amp; Satz von Hess</h2>
-
-                <div class="merk-card">
-                    <span class="merk-title">📌 Merk-Karte: Bildungsenthalpie &amp; Satz von Hess</span>
-                    <ul>
-                        <li><span class="highlight">Molare Standardbildungsenthalpie $\Delta_f H^0_m$:</span> Reaktionsenthalpie bei der Bildung von $1\text{ mol}$ einer Verbindung aus den elementaren Stoffen unter Standardbedingungen ($25\,^\circ\text{C}$, $1000\text{ hPa}$; Einheit: $\text{kJ/mol}$).</li>
-                        <li><span class="highlight">Element-Regel:</span> Für Elemente in ihrer stabilsten Modifikation ist $\Delta_f H^0_m = 0\text{ kJ/mol}$ festgelegt ($\text{O}_2\text{(g)} = 0$, $\text{C(Graphit)} = 0$, aber $\text{C(Diamant)} = +2\text{ kJ/mol}$).</li>
-                        <li><span class="highlight">Satz von Hess:</span> Die Reaktionsenthalpie $\Delta_r H$ hängt nur vom Ausgangs- und Endzustand des Systems ab und ist völlig unabhängig vom Reaktionsweg.</li>
-                    </ul>
-                </div>
-
-                <div class="formula-box">
-                    <span class="formula-title">📐 Formel-Box: Berechnung über Bildungsenthalpien</span>
-                    <ul>
-                        <li><span class="highlight">Summenformel:</span> $\Delta_r H^0 = \sum n_i \cdot \Delta_f H^0_m(\text{Produkte}) - \sum n_i \cdot \Delta_f H^0_m(\text{Edukte})$.</li>
-                        <li><span class="highlight">Umstellen nach einem Edukt:</span> Ist $\Delta_r H^0$ (bzw. $\Delta_c H^0_m$) gegeben, gilt $\sum n_i \cdot \Delta_f H^0_m(\text{Edukte}) = \sum n_i \cdot \Delta_f H^0_m(\text{Produkte}) - \Delta_r H^0$.</li>
-                    </ul>
-                </div>
-
-                <!-- SVG 7: Enthalpiediagramm zum Satz von Hess am Beispiel der Hochofenreaktion -->
-                <div class="graphic-box">
-                    <div class="graphic-title">Enthalpiediagramm zum Satz von Hess: Hochofenreaktion ($\text{Fe}_2\text{O}_3 + 3\text{ CO} \rightarrow 2\text{ Fe} + 3\text{ CO}_2$)</div>
-                    <svg class="graphic-svg" viewBox="0 0 720 202" xmlns="http://www.w3.org/2000/svg" aria-label="Enthalpiediagramm Hochofenreaktion Satz von Hess">
-                        <rect x="0" y="0" width="720" height="202" rx="6" fill="#FDFCF8"/>
-                        <line x1="46" y1="188" x2="46" y2="16" stroke="#2D3A2E" stroke-width="1.6"/>
-                        <polygon points="46,12 42,20 50,20" fill="#2D3A2E"/>
-                        <text x="12" y="28" font-family="Raleway" font-size="10.2" font-weight="700" fill="#2D3A2E">Enthalpie</text>
-
-                        <!-- Oberstes Niveau: Elemente (0 kJ) -->
-                        <line x1="75" y1="36" x2="665" y2="36" stroke="#8C6D32" stroke-width="2.5"/>
-                        <text x="370" y="27" text-anchor="middle" font-family="Playfair Display, serif" font-size="11.5" font-weight="700" fill="#8C6D32">Elemente: 2 Fe + 3 O₂ + 3 C  (Niveau = 0 kJ)</text>
-
-                        <!-- Mittleres Niveau links: Edukte -->
-                        <line x1="75" y1="142" x2="310" y2="142" stroke="#2D3A2E" stroke-width="2.6"/>
-                        <text x="192" y="158" text-anchor="middle" font-family="Raleway" font-size="10.5" font-weight="700" fill="#2D3A2E">Edukte: Fe₂O₃ + 3 CO</text>
-                        <line x1="310" y1="142" x2="545" y2="142" stroke="#BBB" stroke-dasharray="4,3"/>
-
-                        <!-- Unterstes Niveau rechts: Produkte -->
-                        <line x1="415" y1="176" x2="665" y2="176" stroke="#3A5A3F" stroke-width="2.6"/>
-                        <text x="540" y="192" text-anchor="middle" font-family="Raleway" font-size="10.5" font-weight="700" fill="#3A5A3F">Produkte: 2 Fe + 3 CO₂</text>
-
-                        <!-- Teilreaktion I: +1157 kJ nach oben -->
-                        <line x1="175" y1="142" x2="175" y2="42" stroke="#2B6CB0" stroke-width="2.3"/>
-                        <polygon points="175,37 170,45 180,45" fill="#2B6CB0"/>
-                        <text x="184" y="86" font-family="Raleway" font-size="10.2" font-weight="700" fill="#2B6CB0">Teilreaktion I: +1157 kJ</text>
-                        <text x="184" y="99" font-family="Raleway" font-size="9" fill="#5A6B5C">(gedankliche Zerlegung)</text>
-
-                        <!-- Teilreaktion II: -1179 kJ nach unten -->
-                        <line x1="595" y1="36" x2="595" y2="170" stroke="#3A5A3F" stroke-width="2.3"/>
-                        <polygon points="595,175 590,167 600,167" fill="#3A5A3F"/>
-                        <text x="585" y="96" text-anchor="end" font-family="Raleway" font-size="10.2" font-weight="700" fill="#3A5A3F">Teilreaktion II: −1179 kJ</text>
-                        <text x="585" y="109" text-anchor="end" font-family="Raleway" font-size="9" fill="#5A6B5C">(Bildung der Produkte)</text>
-
-                        <!-- Gesamtbilanz ΔrH° = -22 kJ -->
-                        <line x1="455" y1="142" x2="455" y2="170" stroke="#9E3B2E" stroke-width="2.5"/>
-                        <polygon points="455,175 450,167 460,167" fill="#9E3B2E"/>
-                        <text x="445" y="162" text-anchor="end" font-family="Raleway" font-size="10.8" font-weight="700" fill="#9E3B2E">Bilanz: ΔrH⁰ = −22 kJ</text>
-                    </svg>
-                </div>
-
-                <div class="merk-card">
-                    <span class="merk-title">📌 Pflichtbeispiel: Bildungsenthalpie von Kohlenstoffmonooxid $\text{CO}$</span>
-                    <ul>
-                        <li><span class="highlight">Messproblem:</span> Nicht direkt messbar, da Graphit mit Sauerstoff nie zu reinem $\text{CO}$, sondern hauptsächlich zu $\text{CO}_2$ verbrennt.</li>
-                        <li><span class="highlight">Reaktionsumweg:</span> Kombination der Verbrennung von Graphit ($\text{C} + \text{O}_2 \rightarrow \text{CO}_2$, $\Delta_r H^0 = -393\text{ kJ}$) mit der Rückreaktion der $\text{CO}$-Verbrennung ($\text{CO}_2 \rightarrow \text{CO} + \frac{1}{2}\text{ O}_2$, $\Delta_r H^0 = +282\text{ kJ}$).</li>
-                        <li><span class="highlight">Gesamtbilanz:</span> Addition liefert $\Delta_r H^0 = -393\text{ kJ} + 282\text{ kJ} = -111\text{ kJ}$ und bezogen auf $1\text{ mol}$ somit $\Delta_f H^0_m(\text{CO}) = \mathbf{-111\text{ kJ/mol}}$.</li>
-                    </ul>
-                </div>
-
-                <!-- SVG 8: Enthalpiestufendiagramm für die Bildung von CO -->
-                <div class="graphic-box">
-                    <div class="graphic-title">Enthalpiestufendiagramm für die Bildung von Kohlenstoffmonooxid ($\text{CO}$)</div>
-                    <svg class="graphic-svg" viewBox="0 0 680 198" xmlns="http://www.w3.org/2000/svg" aria-label="Enthalpiestufendiagramm Bildung von Kohlenstoffmonooxid">
-                        <rect x="0" y="0" width="680" height="198" rx="6" fill="#FDFCF8"/>
-                        <line x1="46" y1="184" x2="46" y2="16" stroke="#2D3A2E" stroke-width="1.6"/>
-                        <polygon points="46,12 42,20 50,20" fill="#2D3A2E"/>
-                        <text x="12" y="28" font-family="Raleway" font-size="10.2" font-weight="700" fill="#2D3A2E">Enthalpie</text>
-
-                        <!-- Oberstes Niveau: Elemente C + O2 (0 kJ) -->
-                        <line x1="75" y1="34" x2="635" y2="34" stroke="#8C6D32" stroke-width="2.5"/>
-                        <text x="355" y="25" text-anchor="middle" font-family="Playfair Display, serif" font-size="11.5" font-weight="700" fill="#8C6D32">Elemente: C + O₂  (Enthalpie = 0 kJ)</text>
-
-                        <!-- Mittleres Niveau: CO + 1/2 O2 (-111 kJ) -->
-                        <line x1="345" y1="88" x2="635" y2="88" stroke="#9E3B2E" stroke-width="2.5"/>
-                        <text x="535" y="104" text-anchor="middle" font-family="Raleway" font-size="10.5" font-weight="700" fill="#9E3B2E">CO + ½ O₂</text>
-
-                        <!-- Tiefstes Niveau: CO2 (-393 kJ) -->
-                        <line x1="75" y1="172" x2="635" y2="172" stroke="#3A5A3F" stroke-width="2.5"/>
-                        <text x="355" y="189" text-anchor="middle" font-family="Raleway" font-size="10.8" font-weight="700" fill="#3A5A3F">CO₂</text>
-
-                        <!-- Langer Pfeil direkt hinab: -393 kJ -->
-                        <line x1="135" y1="34" x2="135" y2="166" stroke="#3A5A3F" stroke-width="2.4"/>
-                        <polygon points="135,171 130,163 140,163" fill="#3A5A3F"/>
-                        <text x="145" y="108" font-family="Raleway" font-size="10.5" font-weight="700" fill="#3A5A3F">−393 kJ</text>
-                        <text x="145" y="121" font-family="Raleway" font-size="9" fill="#5A6B5C">(C + O₂ → CO₂)</text>
-
-                        <!-- Gegenpfeil vom CO2-Niveau hinauf: +282 kJ -->
-                        <line x1="395" y1="172" x2="395" y2="94" stroke="#2B6CB0" stroke-width="2.4"/>
-                        <polygon points="395,89 390,97 400,97" fill="#2B6CB0"/>
-                        <text x="405" y="136" font-family="Raleway" font-size="10.5" font-weight="700" fill="#2B6CB0">+282 kJ</text>
-                        <text x="405" y="149" font-family="Raleway" font-size="9" fill="#5A6B5C">(Rückreaktion)</text>
-
-                        <!-- Gesuchte Differenz rechts: -111 kJ -->
-                        <line x1="565" y1="34" x2="565" y2="82" stroke="#9E3B2E" stroke-width="2.6"/>
-                        <polygon points="565,87 560,79 570,79" fill="#9E3B2E"/>
-                        <text x="555" y="65" text-anchor="end" font-family="Raleway" font-size="10.8" font-weight="700" fill="#9E3B2E">ΔrH⁰ = −111 kJ</text>
-                    </svg>
-                </div>
-
-                <div class="merk-card" style="margin-bottom:0;">
-                    <span class="merk-title">📌 Merk-Karte: Temperaturabhängigkeit von Reaktionsenthalpien</span>
-                    <ul>
-                        <li><span class="highlight">Grund 1 (Größenordnung):</span> Solange der Aggregatzustand gleich bleibt, ist die Enthalpieänderung durch Temperaturerhöhung ($\Delta H = c \cdot M \cdot n \cdot \Delta \vartheta$) sehr klein gegenüber der Reaktionsenthalpie.</li>
-                        <li><span class="highlight">Grund 2 (Differenzbildung):</span> Da bei höherer Temperatur die Enthalpien sowohl der Edukte als auch der Produkte steigen, hebt sich der Effekt bei der Differenzbildung fast auf.</li>
-                        <li><span class="highlight">Phasenwechsel beachten:</span> Liegt ein Stoff in einem anderen Aggregatzustand vor als bei $25\,^\circ\text{C}$, muss man $\Delta_{\text{fus}} H$ bzw. $\Delta_{\text{vap}} H$ einrechnen.</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="page-footer">
-                <span>Chemische Energetik – Block 3 (Molare Standardbildungsenthalpie &amp; Satz von Hess)</span>
-                <span>Olga V.</span>
-                <span>Seite 7</span>
-            </div>
-        </div>
-
-        <!-- ============================================================
-             SEITE 8: BLOCK 3 – 2. MOLARE STANDARDBINDUNGSENTHALPIE ΔbH°m
-             ============================================================ -->
-        <div class="page">
-            <div class="card">
-                <h2 id="sec-b3-2">2. Molare Standardbindungsenthalpie $\Delta_b H^0_m$</h2>
-
-                <div class="merk-card">
-                    <span class="merk-title">📌 Merk-Karte: Definition &amp; Vorzeichen-Regel</span>
-                    <ul>
-                        <li><span class="highlight">Definition (Dissoziationsenthalpie):</span> Energie, die nötig ist, um $1\text{ mol}$ einer Elektronenpaarbindung im Gaszustand bei Standardbedingungen homolytisch zu spalten (Einheit: $\text{kJ/mol}$).</li>
-                        <li><span class="highlight">Homolytische Spaltung:</span> Bei der Spaltung verbleibt je ein Bindungselektron an den beiden beteiligten Atomen, sodass ungeladene Radikale und keine Ionen entstehen.</li>
-                        <li><span class="highlight">Vorzeichen-Regel:</span> Das Spalten einer Bindung erfordert immer Energie ($+\Delta_b H^0_m &gt; 0$); beim Knüpfen derselben Bindung wird exakt derselbe Energiebetrag frei ($-\Delta_b H^0_m &lt; 0$).</li>
-                    </ul>
-                </div>
-
-                <div class="recipe-box">
-                    <span class="recipe-title">👩‍🍳 3-Schritt-Kochrezept: Rechnen mit Bindungsenthalpien</span>
-                    <ol>
-                        <li><span class="highlight">Bindungen zählen:</span> Strukturformeln aller Edukte und Produkte zeichnen und alle zu spaltenden und zu knüpfenden Bindungen einzeln abzählen (Sonderwert in $\text{CO}_2$: je $803\text{ kJ/mol}$ pro $\text{C=O}$-Bindung).</li>
-                        <li><span class="highlight">Enthalpiebilanz aufstellen:</span> Die gespaltenen Bindungen positiv und die geknüpften negativ verrechnen: $$\Delta_r H^0 \approx \sum \Delta_b H^0_m(\text{Edukte, gespalten}) - \sum \Delta_b H^0_m(\text{Produkte, geknüpft})$$</li>
-                        <li><span class="highlight">Gültigkeitsgrenze prüfen:</span> Das Ergebnis ist nur ein Näherungswert, da tabellierte Bindungsenthalpien Mittelwerte sind und alle Stoffe im gleichen (gasförmigen) Aggregatzustand vorliegen müssen.</li>
-                    </ol>
-                </div>
-
-                <details class="muster-drawer" style="margin-bottom:0;">
-                    <summary>📂 Berechnung von $\Delta_b H^0_m(\text{O-H})$ im Wassermolekül</summary>
-                    <div class="muster-body">
-                        <p>Für die Reaktion $2\text{ H}_2\text{(g)} + \text{O}_2\text{(g)} \rightarrow 2\text{ H}_2\text{O(g)}$ ($\Delta_r H^0 = -484\text{ kJ}$) führt der Weg über die freien Atome ($4\text{ H} + 2\text{ O}$) durch Spaltung von $2\text{ mol}$ $\text{H–H}$-Bindungen ($2 \cdot 436\text{ kJ} = +872\text{ kJ}$) und $1\text{ mol}$ $\text{O=O}$-Bindungen ($+498\text{ kJ}$).</p>
-                        <p>Vom Niveau der freien Atome bis zu $2\text{ mol}$ $\text{H}_2\text{O(g)}$ werden insgesamt $\Delta H = -872\text{ kJ} - 498\text{ kJ} - 484\text{ kJ} = -1854\text{ kJ}$ beim Knüpfen frei. Da in $2\text{ mol}$ $\text{H}_2\text{O}$ insgesamt $2\text{ mol} \cdot 2 = 4\text{ mol}$ $\text{O–H}$-Bindungen vorliegen, gilt:</p>
-                        $$\Delta_b H^0_m(\text{O–H}) = \frac{|-1854\text{ kJ}|}{2\text{ mol} \cdot 2} = \mathbf{464\text{ kJ/mol}}$$
-                    </div>
-                </details>
-            </div>
-            <div class="page-footer">
-                <span>Chemische Energetik – Block 3 (Molare Standardbindungsenthalpie)</span>
-                <span>Olga V.</span>
-                <span>Seite 8</span>
             </div>
         </div>
 
     </div>
 
     <script>
-        (function () {
-            'use strict';
+        const body = document.body;
+        const btnPlakat = document.getElementById('btn-plakat');
+        const btnDruck = document.getElementById('btn-druck');
+        const btnPrint = document.getElementById('btn-print');
+        const btnInhalt = document.getElementById('btn-inhalt');
+        const dropdown = document.getElementById('toc-dropdown');
 
-            const body = document.body;
-            const btnPlakat = document.getElementById('btn-plakat');
-            const btnDruck = document.getElementById('btn-druck');
-            const btnPrint = document.getElementById('btn-print');
-            const btnInhalt = document.getElementById('btn-inhalt');
-            const dropdown = document.getElementById('toc-dropdown');
-            const flashcards = document.querySelectorAll('.flashcard');
-            const drawers = Array.from(document.querySelectorAll('details.muster-drawer'));
+        btnPlakat.addEventListener('click', () => { body.classList.remove('print-mode'); btnPlakat.classList.add('active'); btnDruck.classList.remove('active'); });
+        btnDruck.addEventListener('click', () => { body.classList.add('print-mode'); btnDruck.classList.add('active'); btnPlakat.classList.remove('active'); });
+        btnPrint.addEventListener('click', () => { window.print(); });
 
-            let savedDrawerStates = null;
+        btnInhalt.addEventListener('click', (e) => { e.stopPropagation(); dropdown.parentElement.classList.toggle('show'); });
+        document.addEventListener('click', (e) => { if (!dropdown.contains(e.target) && e.target !== btnInhalt) dropdown.parentElement.classList.remove('show'); });
 
-            function retypesetMath() {
-                if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
-                    window.MathJax.typesetPromise().catch(function () {});
-                }
-            }
-
-            function openAllDrawersForPrint() {
-                if (!savedDrawerStates) {
-                    savedDrawerStates = drawers.map(function (d) { return d.open; });
-                }
-                drawers.forEach(function (d) { d.open = true; });
-                retypesetMath();
-            }
-
-            function restoreDrawersAfterPrint() {
-                if (savedDrawerStates) {
-                    drawers.forEach(function (d, idx) { d.open = savedDrawerStates[idx]; });
-                    savedDrawerStates = null;
-                }
-            }
-
-            drawers.forEach(function (d) {
-                d.addEventListener('toggle', function () {
-                    if (d.open) retypesetMath();
-                });
-            });
-
-            btnPlakat.addEventListener('click', function () {
-                body.classList.remove('print-mode');
-                btnPlakat.classList.add('active');
-                btnDruck.classList.remove('active');
-                restoreDrawersAfterPrint();
-                retypesetMath();
-            });
-            btnDruck.addEventListener('click', function () {
-                openAllDrawersForPrint();
-                body.classList.add('print-mode');
-                btnDruck.classList.add('active');
-                btnPlakat.classList.remove('active');
-            });
-            btnPrint.addEventListener('click', function () {
-                openAllDrawersForPrint();
-                window.print();
-            });
-
-            window.addEventListener('beforeprint', openAllDrawersForPrint);
-            window.addEventListener('afterprint', function () {
-                if (!btnDruck.classList.contains('active')) restoreDrawersAfterPrint();
-            });
-
-            const classObserver = new MutationObserver(function () {
-                if (body.classList.contains('pdf-exporting')) {
-                    openAllDrawersForPrint();
-                } else if (!btnDruck.classList.contains('active') && savedDrawerStates) {
-                    restoreDrawersAfterPrint();
-                }
-            });
-            classObserver.observe(body, { attributes: true, attributeFilter: ['class'] });
-
-            btnInhalt.addEventListener('click', function (e) {
-                e.stopPropagation();
-                dropdown.parentElement.classList.toggle('show');
-            });
-            document.addEventListener('click', function (e) {
-                if (!dropdown.contains(e.target) && e.target !== btnInhalt) {
-                    dropdown.parentElement.classList.remove('show');
-                }
-            });
-
-            const btnFullscreen = document.getElementById('btn-fullscreen');
-            if (btnFullscreen) {
-                btnFullscreen.addEventListener('click', function () {
-                    if (!document.fullscreenElement) {
-                        document.documentElement.requestFullscreen().catch(function (err) { console.warn(err); });
-                        btnFullscreen.textContent = 'Vollbild beenden';
-                    } else {
-                        if (document.exitFullscreen) document.exitFullscreen();
-                        btnFullscreen.textContent = 'Vollbild';
-                    }
-                });
-            }
-
-            document.querySelectorAll('h1[id], h2[id]').forEach(function (heading) {
-                const item = document.createElement('a');
-                item.className = 'dropdown-item';
-                if (heading.closest('.block-banner')) {
-                    item.style.paddingLeft = '12px';
-                    item.style.fontWeight = '700';
-                    item.style.color = 'var(--forest)';
-                } else if (heading.tagName === 'H2') {
-                    item.style.paddingLeft = '24px';
+        const btnFullscreen = document.getElementById('btn-fullscreen');
+        if (btnFullscreen) {
+            btnFullscreen.addEventListener('click', () => {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(err => { console.error(err); });
+                    btnFullscreen.textContent = 'Vollbild beenden';
                 } else {
-                    item.style.paddingLeft = '10px';
+                    if (document.exitFullscreen) { document.exitFullscreen(); btnFullscreen.textContent = 'Vollbild'; }
                 }
-
-                item.textContent = heading.textContent.trim();
-                item.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    dropdown.parentElement.classList.remove('show');
-                    const topPosition = heading.getBoundingClientRect().top + window.scrollY - 82;
-                    window.scrollTo({ top: topPosition, behavior: 'smooth' });
-                });
-                dropdown.appendChild(item);
             });
+        }
 
-            flashcards.forEach(function (card) {
-                card.addEventListener('click', function () {
-                    if (!body.classList.contains('print-mode')) {
-                        card.classList.toggle('flipped');
-                    }
-                });
+        document.querySelectorAll('h1[id], h2[id], h3[id]').forEach(heading => {
+            const item = document.createElement('a');
+            item.className = 'dropdown-item';
+            if (heading.tagName === 'H2') item.style.paddingLeft = '20px';
+            if (heading.tagName === 'H3') item.style.paddingLeft = '30px';
+
+            item.textContent = heading.textContent;
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                dropdown.parentElement.classList.remove('show');
+                const topPosition = heading.getBoundingClientRect().top + window.scrollY - 80;
+                window.scrollTo({ top: topPosition, behavior: 'smooth' });
             });
-        })();
+            dropdown.appendChild(item);
+        });
     </script>
     <script src="../pdf-export.js"></script>
 </body>
