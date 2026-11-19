@@ -145,7 +145,14 @@ const subjectData = {
     section: "gk",
     type: "GK",
     accent: "peach",
-    categories: []
+    categories: [
+      {
+        name: "J1",
+        topics: [
+          { title: "Körpererweiterung & Bildbeschreibung", link: "kunst/koerpererweiterung.html" }
+        ]
+      }
+    ]
   },
 
   sport: {

@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kunst (J1): Körpererweiterung &amp; Bildbeschreibung</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --paper-white: #F8F6F1;
+            --paper-cream: #FDFCF8;
+            --text-primary: #2D3A2E;
+            --text-secondary: #5A6B5C;
+            --gold: #C9A96E;
+            --gold-soft: rgba(201, 169, 110, 0.14);
+            --forest: #3A5A3F;
+            --forest-soft: rgba(58, 90, 63, 0.07);
+            --crimson: #9E3B2E;
+            --crimson-soft: rgba(158, 59, 46, 0.06);
+            --nav-bg: rgba(248, 246, 241, 0.96);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--paper-white);
+            color: var(--text-primary);
+            font-family: 'Raleway', sans-serif;
+            line-height: 1.56;
+            padding-top: 72px;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--forest); margin-bottom: 0.45rem; }
+        h1 { font-size: 1.95rem; text-align: center; margin-bottom: 0.95rem; border-bottom: 2px solid var(--gold); padding-bottom: 0.7rem; }
+        h2 { font-size: 1.42rem; margin-top: 0.35rem; border-bottom: 1.5px solid rgba(201, 169, 110, 0.45); padding-bottom: 0.26rem; margin-bottom: 0.7rem; }
+        h3 { font-size: 1.08rem; margin-top: 0.55rem; margin-bottom: 0.35rem; color: var(--forest); }
+
+        p { margin-bottom: 0.5rem; }
+        ul, ol { margin-bottom: 0.45rem; padding-left: 1.35rem; }
+        li { margin-bottom: 0.28rem; }
+        li:last-child { margin-bottom: 0; }
+
+        .highlight { color: var(--forest); font-weight: 600; }
+        .crimson-text { color: var(--crimson); font-weight: 600; }
+        .flashcard-back .highlight { color: var(--gold); }
+
+        /* Navigation */
+        nav {
+            position: fixed; top: 0; left: 0; width: 100%; background-color: var(--nav-bg); backdrop-filter: blur(10px);
+            z-index: 1000; display: flex; justify-content: center; align-items: center; padding: 12px 18px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05); border-bottom: 1px solid var(--gold);
+        }
+        .nav-group { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: center; }
+        .nav-btn {
+            background: transparent; border: 1px solid var(--forest); color: var(--forest); padding: 7px 14px;
+            font-family: 'Raleway', sans-serif; font-weight: 600; font-size: 0.88rem; cursor: pointer; border-radius: 4px;
+            transition: all 0.25s ease; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;
+        }
+        .nav-btn:hover, .nav-btn.active { background: var(--forest); color: var(--paper-white); }
+        .nav-btn.gold { border-color: var(--gold); color: var(--text-primary); }
+        .nav-btn.gold:hover { background: var(--gold); color: #fff; }
+
+        /* Dropdown */
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content {
+            display: none; position: absolute; background-color: var(--paper-cream); min-width: 280px;
+            box-shadow: 0px 8px 18px rgba(0,0,0,0.12); border: 1px solid var(--gold); border-radius: 6px;
+            z-index: 10; top: 100%; left: 0; margin-top: 5px; max-height: 76vh; overflow-y: auto;
+        }
+        .dropdown.show .dropdown-content { display: block; }
+        .dropdown-item {
+            color: var(--text-primary); padding: 8px 14px; text-decoration: none; display: block; cursor: pointer;
+            font-family: 'Raleway', sans-serif; font-size: 0.86rem; border-bottom: 1px solid rgba(201, 169, 110, 0.14); transition: background 0.2s;
+        }
+        .dropdown-item:hover { background-color: rgba(201, 169, 110, 0.12); color: var(--forest); }
+        .dropdown-item:last-child { border-bottom: none; }
+
+        /* Container & Plakat-Modus */
+        .content-wrapper { margin: 0 auto; transition: all 0.3s ease; }
+        body:not(.print-mode) .content-wrapper { max-width: 1280px; padding: 18px 20px 55px; display: flex; flex-direction: column; gap: 20px; }
+        body:not(.print-mode) .page { display: contents; }
+        body:not(.print-mode) .page-footer { display: none !important; }
+        body:not(.print-mode) .card {
+            background: var(--paper-cream); border: 1px solid var(--gold); border-radius: 10px; padding: 24px 28px;
+            box-shadow: 0 4px 16px rgba(45, 58, 46, 0.04); width: 100%;
+        }
+
+        /* Grids & Baustein-Karten */
+        .cards-grid {
+            display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0.45rem 0 0.75rem;
+        }
+        .cards-grid.three-col {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .merk-card {
+            background: #fff; border: 1px solid rgba(201, 169, 110, 0.45); border-top: 3px solid var(--forest);
+            border-radius: 8px; padding: 13px 16px; margin: 0.45rem 0 0.65rem;
+        }
+        .cards-grid .merk-card { margin: 0; }
+        .merk-card.gold-top { border-top-color: var(--gold); }
+        .merk-card.crimson-top { border-top-color: var(--crimson); }
+        .merk-title {
+            display: block; font-family: 'Playfair Display', serif; font-weight: 700; color: var(--forest);
+            font-size: 1.03rem; margin-bottom: 7px; padding-bottom: 4px; border-bottom: 1px solid rgba(58, 90, 63, 0.14);
+        }
+        .merk-card.crimson-top .merk-title { color: var(--crimson); }
+
+        .joker-box {
+            background: #FFFDF8; border: 1px solid var(--gold); border-left: 4px solid var(--crimson);
+            border-radius: 8px; padding: 11px 15px; margin: 0.5rem 0 0.75rem;
+        }
+        .joker-title {
+            display: block; font-family: 'Playfair Display', serif; font-weight: 700; color: var(--crimson);
+            font-size: 1rem; margin-bottom: 4px;
+        }
+
+        /* Kontrastpaare-Badges */
+        .contrast-pills {
+            display: flex; flex-wrap: wrap; gap: 6px; margin-top: 5px;
+        }
+        .contrast-pill {
+            background: var(--gold-soft); border: 1px solid rgba(201, 169, 110, 0.6); color: var(--text-primary);
+            border-radius: 999px; padding: 2px 10px; font-size: 0.83rem; font-weight: 600;
+        }
+
+        /* Flashcards */
+        .flashcards-container { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 12px; margin-bottom: 0.6rem; }
+        .flashcard { perspective: 1000px; width: 300px; height: 235px; cursor: pointer; flex: 1 1 300px; }
+        .flashcard-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; }
+        .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+        .flashcard-front, .flashcard-back {
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 8px; padding: 16px 18px;
+            display: flex; align-items: flex-start; justify-content: center; border: 1px solid var(--gold);
+            background-color: var(--paper-cream); box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(201, 169, 110, 0.6) transparent;
+        }
+        .flashcard-front { color: var(--forest); font-family: 'Playfair Display', serif; font-weight: 600; font-size: 0.98rem; }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--forest); color: var(--paper-white); border-color: var(--forest); font-size: 0.86rem; line-height: 1.46; }
+        .flashcard span, .flashcard p { display: block; width: 100%; margin: auto 0; }
+
+        /* Mobile */
+        @media (max-width: 860px) {
+            .cards-grid, .cards-grid.three-col { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            #btn-fullscreen { display: none !important; }
+            body { padding-top: 86px; }
+            nav { padding: 8px 10px; }
+            .nav-group { gap: 6px; }
+            .nav-btn { padding: 5px 9px; font-size: 0.78rem; }
+            body:not(.print-mode) .card { padding: 16px 15px; }
+            h1 { font-size: 1.5rem; }
+            h2 { font-size: 1.22rem; }
+        }
+
+        /* ============================================================
+           DRUCK-MODUS (A4) & PDF-EXPORT
+           ============================================================ */
+        body.print-mode { background-color: #E2E2E2; padding-top: 86px; font-size: 0.76rem; line-height: 1.34; }
+        body.print-mode h1 { font-size: 1.38rem; margin-bottom: 0.45rem; padding-bottom: 0.25rem; }
+        body.print-mode h2 { font-size: 1.08rem; margin-bottom: 0.32rem; padding-bottom: 0.14rem; }
+        body.print-mode h3 { font-size: 0.92rem; margin-top: 0.3rem; margin-bottom: 0.16rem; }
+        body.print-mode .cards-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; margin: 0.28rem 0 0.45rem; }
+        body.print-mode .cards-grid.three-col { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        body.print-mode .merk-card, body.print-mode .joker-box { padding: 7px 10px; margin: 0.25rem 0; }
+        body.print-mode .cards-grid .merk-card { margin: 0; }
+        body.print-mode .merk-title, body.print-mode .joker-title { font-size: 0.85rem; margin-bottom: 4px; }
+        body.print-mode .contrast-pill { font-size: 0.69rem; padding: 1px 7px; }
+        body.print-mode li { margin-bottom: 0.16rem; }
+
+        body.print-mode .content-wrapper { max-width: none; padding: 0; display: block; }
+        body.print-mode .page {
+            width: 210mm; min-height: 297mm; height: auto; padding: 10mm 12mm; margin: 0 auto 18mm auto; background: #fff;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: visible; break-after: page;
+        }
+        body.print-mode .card { background: transparent; border: none; padding: 0; box-shadow: none; }
+        body.print-mode .flashcards-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3.5mm; }
+        body.print-mode .flashcard { width: auto; height: auto; border: 1px solid var(--text-primary); border-radius: 2px; page-break-inside: avoid; }
+        body.print-mode .flashcard-inner { transform: none !important; display: flex; flex-direction: column; }
+        body.print-mode .flashcard-front, body.print-mode .flashcard-back {
+            position: static; height: auto; border: none; box-shadow: none; background: transparent; color: var(--text-primary); transform: none; padding: 4px 7px;
+        }
+        body.print-mode .flashcard-front { border-bottom: 1px dashed #aaa; font-size: 0.75rem; }
+        body.print-mode .flashcard-back { font-size: 0.69rem; }
+
+        .page-footer {
+            margin-top: auto; border-top: 1px solid var(--gold); padding-top: 6px;
+            display: flex; justify-content: space-between; font-size: 0.74rem; color: var(--text-secondary); font-family: 'Playfair Display', serif;
+        }
+
+        @media print {
+            @page { size: A4; margin: 0; }
+            nav { display: none !important; }
+        }
+
+        @media screen and (min-width: 1250px) {
+            html:not(:has(body.print-mode)) { font-size: 16.5px; }
+            body:not(.print-mode) .card { padding: 26px 32px; border-width: 1.5px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-group">
+            <a href="../index.html" class="nav-btn">← Journal</a>
+            <div class="dropdown">
+                <button type="button" class="nav-btn" id="btn-inhalt">Inhalt ▼</button>
+                <div class="dropdown-content" id="toc-dropdown"></div>
+            </div>
+            <button type="button" class="nav-btn" id="btn-fullscreen">Vollbild</button>
+            <button type="button" class="nav-btn active" id="btn-plakat">Plakat-Modus</button>
+            <button type="button" class="nav-btn" id="btn-druck">Druck-Modus (A4)</button>
+            <button type="button" class="nav-btn gold" id="btn-save-pdf">📄 Als PDF speichern</button>
+            <button type="button" class="nav-btn" id="btn-print">🖨️ Drucken</button>
+        </div>
+    </nav>
+
+    <div class="content-wrapper">
+
+        <!-- ============================================================
+             SEITE 1: KÖRPERERWEITERUNG, DESIGN VS. KUNST, GATTUNGEN & LEITFADEN
+             ============================================================ -->
+        <div class="page">
+            <div class="card">
+                <h1 id="main-title">Kunst (J1): Körpererweiterung &amp; Bildbeschreibung</h1>
+
+                <h2 id="sec-1">1. Körpererweiterung</h2>
+
+                <div class="merk-card">
+                    <span class="merk-title">Grundprinzip, Bewegung, Funktionen &amp; Identität</span>
+                    <ul>
+                        <li><span class="highlight">Grundprinzip:</span> Eine Körpererweiterung verändert aktiv Aussehen (Farbe, Form), Wahrnehmung (Sinne), Gefühl sowie die Wirkung auf andere und die Wiedererkennung.</li>
+                        <li><span class="highlight">Bewegung:</span> Sie führt zu einer Erweiterung oder teilweisen Einschränkung der Bewegungsmöglichkeit und lässt gewohnte Funktionen wie die Feinmotorik neu betrachten.</li>
+                        <li><span class="highlight">Funktionen:</span> Sie dient der Unterstützung (z. B. Effizienz), dem Schutz verwundbarer Stellen, der Symbolik (Kraft, Frieden, Tapferkeit) oder der Unterhaltung.</li>
+                        <li><span class="highlight">Identität:</span> Durch Verfremdung entsteht eine Transformation (Verwandlung), bei der die persönliche Identität wegfallen kann.</li>
+                    </ul>
+                </div>
+
+                <div class="joker-box">
+                    <span class="joker-title">MC-Check: Was zählt als Körpererweiterung?</span>
+                    Eine <span class="highlight">Prothese</span> zählt durch Unterstützung, Effizienz und veränderte Form/Bewegung als Körpererweiterung, ein <span class="crimson-text">normaler hautenger Anzug</span> ohne neue Form oder Funktion dagegen nicht.
+                </div>
+
+                <h2 id="sec-2">2. Design vs. Kunst &amp; 3. Kunstgattungen &amp; Technik</h2>
+
+                <div class="cards-grid">
+                    <div class="merk-card">
+                        <span class="merk-title">Design vs. Kunst</span>
+                        <ul>
+                            <li><span class="highlight">Design:</span> Folgt dem Leitsatz <em>„Form follows function“</em>, richtet die Form also gezielt nach der praktischen Funktion aus.</li>
+                            <li><span class="highlight">Kunst:</span> Stellt dem die offene Frage <em>„Form folgt ...?“</em> gegenüber, da hier Wirkung, Aussage, Gefühl, Symbolik und Verwandlung für den Rezipienten (Betrachter) zählen.</li>
+                        </ul>
+                    </div>
+
+                    <div class="merk-card gold-top">
+                        <span class="merk-title">Kunstgattungen &amp; Technik</span>
+                        <ul>
+                            <li><span class="highlight">Kinetische Kunst:</span> Kunstwerke mit realer Bewegung (variierend im Ausmaß der Bewegung); als Erfinder des Mobiles gilt <span class="highlight">Calder</span>.</li>
+                            <li><span class="highlight">Performance:</span> Teil der Aktionskunst, bei dem die Zuschauer als Rezipienten das Geschehen lediglich wahrnehmen bzw. rezipieren.</li>
+                            <li><span class="highlight">Happening:</span> Teil der Aktionskunst, bei dem die Zuschauer aktiv einbezogen werden und selbst mitmachen.</li>
+                            <li><span class="highlight">Additives Verfahren:</span> Plastische Arbeitsweise bzw. Technik durch Hinzufügen von Material, zum Beispiel beim Arbeiten mit Ton.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2 id="sec-3">4. Leitfaden Bildbeschreibung (Was? – Wie? – Warum?)</h2>
+
+                <div class="cards-grid three-col">
+                    <div class="merk-card">
+                        <span class="merk-title">1. Was? (Bestandsaufnahme)</span>
+                        <ul>
+                            <li><span class="highlight">Basisinfos:</span> Nenne vorhandene Werkdaten sowie die Kunstgattung und beschreibe zuerst rein sachlich, was im Bild sichtbar ist.</li>
+                            <li><span class="highlight">Körperbild:</span> Benenne erweiterte Stellen (z. B. Arm, Oberkörper) und beschreibe die Körperhaltung (etwa geschlossen, geometrisch oder komplex).</li>
+                        </ul>
+                    </div>
+
+                    <div class="merk-card gold-top">
+                        <span class="merk-title">2. Wie? (Formale Analyse)</span>
+                        <ul>
+                            <li><span class="highlight">Gestaltung:</span> Untersuche Material, Befestigung/Stabilität, Größe, Form, Farbe und die Technik wie das additive Verfahren.</li>
+                            <li><span class="highlight">Darstellung:</span> Analysiere Blickwinkel (Perspektive), Schauseite (Hauptansicht) und den Hell-Dunkel-Kontrast.</li>
+                            <li><span class="highlight">Raum &amp; Zeit:</span> Kläre Art/Ausmaß der Bewegung, die Rolle der Zeit für die Handlung und ob der Raum verändert wird oder nur Schauplatz ist.</li>
+                            <li><span class="highlight">Kontrastpaare:</span> Prüfe:
+                                <div class="contrast-pills">
+                                    <span class="contrast-pill">Schutz – Preisgeben</span>
+                                    <span class="contrast-pill">Einschränkung – Erweiterung</span>
+                                    <span class="contrast-pill">Alltag – Episch</span>
+                                    <span class="contrast-pill">viel – wenig</span>
+                                    <span class="contrast-pill">real – surreal (Traum, irrationale Logik)</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="merk-card crimson-top">
+                        <span class="merk-title">3. Warum? (Deutung)</span>
+                        <ul>
+                            <li><span class="highlight">Wirkung:</span> Verknüpfe deine Beobachtungen mit Kontext, Gefühl und Aussage – etwa ob das Auftreten mächtiger wirkt oder Schutz vermittelt.</li>
+                            <li><span class="highlight">Aussage:</span> Deute für den Rezipienten Symbolik, Verwandlung, den Wegfall der Identität oder Kritik (z. B. Machtdemonstration, Technifizierung, Mensch &amp; Roboter).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>Kunst (J1) – Körpererweiterung &amp; Bildbeschreibung</span>
+                <span>Seite 1</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 2: LERNKARTEN ZUR SELBSTABFRAGE (ACTIVE RECALL)
+             ============================================================ -->
+        <div class="page">
+            <div class="card">
+                <h2 id="sec-lernkarten">Lernkarten zur Selbstabfrage (Active Recall)</h2>
+                <p>Klicke auf eine Karte, um die Lösung umzudrehen.</p>
+
+                <div class="flashcards-container">
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>Was verändert eine Körpererweiterung und welche Funktionen kann sie erfüllen?</span></div>
+                            <div class="flashcard-back"><p>Sie verändert aktiv <span class="highlight">Aussehen</span> (Farbe, Form), <span class="highlight">Wahrnehmung</span> (Sinne), <span class="highlight">Gefühl</span>, Wirkung auf andere, Wiedererkennung und <span class="highlight">Bewegung</span> (Erweiterung/Einschränkung, Feinmotorik). <span class="highlight">Funktionen:</span> Unterstützung (Effizienz), Schutz verwundbarer Stellen, Symbolik (Kraft, Frieden, Tapferkeit), Unterhaltung sowie Transformation/Wegfall der Identität.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>MC-Check: Warum zählt eine Prothese als Körpererweiterung, ein normaler hautenger Anzug aber nicht?</span></div>
+                            <div class="flashcard-back"><p>Eine <span class="highlight">Prothese</span> bietet Unterstützung, Effizienz und verändert Form sowie Bewegung. Ein <span class="highlight">normaler hautenger Anzug</span> bringt dagegen weder eine neue Form noch eine neue Funktion mit.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>Worin unterscheiden sich Design und Kunst bei Körpererweiterungen?</span></div>
+                            <div class="flashcard-back"><p><span class="highlight">Design:</span> Folgt <em>„Form follows function“</em> (Form richtet sich nach der praktischen Funktion).<br><span class="highlight">Kunst:</span> Fragt offen <em>„Form folgt ...?“</em> – entscheidend sind Wirkung, Aussage, Gefühl, Symbolik und Verwandlung für den Rezipienten (Betrachter).</p></div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>Erkläre Kinetische Kunst, Performance, Happening und das additive Verfahren!</span></div>
+                            <div class="flashcard-back"><p><span class="highlight">Kinetische Kunst:</span> Kunstwerke mit realer Bewegung (Erfinder des Mobiles: Calder).<br><span class="highlight">Performance:</span> Aktionskunst, Zuschauer nehmen nur wahr (rezipieren).<br><span class="highlight">Happening:</span> Aktionskunst, Zuschauer machen aktiv mit.<br><span class="highlight">Additives Verfahren:</span> Plastisches Arbeiten durch Hinzufügen von Material (z. B. Ton).</p></div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>Was untersuchst du bei „Was?“ (Bestandsaufnahme) und „Wie?“ (Formale Analyse) in der Bildbeschreibung?</span></div>
+                            <div class="flashcard-back"><p><span class="highlight">Was?:</span> Werkdaten, Kunstgattung, rein sachlicher Sichtbefund + Körperbild (erweiterte Stellen, Haltung: geschlossen, geometrisch, komplex).<br><span class="highlight">Wie?:</span> Gestaltung (Material, Befestigung, Größe, Form, Farbe, Technik), Darstellung (Perspektive, Schauseite, Hell-Dunkel), Raum &amp; Zeit sowie Kontrastpaare.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front"><span>Welche 5 Kontrastpaare prüfst du in der Analyse und worauf zielst du bei „Warum?“ (Deutung) ab?</span></div>
+                            <div class="flashcard-back"><p><span class="highlight">Kontrastpaare:</span> Schutz – Preisgeben · Einschränkung – Erweiterung · Alltag – Episch · viel – wenig · real – surreal (Traum, irrationale Logik).<br><span class="highlight">Warum?:</span> Wirkung (Kontext, Gefühl, Macht/Schutz) &amp; Aussage für den Rezipienten (Symbolik, Verwandlung, Wegfall der Identität, Kritik wie Machtdemonstration, Technifizierung, Mensch &amp; Roboter).</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>Kunst (J1) – Lernkarten (Active Recall)</span>
+                <span>Seite 2</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        (function () {
+            const body = document.body;
+            const btnPlakat = document.getElementById('btn-plakat');
+            const btnDruck = document.getElementById('btn-druck');
+            const btnPrint = document.getElementById('btn-print');
+            const btnInhalt = document.getElementById('btn-inhalt');
+            const dropdown = document.getElementById('toc-dropdown');
+            const flashcards = document.querySelectorAll('.flashcard');
+
+            btnPlakat.addEventListener('click', function () {
+                body.classList.remove('print-mode');
+                btnPlakat.classList.add('active');
+                btnDruck.classList.remove('active');
+            });
+
+            btnDruck.addEventListener('click', function () {
+                body.classList.add('print-mode');
+                btnDruck.classList.add('active');
+                btnPlakat.classList.remove('active');
+            });
+
+            btnPrint.addEventListener('click', function () {
+                body.classList.add('print-mode');
+                btnDruck.classList.add('active');
+                btnPlakat.classList.remove('active');
+                window.print();
+            });
+
+            btnInhalt.addEventListener('click', function (e) {
+                e.stopPropagation();
+                dropdown.parentElement.classList.toggle('show');
+            });
+            document.addEventListener('click', function (e) {
+                if (!dropdown.contains(e.target) && e.target !== btnInhalt) {
+                    dropdown.parentElement.classList.remove('show');
+                }
+            });
+
+            const btnFullscreen = document.getElementById('btn-fullscreen');
+            if (btnFullscreen) {
+                btnFullscreen.addEventListener('click', function () {
+                    if (!document.fullscreenElement) {
+                        document.documentElement.requestFullscreen().catch(function (err) { console.warn(err); });
+                        btnFullscreen.textContent = 'Vollbild beenden';
+                    } else {
+                        if (document.exitFullscreen) document.exitFullscreen();
+                        btnFullscreen.textContent = 'Vollbild';
+                    }
+                });
+            }
+
+            document.querySelectorAll('h1[id], h2[id]').forEach(function (heading) {
+                const item = document.createElement('a');
+                item.className = 'dropdown-item';
+                item.style.paddingLeft = heading.tagName === 'H2' ? '20px' : '10px';
+                item.textContent = heading.textContent.trim();
+                item.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    dropdown.parentElement.classList.remove('show');
+                    const topPosition = heading.getBoundingClientRect().top + window.scrollY - 82;
+                    window.scrollTo({ top: topPosition, behavior: 'smooth' });
+                });
+                dropdown.appendChild(item);
+            });
+
+            flashcards.forEach(function (card) {
+                card.addEventListener('click', function () {
+                    if (!body.classList.contains('print-mode')) {
+                        card.classList.toggle('flipped');
+                    }
+                });
+            });
+        })();
+    </script>
+    <script src="../pdf-export.js"></script>
+</body>
+</html>
