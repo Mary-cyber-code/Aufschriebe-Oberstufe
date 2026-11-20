@@ -168,7 +168,14 @@ const subjectData = {
     section: "gk",
     type: "GK",
     accent: "soft-yellow",
-    categories: []
+    categories: [
+      {
+        name: "J1",
+        topics: [
+          { title: "Glaube & Zweifel, Gotteserkenntnis, JHWH & Theodizee", link: "religion/gottesfrage-und-theodizee.html" }
+        ]
+      }
+    ]
   },
 
   geschichte: {

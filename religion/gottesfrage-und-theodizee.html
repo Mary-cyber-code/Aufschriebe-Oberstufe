@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Religion (J1): Glaube &amp; Zweifel, Gotteserkenntnis, JHWH &amp; Theodizee</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600&display=swap');
+
+        :root {
+            --paper-white: #F8F6F1;
+            --paper-cream: #FDFCF8;
+            --text-primary: #2D3A2E;
+            --text-secondary: #5A6B5C;
+            --gold: #C9A96E;
+            --forest: #3A5A3F;
+            --crimson: #9E3B2E;
+            --nav-bg: rgba(248, 246, 241, 0.95);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--paper-white);
+            color: var(--text-primary);
+            font-family: 'Raleway', sans-serif;
+            line-height: 1.6;
+            padding-top: 70px;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--forest); margin-bottom: 0.5rem; }
+        h1 { font-size: 2.1rem; text-align: center; margin-bottom: 1.5rem; border-bottom: 2px solid var(--gold); padding-bottom: 0.9rem; }
+        h2 { font-size: 1.65rem; margin-top: 1.2rem; border-bottom: 1px solid rgba(201, 169, 110, 0.35); padding-bottom: 0.3rem; }
+        h2:first-of-type { margin-top: 0.2rem; }
+        h3 { font-size: 1.25rem; margin-top: 1rem; color: var(--text-primary); }
+
+        p { margin-bottom: 0.85rem; }
+        ul, ol { margin-bottom: 0.95rem; padding-left: 1.8rem; }
+        li { margin-bottom: 0.38rem; }
+
+        .highlight { color: var(--forest); font-weight: 600; }
+        .warn { color: var(--crimson); font-weight: 600; }
+
+        sub, sup { line-height: 0; vertical-align: baseline; font-size: 0.8em; }
+        sub { position: relative; top: 0.3em; }
+        sup { position: relative; top: -0.3em; }
+
+        /* Navigation */
+        nav {
+            position: fixed; top: 0; left: 0; width: 100%; background-color: var(--nav-bg); backdrop-filter: blur(10px);
+            z-index: 1000; display: flex; justify-content: center; align-items: center; padding: 15px 20px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05); border-bottom: 1px solid var(--gold);
+        }
+        .nav-group { display: flex; gap: 15px; align-items: center; }
+        .nav-btn {
+            background: transparent; border: 1px solid var(--forest); color: var(--forest); padding: 8px 16px;
+            font-family: 'Raleway', sans-serif; font-weight: 500; font-size: 0.9rem; cursor: pointer; border-radius: 4px;
+            transition: all 0.3s ease; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;
+        }
+        .nav-btn:hover, .nav-btn.active { background: var(--forest); color: var(--paper-white); }
+        .nav-btn.gold { border-color: var(--gold); color: var(--text-primary); }
+        .nav-btn.gold:hover { background: var(--gold); color: #fff; }
+
+        /* Dropdown */
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content {
+            display: none; position: absolute; background-color: var(--paper-cream); min-width: 280px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1); border: 1px solid var(--gold); border-radius: 4px;
+            z-index: 1; top: 100%; left: 0; margin-top: 5px; max-height: 70vh; overflow-y: auto;
+        }
+        .dropdown.show .dropdown-content { display: block; }
+        .dropdown-item {
+            color: var(--text-primary); padding: 11px 16px; text-decoration: none; display: block; cursor: pointer;
+            font-family: 'Raleway', sans-serif; font-size: 0.9rem; border-bottom: 1px solid rgba(201, 169, 110, 0.1); transition: background 0.2s;
+        }
+        .dropdown-item:hover { background-color: rgba(201, 169, 110, 0.1); color: var(--forest); }
+        .dropdown-item:last-child { border-bottom: none; }
+
+        /* Container & Plakat-Modus (2-Spalten-Kartenraster) */
+        .content-wrapper { margin: 0 auto; transition: all 0.3s ease; }
+        body:not(.print-mode) .content-wrapper { max-width: 1500px; padding: 20px; display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
+        body:not(.print-mode) .page { display: contents; }
+        body:not(.print-mode) .page-footer { display: none !important; }
+        body:not(.print-mode) .card {
+            background: var(--paper-cream); border: 1px solid var(--gold); border-radius: 8px; padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03); flex: 1 1 600px; max-width: 100%;
+        }
+
+        /* Tabellen */
+        .table-wrapper { overflow-x: auto; margin-bottom: 1.2rem; border-radius: 4px; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.02); border: 1px solid rgba(201, 169, 110, 0.25); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.94rem; }
+        th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid rgba(45, 58, 46, 0.1); vertical-align: top; }
+        th { background-color: rgba(58, 90, 63, 0.06); color: var(--forest); font-family: 'Playfair Display', serif; font-weight: 600; }
+        tr:last-child td { border-bottom: none; }
+
+        /* Druck-Modus (A4) */
+        body.print-mode { background-color: #E2E2E2; padding-top: 90px; font-size: 0.82rem; line-height: 1.36; }
+        body.print-mode h1 { font-size: 1.55rem; margin-bottom: 0.75rem; padding-bottom: 0.35rem; }
+        body.print-mode h2 { font-size: 1.22rem; margin-top: 0.75rem; padding-bottom: 0.18rem; }
+        body.print-mode h3 { font-size: 1.02rem; margin-top: 0.6rem; margin-bottom: 0.2rem; }
+        body.print-mode p, body.print-mode ul, body.print-mode ol { margin-bottom: 0.5rem; }
+        body.print-mode li { margin-bottom: 0.18rem; }
+        body.print-mode th, body.print-mode td { padding: 5px 8px; }
+
+        body.print-mode .content-wrapper { max-width: none; padding: 0; display: block; }
+        body.print-mode .page {
+            width: 210mm; height: auto; min-height: 297mm; padding: 13mm 14mm; margin: 0 auto 20mm auto; background: white;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: visible; break-after: page;
+        }
+        body.print-mode .card { background: transparent; border: none; padding: 0; box-shadow: none; margin-bottom: 0; }
+
+        .page-footer {
+            margin-top: auto; border-top: 1px solid var(--gold); padding-top: 10px;
+            display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--text-secondary); font-family: 'Playfair Display', serif;
+        }
+
+        @media (max-width: 768px) {
+            #btn-fullscreen { display: none !important; }
+            .nav-group { gap: 8px; flex-wrap: wrap; justify-content: center; }
+            .nav-btn { padding: 6px 10px; font-size: 0.8rem; }
+            nav { padding: 10px; }
+        }
+
+        @media print {
+            @page { size: A4; margin: 0; }
+            nav { display: none !important; }
+        }
+
+        /* PC-Modus */
+        @media screen and (min-width: 1200px) {
+            html:not(:has(body.print-mode)) { font-size: 17.5px; }
+            body:not(.print-mode) { font-weight: 500; line-height: 1.65; --text-secondary: #4A5A4C; }
+            body:not(.print-mode) h1, body:not(.print-mode) h2, body:not(.print-mode) h3, body:not(.print-mode) .highlight { font-weight: 700; }
+            body:not(.print-mode) .card { border-width: 1.5px; padding: 32px 36px; box-shadow: 0 6px 22px rgba(45, 58, 46, 0.07); }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-group">
+            <a href="../index.html" class="nav-btn">← Journal</a>
+            <div class="dropdown">
+                <button type="button" class="nav-btn" id="btn-inhalt">Inhalt ▼</button>
+                <div class="dropdown-content" id="toc-dropdown"></div>
+            </div>
+            <button type="button" class="nav-btn" id="btn-fullscreen">Vollbild</button>
+            <button type="button" class="nav-btn active" id="btn-plakat">Plakat-Modus</button>
+            <button type="button" class="nav-btn" id="btn-druck">Druck-Modus (A4)</button>
+            <button type="button" class="nav-btn gold" id="btn-save-pdf">📄 Als PDF speichern</button>
+            <button type="button" class="nav-btn" id="btn-print">🖨️ Drucken</button>
+        </div>
+    </nav>
+
+    <div class="content-wrapper" id="content">
+
+        <!-- ============================================================
+             SEITE 1: 1. GLAUBE & ZWEIFEL
+             ============================================================ -->
+        <div class="page">
+            <div class="card" id="thema-1">
+                <h1 id="sec-titel">Glaube &amp; Zweifel, Gotteserkenntnis, JHWH &amp; Theodizee<br><small style="font-size: 0.58em; font-weight: normal;">(Religion · J1)</small></h1>
+
+                <h2 id="sec-1">1. Glaube &amp; Zweifel</h2>
+
+                <h3 id="sec-1-1">A) Gottesvorstellungen &amp; Offenbarung</h3>
+                <ul>
+                    <li><span class="highlight">Heutige Vorstellungen:</span> Gott = personales Gegenüber (erkennbar in Jesus Christus) vs. unbestimmte höhere Kraft &rarr; oft begleitet von Zweifeln &amp; Unsicherheit.</li>
+                    <li><span class="highlight">Offenbarung:</span> Gotteserkenntnis geht allein von Gott aus (= Selbsterschließung, auch mitten im Alltag ohne Übernatürliches) &rarr; Mensch kann sich Gott nicht von sich aus erschließen.</li>
+                    <li><span class="highlight">Persönlicher Gott:</span>
+                        <ul>
+                            <li>&ne; naives, menschengestaltiges (anthropomorphes) Bild</li>
+                            <li><span class="highlight">Bedeutung:</span> Gott wird nahbar / ansprechbar im Gebet &rarr; begründet &amp; stärkt Personenwürde des Menschen</li>
+                            <li><span class="highlight">Paul Tillich:</span> Gott = das, was den Menschen in seiner Personalität <em>„unbedingt angeht“</em></li>
+                            <li><span class="highlight">Martin Luther:</span> Gott &amp; Glaube = Vertrauenssache (<em>„woran unser Herz hängt“</em> / Grundfrage des Lebens)</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3 id="sec-1-2">B) Zusammenhang: Glaube &harr; Zweifel</h3>
+                <ul>
+                    <li><span class="highlight">Untrennbarkeit (christl. Sicht):</span> Kein Glaube ohne Zweifel &rarr; Grund: Gottes Wirklichkeit &amp; Zuwendung sind durch bloßes Denken nicht logisch beweisbar.</li>
+                    <li><span class="highlight">Funktion des Zweifels:</span> Schutz vor „blindem“, gedankenlosem Glauben &rarr; reflektierter Glaube entsteht erst durch Zweifeln.</li>
+                    <li><span class="highlight">Anfechtung (Luther):</span>
+                        <ul>
+                            <li><span class="highlight">Definition:</span> existenzielles Verzweifeln an Gott (Auslöser: Tod, Leid, Ungerechtigkeit, „Schweigen Gottes“ auf Gebete nach Fulbert Steffensky)</li>
+                            <li><span class="highlight">Umgang:</span> wird im Glauben nicht aufgelöst (Ausdruck drängender Gotteserwartung) &rarr; Glaube = <em>„Dennoch“</em> im Angesicht der Anfechtung</li>
+                        </ul>
+                    </li>
+                    <li><span class="highlight">Textbeispiel Esther Maria Magnis (Glaubensweg):</span>
+                        <ul>
+                            <li><span class="highlight">Kindheit:</span> Naturerlebnis &rarr; tiefe Gewissheit: Gott ist da &amp; gut</li>
+                            <li><span class="highlight">Teenager (14 J.):</span> Abwendung &rarr; Kirche redet Gott klein (reduziert auf Moral / soziale Taten statt Gebet &amp; Wunder) + Jesus wirkt harmlos/austauschbar („orientalischer Pazifist“, bloßer „Gutmensch“ ohne Vorbildfunktion)</li>
+                            <li><span class="highlight">Jugend:</span> Krebserkrankung des Vaters &rarr; existenzielles Gebet &rarr; Tod des Vaters &rarr; Glaube zerbricht (Alkohol, Rückzug, Verstummen)</li>
+                            <li><span class="highlight">Später:</span> neue Gotteserfahrung auf „härtestem Boden“ (<em>„wirklicher als ein Stein“</em>) &rarr; neues, tragfähiges Gottesbild auch im Leid</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3 id="sec-1-3">C) Fachbegriffe (Wissensfragen)</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <tr>
+                            <th>Fachbegriff</th>
+                            <th>Definition &amp; Abgrenzung</th>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">fides quae (creditur)</span></td>
+                            <td>Glaubensinhalt = <em>was</em> geglaubt wird (Für-Wahr-Halten).</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">fides qua (creditur)</span></td>
+                            <td>Glaubensakt = <em>mit dem</em> geglaubt wird (Vertrauen).<br><strong>Zusammenspiel:</strong> <em>fides quae</em> &harr; <em>fides qua</em> gehören untrennbar zusammen &rarr; Zweifel wirkt dazwischen als Korrektiv des Glaubens.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Theismus</span></td>
+                            <td>Überweltlicher (transzendenter), persönlicher Gott.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Deismus</span></td>
+                            <td>Transzendenter Schöpfer &rarr; Rückzug aus der Welt nach der Schöpfung.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Pantheismus</span></td>
+                            <td>Gott = Welt (identisch, v. a. schöpferische Natur).</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="page-footer">
+                <span>[1. Glaube &amp; Zweifel]</span>
+                <span>Olga V.</span>
+                <span>Seite 1</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 2: 2. NATÜRLICHE THEOLOGIE & 3. DER UNSEHBARE GOTT (JHWH)
+             ============================================================ -->
+        <div class="page">
+            <div class="card" id="thema-2">
+                <h2 id="sec-2">2. Natürliche Theologie &amp; Gotteserkenntnis</h2>
+
+                <h3 id="sec-2-1">A) Natürliche Theologie (Gott aus der Natur erkennen?)</h3>
+                <ul>
+                    <li><span class="highlight">Erfahrungsbeispiel Magnis („Am Meer“):</span> Sinneseindrücke &amp; Weite des Meeres bei Nacht &rarr; Verbindung / Einswerden mit der Natur &rarr; inneres Gerufenwerden beim eigenen Namen (liebevoll, ernst, unbedingt &rarr; positive Selbsterkenntnis) &rarr; Deutung als Gott &rarr; Verschwinden der Gottesgegenwart durch rationales Nachdenken (Reimgebet) &rarr; Nachwirken &amp; Weitererzählen (<em>„Gott ist voll nett“</em>).</li>
+                </ul>
+
+                <div class="table-wrapper">
+                    <table>
+                        <tr>
+                            <th>Position (gedanklicher Fortschritt)</th>
+                            <th>Kernaussage zur Gotteserkenntnis aus Natur &amp; Vernunft</th>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Paulus</span> (Röm 1,19–20)</td>
+                            <td><strong>Ja</strong> &rarr; Gottes unsichtbares Wesen (ewige Kraft &amp; Gottheit) ist seit der Schöpfung durch Wahrnehmung aus seinen Werken (= Natur) erkennbar &rarr; Grund: Gott hat es so offenbart.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">1. Vatikanisches Konzil</span> (1870, kath.)</td>
+                            <td><strong>Zwei Wege:</strong><br>• <span class="highlight">Natürlich:</span> sichere Erkenntnis Gottes (Ursprung &amp; Ziel aller Dinge) aus der Schöpfung durch das natürliche Licht der Vernunft.<br>• <span class="highlight">Übernatürlich:</span> zusätzliche Selbstoffenbarung Gottes &amp; seines Willens durch Propheten + Jesus Christus.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Martin Luther</span> (1526, ev.)</td>
+                            <td><strong>Kritische Grenze:</strong><br>• Natur / Vernunft weiß nur, <em>dass</em> ein Gott ist (in alle Herzen geschrieben).<br>• Vernunft weiß nicht, <em>wer</em> oder <em>was</em> der rechte Gott ist &rarr; spielt ohne Offenbarung „Blindekuh“ &rarr; Fehlgriffe / selbstgemachte Götzen (Teufel / eigener Dünkel).<br>• Erkenntnis, <em>wer</em> Gott ist &rarr; allein durch den Heiligen Geist.</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3 id="sec-2-2">B) Gotteserkenntnis nach Calvin, Luther, Rahner</h3>
+                <p><span class="highlight">Ausgangsproblem:</span> Warum erwählt Gott manche Menschen und andere nicht? Wie weit ist Gott erkennbar?</p>
+                <ul>
+                    <li><span class="highlight">Johannes Calvin:</span>
+                        <ul>
+                            <li><span class="highlight">Modell:</span> Doppelte Prädestination (= Vorherbestimmung) &rarr; Gott erwählt die einen zum Heil, verwirft die anderen zum Unheil</li>
+                            <li><span class="highlight">Ziel:</span> betont Gottes Größe &amp; absolute Souveränität &nbsp;|&nbsp; <span class="warn">Problem / Kritik:</span> Gott wirkt wie ein Willkürherrscher / Tyrann</li>
+                        </ul>
+                    </li>
+                    <li><span class="highlight">Martin Luther:</span> Haltung: Frage für Menschen unlösbar (Rätsel &amp; Ärgernis aushalten) &rarr; Zwei Seiten Gottes:
+                        <ul>
+                            <li><span class="highlight">Deus revelatus (offenbarter Gott):</span> zeigt sich in Jesus Christus als liebender Gott, der Heil will &rarr; einzig entscheidend für uns (an ihn halten!)</li>
+                            <li><span class="highlight">Deus absconditus (verborgener Gott):</span> dunkle, rätselhafte, unzugängliche Seite Gottes &rarr; verborgen sein lassen (Spekulationsverbot für Menschen)</li>
+                        </ul>
+                    </li>
+                    <li><span class="highlight">Karl Rahner:</span>
+                        <ul>
+                            <li><span class="highlight">Modell:</span> Gott = <em>„heiliges Geheimnis“</em> &rarr; Kerneigenschaft: Unbegreiflichkeit (entzieht sich menschlicher Vernunft &amp; letztem Zugriff)</li>
+                            <li><span class="highlight">Bezug zum Menschen:</span> Wesenskern des Menschen = <em>„unbeantwortete Frage“</em></li>
+                            <li><span class="highlight">Konsequenz:</span> genau im Nicht-Begreifen-Können rücken Gott &amp; Mensch ganz nah zusammen (&rarr; gemeinsame Geheimnishaftigkeit)</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="sec-3">3. Der unsehbare Gott (Bibel &amp; JHWH)</h2>
+                <h3 id="sec-3-1">A) Biblische Gottesbilder &amp; Verhältnis AT &harr; NT</h3>
+                <ul>
+                    <li><span class="highlight">Altes Testament (AT):</span>
+                        <ul>
+                            <li><span class="highlight">2. Mose 3,1–14:</span> sieht Leid, hört &amp; erkennt Not &rarr; beruft Menschen zur Befreiung</li>
+                            <li><span class="highlight">2. Mose 34,1–10:</span> barmherzig, gnädig, geduldig, treu, vergebend, aber auch gerecht &amp; mächtig &rarr; Anliegen: Nähe, Vergebung, neuer Bund</li>
+                            <li><span class="highlight">Jona 1,1–3:</span> universaler Gott (für alle Menschen) &rarr; schreitet aktiv ein mit Ziel der Umkehr vom Unrecht</li>
+                            <li><span class="highlight">5. Mose 6,4–9 &amp; Lev 19,18:</span> Einziger Gott &rarr; Gebote: ungeteilte Gottesliebe + Nächstenliebe (<em>„wie dich selbst“</em>)</li>
+                        </ul>
+                    </li>
+                    <li><span class="highlight">Neues Testament (NT) &amp; Verhältnis zum AT (Mk 1,9–11; Mk 12,28–34):</span>
+                        <ul>
+                            <li><span class="highlight">Gottesbild:</span> liebevoller, persönlicher, erfahrbarer Vater &rarr; erwählt Jesus als Sohn &amp; gibt ihm Kraft</li>
+                            <li><span class="highlight">Verhältnis AT &harr; NT:</span> übernimmt zentrale Gebote des AT (Gottes- &amp; Nächstenliebe) &rarr; Fokus noch stärker auf Liebe &amp; Positivem (kein strafender Gott)</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3 id="sec-3-2">B) Tetragramm JHWH (Jahwe) – 2. Mose 3,14</h3>
+                <ul>
+                    <li><span class="highlight">Übersetzung:</span> <em>„Ich bin, der ich bin“</em> / <em>„Ich werde sein, der ich sein werde“</em></li>
+                    <li><span class="highlight">Deutungen:</span>
+                        <ul>
+                            <li><span class="highlight">Zusage &amp; Nähe:</span> immer da, treu, verlässlich in Gegenwart &amp; Zukunft (überströmende Güte &amp; Gerechtigkeit)</li>
+                            <li><span class="highlight">Freiheit &amp; Unverfügbarkeit:</span> unbegreifbar, eigener Wille &rarr; bleibt verborgen / lässt Freiraum offen (durch keinen Namen festlegbar; da, wo &amp; wie er will)</li>
+                        </ul>
+                    </li>
+                    <li><span class="highlight">Hebräische Grammatik:</span> nicht statisch/unwandelbar, sondern dynamisch &amp; fließend · keine eindeutige Zeitform &rarr; Kombination aus Gegenwart + Zukunft möglich · keine geschlechtliche Festlegung Gottes.</li>
+                </ul>
+            </div>
+            <div class="page-footer">
+                <span>[2. Natürliche Theologie &amp; 3. Der unsehbare Gott (JHWH)]</span>
+                <span>Olga V.</span>
+                <span>Seite 2</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 3: 4. DIE THEODIZEEFRAGE (TEIL 1: TRILEMMA, HIOB & „DER CLOWN“)
+             ============================================================ -->
+        <div class="page">
+            <div class="card" id="thema-3">
+                <h2 id="sec-4">4. Die Theodizeefrage (Teil 1: Trilemma, Hiob &amp; „Der Clown“)</h2>
+
+                <h3 id="sec-4-1">A) Grundproblem (Das Trilemma)</h3>
+                <ul>
+                    <li><span class="highlight">Spannung:</span> Gottes Eigenschaften (<strong>1. Allmacht + 2. Allwissenheit + 3. Güte</strong>) &harr; Innerer Widerspruch zur Welterfahrung (Leid &amp; Tod).</li>
+                    <li><span class="highlight">4 logische Auflösungen:</span>
+                        <ol>
+                            <li>Gott existiert nicht &rarr; <span class="highlight">Atheismus</span></li>
+                            <li>Gott ist <span class="highlight">nicht gütig</span></li>
+                            <li>Gott ist <span class="highlight">nicht allmächtig</span> (bzw. nicht allwissend)</li>
+                            <li>Widerspruch nicht eindeutig auflösbar &rarr; Luther: <span class="highlight">deus absconditus</span></li>
+                        </ol>
+                    </li>
+                    <li><span class="highlight">Textbeispiel Magnis („Der liebe Gott?!“):</span>
+                        <ul>
+                            <li>Krebstod des Vaters &rarr; Totenstille, Gefühl des Im-Stich-gelassen-Seins</li>
+                            <li><span class="highlight">Innere Zerrissenheit:</span> Atheismus für sie unmöglich, weil Gottes Existenz durch frühere Erfahrungen (Meer / Dachboden-Gebet) feststeht &rarr; zweifelt massiv an seiner Güte &amp; Allmacht (hätte Krebs stoppen können, schwieg trotz vollem Vertrauen) &rarr; Umschlag in Wut &amp; Hass (<em>„Ich glaube nicht mehr an dich. Du bist tot. Ich hasse dich.“</em>)</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3 id="sec-4-2">B) Hiob (Biblischer Zugang)</h3>
+                <ul>
+                    <li><span class="highlight">Ausgangslage:</span> Hiob = fromm, rechtschaffen, schuldlos Leidend &rarr; verliert Besitz, Gesundheit &amp; alle Kinder.</li>
+                    <li><span class="highlight">Widerlegung des Tun-Ergehen-Zusammenhangs:</span>
+                        <ul>
+                            <li><span class="highlight">Freunde:</span> suchen Schuld bei Hiob (Denkmuster: Gutes Tun = Wohlergehen / Leid = Strafe Gottes)</li>
+                            <li><span class="highlight">Hiob:</span> hält an Unschuld fest &rarr; bricht Tun-Ergehen-Zusammenhang auf &rarr; klagt Gott direkt an &amp; fordert Rechtfertigung</li>
+                        </ul>
+                    </li>
+                    <li><span class="highlight">Gottes Antwort (Hiob 38ff.) &amp; Ende (Hiob 42):</span> Keine Erklärung des Leids &rarr; Verweis auf Schöpfermacht &amp; Größe Gottes vs. Kleinheit des Menschen (Gottes Wege = undurchschaubar). Ende: Hiob erhält Besitz &amp; Nachkommen doppelt zurück.</li>
+                    <li><span class="warn">Kritik &amp; Zuspitzung:</span> Antwort überzeugt kaum: menschliches Nicht-Verstehen legitimiert kein Leid + „märchenhaftes“ Ende ersetzt keine toten Kinder · extreme Zuspitzung durch die <span class="highlight">Schoah</span> (= Katastrophe / Vernichtung der europäischen Juden; treffender als Holocaust = „Ganzopfer“).</li>
+                </ul>
+
+                <h3 id="sec-4-3">C) Antwortversuche &amp; Parabel „Der Clown“ (Magnis)</h3>
+                <ul>
+                    <li><span class="highlight">Bildebenen in „Der Clown“:</span>
+                        <ul>
+                            <li><span class="highlight">Schauspielhaus</span> = Welt &nbsp;|&nbsp; <span class="highlight">Geschäftsleitung</span> = Gott &nbsp;|&nbsp; <span class="highlight">Clown</span> = rücksichtsloses, unberechenbares Leid</li>
+                            <li><span class="highlight">Staatsballett</span> = Theologen &amp; Philosophen &rarr; vergebliche Deutungs-, Beschwichtigungs- &amp; Kontrollversuche</li>
+                            <li><span class="highlight">Priester im Kronleuchter</span> = Deutung Gottes als „kranke Geschäftsleitung“ &rarr; schwacher, mitleidender Opfer-Gott im Nächsten</li>
+                            <li><span class="highlight">Zarte Ballettdame</span> = Verbot der Anmaßung (keine Aussagen über Geschäftsleitung möglich)</li>
+                            <li><span class="highlight">Mann mit Fisch-Pulli &amp; Programmheft (Bibel)</span> = harter Biblizismus / Schuldzuweisung (<em>„Das kommt davon“</em>)</li>
+                            <li><span class="highlight">Fazit des Textes:</span> kluge Theorien &amp; Talkshow-Debatten von Außenstehenden scheitern komplett an der Realität der akut Leidenden.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <div class="table-wrapper">
+                    <table>
+                        <tr>
+                            <th>Antwortversuch</th>
+                            <th>(+) Pro-Argument</th>
+                            <th>(–) Contra-Argument / Kritik</th>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Tod = Erlösung</span></td>
+                            <td>(+) Trost bei schwerstem Leid &amp; Hoffnung auf Leben nach dem Tod</td>
+                            <td>(–) redet Tod schön &rarr; echte Erlösung wäre Heilung</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Reifung am Leid / Glück nur durch Kontrast</span></td>
+                            <td>(+) Krisen können stärken &amp; Wertschätzung vertiefen</td>
+                            <td>(–) Leid als „Erziehungsmittel“ = zynisch; viele zerbrechen daran</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Leid = „Fels des Atheismus“</span></td>
+                            <td>(+) löst logischen Widerspruch konsequent auf</td>
+                            <td>(–) nimmt letzte Hoffnung auf Sinn &amp; ausgleichende Gerechtigkeit</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Evolutionärer Zufall</span></td>
+                            <td>(+) naturwissenschaftlich plausibel, entlastet Gott („Schauspielhaus hat sich selbst gebaut“)</td>
+                            <td>(–) Leid bleibt völlig sinnlos &amp; trostlos</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Verbot der Anmaßung</span> (Gott = unerklärbar)</td>
+                            <td>(+) schützt Gottes Geheimnis (vgl. Augustin / Rahner)</td>
+                            <td>(–) würgt berechtigte Klage ab &amp; lässt Leidende allein</td>
+                        </tr>
+                    </table>
+                </div>
+                <p><span class="highlight">Entscheidender Maßstab:</span> Wie tragfähig ist eine Antwort für mich / für Betroffene im echten Leid?</p>
+            </div>
+            <div class="page-footer">
+                <span>[4. Die Theodizeefrage – Teil 1]</span>
+                <span>Olga V.</span>
+                <span>Seite 3</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SEITE 4: 4. THEODIZEE (PHILOSOPHIE & MITLEIDENDER GOTT) & KA-FAHRPLAN
+             ============================================================ -->
+        <div class="page">
+            <div class="card" id="thema-4">
+                <h2 id="sec-5">5. Theodizee in Philosophie &amp; Theologie + KA-Fahrplan</h2>
+
+                <h3 id="sec-5-1">A) Philosophie: Leibniz, Voltaire, Jonas</h3>
+                <ul>
+                    <li><span class="highlight">G. W. Leibniz („Die beste aller möglichen Welten“):</span>
+                        <ul>
+                            <li>Erfahrbare Welt = begrenzte, zufällige Dinge (Dasein nicht notwendig) &rarr; braucht Gott als ewige, notwendige erste Ursache (Grund der Existenz in sich selbst).</li>
+                            <li>Unendlich viele Welten möglich &rarr; Auswahl durch Gottes vollkommene Eigenschaften:
+                                <ul>
+                                    <li><span class="highlight">Verstand / Weisheit (&rarr; das Wahre):</span> erkennt alle möglichen Welten</li>
+                                    <li><span class="highlight">Wille / Güte (&rarr; das Gute):</span> wählt die beste Welt aus</li>
+                                    <li><span class="highlight">Macht / Gewalt (&rarr; das Sein):</span> erschafft diese Welt</li>
+                                </ul>
+                            </li>
+                            <li><span class="highlight">Ergebnis:</span> unsere Welt = bestmögliche Welt (Leid = unvermeidbarer Teil des besten Gesamtsystems).</li>
+                        </ul>
+                    </li>
+                    <li><span class="highlight">Voltaire („Candide oder der Optimismus“):</span>
+                        <ul>
+                            <li><span class="highlight">Methode:</span> bissige Ironie / Satire gegen Leibniz</li>
+                            <li><span class="highlight">Inhalt:</span> extremes Kriegsgrauen (30.000 Tote, zerstörte Dörfer, Vergewaltigungen + christliche Heuchelei bei Gotteslob &amp; Barmherzigkeitspredigt) trifft auf Candides naiven Satz, alles habe seine Grundursache &amp; sei „aufs Beste eingepasst“</li>
+                            <li><span class="warn">Kritik:</span> Leibniz' Optimismus verhöhnt reale Opfer + totale Vorherbestimmung hebt den freien Willen (von Mensch &amp; Gott) auf.</li>
+                        </ul>
+                    </li>
+                    <li><span class="highlight">Hans Jonas („Der Gottesbegriff nach Auschwitz“):</span>
+                        <ul>
+                            <li><span class="highlight">Ausgangspunkt:</span> 3 Attribute (absolute Güte + absolute Allmacht + Verstehbarkeit) &rarr; angesichts des Übels schließen je zwei das dritte aus.</li>
+                            <li><span class="highlight">Jüdische Perspektive:</span>
+                                <ul>
+                                    <li><span class="highlight">Güte</span> = unverzichtbar für den Gottesbegriff</li>
+                                    <li><span class="highlight">Verstehbarkeit</span> = darf nicht völlig aufgegeben werden, da Gott sich in Thora &amp; Propheten kundgetan hat (&rarr; <em>deus absconditus</em> = zutiefst unjüdisch)</li>
+                                </ul>
+                            </li>
+                            <li><span class="highlight">Konsequenz nach Auschwitz:</span> Verzicht auf Gottes Allmacht &rarr; Gott ist gütig &amp; verstehbar, aber ohnmächtig / mitleidend.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3 id="sec-5-2">B) Der ohnmächtige und mitleidende Gott (Bonhoeffer / Sölle)</h3>
+                <ul>
+                    <li><span class="highlight">Gegensatz:</span> menschliche Religiosität sucht mächtigen Retter-Gott von außen (<em>deus ex machina</em>) &harr; Bibel weist auf Ohnmacht &amp; Leiden Gottes am Kreuz Christi.</li>
+                    <li><span class="highlight">Dietrich Bonhoeffer:</span> Gott lässt sich aus der Welt ans Kreuz drängen &rarr; schwach &amp; ohnmächtig in der Welt &rarr; Kernsatz: <em>„Nur der leidende Gott kann uns helfen“</em>.</li>
+                    <li><span class="highlight">Dorothee Sölle:</span>
+                        <ul>
+                            <li>Gott verhindert Leid nicht mit Allmacht, sondern leidet in den Opfern selbst mit (wird beleidigt, gefoltert, vergast) = Fels christlicher Hoffnung.</li>
+                            <li>Christlicher Glaube = <em>„Teilhaben am Leiden Gottes in Christus“</em> &rarr; weil Gott in der Welt ohnmächtig ist, braucht er die aktive Hilfe des Menschen gegen das Leid.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="sec-6">6. Fahrplan für die 3 Aufgabentypen in der KA</h2>
+                <ol>
+                    <li><span class="highlight">Textaufgabe:</span> Einleitungssatz + Kernthese des Autors (Präsens, eigene Worte!) &rarr; Argumentationsschritte knapp &amp; strukturiert herausarbeiten (keine Nacherzählung).</li>
+                    <li><span class="highlight">Wissensfrage:</span> Fachbegriffe präzise definieren &rarr; gezielt voneinander abgrenzen (vs. / &harr;).</li>
+                    <li><span class="highlight">Erörterung:</span> Streitfrage klären &rarr; Pro vs. Contra mit Positionen verknüpfen (z. B. Luther vs. 1. Vatikanum oder Jonas/Sölle vs. Leibniz) &rarr; eigenes Fazit begründet über den Maßstab <span class="highlight">Tragfähigkeit im Leid</span>.</li>
+                </ol>
+            </div>
+            <div class="page-footer">
+                <span>[5. Philosophie, Mitleidender Gott &amp; 6. KA-Fahrplan]</span>
+                <span>Olga V.</span>
+                <span>Seite 4</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const body = document.body;
+        const btnPlakat = document.getElementById('btn-plakat');
+        const btnDruck = document.getElementById('btn-druck');
+        const btnPrint = document.getElementById('btn-print');
+        const btnInhalt = document.getElementById('btn-inhalt');
+        const dropdown = document.getElementById('toc-dropdown');
+
+        btnPlakat.addEventListener('click', () => { body.classList.remove('print-mode'); btnPlakat.classList.add('active'); btnDruck.classList.remove('active'); });
+        btnDruck.addEventListener('click', () => { body.classList.add('print-mode'); btnDruck.classList.add('active'); btnPlakat.classList.remove('active'); });
+        btnPrint.addEventListener('click', () => { window.print(); });
+
+        btnInhalt.addEventListener('click', (e) => { e.stopPropagation(); dropdown.parentElement.classList.toggle('show'); });
+        document.addEventListener('click', (e) => { if (!dropdown.contains(e.target) && e.target !== btnInhalt) dropdown.parentElement.classList.remove('show'); });
+
+        const btnFullscreen = document.getElementById('btn-fullscreen');
+        if (btnFullscreen) {
+            btnFullscreen.addEventListener('click', () => {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(err => { console.error(err); });
+                    btnFullscreen.textContent = 'Vollbild beenden';
+                } else {
+                    if (document.exitFullscreen) { document.exitFullscreen(); btnFullscreen.textContent = 'Vollbild'; }
+                }
+            });
+        }
+
+        document.querySelectorAll('h1[id], h2[id], h3[id]').forEach(heading => {
+            const item = document.createElement('a');
+            item.className = 'dropdown-item';
+            if (heading.tagName === 'H2') item.style.paddingLeft = '20px';
+            if (heading.tagName === 'H3') item.style.paddingLeft = '30px';
+
+            item.textContent = heading.textContent;
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                dropdown.parentElement.classList.remove('show');
+                const topPosition = heading.getBoundingClientRect().top + window.scrollY - 80;
+                window.scrollTo({ top: topPosition, behavior: 'smooth' });
+            });
+            dropdown.appendChild(item);
+        });
+    </script>
+    <script src="../pdf-export.js"></script>
+</body>
+</html>
